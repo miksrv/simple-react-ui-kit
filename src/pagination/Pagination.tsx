@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
-import Link from 'next/link'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn, encodeQueryData } from '@/functions/helpers'
+import { concatClassNames as cn, encodeQueryData } from '@/tools'
 import Icon from '@/icon'
 
 const LEFT_PAGE = 'LEFT'
@@ -93,8 +92,8 @@ const Pagination: React.FC<PaginationProps<any>> = ({
             {fetchPageNumbers
                 .filter((page) => (!hideArrows ? true : page !== RIGHT_PAGE && page !== LEFT_PAGE))
                 .map((page) => (
-                    <Link
-                        scroll={!disableScroll}
+                    <a
+                        // scroll={!disableScroll}
                         className={cn(styles.item, currentPage === page ? styles.active : undefined)}
                         href={
                             page === RIGHT_PAGE
@@ -139,7 +138,7 @@ const Pagination: React.FC<PaginationProps<any>> = ({
                         ) : (
                             <>{page}</>
                         )}
-                    </Link>
+                    </a>
                 ))}
         </nav>
     )

@@ -1,19 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import debounce from 'lodash-es/debounce'
-import Image, { StaticImageData } from 'next/image'
 
 import styles from './styles.module.sass'
 
 import { concatClassNames as cn } from '@/tools'
 import Icon from '@/icon'
-import { IconTypes } from '@/ui/icon/types'
+import { IconTypes } from '@/icon/types'
 import Spinner from '@/spinner'
 
 export type DropdownOption = {
     title: string
     value: any
     type?: string
-    image?: StaticImageData
+    image?: string
     description?: string
 }
 
@@ -222,9 +221,9 @@ const Autocomplete: React.FC<DropdownProps<any>> = ({
                                 >
                                     <div className={styles.content}>
                                         {option.image && (
-                                            <Image
+                                            <img
                                                 className={styles.optionImage}
-                                                src={option.image.src}
+                                                src={option.image}
                                                 alt={''}
                                                 width={22}
                                                 height={26}

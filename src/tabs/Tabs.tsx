@@ -4,7 +4,7 @@ import styles from './styles.module.sass'
 import TabHeader from './TabHeader'
 
 import { concatClassNames as cn } from '@/tools'
-import Container, { ContainerProps } from '@/ui/container'
+import Container, { ContainerProps } from '@/container'
 
 type TabType<T> = {
     label: string

@@ -1,16 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Image, { StaticImageData } from 'next/image'
 
 import styles from './styles.module.sass'
 
 import { concatClassNames as cn } from '@/tools'
-import OptionsList from '@/ui/dropdown/OptionsList'
+import OptionsList from '@/dropdown/OptionsList'
 import Icon from '@/icon'
 
 export type DropdownOption = {
     key: string | number
     value: React.ReactNode | string | number
-    image?: StaticImageData
+    image?: string
     disabled?: boolean
 }
 
@@ -109,9 +108,9 @@ const Dropdown: React.FC<DropdownProps<any>> = ({
                 >
                     <span>
                         {selectedOption?.image && (
-                            <Image
+                            <img
                                 className={styles.categoryIcon}
-                                src={selectedOption.image.src}
+                                src={selectedOption.image}
                                 alt={''}
                                 width={22}
                                 height={26}

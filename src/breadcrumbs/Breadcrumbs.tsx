@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 
 import styles from './styles.module.sass'
 
@@ -24,25 +23,25 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ homePageTitle, links, classNa
     >
         {!!homePageTitle?.length && (
             <li>
-                <Link
+                <a
                     color={'inherit'}
                     href={'/'}
                     title={homePageTitle}
                 >
                     {homePageTitle}
-                </Link>
+                </a>
             </li>
         )}
         {!!links?.length &&
             links.map(({ link, text }) => (
                 <li key={link}>
-                    <Link
+                    <a
                         href={link}
                         color={'inherit'}
                         title={text}
                     >
                         {text}
-                    </Link>
+                    </a>
                 </li>
             ))}
         {currentPage && <li>{currentPage}</li>}

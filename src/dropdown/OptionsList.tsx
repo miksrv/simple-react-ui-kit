@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 
 import type { DropdownOption } from './Dropdown'
 import styles from './styles.module.sass'
@@ -21,8 +20,8 @@ const OptionsList: React.FC<DropdownProps> = ({ selectedOption, options, onSelec
             >
                 <button onClick={() => (!option.disabled ? onSelect?.(option) : undefined)}>
                     {option.image && (
-                        <Image
-                            src={option.image.src}
+                        <img
+                            src={option.image}
                             alt={''}
                             width={22}
                             height={26}
