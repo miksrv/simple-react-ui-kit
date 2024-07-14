@@ -6,7 +6,7 @@ import styles from './styles.module.sass'
 import { concatClassNames as cn } from '@/tools'
 import Chip from '@/ui/chips-select/Chip'
 import Icon from '@/icon'
-import Spinner from '@/ui/spinner'
+import Spinner from '@/spinner'
 
 interface ChipsSelectProps {
     className?: string

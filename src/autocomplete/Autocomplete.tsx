@@ -7,7 +7,7 @@ import styles from './styles.module.sass'
 import { concatClassNames as cn } from '@/tools'
 import Icon from '@/icon'
 import { IconTypes } from '@/ui/icon/types'
-import Spinner from '@/ui/spinner'
+import Spinner from '@/spinner'
 
 export type DropdownOption = {
     title: string

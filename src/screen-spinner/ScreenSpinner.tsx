@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 
 import styles from './styles.module.sass'
 
-import Spinner from '@/ui/spinner'
+import Spinner from '@/spinner'
 
 interface ScreenSpinnerProps {
     text?: string
