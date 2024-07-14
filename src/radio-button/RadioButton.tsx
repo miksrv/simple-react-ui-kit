@@ -2,8 +2,8 @@ import React from 'react'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/functions/helpers'
-import Icon from '@/ui/icon'
+import { concatClassNames as cn } from '@/tools'
+import Icon from '@/icon'
 
 interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string

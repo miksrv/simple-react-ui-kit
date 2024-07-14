@@ -4,7 +4,7 @@ import Image from 'next/image'
 import type { DropdownOption } from './Dropdown'
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/functions/helpers'
+import { concatClassNames as cn } from '@/tools'
 
 interface DropdownProps {
     options?: DropdownOption[]

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import styles from './styles.module.sass'
 
 import { concatClassNames as cn, encodeQueryData } from '@/functions/helpers'
-import Icon from '@/ui/icon'
+import Icon from '@/icon'
 
 const LEFT_PAGE = 'LEFT'
 const RIGHT_PAGE = 'RIGHT'

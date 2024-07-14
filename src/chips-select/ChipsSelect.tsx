@@ -3,9 +3,9 @@ import debounce from 'lodash-es/debounce'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/functions/helpers'
+import { concatClassNames as cn } from '@/tools'
 import Chip from '@/ui/chips-select/Chip'
-import Icon from '@/ui/icon'
+import Icon from '@/icon'
 import Spinner from '@/ui/spinner'
 
 interface ChipsSelectProps {

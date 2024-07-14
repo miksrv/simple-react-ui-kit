@@ -4,8 +4,8 @@ import Image, { StaticImageData } from 'next/image'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/functions/helpers'
-import Icon from '@/ui/icon'
+import { concatClassNames as cn } from '@/tools'
+import Icon from '@/icon'
 import { IconTypes } from '@/ui/icon/types'
 import Spinner from '@/ui/spinner'
 

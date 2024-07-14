@@ -2,7 +2,7 @@ import React from 'react'
 
 import styles from './styles.module.sass'
 
-import Icon from '@/ui/icon'
+import Icon from '@/icon'
 
 interface ChipProps {
     text: string

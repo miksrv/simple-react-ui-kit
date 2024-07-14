@@ -4,7 +4,7 @@ import React from 'react'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/functions/helpers'
+import { concatClassNames as cn } from '@/tools'
 
 interface RatingColoredProps {
     className?: string

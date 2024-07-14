@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import styles from './styles.module.sass'
 
-import Icon from '@/ui/icon'
+import Icon from '@/icon'
 
 export interface DialogProps extends React.HTMLAttributes<HTMLDialogElement> {
     open?: boolean

@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/functions/helpers'
+import { concatClassNames as cn } from '@/tools'
 
 interface TextareaProps extends Omit<React.InputHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
     label?: string
