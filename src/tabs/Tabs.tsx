@@ -3,8 +3,8 @@ import React from 'react'
 import styles from './styles.module.sass'
 import TabHeader from './TabHeader'
 
-import { concatClassNames as cn } from '@/tools'
 import Container, { ContainerProps } from '@/container'
+import { concatClassNames as cn } from '@/tools'
 
 type TabType<T> = {
     label: string

@@ -2,10 +2,10 @@ import React from 'react'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/tools'
 import Icon from '@/icon'
 import { IconTypes } from '@/icon/types'
 import Spinner from '@/spinner'
+import { concatClassNames as cn } from '@/tools'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string

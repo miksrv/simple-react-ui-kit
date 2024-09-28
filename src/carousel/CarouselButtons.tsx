@@ -3,8 +3,8 @@ import { EmblaCarouselType } from 'embla-carousel'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/tools'
 import Icon from '@/icon'
+import { concatClassNames as cn } from '@/tools'
 
 type UsePrevNextButtonsType = {
     prevBtnDisabled: boolean

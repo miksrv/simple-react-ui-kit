@@ -3,10 +3,10 @@ import debounce from 'lodash-es/debounce'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/tools'
 import Icon from '@/icon'
 import { IconTypes } from '@/icon/types'
-import Spinner from '@/spinner'
+import { Spinner } from '@/index'
+import { concatClassNames as cn } from '@/tools'
 
 export type DropdownOption = {
     title: string
