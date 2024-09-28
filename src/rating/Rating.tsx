@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn } from '@/tools'
 import Icon from '@/icon'
+import { concatClassNames as cn } from '@/tools'
 
 interface RatingProps {
     value?: number
@@ -43,11 +43,13 @@ const Rating: React.FC<RatingProps> = ({ value, voted, disabled, onChange }) => 
                             type={'radio'}
                             value={rating}
                             onChange={() => {
-                                !disabled ? onChange?.(rating) : undefined
+                                if (!disabled) {
+                                    onChange?.(rating)
+                                }
                             }}
                             onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    !disabled ? onChange?.(rating) : undefined
+                                if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
+                                    onChange?.(rating)
                                 }
                             }}
                         />

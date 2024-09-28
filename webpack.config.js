@@ -1,5 +1,5 @@
-const path = require('path');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const path = require('path')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
     mode: 'production',
@@ -9,20 +9,22 @@ module.exports = {
         filename: 'index.js',
         library: 'SimpleUI',
         libraryTarget: 'umd',
-        umdNamedDefine: true,
+        umdNamedDefine: true
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.sass'],
-        plugins: [new TsconfigPathsPlugin({
-            configFile: "./tsconfig.json"
-        })],
+        plugins: [
+            new TsconfigPathsPlugin({
+                configFile: './tsconfig.json'
+            })
+        ]
     },
     module: {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
                 use: 'babel-loader',
-                exclude: /node_modules/,
+                exclude: /node_modules/
             },
             {
                 test: /\.module\.sass$/,
@@ -31,25 +33,21 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true,
-                        },
+                            modules: true
+                        }
                     },
-                    'sass-loader',
-                ],
+                    'sass-loader'
+                ]
             },
             {
                 test: /\.sass$/,
                 exclude: /\.module\.sass$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'sass-loader',
-                ],
-            },
-        ],
+                use: ['style-loader', 'css-loader', 'sass-loader']
+            }
+        ]
     },
     externals: {
         react: 'react',
-        'react-dom': 'react-dom',
-    },
-};
+        'react-dom': 'react-dom'
+    }
+}

@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 
 import styles from './styles.module.sass'
 
-import { concatClassNames as cn, encodeQueryData } from '@/tools'
 import Icon from '@/icon'
+import { concatClassNames as cn, encodeQueryData } from '@/tools'
 
 const LEFT_PAGE = 'LEFT'
 const RIGHT_PAGE = 'RIGHT'
@@ -18,7 +18,6 @@ interface PaginationProps<T> {
     urlParam?: T
     perPage?: number
     neighbours?: number
-    disableScroll?: boolean
     hideIfOnePage?: boolean
     hideArrows?: boolean
     onChangePage?: (page: number) => void
@@ -32,7 +31,6 @@ const Pagination: React.FC<PaginationProps<any>> = ({
     captionNextPage,
     captionPrevPage,
     urlParam,
-    disableScroll,
     hideIfOnePage,
     hideArrows,
     perPage = 4,
@@ -93,7 +91,6 @@ const Pagination: React.FC<PaginationProps<any>> = ({
                 .filter((page) => (!hideArrows ? true : page !== RIGHT_PAGE && page !== LEFT_PAGE))
                 .map((page) => (
                     <a
-                        // scroll={!disableScroll}
                         className={cn(styles.item, currentPage === page ? styles.active : undefined)}
                         href={
                             page === RIGHT_PAGE
@@ -118,9 +115,9 @@ const Pagination: React.FC<PaginationProps<any>> = ({
                         }
                         title={
                             page === RIGHT_PAGE
-                                ? captionNextPage ?? 'Next page'
+                                ? (captionNextPage ?? 'Next page')
                                 : page === LEFT_PAGE
-                                  ? captionPrevPage ?? 'Previous page'
+                                  ? (captionPrevPage ?? 'Previous page')
                                   : `${captionPage ?? 'Page'} - ${page}`
                         }
                         key={page}
