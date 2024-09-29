@@ -24,14 +24,10 @@ jobs:
                   cache: 'npm'
 
             - name: Install dependencies
-              run: npm ci
-
-            - name: Create changeset version
-              id: changeset
-              run: npx changeset version
+              run: yarn workspaces focus
 
             - name: Build package
-              run: npm run build
+              run: yarn build
 
             - name: Publish to npm
               env:
@@ -46,7 +42,7 @@ jobs:
                   fi
 
             - name: Publish package to npm
-              run: npm publish --access public
+              run: yarn publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
