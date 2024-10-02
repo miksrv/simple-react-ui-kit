@@ -9,19 +9,18 @@ import { concatClassNames as cn } from '@/tools'
  */
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     /** The title of the container. Displayed at the top of the container */
-    title?: string;
+    title?: string
     /** Additional class names to apply to the container */
-    className?: string;
+    className?: string
     /** An action element, typically a button or link, displayed in the container header */
-    action?: React.ReactNode;
+    action?: React.ReactNode
     /** Custom header content for the container */
-    header?: React.ReactNode;
+    header?: React.ReactNode
     /** The content of the container */
-    children?: React.ReactNode;
+    children?: React.ReactNode
     /** Custom footer content for the container */
-    footer?: React.ReactNode;
+    footer?: React.ReactNode
 }
-
 
 const Container: React.FC<ContainerProps> = ({ className, title, action, header, children, footer, ...props }) => (
     <section
