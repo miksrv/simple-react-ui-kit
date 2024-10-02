@@ -1,5 +1,12 @@
 # @miksoft/simple-uikit
 
+## 1.0.4
+
+### Patch Changes
+
+-   Added descriptions for Dialog Props UI Component
+-   7616398: Added descriptions for Container Props UI Component
+
 ## 1.0.3
 
 ### Patch Changes
