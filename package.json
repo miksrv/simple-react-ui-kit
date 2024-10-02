@@ -14,7 +14,8 @@
         "prettier:fix": "prettier --write ."
     },
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "registry": "https://npm.pkg.github.com/"
     },
     "access": "public",
     "main": "dist/index.js",
