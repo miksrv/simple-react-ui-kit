@@ -55,6 +55,10 @@ export default [
             // '**/.next/**',
             // '**/next-env.d.ts',
             // '**/middleware.ts'
+
+            // Storybook
+            '**/.storybook/main.js',
+            '**/.storybook/preview.js',
         ]
     },
 
