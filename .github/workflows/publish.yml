@@ -30,10 +30,7 @@ jobs:
               run: yarn build
 
             - name: Create .npmrc
-              run: |
-                  echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-                  echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
-                  echo "@miksrv:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
             - name: Create Release Pull Request or Publish to npm
               id: changesets
