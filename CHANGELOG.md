@@ -1,5 +1,11 @@
 # @miksoft/simple-uikit
 
+## 1.0.4
+
+### Patch Changes
+
+-   7616398: Added descriptions for Container Props UI Component
+
 ## 1.0.3
 
 ### Patch Changes
