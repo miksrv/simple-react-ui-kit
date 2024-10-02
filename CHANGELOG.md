@@ -1,5 +1,11 @@
 # @miksoft/simple-uikit
 
+## 1.0.5
+
+### Patch Changes
+
+-   Testing deploy UI package
+
 ## 1.0.4
 
 ### Patch Changes
