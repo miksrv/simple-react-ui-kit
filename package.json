@@ -1,11 +1,12 @@
 {
     "name": "@miksoft/simple-uikit",
-    "version": "1.0.5",
+    "version": "1.0.4",
     "description": "My small UI framework for projects",
     "repository": "https://github.com/miksrv/simple-uikit.git",
     "scripts": {
         "build": "webpack",
-        "changeset": "npx changeset && npx changeset version",
+        "changeset": "npx changeset",
+        "changeversion": "npx changeset version",
         "release": "changeset publish",
         "start": "webpack serve --config example/webpack.config.js",
         "eslint:check": "eslint",
