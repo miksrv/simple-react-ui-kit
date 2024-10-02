@@ -32,22 +32,11 @@ jobs:
             - name: Create .npmrc
               run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-            - name: Publish to npm
+            - name: Create Release Pull Request or Publish to npm
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  publish: yarn release
               env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: |
-                  if [ "$(git status --porcelain)" != "" ]; then
-                    git config user.name "github-actions[bot]"
-                    git config user.email "github-actions[bot]@users.noreply.github.com"
-                    git add .
-                    git commit -m "Version Packages"
-                    git push
-                  fi
-
-            - name: Publish package to npm
-              run: yarn publish --access public
-              env:
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-            - name: Push tags to repository
-              run: git push --tags
