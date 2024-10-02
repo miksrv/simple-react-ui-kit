@@ -82,20 +82,7 @@ jobs:
                   node-version: 20
                   cache: 'npm'
 
-            - name: Cache node modules
-              uses: actions/cache@v4
-              id: cache-npm-storybook
-              with:
-                  path: |
-                      node_modules
-                      ~/.npm
-                  key: ${{ runner.os }}-storybook-modules-${{ hashFiles('yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-storybook-modules-
-                      ${{ runner.os }}-
-
-            - if: ${{ steps.cache-npm-storybook.outputs.cache-hit != 'true' }}
-              name: Install dependencies for Storybook
+            - name: Install dependencies for Storybook
               working-directory: storybook
               run: npm install
 
