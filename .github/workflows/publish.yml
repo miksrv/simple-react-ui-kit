@@ -4,10 +4,6 @@ on:
     push:
         branches:
             - main
-#        paths:
-#            # - 'src/**'
-#            - '.changeset/**'
-#            - 'CHANGELOG.md'
 
 jobs:
     release:
@@ -47,8 +43,3 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-            - name: Publish to GitHub Packages
-              run: npm publish
-              env:
-                NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
