@@ -1,11 +1,11 @@
 name: Deploy Storybook
 
 on:
-    pull_request:
+    push:
         branches:
             - main
-#        paths:
-#             - 'storybook/**'
+        paths:
+             - 'storybook/**'
 
 jobs:
     build-storybook:
