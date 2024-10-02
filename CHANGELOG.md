@@ -1,7 +1,7 @@
-# @miksoft/simple-uikit
+# simple-react-ui-kit
 
 ## 1.0.1
 
 ### Patch Changes
 
--   Initital version of UI Library
+-   First version of Simple React UI Library

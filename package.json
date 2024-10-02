@@ -1,8 +1,8 @@
 {
-    "name": "@miksoft/simple-uikit",
+    "name": "simple-react-ui-kit",
     "version": "1.0.1",
     "description": "My small UI framework for projects",
-    "repository": "https://github.com/miksrv/simple-uikit.git",
+    "repository": "https://github.com/miksrv/simple-react-ui-kit.git",
     "scripts": {
         "build": "webpack",
         "changeset": "npx changeset",
@@ -15,7 +15,8 @@
         "prettier:fix": "prettier --write ."
     },
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "registry": "https://npm.pkg.github.com/"
     },
     "access": "public",
     "main": "dist/index.js",
