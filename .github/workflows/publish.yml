@@ -29,9 +29,12 @@ jobs:
             - name: Build package
               run: yarn build
 
+            - name: Create .npmrc
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
             - name: Publish to npm
               env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
               run: |
                   if [ "$(git status --porcelain)" != "" ]; then
                     git config user.name "github-actions[bot]"
@@ -44,7 +47,7 @@ jobs:
             - name: Publish package to npm
               run: yarn publish --access public
               env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
             - name: Push tags to repository
               run: git push --tags
