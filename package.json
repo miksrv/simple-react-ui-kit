@@ -5,8 +5,8 @@
     "repository": "https://github.com/miksrv/simple-uikit.git",
     "scripts": {
         "build": "webpack",
-        "changeset": "npx changeset && npx changeset version",
-        "release": "changeset publish",
+        "changeset": "npx changeset",
+        "release": "npx changeset version && changeset publish",
         "start": "webpack serve --config example/webpack.config.js",
         "eslint:check": "eslint",
         "eslint:fix": "eslint --fix",
