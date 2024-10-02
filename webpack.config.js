@@ -7,7 +7,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.js',
-        library: 'SimpleUI',
+        library: 'SimpleUIKit',
         libraryTarget: 'umd',
         umdNamedDefine: true
     },

@@ -1,8 +1,8 @@
 {
-    "name": "simple-ui",
+    "name": "@miksoft/simple-uikit",
     "version": "1.0.0",
     "description": "My small UI framework for projects",
-    "repository": "https://github.com/miksrv/simple-ui.git",
+    "repository": "https://github.com/miksrv/simple-uikit.git",
     "scripts": {
         "build": "webpack",
         "changeset": "npx changeset",
@@ -13,10 +13,16 @@
         "prettier:check": "prettier --check .",
         "prettier:fix": "prettier --write ."
     },
+    "publishConfig": {
+        "access": "public"
+    },
+    "access": "public",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
-        "dist"
+        "dist",
+        "LICENSE",
+        "README.md"
     ],
     "keywords": [],
     "author": "Misha Topchilo <20854498+miksrv@users.noreply.github.com>",

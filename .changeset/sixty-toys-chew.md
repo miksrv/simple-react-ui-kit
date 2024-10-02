@@ -1,5 +1,5 @@
 ---
-'simple-ui': minor
+'simple-uikit': minor
 ---
 
 Added storybook
