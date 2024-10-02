@@ -2,11 +2,11 @@ import React from 'react'
 
 import { IconTypes } from './types'
 
-interface IconProps {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
     name: IconTypes
 }
 
-const Icon: React.FC<IconProps> = ({ name }) => {
+const Icon: React.FC<IconProps> = ({ name, ...props }) => {
     let iconToRender
 
     switch (name) {
@@ -285,7 +285,14 @@ const Icon: React.FC<IconProps> = ({ name }) => {
             break
     }
 
-    return <svg viewBox='0 0 24 24'>{iconToRender}</svg>
+    return (
+        <svg
+            viewBox='0 0 24 24'
+            {...props}
+        >
+            {iconToRender}
+        </svg>
+    )
 }
 
 export default Icon

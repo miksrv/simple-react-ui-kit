@@ -42,10 +42,13 @@ export default [
             '**/__snapshots__/**',
             '**/.docusaurus/**',
             '**/build/**',
+
             // WebPack
             '**/webpack.config.js',
+
             // PM2 Server
             // '**/ecosystem.config.js',
+
             // NextJS
             // '**/next-i18next.config.js',
             // '**/next.config.js',
@@ -192,12 +195,12 @@ export default [
             // eslint-plugin-eslint-comment
             //
             // require a eslint-enable comment for every eslint-disable comment
-            'eslint-comments/disable-enable-pair': [
-                'error',
-                {
-                    allowWholeFile: true
-                }
-            ],
+            // 'eslint-comments/disable-enable-pair': [
+            //     'error',
+            //     {
+            //         allowWholeFile: true
+            //     }
+            // ],
             // disallow a eslint-enable comment for multiple eslint-disable comments
             'eslint-comments/no-aggregating-enable': 'error',
             // disallow duplicate eslint-disable comments

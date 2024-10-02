@@ -15,6 +15,10 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "incremental": true,
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "stripInternal": true,
+        "noImplicitAny": false,
         "plugins": [
             {
                 "name": "next"
