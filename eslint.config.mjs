@@ -59,6 +59,7 @@ export default [
             // Storybook
             '**/.storybook/main.js',
             '**/.storybook/preview.js',
+            '**/storybook-static/',
         ]
     },
 
