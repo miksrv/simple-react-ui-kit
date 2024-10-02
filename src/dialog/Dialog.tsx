@@ -4,16 +4,29 @@ import styles from './styles.module.sass'
 
 import Icon from '@/icon'
 
+/**
+ * Dialog component properties
+ */
 export interface DialogProps extends React.HTMLAttributes<HTMLDialogElement> {
+    /** Whether the dialog is open or closed */
     open?: boolean
+    /** Header text for the dialog */
     header?: string
+    /** Height for the content area of the dialog (e.g., in 'px', 'rem', etc.) */
     contentHeight?: string
+    /** Maximum width for the dialog (e.g., in 'px', 'rem', etc.) */
     maxWidth?: string
+    /** Text for the back link (if applicable) */
     backLinkCaption?: string
+    /** Show or hide the back link in the dialog */
     showBackLink?: boolean
+    /** Actions or buttons to be displayed at the bottom of the dialog */
     actions?: React.ReactNode
+    /** Content inside the dialog */
     children?: React.ReactNode
+    /** Callback function triggered when the back link is clicked */
     onBackClick?: () => void
+    /** Callback function triggered when the dialog is closed */
     onCloseDialog?: () => void
 }
 
