@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Button from '@/button'
-import {iconNames} from '@/icon'
+import { iconNames } from '@/icon'
 import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<typeof Button> = {
