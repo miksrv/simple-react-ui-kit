@@ -44,7 +44,10 @@ export default [
             '**/build/**',
 
             // WebPack
-            '**/webpack.config.js',
+            // '**/webpack.config.js',
+            
+            // RollUp
+            '**/rollup.config.js',
 
             // PM2 Server
             // '**/ecosystem.config.js',
