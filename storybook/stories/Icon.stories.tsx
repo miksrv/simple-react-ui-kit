@@ -1,6 +1,7 @@
 import React from 'react'
 
-import Icon, { iconNames, IconTypes } from '@/icon'
+import { Icon, iconNames, IconTypes } from '../../src'
+
 import { Meta, StoryFn } from '@storybook/react'
 
 export default {

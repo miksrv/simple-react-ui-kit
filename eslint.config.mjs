@@ -34,17 +34,22 @@ export default [
             '**/.yarn/**',
             '**/eslint.config.mjs',
             '**/eslint.config.js',
+            '**/eslint.config.cjs',
             '**/jest.config.ts',
+            '**/declarations.d.ts',
             '**/node_modules/**',
+            '**/build/**',
             '**/dist/**',
             '**/fixtures/**',
             '**/coverage/**',
             '**/__snapshots__/**',
             '**/.docusaurus/**',
-            '**/build/**',
 
             // WebPack
-            '**/webpack.config.js',
+            // '**/webpack.config.js',
+
+            // RollUp
+            '**/rollup.config.js',
 
             // PM2 Server
             // '**/ecosystem.config.js',
@@ -84,7 +89,7 @@ export default [
                     // in the rare case that we do - just need to manually restart their IDE.
                     glob: 'Infinity'
                 },
-                project: ['tsconfig.json'],
+                project: ['eslint.tsconfig.json'],
                 warnOnUnsupportedTypeScriptVersion: false
             }
         },

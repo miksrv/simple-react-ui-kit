@@ -37,7 +37,7 @@ jobs:
                   echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
                   echo "@miksrv:registry=https://npm.pkg.github.com/" >> ~/.npmrc
 
-            - name: Create Release Pull Request or Publish to npm
+            - name: Create Release and Publish to npm
               id: changesets
               uses: changesets/action@v1
               with:
@@ -45,8 +45,3 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-            - name: Publish to GitHub Packages
-              run: npm publish
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

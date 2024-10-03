@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Button from '@/button'
-import { iconNames } from '@/icon'
+import { Button, ButtonProps, iconNames } from '../../src'
+
 import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<typeof Button> = {
@@ -11,7 +11,7 @@ const meta: Meta<typeof Button> = {
         mode: {
             control: { type: 'select' },
             options: ['primary', 'secondary', 'outline', 'link'],
-            description: 'Visual style of the button',
+            // description: 'Visual style of the button',
             table: {
                 defaultValue: {
                     summary: 'primary'
@@ -23,20 +23,39 @@ const meta: Meta<typeof Button> = {
         },
         size: {
             control: { type: 'inline-radio' },
-            options: ['small', 'medium']
+            options: ['small', 'medium'],
+            table: {
+                type: {
+                    summary: '"small", "medium"'
+                }
+            }
         },
         variant: {
             control: { type: 'select' },
-            options: ['positive', 'negative', 'neutral']
+            options: ['', 'positive', 'negative'],
+            table: {
+                type: {
+                    summary: '"positive", "negative", null'
+                }
+            }
         },
         icon: {
             control: { type: 'select' },
             options: Object.keys(iconNames).map((name) => name)
         },
         loading: {
+            description: 'Show loading spinner instead of button content',
             control: { type: 'boolean' }
         },
-        content: {
+        disabled: {
+            description: 'Disabled button content',
+            control: { type: 'boolean' }
+        },
+        stretched: {
+            description: 'Whether the button takes up the full width of the container',
+            control: { type: 'boolean' }
+        },
+        label: {
             control: { type: 'text' }
         }
     }
@@ -44,33 +63,69 @@ const meta: Meta<typeof Button> = {
 
 export default meta
 
-type ButtonProps = React.ComponentProps<typeof Button>
+type ButtonGroupProps = {
+    buttons: ButtonProps[] // Используем массив для нескольких кнопок
+}
 
-const Template: StoryFn<ButtonProps> = (args: ButtonProps) => <Button {...args}>Click me</Button>
+const ButtonSandbox: StoryFn<ButtonProps> = (args: ButtonProps) => <Button {...args}>Click me</Button>
+
+const Template: StoryFn<ButtonGroupProps> = ({ buttons }: ButtonGroupProps) => (
+    <div style={{ display: 'flex', gap: '10px' }}>
+        {buttons.map((buttonProps, index) => (
+            <Button
+                key={index}
+                {...buttonProps}
+            >
+                {buttonProps.content || 'Click me'}
+            </Button>
+        ))}
+    </div>
+)
+
+export const Sandbox = ButtonSandbox.bind({})
+Sandbox.args = {
+    mode: 'primary',
+    size: 'medium'
+}
 
 export const Primary = Template.bind({})
 Primary.args = {
-    mode: 'primary',
-    size: 'medium'
+    buttons: [
+        { mode: 'primary', size: 'medium', content: 'Primary Medium' },
+        { mode: 'primary', size: 'medium', content: 'With icon', icon: 'Map' },
+        { mode: 'primary', size: 'medium', content: 'Loading...', loading: true },
+        { mode: 'primary', size: 'medium', content: 'Disabled', disabled: true },
+        { mode: 'primary', size: 'medium', content: 'Positive', variant: 'positive' },
+        { mode: 'primary', size: 'medium', content: 'Negative', variant: 'negative' }
+    ]
+}
+
+Primary.argTypes = {
+    buttons: {
+        table: { disable: true } // Скрываем из панели управления
+    }
 }
 
 export const Secondary = Template.bind({})
 Secondary.args = {
-    mode: 'secondary',
-    size: 'medium'
+    buttons: [
+        { mode: 'secondary', size: 'medium', content: 'Primary Medium' },
+        { mode: 'secondary', size: 'medium', content: 'With icon', icon: 'Map' },
+        { mode: 'secondary', size: 'medium', content: 'Loading...', loading: true },
+        { mode: 'secondary', size: 'medium', content: 'Disabled', disabled: true },
+        { mode: 'secondary', size: 'medium', content: 'Positive', variant: 'positive' },
+        { mode: 'secondary', size: 'medium', content: 'Negative', variant: 'negative' }
+    ]
 }
 
-export const WithIcon = Template.bind({})
-WithIcon.args = {
-    mode: 'primary',
-    icon: 'Camera',
-    size: 'medium'
-}
-
-export const Loading = Template.bind({})
-Loading.args = {
-    mode: 'primary',
-    size: 'medium',
-    loading: true,
-    content: 'Loading...'
+export const Outline = Template.bind({})
+Outline.args = {
+    buttons: [
+        { mode: 'outline', size: 'medium', content: 'Primary Medium' },
+        { mode: 'outline', size: 'medium', content: 'With icon', icon: 'Map' },
+        { mode: 'outline', size: 'medium', content: 'Loading...', loading: true },
+        { mode: 'outline', size: 'medium', content: 'Disabled', disabled: true },
+        { mode: 'outline', size: 'medium', content: 'Positive', variant: 'positive' },
+        { mode: 'outline', size: 'medium', content: 'Negative', variant: 'negative' }
+    ]
 }
