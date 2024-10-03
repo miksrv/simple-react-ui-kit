@@ -45,15 +45,15 @@ const meta: Meta<typeof Button> = {
         },
         loading: {
             description: 'Show loading spinner instead of button content',
-            control: { type: 'boolean' },
+            control: { type: 'boolean' }
         },
         disabled: {
             description: 'Disabled button content',
-            control: { type: 'boolean' },
+            control: { type: 'boolean' }
         },
         stretched: {
             description: 'Whether the button takes up the full width of the container',
-            control: { type: 'boolean' },
+            control: { type: 'boolean' }
         },
         label: {
             control: { type: 'text' }
@@ -64,20 +64,23 @@ const meta: Meta<typeof Button> = {
 export default meta
 
 type ButtonGroupProps = {
-    buttons: ButtonProps[]; // Используем массив для нескольких кнопок
-};
+    buttons: ButtonProps[] // Используем массив для нескольких кнопок
+}
 
 const ButtonSandbox: StoryFn<ButtonProps> = (args: ButtonProps) => <Button {...args}>Click me</Button>
 
 const Template: StoryFn<ButtonGroupProps> = ({ buttons }: ButtonGroupProps) => (
     <div style={{ display: 'flex', gap: '10px' }}>
         {buttons.map((buttonProps, index) => (
-            <Button key={index} {...buttonProps}>
+            <Button
+                key={index}
+                {...buttonProps}
+            >
                 {buttonProps.content || 'Click me'}
             </Button>
         ))}
     </div>
-);
+)
 
 export const Sandbox = ButtonSandbox.bind({})
 Sandbox.args = {
@@ -85,7 +88,7 @@ Sandbox.args = {
     size: 'medium'
 }
 
-export const Primary = Template.bind({});
+export const Primary = Template.bind({})
 Primary.args = {
     buttons: [
         { mode: 'primary', size: 'medium', content: 'Primary Medium' },
@@ -93,17 +96,17 @@ Primary.args = {
         { mode: 'primary', size: 'medium', content: 'Loading...', loading: true },
         { mode: 'primary', size: 'medium', content: 'Disabled', disabled: true },
         { mode: 'primary', size: 'medium', content: 'Positive', variant: 'positive' },
-        { mode: 'primary', size: 'medium', content: 'Negative', variant: 'negative' },
-    ],
-};
+        { mode: 'primary', size: 'medium', content: 'Negative', variant: 'negative' }
+    ]
+}
 
 Primary.argTypes = {
     buttons: {
-        table: { disable: true }, // Скрываем из панели управления
-    },
-};
+        table: { disable: true } // Скрываем из панели управления
+    }
+}
 
-export const Secondary = Template.bind({});
+export const Secondary = Template.bind({})
 Secondary.args = {
     buttons: [
         { mode: 'secondary', size: 'medium', content: 'Primary Medium' },
@@ -111,11 +114,11 @@ Secondary.args = {
         { mode: 'secondary', size: 'medium', content: 'Loading...', loading: true },
         { mode: 'secondary', size: 'medium', content: 'Disabled', disabled: true },
         { mode: 'secondary', size: 'medium', content: 'Positive', variant: 'positive' },
-        { mode: 'secondary', size: 'medium', content: 'Negative', variant: 'negative' },
-    ],
-};
+        { mode: 'secondary', size: 'medium', content: 'Negative', variant: 'negative' }
+    ]
+}
 
-export const Outline = Template.bind({});
+export const Outline = Template.bind({})
 Outline.args = {
     buttons: [
         { mode: 'outline', size: 'medium', content: 'Primary Medium' },
@@ -123,6 +126,6 @@ Outline.args = {
         { mode: 'outline', size: 'medium', content: 'Loading...', loading: true },
         { mode: 'outline', size: 'medium', content: 'Disabled', disabled: true },
         { mode: 'outline', size: 'medium', content: 'Positive', variant: 'positive' },
-        { mode: 'outline', size: 'medium', content: 'Negative', variant: 'negative' },
-    ],
-};
+        { mode: 'outline', size: 'medium', content: 'Negative', variant: 'negative' }
+    ]
+}

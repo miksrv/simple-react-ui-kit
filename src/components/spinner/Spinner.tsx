@@ -1,7 +1,8 @@
 import React from 'react'
 
-import styles from './styles.module.sass'
 import { cn } from '../../utils'
+
+import styles from './styles.module.sass'
 
 interface SpinnerProps {
     className?: string
