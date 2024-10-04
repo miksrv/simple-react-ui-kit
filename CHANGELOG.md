@@ -1,5 +1,16 @@
 # simple-react-ui-kit
 
+## 1.1.1
+
+### Patch Changes
+
+-   Added new story for Spinner component
+-   Export PopoutHandleProps type for UI Popout Component
+-   Fixed styles for UI Spinner component
+-   Removed "Place" Icon
+-   Renamed some icons
+-   Added icons: Cloud, Compass, Lightning, Pressure, SolarPower, Thermometer, Water, WaterDrop, Wind
+
 ## 1.1.0
 
 ### Minor Changes

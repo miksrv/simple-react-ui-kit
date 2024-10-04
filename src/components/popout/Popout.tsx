@@ -21,11 +21,11 @@ export interface PopoutProps extends Pick<ButtonProps, 'mode' | 'variant' | 'ico
     closeOnChildrenClick?: boolean
 }
 
-export interface PopoutHandle {
+export interface PopoutHandleProps {
     close: () => void
 }
 
-const Popout = forwardRef<PopoutHandle, PopoutProps>(
+const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
     ({ className, position, action, children, closeOnChildrenClick, ...props }, ref) => {
         const popoutRef = useRef<HTMLDivElement>(null)
         const popoutChildrenRef = useRef<HTMLDivElement>(null)
