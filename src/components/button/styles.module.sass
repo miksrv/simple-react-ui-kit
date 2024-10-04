@@ -11,6 +11,7 @@
     color: var(--button-default-color)
     background: var(--button-default-background)
     border-radius: var(--border-radius)
+    text-wrap: nowrap
     cursor: pointer
     padding: 6px 10px
     border: 0
@@ -82,6 +83,9 @@
             background-color: var(--color-red)
             color: var(--color-contrast)
 
+            svg
+                fill: var(--color-red)
+
             &:hover, &:focus
                 background-color: var(--color-red-hover)
 
@@ -91,6 +95,9 @@
         &.positive
             background-color: var(--color-green)
             color: var(--color-contrast)
+
+            svg
+                fill: var(--color-green)
 
             &:hover, &:focus
                 background-color: var(--color-green-hover)
@@ -113,6 +120,9 @@
     &.negative
         color: var(--color-red)
 
+        svg
+            fill: var(--color-red)
+
         &:hover, &:focus
             color: var(--color-red-hover)
 
@@ -121,6 +131,9 @@
 
     &.positive
         color: var(--color-green)
+
+        svg
+            fill: var(--color-green)
 
         &:hover, &:focus
             color: var(--color-green-hover)

@@ -1,0 +1,148 @@
+.optionsList
+    list-style: none
+    padding: 0
+    width: 100%
+    z-index: 405
+    font-family: var(--font-family), sans-serif
+    font-size: var(--font-size)
+
+    li
+        button
+            margin: 0
+            height: 100%
+            width: 100%
+            padding: 8px 10px
+            color: var(--text-color-primary)
+            font-size: var(--font-size)
+            cursor: pointer
+            background: transparent
+            border: none
+            text-align: left
+            display: flex
+            align-items: center
+
+            svg
+                width: 14px
+                height: 14px
+                fill: var(--icon-color-primary)
+                margin-right: 8px
+
+            img
+                width: 14px
+                height: 15px
+                margin-right: 4px
+
+        &.disabled
+            pointer-events: none
+            cursor: not-allowed
+            opacity: .5
+
+        &:hover, &.active
+            background-color: var(--input-background-color)
+
+.dropdown
+    display: block
+
+    .label
+        display: block
+        color: var(--input-label-color)
+        overflow: hidden
+        padding-bottom: 4px
+        padding-top: 2px
+        text-overflow: ellipsis
+        white-space: nowrap
+        font-size: var(--font-size)
+
+    .container
+        position: relative
+        border-radius: var(--border-radius)
+        width: 100%
+
+        .dropdownButton
+            width: 100%
+            display: flex
+            align-items: center
+            justify-content: space-between
+            overflow: hidden
+
+            &:focus, &:active, &:hover
+                outline: none
+
+            &.open
+                border-bottom-right-radius: 0
+                border-bottom-left-radius: 0
+
+            span
+                display: flex
+                align-items: center
+                line-height: 18px
+
+                img, svg
+                    width: 18px
+                    height: 18px
+                    margin-right: 5px
+                    float: left
+
+                &.value, &.placeholder
+                    display: block
+                    overflow: hidden
+                    text-overflow: ellipsis
+
+                &.placeholder
+                    opacity: .8
+
+            .buttonContainer
+                margin-left: 5px
+
+                svg
+                    width: 18px
+                    height: 18px
+                    margin: 0
+
+                .clearButton
+                    background: transparent
+                    border: none
+                    margin: 0
+                    padding: 0
+                    font-size: 0
+                    cursor: pointer
+
+    &.disabled
+        .label
+            opacity: 0.7
+
+        .dropdownButton
+            opacity: 0.5
+            cursor: default
+
+    &.required
+        .label:after
+            content: '*'
+            margin-left: 3px
+            color: var(--color-red)
+
+    .optionsList
+        position: absolute
+        background-color: var(--dropdown-background-color)
+        border: var(--input-border)
+        top: 33px
+        margin: 0
+        border-bottom-left-radius: var(--border-radius)
+        border-bottom-right-radius: var(--border-radius)
+        max-height: 200px
+        z-index: 405
+        overflow: hidden
+        overflow-y: scroll
+
+        li
+            &:hover, &.active
+                background-color: var(--dropdown-background-color-hover)
+
+            &:last-of-type
+                border-bottom-left-radius: var(--border-radius)
+                border-bottom-right-radius: var(--border-radius)
+
+    .error
+        color: var(--color-red)
+        font-size: var(--font-size-small)
+        margin-top: 5px
