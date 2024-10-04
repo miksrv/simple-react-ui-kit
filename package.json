@@ -1,6 +1,6 @@
 {
     "name": "simple-react-ui-kit",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "description": "My small UI framework for projects",
     "repository": "https://github.com/miksrv/simple-react-ui-kit.git",
     "scripts": {
