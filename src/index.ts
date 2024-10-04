@@ -13,11 +13,15 @@ export type { IconTypes } from './components/icon'
 
 // Popout Component
 export { default as Popout } from './components/popout'
-export type { PopoutProps } from './components/popout'
+export type { PopoutProps, PopoutHandleProps } from './components/popout'
 
 // Skeleton Component
 export { default as Skeleton } from './components/skeleton'
 export type { SkeletonProps } from './components/skeleton'
+
+// Spinner Component
+export { default as Spinner } from './components/spinner'
+export type { SpinnerProps } from './components/spinner'
 
 // Table Component
 export { default as Table } from './components/table'
