@@ -35,7 +35,6 @@ export default [
             '**/eslint.config.mjs',
             '**/eslint.config.js',
             '**/eslint.config.cjs',
-            '**/jest.config.ts',
             '**/declarations.d.ts',
             '**/node_modules/**',
             '**/build/**',
@@ -65,6 +64,10 @@ export default [
             '**/.storybook/main.js',
             '**/.storybook/preview.js',
             '**/storybook-static/',
+
+            // Jest
+            '**/jest.config.ts',
+            '**/jest.setup.ts',
         ]
     },
 

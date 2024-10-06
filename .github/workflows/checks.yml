@@ -60,9 +60,8 @@ jobs:
                       ${{ runner.os }}-dist-
                       ${{ runner.os }}-
 
-            # - name: UI Unit Tests
-            #  run: yarn test
-            #  working-directory: client
+            - name: UI Unit Tests
+              run: yarn test
 
             - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
               name: Build UI
