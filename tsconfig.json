@@ -22,5 +22,6 @@
         "declarationDir": "dist"
     },
     "include": ["src"],
-    "exclude": ["node_modules", "dist", "storybook"]
+    "exclude": ["node_modules", "dist", "storybook"],
+    "types": ["node", "jest", "@testing-library/jest-dom"]
 }
