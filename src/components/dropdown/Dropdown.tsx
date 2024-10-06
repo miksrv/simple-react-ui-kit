@@ -93,7 +93,7 @@ const Dropdown = <T,>({
         }
     }
 
-    const handleClearClick = (event: React.MouseEvent) => {
+    const handleClearClick = (event: React.MouseEvent | React.KeyboardEvent) => {
         event.stopPropagation()
         handleSelect(undefined)
     }
@@ -154,13 +154,15 @@ const Dropdown = <T,>({
 
                     <span className={styles.buttonContainer}>
                         {clearable && selectedOption?.key && (
-                            <button
-                                type={'button'}
+                            <span
+                                role={'button'}
+                                tabIndex={0}
                                 className={styles.clearButton}
                                 onClick={handleClearClick}
+                                onKeyDown={(e) => e.key === 'Enter' && handleClearClick(e)}
                             >
                                 <Icon name={'Close'} />
-                            </button>
+                            </span>
                         )}
                         {isOpen ? <Icon name={'KeyboardUp'} /> : <Icon name={'KeyboardDown'} />}
                     </span>
