@@ -31,6 +31,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 [![Release package](https://github.com/miksrv/simple-react-ui-kit/actions/workflows/publish.yml/badge.svg)](https://github.com/miksrv/simple-react-ui-kit/actions/workflows/publish.yml)
 [![Deploy Storybook](https://github.com/miksrv/simple-react-ui-kit/actions/workflows/storybook.yml/badge.svg)](https://github.com/miksrv/simple-react-ui-kit/actions/workflows/storybook.yml)
 [![Quality Gate](https://github.com/miksrv/simple-react-ui-kit/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/miksrv/simple-react-ui-kit/actions/workflows/sonarcloud.yml)
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=miksrv_simple-react-ui-kit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=miksrv_simple-react-ui-kit)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=miksrv_simple-react-ui-kit&metric=coverage)](https://sonarcloud.io/summary/new_code?id=miksrv_simple-react-ui-kit)
 
@@ -65,6 +66,9 @@ The **Simple React UI Kit** is a collection of essential UI components for build
 2. **Customizable** – Easily style components to match your design system.
 3. **Lightweight** – Minimal dependencies and easy to integrate into any project.
 4. **Typescript Support** – Fully typed components for TypeScript users.
+
+### Example Usage
+One of the applications of this UI Kit is in the interface of a weather station. You can check out the demo here: [Weather Station Demo](https://meteo.miksoft.pro/). The source code for this project can be found in the repository: [Weather Station Repository](https://github.com/miksrv/arduino-weather-station).
 
 <p align="right">
   (<a href="#top">Back to top</a>)
@@ -167,8 +171,6 @@ In this example:
 - The fourth button acts as a link.
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-button--docs).
-
-Вот пример раздела для компонента `Dropdown`:
 
 ### Dropdown Component
 
