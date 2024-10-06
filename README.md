@@ -5,9 +5,9 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 
 <div align="center">
   <h3>A versatile and lightweight UI kit for React developers</h3>
-  <a href="https://github.com/miksrv/simple-react-ui-kit"><strong>Explore the docs »</strong></a>
+  <a href="https://github.com/miksrv/simple-react-ui-kit/README.md"><strong>Explore the docs »</strong></a>
   <br /><br />
-  <a href="miksrv.github.io/simple-react-ui-kit/" target="_blank">StoryBook</a>
+  <a href="https://miksrv.github.io/simple-react-ui-kit/" target="_blank">StoryBook</a>
   ·
   <a href="https://github.com/miksrv/simple-react-ui-kit/issues/new?assignees=miksrv&labels=bug&projects=&template=1-bug.yml&title=%5BBug%5D%3A+">Report Bug</a>
   ·
