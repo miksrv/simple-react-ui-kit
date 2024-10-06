@@ -16,7 +16,9 @@ concurrency:
 jobs:
     sonarcloud:
         if: github.event.pull_request.draft == false
+        name: SonarCloud
         runs-on: ubuntu-latest
+
         steps:
             - uses: actions/checkout@v4
               with:
@@ -36,19 +38,17 @@ jobs:
                   path: |
                       node_modules
                       ~/.npm
-                  key: ${{ runner.os }}-modules-${{ hashFiles('client/yarn.lock') }}
+                  key: ${{ runner.os }}-modules-${{ hashFiles('yarn.lock') }}
                   restore-keys: |
                       ${{ runner.os }}-modules-
                       ${{ runner.os }}-
 
             - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
               name: Install dependencies
-              working-directory: client
               run: yarn install
 
             - name: UI Unit Tests
               run: yarn test
-              working-directory: client
 
             - name: Extract version from tag
               id: version
