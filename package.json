@@ -10,6 +10,8 @@
         "release": "changeset publish",
         "start": "webpack serve --config example/webpack.config.js",
         "test": "jest",
+        "test:coverage": "jest --coverage",
+        "test:watch": "jest --watch --testNamePattern",
         "eslint:check": "eslint",
         "eslint:fix": "eslint --fix",
         "prettier:check": "prettier --check .",

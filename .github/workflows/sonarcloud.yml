@@ -48,7 +48,7 @@ jobs:
               run: yarn install
 
             - name: UI Unit Tests
-              run: yarn test
+              run: yarn test:coverage
 
             - name: Extract version from tag
               id: version
