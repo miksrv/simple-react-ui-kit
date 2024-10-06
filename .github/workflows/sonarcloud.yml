@@ -50,9 +50,14 @@ jobs:
             - name: UI Unit Tests
               run: yarn test:coverage
 
-            - name: Extract version from tag
+            - name: Extract version from tag or branch
               id: version
-              run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+              run: |
+                  if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+                    echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+                  else
+                    echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+                  fi
 
             - name: SonarCloud Scan
               uses: sonarsource/sonarcloud-github-action@master
