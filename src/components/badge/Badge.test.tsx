@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 
 import Badge, { BadgeProps } from './Badge'
 
-import { fireEvent,render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 describe('Badge Component', () => {
     const defaultProps: BadgeProps = {

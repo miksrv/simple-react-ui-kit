@@ -18,7 +18,6 @@ export interface BadgeProps {
     onClickRemove?: (key?: string) => void
 }
 
-
 const Badge: React.FC<BadgeProps> = ({ key, icon, label, onClickRemove }) => (
     <div className={styles.badge}>
         {icon && <Icon name={icon} />}
