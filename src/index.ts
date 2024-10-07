@@ -1,3 +1,7 @@
+// Badge Component
+export { default as Badge } from './components/badge'
+export type { BadgeProps } from './components/badge'
+
 // Button Component
 export { default as Button } from './components/button'
 export type { ButtonProps } from './components/button'
