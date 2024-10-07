@@ -1,5 +1,6 @@
 /* global.css */
 :root {
+    /* Primary Colors */
     --color-green: #4bb34b;
     --color-green-hover: #48AC4A;
     --color-green-active: #45A64A;
@@ -14,47 +15,34 @@
 
     --color-contrast: #FFF;
 
+    /* Text and Typography */
     --font-size: 14px;
     --font-size-small: 13px;
     --font-family: -apple-system, system-ui, 'Helvetica Neue', Roboto, sans-serif;
-
-    --body-background: #ebedf0;
-
-    --border-radius: 4px;
-
     --text-color-primary: rgba(0, 0, 0, 0.9);
     --text-color-secondary: #818c99;
     --text-color-secondary-hover: #939CA9;
 
-    --overlay-background-animation: linear-gradient( 90deg, transparent, rgba(0, 0, 0, 0.04), transparent );
-
-    /* Box Shadow Variants */
-    /*-container-shadow: 0 0 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.08);*/
-    /*-container-shadow: 0 0 2px rgba(0,0,0,0), 0 4px 16px rgba(0,0,0,.08);*/
-    /*-container-shadow: 0 0 8px rgba(0,0,0,.12), 0 16px 16px rgba(0,0,0,.16);*/
-    /*-container-shadow: 0 0 2px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.08);*/
-
-    /* Containers */
-    /*--container-background: #fff;*/
-    /*--container-border-separator: 0.5px solid #d7d8d9;*/
-    /*--container-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);*/
-    --container-shadow: 0 0 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.08);
+    /* Layout and Containers */
+    --body-background: #ebedf0;
+    --border-radius: 4px;
+    --container-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+    --container-background-color: #fff;
     --container-error-background-color: #FFE9E9;
     --container-error-color: var(--color-red);
     --container-success-background-color: #E8F9E8;
     --container-success-color: var(--color-green);
 
-    /* Input, Dropdown */
-    --input-background-color: #f2f3f5;
-    /*--input-background-content: #ffffff;*/
-    /*--input-background-color-error: var(--container-error-background-color);*/
-
+    /* Input Fields and Dropdowns */
     --dropdown-background-color: #ffffff;
     --dropdown-background-color-hover: #f2f3f5;
+    --input-background-color: #f2f3f5;
     --input-label-color: #6d7885;
     --input-border-color: #cbcccd;
     --input-border: 0.5px solid var(--input-border-color);
     /*--input-border-focus-color: #1976d2;*/
+    /*--input-background-content: #ffffff;*/
+    /*--input-background-color-error: var(--container-error-background-color);*/
 
     /* Buttons */
     --button-font-weight: 500;
@@ -75,10 +63,17 @@
     --button-secondary-background-active: rgba(213,226,241,.99);
     --button-secondary-color-active: #3368a8;
 
+    /* Popout */
+    --popout-shadow: 0 0 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.08);
+
     /* Table */
+    --table-font-size: var(--font-size-small);
     --table-header-background: #f2f3f5;
     --table-header-background-hover: rgba(255, 255, 255, 0.1);
     --table-border-color: var(--input-border-color);
+
+    /* Skeleton */
+    --skeleton-background-animation: linear-gradient( 90deg, transparent, rgba(0, 0, 0, 0.04), transparent );
 }
 
 body {

@@ -8,7 +8,7 @@ const config: Config = {
     transform: {
         '^.+\\.tsx?$': ['ts-jest', { useESM: true }]
     },
-    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
+    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.test.tsx'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
     transformIgnorePatterns: ['node_modules/(?!(module-to-transform)/)']
 }

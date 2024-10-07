@@ -5,8 +5,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 
 <div align="center">
   <h3>A versatile and lightweight UI kit for React developers</h3>
-  <a href="https://github.com/miksrv/simple-react-ui-kit/blob/main/README.md/README.md"><strong>Explore the docs »</strong></a>
-  <br /><br />
+  <br />
   <a href="https://miksrv.github.io/simple-react-ui-kit/" target="_blank">StoryBook</a>
   ·
   <a href="https://github.com/miksrv/simple-react-ui-kit/issues/new?assignees=miksrv&labels=bug&projects=&template=1-bug.yml&title=%5BBug%5D%3A+">Report Bug</a>
@@ -45,6 +44,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 - [Installation](#installation)
 - [Usage Components](#usage)
     - [Button](#button-component)
+    - [Container](#container-component)
     - [Dropdown](#dropdown-component)
     - [Icon](#icon-component)
     - [Popout](#popout-component)
@@ -53,6 +53,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Table](#table-component)
 - [Contributing](#contributing)
     - [Top Contributors](#top-contributors)
+- [Style Variables Customization](#style-variables-customization)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -171,6 +172,67 @@ In this example:
 - The fourth button acts as a link.
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-button--docs).
+
+### Container Component
+
+The `Container` component is a flexible layout wrapper designed to organize and present content with optional headers, footers, and actions. It supports customizable class names and offers flexibility for displaying various sections such as a title, custom header, and footer.
+
+Check out the full documentation and examples in Storybook: [Container Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-container--docs).
+
+#### Props:
+- **`className`**: Additional class names for custom styling.
+- **`title`**: Optional title for the container, typically displayed in the header.
+- **`action`**: Optional action element (button, link, etc.) displayed in the header.
+- **`header`**: Custom header content, if different from the default title and action.
+- **`children`**: Main content of the container.
+- **`footer`**: Optional footer content, typically used for additional actions or information.
+
+#### Example Usage:
+
+```tsx
+import React from 'react';
+import { Container } from 'simple-react-ui-kit';
+
+const App = () => (
+  <div>
+    {/* Basic Container with Title */}
+    <Container title="Basic Container">
+      This is the main content inside the container.
+    </Container>
+
+    {/* Container with Custom Header and Footer */}
+    <Container
+      header={<div>Custom Header</div>}
+      footer={<div>Footer Content</div>}
+    >
+      Content goes here...
+    </Container>
+
+    {/* Container with Action Button */}
+    <Container
+      title="Container with Action"
+      action={<button onClick={() => alert('Action Clicked!')}>Action</button>}
+    >
+      This container has a button action in the header.
+    </Container>
+
+    {/* Custom Styled Container */}
+    <Container className="custom-container-class">
+      This container has custom styles applied.
+    </Container>
+  </div>
+);
+
+export default App;
+```
+
+In this example:
+- The first container demonstrates a simple setup with a title and content.
+- The second container includes a custom header and footer.
+- The third container has an action button in the header.
+- The fourth container shows how to apply custom styles via the `className` prop.
+
+For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-container--docs).
 
 ### Dropdown Component
 
@@ -493,6 +555,165 @@ In this example:
 The `Table` component is perfect for displaying structured data in applications like dashboards, reports, or data management systems. It allows users to sort and view data effectively, enhancing usability and engagement.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-table--docs).
+
+<p align="right">
+  (<a href="#top">Back to top</a>)
+</p>
+
+<!-- CONTRIBUTING -->
+## Style Variables Customization
+
+### Style Customization and Theming
+
+The components in this UI Kit are designed to be highly customizable, allowing you to easily override the default style variables to match your project's design or create custom themes. All the style variables are defined in the `:root` and can be overridden in your CSS by redeclaring them.
+
+#### Available CSS Variables:
+Here is a list of all the CSS variables you can override to customize the look and feel of the components:
+
+- **Primary Colors:**
+    - `--color-green`: Default green color.
+    - `--color-green-hover`: Hover state for green color.
+    - `--color-green-active`: Active state for green color.
+    - `--color-orange`: Default orange color.
+    - `--color-orange-hover`: Hover state for orange color.
+    - `--color-orange-active`: Active state for orange color.
+    - `--color-red`: Default red color.
+    - `--color-red-hover`: Hover state for red color.
+    - `--color-red-active`: Active state for red color.
+    - `--color-contrast`: Contrast color (typically used for text on colored backgrounds).
+
+- **Text and Typography:**
+    - `--font-size`: Default font size.
+    - `--font-size-small`: Font size for smaller text.
+    - `--font-family`: Global font family.
+    - `--text-color-primary`: Main text color.
+    - `--text-color-secondary`: Secondary text color.
+    - `--text-color-secondary-hover`: Secondary text color on hover.
+
+- **Layout and Containers:**
+    - `--body-background`: Background color for the body.
+    - `--border-radius`: Global border radius for components.
+    - `--container-shadow`: Shadow effect for containers.
+    - `--container-background-color`: Default background color for containers.
+    - `--container-error-background-color`: Background color for containers in error state.
+    - `--container-error-color`: Text color for error containers.
+    - `--container-success-background-color`: Background color for containers in success state.
+    - `--container-success-color`: Text color for success containers.
+
+- **Input Fields and Dropdowns:**
+    - `--dropdown-background-color`: Background color for dropdowns.
+    - `--dropdown-background-color-hover`: Hover state for dropdown background.
+    - `--input-background-color`: Background color for input fields.
+    - `--input-label-color`: Color for input labels.
+    - `--input-border-color`: Border color for input fields.
+    - `--input-border`: Full border styling for inputs.
+
+- **Buttons:**
+    - `--button-font-weight`: Font weight for buttons.
+    - `--button-default-background`: Default background color for buttons.
+    - `--button-default-color`: Default text color for buttons.
+    - `--button-default-background-hover`: Hover background color for buttons.
+    - `--button-default-background-active`: Active background color for buttons.
+    - `--button-primary-background`: Background color for primary buttons.
+    - `--button-primary-color`: Text color for primary buttons.
+    - `--button-primary-background-hover`: Hover state for primary buttons.
+    - `--button-primary-background-active`: Active state for primary buttons.
+    - `--button-secondary-background`: Background color for secondary buttons.
+    - `--button-secondary-color`: Text color for secondary buttons.
+    - `--button-secondary-background-hover`: Hover state for secondary buttons.
+    - `--button-secondary-background-active`: Active state for secondary buttons.
+
+- **Popouts:**
+    - `--popout-shadow`: Shadow effect for popouts and modals.
+
+- **Tables:**
+    - `--table-font-size`: Font size for table content.
+    - `--table-header-background`: Background color for table headers.
+    - `--table-header-background-hover`: Hover state for table headers.
+    - `--table-border-color`: Border color for tables.
+
+- **Skeleton:**
+    - `--skeleton-background-animation`: Background gradient for content loading animation.
+
+#### Example: Overriding Variables for Custom Themes
+
+To customize the theme, simply override the default values in your stylesheet:
+
+```css
+:root {
+    /* Primary Colors */
+    --color-green: #4bb34b;
+    --color-green-hover: #48AC4A;
+    --color-green-active: #45A64A;
+
+    --color-orange: #F8A01C;
+    --color-orange-hover: #EE9A1D;
+    --color-orange-active: #E4941F;
+
+    --color-red: #e64646;
+    --color-red-hover: #DD4446;
+    --color-red-active: #D44245;
+
+    --color-contrast: #FFF;
+
+    /* Text and Typography */
+    --font-size: 14px;
+    --font-size-small: 13px;
+    --font-family: -apple-system, system-ui, 'Helvetica Neue', Roboto, sans-serif;
+    --text-color-primary: rgba(0, 0, 0, 0.9);
+    --text-color-secondary: #818c99;
+    --text-color-secondary-hover: #939CA9;
+
+    /* Layout and Containers */
+    --body-background: #ebedf0;
+    --border-radius: 4px;
+    --container-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+    --container-background-color: #fff;
+    --container-error-background-color: #FFE9E9;
+    --container-error-color: var(--color-red);
+    --container-success-background-color: #E8F9E8;
+    --container-success-color: var(--color-green);
+
+    /* Input Fields and Dropdowns */
+    --dropdown-background-color: #ffffff;
+    --dropdown-background-color-hover: #f2f3f5;
+    --input-background-color: #f2f3f5;
+    --input-label-color: #6d7885;
+    --input-border-color: #cbcccd;
+    --input-border: 0.5px solid var(--input-border-color);
+
+    /* Buttons */
+    --button-font-weight: 500;
+    --button-default-background: transparent;
+    --button-default-color: #3770b1;
+    --button-default-background-hover: #f7f8fa;
+    --button-default-background-active: #f1f2f5;
+
+    --button-primary-background: #2688eb;
+    --button-primary-color: #ffffff;
+    --button-primary-background-hover: #2483e4;
+    --button-primary-background-active: #237edd;
+
+    --button-secondary-background: rgba(235,242,250,.99);
+    --button-secondary-background-hover: rgba(223,234,246,.99);
+    --button-secondary-color: #3770b1;
+    --button-secondary-color-hover: #356cac;
+    --button-secondary-background-active: rgba(213,226,241,.99);
+    --button-secondary-color-active: #3368a8;
+
+    /* Popout */
+    --popout-shadow: 0 0 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.08);
+
+    /* Table */
+    --table-font-size: var(--font-size-small);
+    --table-header-background: #f2f3f5;
+    --table-header-background-hover: rgba(255, 255, 255, 0.1);
+    --table-border-color: var(--input-border-color);
+
+    /* Skeleton */
+    --skeleton-background-animation: linear-gradient( 90deg, transparent, rgba(0, 0, 0, 0.04), transparent );
+}
+```
 
 <p align="right">
   (<a href="#top">Back to top</a>)

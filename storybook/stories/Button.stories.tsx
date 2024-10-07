@@ -64,7 +64,7 @@ const meta: Meta<ButtonProps> = {
 export default meta
 
 type ButtonGroupProps = {
-    buttons: ButtonProps[] // Используем массив для нескольких кнопок
+    buttons: ButtonProps[]
 }
 
 const ButtonSandbox: StoryFn<ButtonProps> = (args: ButtonProps) => <Button {...args}>Click me</Button>
