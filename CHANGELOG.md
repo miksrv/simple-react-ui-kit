@@ -1,5 +1,17 @@
 # simple-react-ui-kit
 
+## 1.2.0
+
+### Minor Changes
+
+-   Added new UI component - Container
+-   Added Story for UI Components
+-   Implemented UI Unit Tests
+-   Updated UI dev packages
+-   Added --table-font-size CSS variable
+-   Added --skeleton-background-animation CSS variable
+-   Updated README.md - Container component + Style Variables Customization
+
 ## 1.1.1
 
 ### Patch Changes

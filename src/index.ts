@@ -2,6 +2,10 @@
 export { default as Button } from './components/button'
 export type { ButtonProps } from './components/button'
 
+// Container Component
+export { default as Container } from './components/container'
+export type { ContainerProps } from './components/container'
+
 // Dropdown Component
 export { default as Dropdown } from './components/dropdown'
 export type { DropdownOption, DropdownProps } from './components/dropdown'
