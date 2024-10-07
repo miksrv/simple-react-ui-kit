@@ -1,5 +1,15 @@
 # simple-react-ui-kit
 
+## 1.2.1
+
+### Patch Changes
+
+-   Added new UI component - Badge
+-   Added story for Badge component
+-   Implemented UI tests for Badge component
+-   Fixed background styles for Popout component
+-   Updated README.md
+
 ## 1.2.0
 
 ### Minor Changes

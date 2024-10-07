@@ -8,6 +8,8 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
   <br />
   <a href="https://miksrv.github.io/simple-react-ui-kit/" target="_blank">StoryBook</a>
   ·
+  <a href="CHANGELOG.md" target="_blank">Changelog</a>
+  ·
   <a href="https://github.com/miksrv/simple-react-ui-kit/issues/new?assignees=miksrv&labels=bug&projects=&template=1-bug.yml&title=%5BBug%5D%3A+">Report Bug</a>
   ·
   <a href="https://github.com/miksrv/simple-react-ui-kit/issues/new?assignees=miksrv&labels=enhancement&template=2-feature-request.yml&title=%5BFeature%5D%3A+">Request Feature</a>
@@ -43,6 +45,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Built With](#built-with)
 - [Installation](#installation)
 - [Usage Components](#usage)
+    - [Badge](#badge-component)
     - [Button](#button-component)
     - [Container](#container-component)
     - [Dropdown](#dropdown-component)
@@ -112,6 +115,47 @@ yarn add simple-react-ui-kit
 ## Usage
 
 Below are examples of how to use some of the components in this UI Kit. Whether you're integrating into an existing project or starting fresh, these examples will help you get up and running.
+
+### Badge Component
+
+The `Badge` component is a small, stylized label that can display text, an optional icon, and a remove button. It is ideal for tagging or categorizing items and includes a callback for handling removal.
+
+Check out the full documentation and examples in Storybook: [Badge Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-badge--docs).
+
+#### Props:
+- **`key`**: A unique key for identifying the badge (optional).
+- **`label`**: The text content inside the badge.
+- **`icon`**: An optional icon to display alongside the badge text.
+- **`onClickRemove`**: A callback function to handle removal of the badge. This is triggered when the remove button is clicked.
+
+#### Example Usage:
+
+```tsx
+import React from 'react';
+import { Badge } from 'simple-react-ui-kit';
+
+const App = () => (
+  <div>
+    {/* Badge with label and icon */}
+    <Badge label="New" icon="Check" />
+
+    {/* Removable Badge */}
+    <Badge label="Removable" onClickRemove={(key) => alert(`Removed: ${key}`)} />
+
+    {/* Badge without icon */}
+    <Badge label="Simple Badge" />
+  </div>
+);
+
+export default App;
+```
+
+In this example:
+- The first badge displays a label and an icon.
+- The second badge includes a removal button, which triggers an alert when clicked.
+- The third badge is a simple label without an icon or removal option.
+
+For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-badge--docs).
 
 ### Button Component
 
@@ -560,7 +604,7 @@ For more detailed examples and interactive demonstrations, visit the [Storybook 
   (<a href="#top">Back to top</a>)
 </p>
 
-<!-- CONTRIBUTING -->
+<!-- STYLE VARIABLES CUSTOMIZATION -->
 ## Style Variables Customization
 
 ### Style Customization and Theming
@@ -733,6 +777,22 @@ Contributions are what make the open-source community such an incredible resourc
 5. Open a pull request.
 
 For more detailed contributing guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Releasing a new version
+
+If your contribution is ready to be released after the pull request is merged into the `main` branch, follow these steps:
+
+1. After your pull request is merged, run the command `yarn changeset` to begin the release process.
+2. Select the type of changes (major, minor, patch) and enter a detailed description of the changes.
+3. This will create a markdown file in the `.changeset` directory describing the changes.
+
+   **Important:** If you don't proceed with the next command, the release will be postponed.
+
+4. To trigger the release process after the merge into `main`, run the command `yarn changeversion`. This will:
+    - Update the version number in the `package.json`.
+    - Update the `CHANGELOG.md` with the list of changes.
+
+Once this is done, merging this branch into `main` will automatically publish a new release.
 
 ### Top contributors
 

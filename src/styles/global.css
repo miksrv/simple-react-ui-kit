@@ -73,7 +73,7 @@
     --table-border-color: var(--input-border-color);
 
     /* Skeleton */
-    --skeleton-background-animation: linear-gradient( 90deg, transparent, rgba(0, 0, 0, 0.04), transparent );
+    --skeleton-background-animation: linear-gradient( 90deg, transparent, rgba(0, 0, 0, 0.04), transparent);
 }
 
 body {
