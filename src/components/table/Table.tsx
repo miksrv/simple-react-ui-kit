@@ -109,9 +109,15 @@ const Table = <T,>({
                                 {column.header}
                                 {sortConfig?.key === column.accessor ? (
                                     sortConfig.direction === 'asc' ? (
-                                        <Icon name={'ArrowDown'} />
+                                        <Icon
+                                            name={'ArrowDown'}
+                                            style={{ width: 14, height: 14 }}
+                                        />
                                     ) : (
-                                        <Icon name={'ArrowUp'} />
+                                        <Icon
+                                            name={'ArrowUp'}
+                                            style={{ width: 14, height: 14 }}
+                                        />
                                     )
                                 ) : (
                                     ''
