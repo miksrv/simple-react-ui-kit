@@ -4,8 +4,8 @@
 Welcome to the **Simple React UI Kit** repository! This project is designed to provide a collection of reusable UI components for React-based applications. Whether you're building a simple app or a complex web project, this UI kit offers a solid foundation to speed up your development.
 
 <div align="center">
-  <h3>A versatile and lightweight UI kit for React developers</h3>
-  <br />
+  <h3>Simple and lightweight UI kit for React developers</h3>
+
   <a href="https://miksrv.github.io/simple-react-ui-kit/" target="_blank">StoryBook</a>
   ·
   <a href="CHANGELOG.md" target="_blank">Changelog</a>
@@ -35,6 +35,8 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=miksrv_simple-react-ui-kit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=miksrv_simple-react-ui-kit)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=miksrv_simple-react-ui-kit&metric=coverage)](https://sonarcloud.io/summary/new_code?id=miksrv_simple-react-ui-kit)
+[![ZIP Size](https://badgen.net/bundlephobia/minzip/simple-react-ui-kit@latest?color=blue)](https://bundlephobia.com/result?p=simple-react-ui-kit)
+[![Installs](https://badgen.net/npm/dt/simple-react-ui-kit?label=installs&icon=npm&color=blue)](https://npmtrends.com/simple-react-ui-kit)
 
 </div>
 
