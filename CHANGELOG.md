@@ -1,5 +1,13 @@
 # simple-react-ui-kit
 
+## 1.2.2
+
+### Patch Changes
+
+-   Fixed UI Tables styles
+-   Fixed UI Dropdown SVG icon style
+-   Added CONTRIBUTING.md and SECURITY.md
+
 ## 1.2.1
 
 ### Patch Changes
