@@ -6,6 +6,10 @@ export type { BadgeProps } from './components/badge'
 export { default as Button } from './components/button'
 export type { ButtonProps } from './components/button'
 
+// Checkbox Component
+export { default as Checkbox } from './components/checkbox'
+export type { CheckboxProps } from './components/checkbox'
+
 // Container Component
 export { default as Container } from './components/container'
 export type { ContainerProps } from './components/container'

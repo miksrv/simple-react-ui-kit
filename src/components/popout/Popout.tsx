@@ -8,7 +8,7 @@ import styles from './styles.module.sass'
 /**
  * Popout component properties
  */
-export interface PopoutProps extends Pick<ButtonProps, 'mode' | 'variant' | 'icon'> {
+export interface PopoutProps extends Pick<ButtonProps, 'mode' | 'variant' | 'size' | 'icon'> {
     /** Additional class names for custom styling */
     className?: string
     /** Position of the popout relative to the trigger element ('left' or 'right') */
@@ -19,6 +19,8 @@ export interface PopoutProps extends Pick<ButtonProps, 'mode' | 'variant' | 'ico
     children?: React.ReactNode
     /** Whether the popout should close when a child element is clicked */
     closeOnChildrenClick?: boolean
+    /** Callback function triggered when isOpen state changes */
+    onOpenChange?: (isOpen: boolean) => void
 }
 
 export interface PopoutHandleProps {
@@ -26,7 +28,7 @@ export interface PopoutHandleProps {
 }
 
 const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
-    ({ className, position, action, children, closeOnChildrenClick, ...props }, ref) => {
+    ({ className, position, action, children, closeOnChildrenClick, onOpenChange, ...props }, ref) => {
         const popoutRef = useRef<HTMLDivElement>(null)
         const popoutChildrenRef = useRef<HTMLDivElement>(null)
         const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -60,6 +62,12 @@ const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                 document.removeEventListener('mousedown', handleClickOutside)
             }
         }, [])
+
+        useEffect(() => {
+            if (onOpenChange) {
+                onOpenChange(isOpen)
+            }
+        }, [isOpen, onOpenChange])
 
         return (
             <div

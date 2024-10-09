@@ -132,4 +132,31 @@ describe('Popout Component', () => {
         })
         expect(screen.queryByText(/Popout Content/i)).not.toBeInTheDocument()
     })
+
+    it('calls onOpenChange when isOpen changes', () => {
+        const onOpenChange = jest.fn()
+
+        render(
+            <Popout
+                action='Click me'
+                onOpenChange={onOpenChange}
+            >
+                Popout Content
+            </Popout>
+        )
+
+        const buttonElement = screen.getByRole('button', { name: /Click me/i })
+
+        act(() => {
+            fireEvent.click(buttonElement)
+        })
+
+        expect(onOpenChange).toHaveBeenCalledWith(true)
+
+        act(() => {
+            fireEvent.click(buttonElement)
+        })
+
+        expect(onOpenChange).toHaveBeenCalledWith(false)
+    })
 })

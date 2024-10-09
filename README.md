@@ -49,6 +49,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 - [Usage Components](#usage)
     - [Badge](#badge-component)
     - [Button](#button-component)
+    - [Checkbox](#checkbox-component)
     - [Container](#container-component)
     - [Dropdown](#dropdown-component)
     - [Icon](#icon-component)
@@ -218,6 +219,60 @@ In this example:
 - The fourth button acts as a link.
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-button--docs).
+
+### Checkbox Component
+
+The `Checkbox` component is a customizable input element used for toggling between checked, unchecked, and indeterminate states. It includes support for labels and provides additional flexibility with its disabled and indeterminate options.
+
+Check out the full documentation and examples in Storybook: [Checkbox Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-checkbox--docs).
+
+#### Props:
+- **`label`**: Optional label to be displayed alongside the checkbox (can be a string or a ReactNode).
+- **`indeterminate`**: If `true`, renders the checkbox in an indeterminate state.
+- **`disabled`**: If `true`, disables the checkbox interaction.
+- **`checked`**: Indicates whether the checkbox is checked (can be controlled via this prop).
+- **`onChange`**: Function called when the checkbox state changes.
+- **`id`**: Optional HTML `id` attribute, used to link the label with the checkbox.
+
+#### Example Usage:
+
+```tsx
+import React from 'react';
+import { Checkbox } from 'simple-react-ui-kit';
+
+const App = () => (
+  <div>
+    {/* Basic Checkbox */}
+    <Checkbox label="Basic Checkbox" />
+
+    {/* Checked Checkbox */}
+    <Checkbox label="Checked Checkbox" checked={true} />
+
+    {/* Indeterminate Checkbox */}
+    <Checkbox label="Indeterminate Checkbox" indeterminate={true} />
+
+    {/* Disabled Checkbox */}
+    <Checkbox label="Disabled Checkbox" disabled={true} />
+
+    {/* Checkbox with onChange handler */}
+    <Checkbox
+      label="Interactive Checkbox"
+      onChange={(e) => console.log(e.target.checked)}
+    />
+  </div>
+);
+
+export default App;
+```
+
+In this example:
+- The first checkbox is a basic checkbox with a label.
+- The second checkbox is pre-checked using the `checked` prop.
+- The third checkbox demonstrates the indeterminate state.
+- The fourth checkbox is disabled and cannot be interacted with.
+- The fifth checkbox includes an `onChange` handler to capture the change in its state.
+
+For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-checkbox--docs).
 
 ### Container Component
 
@@ -400,6 +455,7 @@ Explore the full documentation and examples in Storybook: [Popout Component Stor
 - **`action`**: The content inside the button that triggers the popout (could be text, an icon, or a React node).
 - **`children`**: The content to display inside the popout when it's open.
 - **`closeOnChildrenClick`**: A boolean flag that, when set to `true`, closes the popout when any child inside the popout is clicked.
+- **`onOpenChange`**: Callback function triggered when isOpen state changes.
 
 #### Example Usage:
 
@@ -627,6 +683,9 @@ Here is a list of all the CSS variables you can override to customize the look a
     - `--color-red-hover`: Hover state for red color.
     - `--color-red-active`: Active state for red color.
     - `--color-contrast`: Contrast color (typically used for text on colored backgrounds).
+    - `--color-main`: Main base color, used for buttons, links, checkbox icons.
+    - `--color-main-hover`: Hover state for main color.
+    - `--color-main-active`: Active state for main color.
 
 - **Text and Typography:**
     - `--font-size`: Default font size.
@@ -656,16 +715,16 @@ Here is a list of all the CSS variables you can override to customize the look a
 
 - **Buttons:**
     - `--button-font-weight`: Font weight for buttons.
-    - `--button-default-background`: Default background color for buttons.
     - `--button-default-color`: Default text color for buttons.
+    - `--button-default-background`: Default background color for buttons.
     - `--button-default-background-hover`: Hover background color for buttons.
     - `--button-default-background-active`: Active background color for buttons.
-    - `--button-primary-background`: Background color for primary buttons.
     - `--button-primary-color`: Text color for primary buttons.
+    - `--button-primary-background`: Background color for primary buttons.
     - `--button-primary-background-hover`: Hover state for primary buttons.
     - `--button-primary-background-active`: Active state for primary buttons.
-    - `--button-secondary-background`: Background color for secondary buttons.
     - `--button-secondary-color`: Text color for secondary buttons.
+    - `--button-secondary-background`: Background color for secondary buttons.
     - `--button-secondary-background-hover`: Hover state for secondary buttons.
     - `--button-secondary-background-active`: Active state for secondary buttons.
 
@@ -702,6 +761,10 @@ To customize the theme, simply override the default values in your stylesheet:
 
     --color-contrast: #FFF;
 
+    --color-main: #3770b1;
+    --color-main-hover: #356cac;
+    --color-main-active: #3368a8;
+
     /* Text and Typography */
     --font-size: 14px;
     --font-size-small: 13px;
@@ -730,22 +793,22 @@ To customize the theme, simply override the default values in your stylesheet:
 
     /* Buttons */
     --button-font-weight: 500;
+    --button-default-color: var(--color-main);
     --button-default-background: transparent;
-    --button-default-color: #3770b1;
     --button-default-background-hover: #f7f8fa;
     --button-default-background-active: #f1f2f5;
 
-    --button-primary-background: #2688eb;
     --button-primary-color: #ffffff;
-    --button-primary-background-hover: #2483e4;
-    --button-primary-background-active: #237edd;
+    --button-primary-background: var(--color-main);
+    --button-primary-background-hover: var(--color-main-hover);
+    --button-primary-background-active: var(--color-main-active);
 
     --button-secondary-background: rgba(235,242,250,.99);
     --button-secondary-background-hover: rgba(223,234,246,.99);
-    --button-secondary-color: #3770b1;
-    --button-secondary-color-hover: #356cac;
     --button-secondary-background-active: rgba(213,226,241,.99);
-    --button-secondary-color-active: #3368a8;
+    --button-secondary-color: var(--color-main);
+    --button-secondary-color-hover: var(--color-main-hover);
+    --button-secondary-color-active: var(--color-main-active);
 
     /* Popout */
     --popout-shadow: 0 0 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.08);

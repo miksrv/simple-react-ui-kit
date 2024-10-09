@@ -1,5 +1,20 @@
 # simple-react-ui-kit
 
+## 1.2.3
+
+### Patch Changes
+
+-   Changed Badge prop: key and label from 'string' to 'string | number'
+-   Added README Checkbox Component description
+-   Fixed Button component noText style (if label and children empty)
+-   Implemented new UI component - Checkbox
+-   Added new Popout component prop -> onOpenChange callback
+-   Added new Unit test for Popout callback: onOpenChange
+-   Added CSS --color-main variables
+-   Changed CSS variables order in the global.css and README.md
+-   Added story for Checkbox UI component
+-   Added Button only icon variant for storybook
+
 ## 1.2.2
 
 ### Patch Changes

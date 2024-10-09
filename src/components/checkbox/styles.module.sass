@@ -1,0 +1,41 @@
+.checkbox
+    display: flex
+    align-items: center
+    cursor: pointer
+
+    &.disabled
+        opacity: .5
+        cursor: default
+
+    .formField
+        margin-right: 5px
+        display: flex
+        align-items: center
+
+        input
+            display: none
+
+        svg
+            fill: var(--input-border-color)
+            width: 18px
+            height: 18px
+
+        &.checked
+            svg
+                fill: var(--color-main)
+
+    &:hover:not(.disabled)
+        svg
+            fill: var(--color-main-hover)
+
+    &:active:not(.disabled)
+        svg
+            fill: var(--color-main-active)
+
+    label
+        color: var(--text-color-primary)
+        font-size: var(--font-size)
+        font-family: var(--font-family), sans-serif
+        cursor: pointer
+        width: 100%
+        display: flex
