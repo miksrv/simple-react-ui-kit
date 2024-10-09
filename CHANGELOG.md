@@ -1,5 +1,18 @@
 # simple-react-ui-kit
 
+## 1.2.4
+
+### Patch Changes
+
+-   Added new UI Message component
+-   Implemented Unit tests for Message component
+-   Implemented stories for Message component
+-   Fixed Container component margin top for header
+-   Fixed Checkbox component styles
+-   Added CSS vars colors: --color-(green|orange|red|main)-background
+-   Updated Readme (Message component, Style Variables Customization)
+-   Updated UI libraries (typescript, globals)
+
 ## 1.2.3
 
 ### Patch Changes

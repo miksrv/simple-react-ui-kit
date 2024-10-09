@@ -53,6 +53,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Container](#container-component)
     - [Dropdown](#dropdown-component)
     - [Icon](#icon-component)
+    - [Message](#message-component)
     - [Popout](#popout-component)
     - [Skeleton](#skeleton-component)
     - [Spinner](#spinner-component)
@@ -443,6 +444,55 @@ The `Icon` component is ideal for applications requiring a variety of icons, suc
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-icon--docs).
 
+### Message Component
+
+The `Message` component is a versatile message display box that supports different visual styles (`error`, `warning`, `success`, and `info`). It is used to present messages to users, providing a title and content area, with the ability to customize the type of message displayed.
+
+Check out the full documentation and examples in Storybook: [Message Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-message--docs).
+
+#### Props:
+- **`type`**: Defines the visual style of the message. Accepts one of the following values: `'error'`, `'warning'`, `'success'`, or `'info'`.
+- **`title`**: The title of the message that appears at the top (optional).
+- **`children`**: The content inside the message box, which can be any React node (optional).
+
+#### Example Usage:
+
+```tsx
+import React from 'react';
+import { Message } from 'simple-react-ui-kit';
+
+const App = () => (
+  <div>
+    {/* Error message with title and content */}
+    <Message type="error" title="Error!">
+      There was an issue with your request.
+    </Message>
+
+    {/* Success message without title */}
+    <Message type="success">
+      Operation completed successfully!
+    </Message>
+
+    {/* Info message with custom content */}
+    <Message type="info" title="Information">
+      <ul>
+        <li>First info item</li>
+        <li>Second info item</li>
+      </ul>
+    </Message>
+  </div>
+);
+
+export default App;
+```
+
+In this example:
+- The first `Message` displays an error with a title and content.
+- The second `Message` shows a success message without a title.
+- The third `Message` provides information with a custom list as its content.
+
+For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-message--docs).
+
 ### Popout Component
 
 The `Popout` component is designed to create a floating container that opens and closes when triggered, often used for menus, tooltips, or additional actions. It provides a button as a trigger and offers flexible positioning for the popout content, either to the left or right of the button.
@@ -673,19 +723,23 @@ The components in this UI Kit are designed to be highly customizable, allowing y
 Here is a list of all the CSS variables you can override to customize the look and feel of the components:
 
 - **Primary Colors:**
+    - `--color-contrast`: Contrast color (typically used for text on colored backgrounds).
     - `--color-green`: Default green color.
     - `--color-green-hover`: Hover state for green color.
     - `--color-green-active`: Active state for green color.
+    - `--color-green-background`: Background green color (for success input, message etc.).
     - `--color-orange`: Default orange color.
     - `--color-orange-hover`: Hover state for orange color.
     - `--color-orange-active`: Active state for orange color.
+    - `--color-orange-background`: Background orange color (for warning input, message etc.).
     - `--color-red`: Default red color.
     - `--color-red-hover`: Hover state for red color.
     - `--color-red-active`: Active state for red color.
-    - `--color-contrast`: Contrast color (typically used for text on colored backgrounds).
+    - `--color-red-background`: Background red color (for error input, message etc.).
     - `--color-main`: Main base color, used for buttons, links, checkbox icons.
     - `--color-main-hover`: Hover state for main color.
     - `--color-main-active`: Active state for main color.
+    - `--color-main-background`: Background main color (for info input, message etc.).
 
 - **Text and Typography:**
     - `--font-size`: Default font size.
@@ -747,23 +801,27 @@ To customize the theme, simply override the default values in your stylesheet:
 ```css
 :root {
     /* Primary Colors */
+    --color-contrast: #FFF;
+
     --color-green: #4bb34b;
     --color-green-hover: #48AC4A;
     --color-green-active: #45A64A;
+    --color-green-background: #e5ffe5; /* For dark: #2E3E2B */
 
     --color-orange: #F8A01C;
     --color-orange-hover: #EE9A1D;
     --color-orange-active: #E4941F;
+    --color-orange-background: #fff2db; /* For dark: #5e5443 */
 
     --color-red: #e64646;
     --color-red-hover: #DD4446;
     --color-red-active: #D44245;
+    --color-red-background: #ffdddd; /* For dark: #522e2e */
 
-    --color-contrast: #FFF;
-
-    --color-main: #3770b1;
-    --color-main-hover: #356cac;
-    --color-main-active: #3368a8;
+    --color-main: #2688eb;
+    --color-main-hover: #2483e4;
+    --color-main-active: #237edd;
+    --color-main-background: #d6eaff; /* For dark: #3c4957 */
 
     /* Text and Typography */
     --font-size: 14px;
