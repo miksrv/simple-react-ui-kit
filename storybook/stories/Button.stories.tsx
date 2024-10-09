@@ -76,7 +76,7 @@ const Template: StoryFn<ButtonGroupProps> = ({ buttons }: ButtonGroupProps) => (
                 key={index}
                 {...buttonProps}
             >
-                {buttonProps.content || 'Click me'}
+                {buttonProps.content}
             </Button>
         ))}
     </div>
@@ -93,7 +93,8 @@ Primary.args = {
     buttons: [
         { mode: 'primary', size: 'medium', content: 'Primary Medium' },
         { mode: 'primary', size: 'medium', content: 'With icon', icon: 'Map' },
-        { mode: 'primary', size: 'medium', content: 'Loading...', loading: true },
+        { mode: 'primary', size: 'medium', icon: 'Settings' },
+        { mode: 'primary', size: 'medium', label: 'Loading...', loading: true },
         { mode: 'primary', size: 'medium', content: 'Disabled', disabled: true },
         { mode: 'primary', size: 'medium', content: 'Positive', variant: 'positive' },
         { mode: 'primary', size: 'medium', content: 'Negative', variant: 'negative' }
@@ -111,7 +112,8 @@ Secondary.args = {
     buttons: [
         { mode: 'secondary', size: 'medium', content: 'Primary Medium' },
         { mode: 'secondary', size: 'medium', content: 'With icon', icon: 'Map' },
-        { mode: 'secondary', size: 'medium', content: 'Loading...', loading: true },
+        { mode: 'secondary', size: 'medium', icon: 'Settings' },
+        { mode: 'secondary', size: 'medium', label: 'Loading...', loading: true },
         { mode: 'secondary', size: 'medium', content: 'Disabled', disabled: true },
         { mode: 'secondary', size: 'medium', content: 'Positive', variant: 'positive' },
         { mode: 'secondary', size: 'medium', content: 'Negative', variant: 'negative' }
@@ -123,7 +125,8 @@ Outline.args = {
     buttons: [
         { mode: 'outline', size: 'medium', content: 'Primary Medium' },
         { mode: 'outline', size: 'medium', content: 'With icon', icon: 'Map' },
-        { mode: 'outline', size: 'medium', content: 'Loading...', loading: true },
+        { mode: 'outline', size: 'medium', icon: 'Settings' },
+        { mode: 'outline', size: 'medium', label: 'Loading...', loading: true },
         { mode: 'outline', size: 'medium', content: 'Disabled', disabled: true },
         { mode: 'outline', size: 'medium', content: 'Positive', variant: 'positive' },
         { mode: 'outline', size: 'medium', content: 'Negative', variant: 'negative' }
