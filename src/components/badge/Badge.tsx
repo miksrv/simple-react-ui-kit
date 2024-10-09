@@ -9,13 +9,13 @@ import styles from './styles.module.sass'
  */
 export interface BadgeProps {
     /** Unique key for identifying the badge */
-    key?: string
+    key?: string | number
     /** Text label to display inside the badge */
-    label?: string
+    label?: string | number
     /** Icon to display alongside the badge label */
     icon?: IconTypes
     /** Callback function to handle badge removal when the remove button is clicked */
-    onClickRemove?: (key?: string) => void
+    onClickRemove?: (key?: string | number) => void
 }
 
 const Badge: React.FC<BadgeProps> = ({ key, icon, label, onClickRemove }) => (

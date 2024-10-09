@@ -60,7 +60,7 @@ const Button: React.FC<ButtonProps> = ({
                 size && styles[size],
                 stretched && styles.stretched,
                 loading && styles.loading,
-                !children && styles.noText
+                !children && !label?.length && styles.noText
             )}
         >
             {loading ? <Spinner className={styles.loader} /> : icon && <Icon name={icon} />}
