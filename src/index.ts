@@ -23,6 +23,10 @@ export { default as Icon } from './components/icon'
 export { iconNames } from './components/icon'
 export type { IconTypes } from './components/icon'
 
+// Message Component
+export { default as Message } from './components/message'
+export type { MessageProps } from './components/message'
+
 // Popout Component
 export { default as Popout } from './components/popout'
 export type { PopoutProps, PopoutHandleProps } from './components/popout'

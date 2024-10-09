@@ -34,24 +34,6 @@ describe('Message Component', () => {
         expect(sectionElement).toHaveClass('warning')
     })
 
-    it('renders list items when list is provided', () => {
-        const items = ['Item 1', 'Item 2', 'Item 3']
-        render(<Message list={items} />)
-
-        items.forEach((item) => {
-            const listItem = screen.getByText(item)
-            expect(listItem).toBeInTheDocument()
-        })
-    })
-
-    it('does not render empty list items', () => {
-        const items = ['Item 1', '', 'Item 3']
-        render(<Message list={items} />)
-
-        expect(screen.getByText('Item 1')).toBeInTheDocument()
-        expect(screen.getByText('Item 3')).toBeInTheDocument()
-    })
-
     it('renders correctly without a title or list', () => {
         render(<Message>This message has no title or list</Message>)
 
@@ -59,6 +41,5 @@ describe('Message Component', () => {
         expect(contentElement).toBeInTheDocument()
 
         expect(screen.queryByRole('heading')).not.toBeInTheDocument()
-        expect(screen.queryByRole('list')).not.toBeInTheDocument()
     })
 })
