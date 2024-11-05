@@ -1,5 +1,18 @@
 # simple-react-ui-kit
 
+## 1.3.0
+
+### Minor Changes
+
+-   Dependent libraries updated
+-   Changed background callback for Table 'string' => 'string | undefined'
+-   Updated Storybook
+-   Improved Dropdown UI component styles
+-   Added Dropdown new properties - 'searchable', 'loading', 'notFoundCaption'
+-   Added Dropdown new callback - 'onSearch'
+-   Changed Dropdown value type 'React.ReactNode | string | number' => 'string'
+-   Implemented UI tests for new Dropdown component functionality
+
 ## 1.2.4
 
 ### Patch Changes

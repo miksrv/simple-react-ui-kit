@@ -147,4 +147,86 @@ describe('Dropdown Component', () => {
 
         expect(handleSelect).not.toHaveBeenCalled() // Ensure select action is not called
     })
+
+    it('searches through options when typing', async () => {
+        const placeholder = 'Select an option'
+
+        render(
+            <Dropdown
+                options={options}
+                searchable={true}
+                placeholder={placeholder}
+            />
+        )
+
+        const input = screen.getByPlaceholderText(placeholder)
+        fireEvent.change(input, { target: { value: 'Option 1' } })
+
+        await waitFor(() => {
+            expect(screen.getByText('Option 1')).toBeInTheDocument()
+            expect(screen.queryByText('Option 2')).not.toBeInTheDocument()
+            expect(screen.queryByText('Option 3')).not.toBeInTheDocument()
+        })
+    })
+
+    it('does not open dropdown if search is empty while searchable', async () => {
+        const placeholder = 'Select an option'
+
+        render(
+            <Dropdown
+                options={options}
+                searchable={true}
+                placeholder={placeholder}
+            />
+        )
+        const input = screen.getByPlaceholderText(placeholder)
+        fireEvent.change(input, { target: { value: '' } })
+
+        await waitFor(() => {
+            expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
+        })
+    })
+
+    it('calls onSearch with the search query when search is triggered', () => {
+        const searchQuery = 'test search'
+        const onSearchMock = jest.fn()
+
+        const { container } = render(
+            <Dropdown
+                options={options}
+                searchable={true}
+                onSearch={onSearchMock}
+            />
+        )
+
+        const input = container.querySelector('input[type="text"]')
+
+        if (input) {
+            fireEvent.change(input, { target: { value: searchQuery } })
+            fireEvent.keyUp(input, { key: 'Enter' })
+        }
+
+        expect(onSearchMock).toHaveBeenCalledWith(searchQuery)
+    })
+
+    it('displays notFoundCaption when no results are found', () => {
+        const notFoundCaption = 'No results found'
+
+        const { container } = render(
+            <Dropdown
+                options={[]}
+                searchable={true}
+                notFoundCaption={notFoundCaption}
+            />
+        )
+
+        const input = container.querySelector('input[type="text"]')
+
+        if (input) {
+            fireEvent.change(input, { target: { value: 'something' } })
+            fireEvent.keyUp(input, { key: 'Enter' })
+        }
+
+        expect(screen.getByText(notFoundCaption)).toBeInTheDocument()
+    })
 })
