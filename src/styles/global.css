@@ -46,9 +46,9 @@
     --dropdown-background-color-hover: #f2f3f5;
     --input-background-color: #f2f3f5;
     --input-label-color: #6d7885;
-    --input-border-color: #cbcccd;
     --input-border: 0.5px solid var(--input-border-color);
-    /*--input-border-focus-color: #1976d2;*/
+    --input-border-color: #cbcccd;
+    --input-border-focus-color: var(--color-main);
     /*--input-background-content: #ffffff;*/
 
     /* Buttons */

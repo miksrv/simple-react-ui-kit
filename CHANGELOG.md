@@ -12,6 +12,14 @@
 -   Added Dropdown new callback - 'onSearch'
 -   Changed Dropdown value type 'React.ReactNode | string | number' => 'string'
 -   Implemented UI tests for new Dropdown component functionality
+-   Added new CSS Variable: '--input-border-focus-color'
+-   Added MultiSelect UI Component story for Storybook
+-   Implemented new MultiSelect UI Component, added Unit Tests
+-   Improved some Unit Test for Input Component
+-   Optimize Dropdown Component styles
+-   Improved Badge UI Component
+-   Added additional Unit Test for Badge Component
+-   Updated Readme file
 
 ## 1.2.4
 

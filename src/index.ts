@@ -31,6 +31,10 @@ export type { InputProps } from './components/input'
 export { default as Message } from './components/message'
 export type { MessageProps } from './components/message'
 
+// Message Component
+export { default as MultiSelect } from './components/multiselect'
+export type { MultiSelectProps } from './components/multiselect'
+
 // Popout Component
 export { default as Popout } from './components/popout'
 export type { PopoutProps, PopoutHandleProps } from './components/popout'

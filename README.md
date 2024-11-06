@@ -47,18 +47,19 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Built With](#built-with)
 - [Installation](#installation)
 - [Usage Components](#usage)
-    - [Badge](#badge-component)
-    - [Button](#button-component)
-    - [Checkbox](#checkbox-component)
-    - [Container](#container-component)
-    - [Dropdown](#dropdown-component)
-    - [Icon](#icon-component)
-    - [Input](#input-component)
-    - [Message](#message-component)
-    - [Popout](#popout-component)
-    - [Skeleton](#skeleton-component)
-    - [Spinner](#spinner-component)
-    - [Table](#table-component)
+    - [Badge](#badge)
+    - [Button](#button)
+    - [Checkbox](#checkbox)
+    - [Container](#container)
+    - [Dropdown](#dropdown)
+    - [Icon](#icon)
+    - [Input](#input)
+    - [Message](#message)
+    - [MultiSelect](#multiselect)
+    - [Popout](#popout)
+    - [Skeleton](#skeleton)
+    - [Spinner](#spinner)
+    - [Table](#table)
 - [Contributing](#contributing)
     - [Top Contributors](#top-contributors)
 - [Style Variables Customization](#style-variables-customization)
@@ -121,9 +122,12 @@ yarn add simple-react-ui-kit
 
 Below are examples of how to use some of the components in this UI Kit. Whether you're integrating into an existing project or starting fresh, these examples will help you get up and running.
 
-### Badge Component
+### Badge
 
 The `Badge` component is a small, stylized label that can display text, an optional icon, and a remove button. It is ideal for tagging or categorizing items and includes a callback for handling removal.
+
+<details>
+  <summary>Badge Component Example</summary>
 
 Check out the full documentation and examples in Storybook: [Badge Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-badge--docs).
 
@@ -161,10 +165,14 @@ In this example:
 - The third badge is a simple label without an icon or removal option.
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-badge--docs).
+</details>
 
-### Button Component
+### Button
 
 The `Button` component is a versatile and customizable button element with multiple variants, sizes, and loading states. It can also act as a link when provided with a URL.
+
+<details>
+  <summary>Button Component Example</summary>
 
 Check out the full documentation and examples in Storybook: [Button Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-button--docs).
 
@@ -221,10 +229,14 @@ In this example:
 - The fourth button acts as a link.
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-button--docs).
+</details>
 
-### Checkbox Component
+### Checkbox
 
 The `Checkbox` component is a customizable input element used for toggling between checked, unchecked, and indeterminate states. It includes support for labels and provides additional flexibility with its disabled and indeterminate options.
+
+<details>
+  <summary>Checkbox Component Example</summary>
 
 Check out the full documentation and examples in Storybook: [Checkbox Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-checkbox--docs).
 
@@ -275,10 +287,14 @@ In this example:
 - The fifth checkbox includes an `onChange` handler to capture the change in its state.
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-checkbox--docs).
+</details>
 
-### Container Component
+### Container
 
 The `Container` component is a flexible layout wrapper designed to organize and present content with optional headers, footers, and actions. It supports customizable class names and offers flexibility for displaying various sections such as a title, custom header, and footer.
+
+<details>
+  <summary>Container Component Example</summary>
 
 Check out the full documentation and examples in Storybook: [Container Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-container--docs).
 
@@ -336,10 +352,14 @@ In this example:
 - The fourth container shows how to apply custom styles via the `className` prop.
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-container--docs).
+</details>
 
-### Dropdown Component
+### Dropdown
 
 The `Dropdown` component provides a flexible, customizable dropdown menu for selecting options. It supports various features such as custom icons, images, placeholders, error messages, and a clearable state. It also handles clicks outside the dropdown to close it automatically.
+
+<details>
+  <summary>Dropdown Component Example</summary>
 
 Check out the full documentation and examples in Storybook: [Dropdown Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-dropdown--docs).
 
@@ -399,10 +419,14 @@ In this example:
 - A clearable dropdown is demonstrated, allowing users to reset their selection.
 
 For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-dropdown--docs).
+</details>
 
-### Icon Component
+### Icon
 
 The `Icon` component serves as a flexible and reusable way to display various icons within your application. It allows for easy integration of SVG icons, enhancing the visual appeal and usability of your UI.
+
+<details>
+  <summary>Icon Component Example</summary>
 
 Explore the full documentation and examples in Storybook: [Icon Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-icon--docs).
 
@@ -449,10 +473,14 @@ In this example:
 The `Icon` component is ideal for applications requiring a variety of icons, such as navigation bars, buttons, and informational displays. It enhances the user experience through intuitive iconography while maintaining a clean and manageable codebase.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-icon--docs).
+</details>
 
-### Input Component
+### Input
 
 The `Input` component provides a versatile, customizable input field with optional label and error message support. It includes visual indicators for required and disabled states, allowing for enhanced form usability.
+
+<details>
+  <summary>Input Component Example</summary>
 
 Check out the full documentation and examples in Storybook: [Input Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-input--docs).
 
@@ -504,10 +532,14 @@ In this example:
 - The input value is managed with React state, and validation logic sets an error message conditionally.
 
 For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-input--docs).
+</details>
 
-### Message Component
+### Message
 
 The `Message` component is a versatile message display box that supports different visual styles (`error`, `warning`, `success`, and `info`). It is used to present messages to users, providing a title and content area, with the ability to customize the type of message displayed.
+
+<details>
+  <summary>Message Component Example</summary>
 
 Check out the full documentation and examples in Storybook: [Message Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-message--docs).
 
@@ -553,10 +585,93 @@ In this example:
 - The third `Message` provides information with a custom list as its content.
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-message--docs).
+</details>
 
-### Popout Component
+### MultiSelect
+
+The `MultiSelect` component allows users to select multiple options from a dropdown list with customizable features such as search, loading state, and error handling. It supports adding and removing selected options, making it a great choice for forms requiring multiple selections.
+
+<details>
+  <summary>MultiSelect Component Example</summary>
+
+Check out the full documentation and examples in Storybook: [MultiSelect Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-multiselect--docs).
+
+#### Props:
+- **`options`**: Array of options to display in the dropdown. Each option should be an object with a `key` and `value`.
+- **`value`**: Array of selected values (keys) in the dropdown.
+- **`onSelect`**: Callback function triggered when an option is selected or deselected. Receives the updated list of selected options.
+- **`onSearch`**: Callback function triggered when a search is made, receiving the search text.
+- **`onOpen`**: Callback function triggered when the dropdown is opened.
+- **`placeholder`**: Placeholder text to display in the search input field when no value is selected.
+- **`label`**: Optional label text displayed above the dropdown.
+- **`error`**: Optional error message displayed below the dropdown for validation feedback.
+- **`required`**: Marks the dropdown as required.
+- **`disabled`**: Disables the dropdown, preventing user interaction.
+- **`loading`**: Indicates a loading state, displaying a spinner while data is being fetched or processed.
+- **`notFoundCaption`**: Text to display in the options list if no options are found after a search.
+
+#### Example Usage:
+
+```tsx
+import React, { useState } from 'react';
+import MultiSelect from 'simple-react-ui-kit';
+
+const App = () => {
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [searchText, setSearchText] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const options = [
+    { key: '1', value: 'Option 1' },
+    { key: '2', value: 'Option 2' },
+    { key: '3', value: 'Option 3' },
+    // Add more options here
+  ];
+
+  const handleSelect = (selectedOptions: { key: string; value: string }[]) => {
+    setSelectedValues(selectedOptions.map(option => option.key));
+  };
+
+  const handleSearch = (text: string) => {
+    setSearchText(text);
+    // You can implement search logic here
+  };
+
+  return (
+    <div>
+      <MultiSelect
+        label="Select Options"
+        options={options}
+        value={selectedValues}
+        onSelect={handleSelect}
+        onSearch={handleSearch}
+        placeholder="Search options"
+        loading={loading}
+        required
+        notFoundCaption="No options found"
+      />
+    </div>
+  );
+};
+
+export default App;
+```
+
+In this example:
+- The `MultiSelect` component displays a list of options and allows for multiple selections.
+- The `onSelect` callback updates the selected values in state.
+- The `onSearch` callback handles search functionality, updating the list of options based on user input.
+- The component handles loading states and error messages to improve user experience.
+
+For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-multiselect--docs).
+</details>
+
+### Popout
 
 The `Popout` component is designed to create a floating container that opens and closes when triggered, often used for menus, tooltips, or additional actions. It provides a button as a trigger and offers flexible positioning for the popout content, either to the left or right of the button.
+
+<details>
+  <summary>Popout Component Example</summary>
 
 Explore the full documentation and examples in Storybook: [Popout Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-popout--docs).
 
@@ -612,10 +727,14 @@ In this example:
 The `Popout` component provides an imperative handle with a `close()` method, which allows programmatic control over closing the popout.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-popout--docs).
+</details>
 
-### Skeleton Component
+### Skeleton
 
 The `Skeleton` component is a simple placeholder used to indicate the loading state of content, typically displayed as a gray box or shape that mimics the layout of the actual content. It helps improve user experience by showing an outline of the content while it's being loaded.
+
+<details>
+  <summary>Skeleton Component Example</summary>
 
 Explore the full documentation and examples in Storybook: [Skeleton Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-skeleton--docs).
 
@@ -653,10 +772,14 @@ You can apply additional CSS classes via the `className` prop to further style t
 - It provides a smooth transition once the content is loaded, enhancing user experience.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-skeleton--docs).
+</details>
 
-### Spinner Component
+### Spinner
 
 The `Spinner` component is a loading indicator represented as a rotating circle or animation. It visually communicates to users that a process is ongoing, enhancing the user experience during loading states or asynchronous operations.
+
+<details>
+  <summary>Spinner Component Example</summary>
 
 Explore the full documentation and examples in Storybook: [Spinner Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-spinner--docs).
 
@@ -694,10 +817,14 @@ You can customize the appearance of the spinner by adding a `className` for your
 - It provides a clear visual cue, helping to reduce user frustration and confusion during wait times.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-spinner--docs).
+</details>
 
-### Table Component
+### Table
 
 The `Table` component is a versatile data representation tool designed for displaying tabular data with support for sorting, loading states, and custom formatting. It enhances data visibility and interaction, making it ideal for applications requiring organized data presentation.
+
+<details>
+  <summary>Table Component Example</summary>
 
 Explore the full documentation and examples in Storybook: [Table Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-table--docs).
 
@@ -768,6 +895,7 @@ In this example:
 The `Table` component is perfect for displaying structured data in applications like dashboards, reports, or data management systems. It allows users to sort and view data effectively, enhancing usability and engagement.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-table--docs).
+</details>
 
 <p align="right">
   (<a href="#top">Back to top</a>)
@@ -907,8 +1035,9 @@ To customize the theme, simply override the default values in your stylesheet:
     --dropdown-background-color-hover: #f2f3f5;
     --input-background-color: #f2f3f5;
     --input-label-color: #6d7885;
-    --input-border-color: #cbcccd;
     --input-border: 0.5px solid var(--input-border-color);
+    --input-border-color: #cbcccd;
+    --input-border-focus-color: var(--color-main);
 
     /* Buttons */
     --button-font-weight: 500;
