@@ -47,6 +47,8 @@ describe('Input Component', () => {
         const inputContainer = screen.getByText(/Username/i).closest('div')
         expect(inputContainer).toHaveClass('required')
         expect(inputContainer).toHaveClass('disabled')
+
+        expect(screen.getByPlaceholderText('Enter your username')).toBeDisabled()
     })
 
     it('calls onChange handler when typing', () => {
