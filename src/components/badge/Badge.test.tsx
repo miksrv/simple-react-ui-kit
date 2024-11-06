@@ -20,6 +20,17 @@ describe('Badge Component', () => {
         expect(iconElement).toBeInTheDocument()
     })
 
+    it('applies additional class names', () => {
+        const { container } = render(
+            <Badge
+                {...defaultProps}
+                className='custom-badge-class'
+            />
+        )
+        const containerElement = container.querySelector('div')
+        expect(containerElement).toHaveClass('custom-badge-class')
+    })
+
     it('calls onClickRemove when remove button is clicked', () => {
         const onClickRemoveMock = jest.fn()
         render(
