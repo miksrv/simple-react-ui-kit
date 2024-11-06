@@ -7,12 +7,13 @@ import type { DropdownOption } from './Dropdown'
 import styles from './styles.module.sass'
 
 interface DropdownProps<T> extends React.HTMLAttributes<HTMLUListElement> {
+    notFoundCaption?: string
     options?: DropdownOption<T>[]
     selectedOption?: DropdownOption<T>
     onOptionSelect?: (selectedOption: DropdownOption<T>) => void
 }
 
-const OptionsList = <T,>({ selectedOption, options, onOptionSelect, ...props }: DropdownProps<T>) => (
+const OptionsList = <T,>({ notFoundCaption, selectedOption, options, onOptionSelect, ...props }: DropdownProps<T>) => (
     <ul
         className={styles.optionsList}
         style={props.style}
@@ -38,6 +39,8 @@ const OptionsList = <T,>({ selectedOption, options, onOptionSelect, ...props }: 
                 </button>
             </li>
         ))}
+
+        {!options?.length && <li className={styles.noResult}>{notFoundCaption || 'Nothing found'}</li>}
     </ul>
 )
 

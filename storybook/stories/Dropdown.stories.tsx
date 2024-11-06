@@ -11,7 +11,8 @@ const meta: Meta<DropdownProps<any>> = {
         disabled: { control: 'boolean' }, // Control for the disabled state
         required: { control: 'boolean' }, // Control for the required state
         clearable: { control: 'boolean' }, // Control for the clearable state
-        placeholder: { control: 'text' } // Control for the placeholder text
+        placeholder: { control: 'text' }, // Control for the placeholder text
+        searchable: { control: 'boolean' } // Control for the searchable state
     }
 }
 
@@ -52,5 +53,49 @@ Basic.args = {
     disabled: false,
     required: false,
     clearable: true,
+    searchable: false,
     label: 'Label for dropdown'
+}
+
+// Searchable dropdown story
+export const SearchableDropdown: StoryFn = (args) => {
+    const [search, setSearch] = useState<string | undefined>('')
+    const [selectedOption, setSelectedOption] = useState<string | undefined>()
+
+    // Handle selection of dropdown option
+    const handleSelect = (option: DropdownOption<string> | undefined) => {
+        setSelectedOption(option?.key)
+    }
+
+    return (
+        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+            <div style={{ height: 300, width: 300 }}>
+                <Dropdown
+                    {...args} // Spread the args from the controls
+                    options={options} // Pass the options to the dropdown
+                    value={selectedOption} // Bind selected option
+                    onSelect={handleSelect} // Handle option selection
+                    onSearch={setSearch} // Handle change search value
+                />
+            </div>
+            <div style={{ marginLeft: '50px', marginTop: '20px' }}>
+                <div>
+                    {'Search value:'} {search || '-'}
+                </div>
+                <div>
+                    {'Selected value:'} {options?.find(({ key }) => key === selectedOption)?.value || '-'}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+// Default values for controls in the searchable dropdown story
+SearchableDropdown.args = {
+    placeholder: 'Search and select an option',
+    disabled: false,
+    required: false,
+    clearable: true,
+    searchable: true, // Enable searchable functionality
+    label: 'Label for searchable dropdown'
 }

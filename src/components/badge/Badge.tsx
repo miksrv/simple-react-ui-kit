@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { cn } from '../../utils'
 import Icon, { IconTypes } from '../icon'
 
 import styles from './styles.module.sass'
@@ -8,8 +9,8 @@ import styles from './styles.module.sass'
  * Badge component properties
  */
 export interface BadgeProps {
-    /** Unique key for identifying the badge */
-    key?: string | number
+    /** Additional class names for custom styling */
+    className?: string
     /** Text label to display inside the badge */
     label?: string | number
     /** Icon to display alongside the badge label */
@@ -18,14 +19,15 @@ export interface BadgeProps {
     onClickRemove?: (key?: string | number) => void
 }
 
-const Badge: React.FC<BadgeProps> = ({ key, icon, label, onClickRemove }) => (
-    <div className={styles.badge}>
+const Badge: React.FC<BadgeProps> = ({ className, icon, label, onClickRemove }) => (
+    <div className={cn(className, styles.badge)}>
         {icon && <Icon name={icon} />}
         <span className={styles.content}>{label}</span>
         {onClickRemove && (
             <button
+                role={'button'}
                 className={styles.close}
-                onClick={() => onClickRemove?.(key ?? label)}
+                onClick={() => onClickRemove?.(label)}
             >
                 <Icon name={'Close'} />
             </button>

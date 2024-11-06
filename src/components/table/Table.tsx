@@ -24,7 +24,7 @@ export interface ColumnProps<T> {
     /** Whether the column is sortable */
     isSortable?: boolean
     /** Function to set background color based on the cell's value */
-    background?: (value: T[keyof T], row: T) => string
+    background?: (value: T[keyof T], row: T) => string | undefined
     /** Formatter function to format the cell value */
     formatter?: (value: T[keyof T], row: T[], index: number) => React.ReactNode
 }

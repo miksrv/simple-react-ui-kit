@@ -1,5 +1,26 @@
 # simple-react-ui-kit
 
+## 1.3.0
+
+### Minor Changes
+
+-   Dependent libraries updated
+-   Changed background callback for Table 'string' => 'string | undefined'
+-   Updated Storybook
+-   Improved Dropdown UI component styles
+-   Added Dropdown new properties - 'searchable', 'loading', 'notFoundCaption'
+-   Added Dropdown new callback - 'onSearch'
+-   Changed Dropdown value type 'React.ReactNode | string | number' => 'string'
+-   Implemented UI tests for new Dropdown component functionality
+-   Added new CSS Variable: '--input-border-focus-color'
+-   Added MultiSelect UI Component story for Storybook
+-   Implemented new MultiSelect UI Component, added Unit Tests
+-   Improved some Unit Test for Input Component
+-   Optimize Dropdown Component styles
+-   Improved Badge UI Component
+-   Added additional Unit Test for Badge Component
+-   Updated Readme file
+
 ## 1.2.4
 
 ### Patch Changes
@@ -57,6 +78,10 @@
 -   Added --table-font-size CSS variable
 -   Added --skeleton-background-animation CSS variable
 -   Updated README.md - Container component + Style Variables Customization
+-   Implemented new UI Input Component, Unit Tests
+-   Added story for Input Component
+-   Updated Readme and Security
+-   Updated Storybook libraries
 
 ## 1.1.1
 

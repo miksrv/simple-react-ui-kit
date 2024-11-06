@@ -23,9 +23,17 @@ export { default as Icon } from './components/icon'
 export { iconNames } from './components/icon'
 export type { IconTypes } from './components/icon'
 
+// Input Component
+export { default as Input } from './components/input'
+export type { InputProps } from './components/input'
+
 // Message Component
 export { default as Message } from './components/message'
 export type { MessageProps } from './components/message'
+
+// Message Component
+export { default as MultiSelect } from './components/multiselect'
+export type { MultiSelectProps } from './components/multiselect'
 
 // Popout Component
 export { default as Popout } from './components/popout'

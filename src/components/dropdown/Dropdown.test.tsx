@@ -15,14 +15,14 @@ const options: DropdownOption<number>[] = [
 
 describe('Dropdown Component', () => {
     it('renders without crashing', () => {
-        render(<Dropdown options={options} />)
+        render(<Dropdown<number> options={options} />)
         const dropdownElement = screen.getByRole('button')
         expect(dropdownElement).toBeInTheDocument()
     })
 
     it('closes dropdown when clicking outside', () => {
         render(
-            <Dropdown
+            <Dropdown<number>
                 options={options}
                 label='Select an option'
             />
@@ -42,7 +42,7 @@ describe('Dropdown Component', () => {
 
     it('displays the placeholder when no option is selected', () => {
         render(
-            <Dropdown
+            <Dropdown<number>
                 options={options}
                 placeholder='Select an option'
             />
@@ -53,7 +53,7 @@ describe('Dropdown Component', () => {
 
     it('shows the selected option when one is chosen', () => {
         render(
-            <Dropdown
+            <Dropdown<number>
                 options={options}
                 value={1}
             />
@@ -63,7 +63,7 @@ describe('Dropdown Component', () => {
     })
 
     it('opens and closes the options list when clicked', () => {
-        render(<Dropdown options={options} />)
+        render(<Dropdown<number> options={options} />)
         const dropdownButton = screen.getByRole('button')
 
         // Open dropdown
@@ -78,7 +78,7 @@ describe('Dropdown Component', () => {
     it('selects an option when clicked', () => {
         const handleSelect = jest.fn()
         render(
-            <Dropdown
+            <Dropdown<number>
                 options={options}
                 onSelect={handleSelect}
             />
@@ -97,7 +97,7 @@ describe('Dropdown Component', () => {
         const handleSelect = jest.fn()
 
         render(
-            <Dropdown
+            <Dropdown<number>
                 options={options}
                 value={1}
                 clearable
@@ -117,7 +117,7 @@ describe('Dropdown Component', () => {
 
     it('displays an error message when provided', () => {
         render(
-            <Dropdown
+            <Dropdown<number>
                 options={options}
                 error='This field is required'
             />
@@ -129,7 +129,7 @@ describe('Dropdown Component', () => {
     it('does not allow selection when disabled', () => {
         const handleSelect = jest.fn()
         render(
-            <Dropdown
+            <Dropdown<number>
                 options={options}
                 disabled
                 onSelect={handleSelect}
@@ -146,5 +146,107 @@ describe('Dropdown Component', () => {
         }
 
         expect(handleSelect).not.toHaveBeenCalled() // Ensure select action is not called
+    })
+
+    it('searches through options when typing', async () => {
+        const placeholder = 'Select an option'
+
+        render(
+            <Dropdown<number>
+                options={options}
+                searchable={true}
+                placeholder={placeholder}
+            />
+        )
+
+        const input = screen.getByPlaceholderText(placeholder)
+        fireEvent.change(input, { target: { value: 'Option 1' } })
+
+        await waitFor(() => {
+            expect(screen.getByText('Option 1')).toBeInTheDocument()
+            expect(screen.queryByText('Option 2')).not.toBeInTheDocument()
+            expect(screen.queryByText('Option 3')).not.toBeInTheDocument()
+        })
+    })
+
+    it('does not open dropdown if search is empty while searchable', async () => {
+        const placeholder = 'Select an option'
+
+        render(
+            <Dropdown<number>
+                options={options}
+                searchable={true}
+                placeholder={placeholder}
+            />
+        )
+        const input = screen.getByPlaceholderText(placeholder)
+        fireEvent.change(input, { target: { value: '' } })
+
+        await waitFor(() => {
+            expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
+        })
+    })
+
+    it('calls onSearch with the search query when search is triggered', () => {
+        const searchQuery = 'test search'
+        const onSearchMock = jest.fn()
+
+        const { container } = render(
+            <Dropdown<number>
+                options={options}
+                searchable={true}
+                onSearch={onSearchMock}
+            />
+        )
+
+        const input = container.querySelector('input[type="text"]')
+
+        if (input) {
+            fireEvent.change(input, { target: { value: searchQuery } })
+            fireEvent.keyUp(input, { key: 'Enter' })
+        }
+
+        expect(onSearchMock).toHaveBeenCalledWith(searchQuery)
+    })
+
+    it('displays notFoundCaption when no results are found', () => {
+        const notFoundCaption = 'No results found'
+
+        const { container } = render(
+            <Dropdown<number>
+                options={[]}
+                searchable={true}
+                notFoundCaption={notFoundCaption}
+            />
+        )
+
+        const input = container.querySelector('input[type="text"]')
+
+        if (input) {
+            fireEvent.change(input, { target: { value: 'something' } })
+            fireEvent.keyUp(input, { key: 'Enter' })
+        }
+
+        expect(screen.getByText(notFoundCaption)).toBeInTheDocument()
+    })
+
+    it('calls onSelect with the first filtered option when Enter is pressed after typing in the input', () => {
+        const onSelect = jest.fn()
+
+        render(
+            <Dropdown<number>
+                options={options}
+                searchable={true}
+                placeholder={'Search option...'}
+                onSelect={onSelect}
+            />
+        )
+
+        const inputElement = screen.getByPlaceholderText(/Search option.../i)
+        fireEvent.focus(inputElement)
+        fireEvent.change(inputElement, { target: { value: 'Option 2' } })
+        fireEvent.keyDown(inputElement, { key: 'Enter' })
+
+        expect(onSelect).toHaveBeenCalledWith(options[1])
     })
 })
