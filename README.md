@@ -53,6 +53,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Container](#container-component)
     - [Dropdown](#dropdown-component)
     - [Icon](#icon-component)
+    - [Input](#input-component)
     - [Message](#message-component)
     - [Popout](#popout-component)
     - [Skeleton](#skeleton-component)
@@ -348,11 +349,15 @@ Check out the full documentation and examples in Storybook: [Dropdown Component 
 - **`required`**: Marks the dropdown as required.
 - **`disabled`**: Disables the dropdown.
 - **`clearable`**: Allows the dropdown to be cleared (reset to no selection).
+- **`searchable`**: Allow searching within options.
+- **`loading`**: Show loading spinner.
 - **`placeholder`**: Placeholder text shown when no option is selected.
+- **`notFoundCaption`**: Text to display in the options list if there are no options or nothing found.
 - **`label`**: Label text for the dropdown.
 - **`error`**: Error message shown for validation errors.
 - **`value`**: Currently selected value (key) in the dropdown.
 - **`onSelect`**: Callback function triggered when an option is selected.
+- **`onSearch`**: Callback function triggered when a search is made.
 - **`onOpen`**: Callback function triggered when the dropdown is opened.
 
 #### Example Usage:
@@ -379,6 +384,7 @@ const App = () => {
         value={selectedOption}
         onSelect={(option) => setSelectedOption(option?.key)}
         clearable
+        searchable
       />
     </div>
   );
@@ -443,6 +449,61 @@ In this example:
 The `Icon` component is ideal for applications requiring a variety of icons, such as navigation bars, buttons, and informational displays. It enhances the user experience through intuitive iconography while maintaining a clean and manageable codebase.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-icon--docs).
+
+### Input Component
+
+The `Input` component provides a versatile, customizable input field with optional label and error message support. It includes visual indicators for required and disabled states, allowing for enhanced form usability.
+
+Check out the full documentation and examples in Storybook: [Input Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-input--docs).
+
+#### Props:
+- **`label`**: Optional label text displayed above the input field.
+- **`error`**: Error message displayed below the input field, used for validation feedback.
+- **`className`**: Additional class names for custom styling.
+- **`required`**: Marks the input as required.
+- **`disabled`**: Disables the input, preventing user interaction.
+
+Additionally, the `Input` component accepts all standard input attributes from `React.InputHTMLAttributes<HTMLInputElement>`, making it flexible for various input scenarios (e.g., `type`, `placeholder`, `value`, etc.).
+
+#### Example Usage:
+
+```tsx
+import React, { useState } from 'react';
+import Input from 'simple-react-ui-kit';
+
+const App = () => {
+  const [inputValue, setInputValue] = useState<string>('');
+  const [error, setError] = useState<string | undefined>();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    setError(value.length < 3 ? 'Input must be at least 3 characters long.' : undefined);
+  };
+
+  return (
+    <div>
+      <Input
+        label="Username"
+        placeholder="Enter your username"
+        value={inputValue}
+        onChange={handleInputChange}
+        required
+        error={error}
+      />
+    </div>
+  );
+};
+
+export default App;
+```
+
+In this example:
+- The `Input` component displays a label and an error message if the input text is too short.
+- The input's required attribute visually indicates that it’s a required field.
+- The input value is managed with React state, and validation logic sets an error message conditionally.
+
+For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-input--docs).
 
 ### Message Component
 

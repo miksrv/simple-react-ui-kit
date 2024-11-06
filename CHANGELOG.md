@@ -70,6 +70,10 @@
 -   Added --table-font-size CSS variable
 -   Added --skeleton-background-animation CSS variable
 -   Updated README.md - Container component + Style Variables Customization
+-   Implemented new UI Input Component, Unit Tests
+-   Added story for Input Component
+-   Updated Readme and Security
+-   Updated Storybook libraries
 
 ## 1.1.1
 

@@ -5,9 +5,18 @@
 We regularly update and maintain the project. Security updates will be provided for the following versions:
 
 | Version | Supported          |
-| ------- | ------------------ |
-| x.x.x   | :white_check_mark: |
-| x.x.x   | :x:                |
+|---------| ------------------ |
+| 1.3.0   | :white_check_mark: |
+| 1.2.4   | :white_check_mark: |
+| 1.2.3   | :white_check_mark: |
+| 1.2.2   | :white_check_mark: |
+| 1.2.1   | :white_check_mark: |
+| 1.2.0   | :white_check_mark: |
+| 1.1.1   | :white_check_mark: |
+| 1.1.0   | :white_check_mark: |
+| 1.0.3   | :x:                |
+| 1.0.2   | :x:                |
+| 1.0.1   | :x:                |
 
 ## Reporting a Vulnerability
 
@@ -15,7 +24,7 @@ If you discover a security vulnerability within the project, we kindly ask you t
 
 To report a vulnerability:
 
-1. Please email us at **[your-email@example.com]** with the details of the issue, including:
+1. Please email us at **[astro@miksoft.pro]** with the details of the issue, including:
     - A description of the vulnerability.
     - Steps to reproduce the issue.
     - The potential impact and any possible mitigation strategies.
