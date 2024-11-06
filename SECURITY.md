@@ -5,7 +5,7 @@
 We regularly update and maintain the project. Security updates will be provided for the following versions:
 
 | Version | Supported          |
-|---------| ------------------ |
+| ------- | ------------------ |
 | 1.3.0   | :white_check_mark: |
 | 1.2.4   | :white_check_mark: |
 | 1.2.3   | :white_check_mark: |

@@ -83,6 +83,7 @@ const Dropdown = <T,>({
     const [localLoading, setLocalLoading] = useState<boolean>(false)
     const [optionsListTop, setOptionsListTop] = useState<number>(30)
     const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [isFocused, setIsFocused] = useState<boolean>(false)
     const [selectedOption, setSelectedOption] = useState<DropdownOption<T> | undefined>(undefined)
 
     const filteredOptions = useMemo(
@@ -186,7 +187,12 @@ const Dropdown = <T,>({
             {label && <label className={styles.label}>{label}</label>}
             <div
                 ref={dropdownRef}
-                className={cn(styles.container, isOpen && styles.open, disabled && styles.disabled)}
+                className={cn(
+                    styles.container,
+                    isOpen && styles.open,
+                    disabled && styles.disabled,
+                    error && styles.error
+                )}
             >
                 {!searchable && (
                     <Button
@@ -232,7 +238,7 @@ const Dropdown = <T,>({
                 )}
 
                 {searchable && (
-                    <div className={cn(styles.searchContainer, isOpen && styles.open)}>
+                    <div className={cn(styles.searchContainer, isOpen && styles.open, isFocused && styles.focused)}>
                         {selectedOption?.icon && <Icon name={selectedOption.icon} />}
 
                         {selectedOption?.image && (
@@ -247,6 +253,8 @@ const Dropdown = <T,>({
                             value={selectedOption?.value || search || ''}
                             className={styles.searchInput}
                             placeholder={placeholder ?? ''}
+                            onFocus={() => setIsFocused(true)}
+                            onBlur={() => setIsFocused(false)}
                             onMouseMove={(e) => e.stopPropagation()}
                             onWheelCapture={(e) => e.stopPropagation()}
                             onKeyDown={handleSearchKeyPress}

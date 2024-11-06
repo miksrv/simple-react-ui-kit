@@ -64,9 +64,9 @@ $iconSize: 18px
         white-space: nowrap
 
     .container
+        width: 100%
         position: relative
         border-radius: var(--border-radius)
-        width: 100%
 
         .dropdownButton
             width: 100%
@@ -114,6 +114,10 @@ $iconSize: 18px
             display: flex
             justify-content: space-between
             transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms
+
+            &.focused
+                outline: none
+                border-color: var(--input-border-focus-color)
 
             img, svg
                 width: calc($iconSize + 6px)
@@ -166,6 +170,11 @@ $iconSize: 18px
                     &:hover
                         fill: var(--text-color-secondary-hover)
 
+
+        &.error
+            .searchContainer
+                background-color: var(--color-red-background)
+                border-color: var(--color-red)
 
         /* State for dropdownButton and for searchContainer when dropdown is open */
         .open
