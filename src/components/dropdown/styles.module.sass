@@ -1,13 +1,23 @@
 $iconSize: 18px
 
 .optionsList
-    list-style: none
-    padding: 0
-    width: 100%
-    z-index: 405
     font-family: var(--font-family), sans-serif
     font-size: var(--font-size)
+    background-color: var(--dropdown-background-color)
+    border: var(--input-border)
+    border-bottom-left-radius: var(--border-radius)
+    border-bottom-right-radius: var(--border-radius)
+    overflow: hidden
+    overflow-y: scroll
     box-sizing: border-box
+    list-style: none
+    position: absolute
+    top: 33px
+    padding: 0
+    margin: 0
+    width: 100%
+    z-index: 405
+    max-height: 200px
 
     li
         &.noResult, button
@@ -43,7 +53,11 @@ $iconSize: 18px
             opacity: .5
 
         &:hover, &.active
-            background-color: var(--input-background-color)
+            background-color: var(--dropdown-background-color-hover)
+
+        &:last-of-type
+            border-bottom-left-radius: var(--border-radius)
+            border-bottom-right-radius: var(--border-radius)
 
         &.noResult
             text-align: center
@@ -98,21 +112,21 @@ $iconSize: 18px
                     opacity: .8
 
         .searchContainer
-            width: 100%
-            line-height: 20px
-            position: relative
             background-color: var(--input-background-color)
+            border: var(--input-border)
+            color: var(--text-color-primary)
+            justify-content: space-between
             -webkit-tap-highlight-color: transparent
             align-items: center
             border-radius: inherit
             box-sizing: border-box
-            border: var(--input-border)
-            color: var(--text-color-primary)
+            position: relative
+            display: flex
             height: 34px
             margin: 0
             padding: 0 10px 0 0
-            display: flex
-            justify-content: space-between
+            width: 100%
+            line-height: 20px
             transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms
 
             &.focused
@@ -126,16 +140,16 @@ $iconSize: 18px
                 float: left
 
             .searchInput
+                font-family: var(--font-family), sans-serif
+                font-size: var(--font-size)
                 background: transparent
+                height: inherit
+                color: inherit
                 border: none
                 outline: none
                 width: 90%
-                height: inherit
                 padding-left: 12px
                 padding-bottom: 2px
-                font-family: var(--font-family), sans-serif
-                font-size: var(--font-size)
-                color: inherit
 
                 &::placeholder
                     font-size: var(--font-size)
@@ -182,10 +196,13 @@ $iconSize: 18px
             border-bottom-left-radius: 0
 
     &.disabled
+        *
+            pointer-events: none
+
         .label
             opacity: 0.7
 
-        .dropdownButton
+        .dropdownButton, .searchContainer
             opacity: 0.5
             cursor: default
 
@@ -194,27 +211,6 @@ $iconSize: 18px
             content: '*'
             margin-left: 3px
             color: var(--color-red)
-
-    .optionsList
-        position: absolute
-        background-color: var(--dropdown-background-color)
-        border: var(--input-border)
-        top: 33px
-        margin: 0
-        border-bottom-left-radius: var(--border-radius)
-        border-bottom-right-radius: var(--border-radius)
-        max-height: 200px
-        z-index: 405
-        overflow: hidden
-        overflow-y: scroll
-
-        li
-            &:hover, &.active
-                background-color: var(--dropdown-background-color-hover)
-
-            &:last-of-type
-                border-bottom-left-radius: var(--border-radius)
-                border-bottom-right-radius: var(--border-radius)
 
     .error
         color: var(--color-red)

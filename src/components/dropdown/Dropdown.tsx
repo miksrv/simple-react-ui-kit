@@ -5,6 +5,7 @@ import Button, { ButtonProps } from '../button'
 import Icon, { IconTypes } from '../icon'
 import Spinner from '../spinner'
 
+import ClearButton from './ClearButton'
 import OptionsList from './OptionsList'
 import styles from './styles.module.sass'
 
@@ -138,7 +139,7 @@ const Dropdown = <T,>({
         setLocalLoading(false)
     }
 
-    const handleSelect = (option: DropdownOption<T> | undefined) => {
+    const handleSelect = (option?: DropdownOption<T>) => {
         if (selectedOption?.key !== option?.key) {
             setSelectedOption(option)
             onSelect?.(option ?? undefined)
@@ -221,17 +222,7 @@ const Dropdown = <T,>({
                         </span>
 
                         <span className={styles.buttonContainer}>
-                            {clearable && selectedOption?.key && (
-                                <span
-                                    role={'button'}
-                                    tabIndex={0}
-                                    className={styles.clearButton}
-                                    onClick={handleClearClick}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleClearClick(e)}
-                                >
-                                    <Icon name={'Close'} />
-                                </span>
-                            )}
+                            {clearable && selectedOption?.key && <ClearButton onClick={handleClearClick} />}
                             {isOpen ? <Icon name={'KeyboardUp'} /> : <Icon name={'KeyboardDown'} />}
                         </span>
                     </Button>
@@ -253,6 +244,7 @@ const Dropdown = <T,>({
                             value={selectedOption?.value || search || ''}
                             className={styles.searchInput}
                             placeholder={placeholder ?? ''}
+                            disabled={disabled}
                             onFocus={() => setIsFocused(true)}
                             onBlur={() => setIsFocused(false)}
                             onMouseMove={(e) => e.stopPropagation()}
@@ -265,15 +257,7 @@ const Dropdown = <T,>({
                             {loading || localLoading ? (
                                 <Spinner />
                             ) : clearable && selectedOption?.key ? (
-                                <span
-                                    role={'button'}
-                                    tabIndex={0}
-                                    className={styles.clearButton}
-                                    onClick={handleClearClick}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleClearClick(e)}
-                                >
-                                    <Icon name={'Close'} />
-                                </span>
+                                <ClearButton onClick={handleClearClick} />
                             ) : (
                                 <span
                                     role={'button'}
