@@ -8,15 +8,18 @@ import styles from './styles.module.sass'
  * InputProps interface, representing the properties for the Input component.
  */
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    /** Additional class names for custom styling */
+    className?: string
     /** Label text displayed above the input field */
     label?: string
     /** Error message displayed below the input field when an error occurs */
     error?: string
 }
 
-const Input: React.FC<InputProps> = ({ label, error, ...props }) => (
+const Input: React.FC<InputProps> = ({ className, label, error, ...props }) => (
     <div
         className={cn(
+            className,
             styles.inputContainer,
             error && styles.error,
             props.required && styles.required,
