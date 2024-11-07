@@ -7,6 +7,7 @@
 -   Added additional UI tests for Dropdown, Input and MultiSelect
 -   Added className props for Input UI component
 -   Fixed SVG arrow icon color for MultiSelect and Dropdown
+-   Fixed Multiselect and Dropdown backspace keyboard event
 
 ## 1.3.0
 

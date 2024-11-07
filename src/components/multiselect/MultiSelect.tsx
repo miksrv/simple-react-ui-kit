@@ -96,6 +96,10 @@ const MultiSelect = <T,>({
         }
 
         if (event.key === 'Backspace' || event.key === 'Delete') {
+            if (search !== '') {
+                return
+            }
+
             const selected = [...(selectedOption || [])]
 
             selected.pop()

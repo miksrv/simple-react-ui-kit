@@ -115,6 +115,10 @@ const Dropdown = <T,>({
         }
 
         if ((event.key === 'Backspace' || event.key === 'Delete') && selectedOption?.key) {
+            if (search !== '') {
+                return
+            }
+
             setSearch(selectedOption?.value)
             setSelectedOption(undefined)
             onSelect?.(undefined)
