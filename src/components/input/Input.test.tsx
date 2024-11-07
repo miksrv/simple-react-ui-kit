@@ -36,6 +36,17 @@ describe('Input Component', () => {
         expect(errorElement).toBeInTheDocument()
     })
 
+    it('applies additional class names', () => {
+        const { container } = render(
+            <Input
+                {...defaultProps}
+                className='custom-input-class'
+            />
+        )
+        const containerElement = container.querySelector('div')
+        expect(containerElement).toHaveClass('custom-input-class')
+    })
+
     it('applies the correct className based on required and disabled props', () => {
         render(
             <Input

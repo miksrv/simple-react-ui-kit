@@ -1,5 +1,13 @@
 # simple-react-ui-kit
 
+## 1.3.1
+
+### Patch Changes
+
+-   Added additional UI tests for Dropdown, Input and MultiSelect
+-   Added className props for Input UI component
+-   Fixed SVG arrow icon color for MultiSelect and Dropdown
+
 ## 1.3.0
 
 ### Minor Changes

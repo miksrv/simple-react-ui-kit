@@ -105,6 +105,17 @@ describe('MultiSelect Component', () => {
         expect(screen.queryByText(/Option 1/i)).not.toBeInTheDocument()
     })
 
+    it('applies additional class names', () => {
+        const { container } = render(
+            <MultiSelect<string>
+                {...defaultProps}
+                className='custom-multiselect-class'
+            />
+        )
+        const containerElement = container.querySelector('div')
+        expect(containerElement).toHaveClass('custom-multiselect-class')
+    })
+
     it('displays error message when error prop is provided', () => {
         render(
             <MultiSelect<string>

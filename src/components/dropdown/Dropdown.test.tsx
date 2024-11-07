@@ -169,6 +169,17 @@ describe('Dropdown Component', () => {
         })
     })
 
+    it('applies additional class names', () => {
+        const { container } = render(
+            <Dropdown<number>
+                options={options}
+                className='custom-dropdown-class'
+            />
+        )
+        const containerElement = container.querySelector('div')
+        expect(containerElement).toHaveClass('custom-dropdown-class')
+    })
+
     it('does not open dropdown if search is empty while searchable', async () => {
         const placeholder = 'Select an option'
 
