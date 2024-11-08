@@ -990,7 +990,7 @@ To customize the theme, simply override the default values in your stylesheet:
 ```css
 :root {
     /* Primary Colors */
-    --color-contrast: #FFF;
+    --color-contrast: #ffffff;
 
     --color-green: #4bb34b;
     --color-green-hover: #48AC4A;
@@ -1024,7 +1024,7 @@ To customize the theme, simply override the default values in your stylesheet:
     --body-background: #ebedf0;
     --border-radius: 4px;
     --container-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
-    --container-background-color: #fff;
+    --container-background-color: #ffffff;
     --container-error-background-color: #FFE9E9;
     --container-error-color: var(--color-red);
     --container-success-background-color: #E8F9E8;
@@ -1033,6 +1033,7 @@ To customize the theme, simply override the default values in your stylesheet:
     /* Input Fields and Dropdowns */
     --dropdown-background-color: #ffffff;
     --dropdown-background-color-hover: #f2f3f5;
+    --dropdown-badge-background-color: #ffffff;
     --input-background-color: #f2f3f5;
     --input-label-color: #6d7885;
     --input-border: 0.5px solid var(--input-border-color);
