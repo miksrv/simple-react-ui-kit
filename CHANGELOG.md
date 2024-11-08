@@ -1,5 +1,13 @@
 # simple-react-ui-kit
 
+## 1.3.2
+
+### Patch Changes
+
+-   Added CSS var '--dropdown-badge-background-color' for badges in the MultiSelect
+-   Fixed Button positive and negative hover text color
+-   Updated Readme
+
 ## 1.3.1
 
 ### Patch Changes
