@@ -107,6 +107,10 @@ const MultiSelect = <T,>({
             setSelectedOption(selected)
             onSelect?.(selected)
         }
+
+        if (event.key === 'Escape' && isOpen) {
+            setIsOpen(false)
+        }
     }
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,6 +153,12 @@ const MultiSelect = <T,>({
     const handleClickOutside = (event: MouseEvent) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
             setIsOpen(false)
+        }
+    }
+
+    const handleToggleDropdownClick = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+        if (event.key === 'Enter' || event.key === 'Escape') {
+            toggleDropdown()
         }
     }
 
@@ -218,7 +228,7 @@ const MultiSelect = <T,>({
                                 tabIndex={0}
                                 className={styles.toggleButton}
                                 onClick={toggleDropdown}
-                                onKeyDown={(e) => e.key === 'Enter' && toggleDropdown()}
+                                onKeyDown={handleToggleDropdownClick}
                             >
                                 {isOpen ? <Icon name={'KeyboardUp'} /> : <Icon name={'KeyboardDown'} />}
                             </span>
