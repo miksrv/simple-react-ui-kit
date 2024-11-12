@@ -1,5 +1,11 @@
 # simple-react-ui-kit
 
+## 1.3.3
+
+### Patch Changes
+
+-   Added Keyboard 'Escape' event for Dropdown and MultiSelect UI Components
+
 ## 1.3.2
 
 ### Patch Changes

@@ -103,7 +103,7 @@ const Dropdown = <T,>({
         }
     }
 
-    const handleSearchKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleSearchKeyPress = (event: React.KeyboardEvent<HTMLInputElement | HTMLButtonElement>) => {
         if (
             event.key === 'Enter' &&
             filteredOptions?.length &&
@@ -122,6 +122,10 @@ const Dropdown = <T,>({
             setSearch(selectedOption?.value)
             setSelectedOption(undefined)
             onSelect?.(undefined)
+        }
+
+        if (event.key === 'Escape' && isOpen) {
+            setIsOpen(false)
         }
     }
 
@@ -206,6 +210,7 @@ const Dropdown = <T,>({
                         variant={error ? 'negative' : undefined}
                         disabled={disabled}
                         onClick={toggleDropdown}
+                        onKeyDown={handleSearchKeyPress}
                         className={cn(styles.dropdownButton, selectedOption && styles.selected, isOpen && styles.open)}
                     >
                         <span className={styles.value}>
