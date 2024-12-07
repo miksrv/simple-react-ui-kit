@@ -66,10 +66,10 @@ If your pull request is merged into the `main` branch and you're ready to releas
 
 ## Pull Request Guidelines
 
--   Ensure that your code follows the style and conventions used in the project.
--   Add appropriate test coverage for any new features or changes.
--   Make sure that the project builds and passes all tests before submitting your PR.
--   Update documentation if necessary, especially if your changes introduce new features or modify existing functionality.
+- Ensure that your code follows the style and conventions used in the project.
+- Add appropriate test coverage for any new features or changes.
+- Make sure that the project builds and passes all tests before submitting your PR.
+- Update documentation if necessary, especially if your changes introduce new features or modify existing functionality.
 
 ## Thank you!
 
