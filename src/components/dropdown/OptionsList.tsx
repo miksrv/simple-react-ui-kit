@@ -40,7 +40,7 @@ const OptionsList = <T,>({ notFoundCaption, selectedOption, options, onOptionSel
             </li>
         ))}
 
-        {!options?.length && <li className={styles.noResult}>{notFoundCaption || 'Nothing found'}</li>}
+        {!options?.length && <li className={styles.noResult}>{notFoundCaption ?? 'Nothing found'}</li>}
     </ul>
 )
 

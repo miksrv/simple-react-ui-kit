@@ -25,7 +25,6 @@ const Badge: React.FC<BadgeProps> = ({ className, icon, label, onClickRemove }) 
         <span className={styles.content}>{label}</span>
         {onClickRemove && (
             <button
-                role={'button'}
                 className={styles.close}
                 onClick={() => onClickRemove?.(label)}
             >

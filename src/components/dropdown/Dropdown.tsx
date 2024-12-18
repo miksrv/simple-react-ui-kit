@@ -250,7 +250,7 @@ const Dropdown = <T,>({
 
                         <input
                             type={'text'}
-                            value={selectedOption?.value || search || ''}
+                            value={selectedOption?.value ?? search ?? ''}
                             className={styles.searchInput}
                             placeholder={placeholder ?? ''}
                             disabled={disabled}

@@ -1,5 +1,12 @@
 # simple-react-ui-kit
 
+## 1.3.4
+
+### Patch Changes
+
+- Updated UI Libraries
+- Fixed some SonarQube issues
+
 ## 1.3.3
 
 ### Patch Changes
