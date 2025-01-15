@@ -193,4 +193,22 @@ describe('Table Component', () => {
 
         expect(skeletonElement).toBeInTheDocument()
     })
+
+    it('displays no data message when there is no data', () => {
+        const columns: ColumnProps<TestData>[] = [
+            { header: 'ID', accessor: 'id', isSortable: true },
+            { header: 'Name', accessor: 'name', isSortable: true },
+            { header: 'Age', accessor: 'age', isSortable: true }
+        ]
+
+        render(
+            <Table
+                data={[]}
+                columns={columns}
+                noDataCaption={'No data available'}
+            />
+        )
+
+        expect(screen.getByText('No data available')).toBeInTheDocument()
+    })
 })

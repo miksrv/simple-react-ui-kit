@@ -39,8 +39,15 @@ export interface TableProps<T> {
     defaultSort?: SortConfig<T>
     /** Additional class names for custom styling */
     className?: string
+    /** Caption to display when there is no data */
+    noDataCaption?: string
     /** Table height (in pixels or null for auto height) */
     height?: number | null
+    /** Table max height - the maximum height of the table, if there is little data, the table will not stretch.
+     * The values of height and maxHeight are needed for the stickyHeader to work.
+     * In summary: height is used if the container needs to be strictly fixed in height, and maxHeight - if it is not critical
+     * that the height of the container will change dynamically up to the maximum value */
+    maxHeight?: number | null
     /** Columns configuration for the table */
     columns?: ColumnProps<T>[]
     /** Whether the table is in loading state (displays skeletons) */
@@ -55,7 +62,9 @@ const Table = <T,>({
     data,
     defaultSort,
     className,
+    noDataCaption,
     height,
+    maxHeight,
     columns,
     loading,
     stickyHeader,
@@ -95,7 +104,7 @@ const Table = <T,>({
     return (
         <div
             className={cn(className, styles.tableContainer, stickyHeader && styles.stickyHeader)}
-            style={{ height: height ?? 'inherit' }}
+            style={{ height: height || 'inherit', maxHeight: maxHeight || 'inherit' }}
         >
             <table className={cn(styles.table, verticalBorder && styles.verticalBorder)}>
                 <thead>
@@ -163,6 +172,17 @@ const Table = <T,>({
                                 ))}
                             </tr>
                         ))}
+
+                    {!loading && !sortedData?.length && (
+                        <tr>
+                            <td
+                                colSpan={columns?.length}
+                                className={styles.noData}
+                            >
+                                {noDataCaption || 'No data'}
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
         </div>

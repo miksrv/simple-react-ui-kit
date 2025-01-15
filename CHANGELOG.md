@@ -1,5 +1,14 @@
 # simple-react-ui-kit
 
+## 1.3.5
+
+### Patch Changes
+
+- Added `maxHeight` parameter for the table component
+- Added `noDataCaption` parameter and display caption when there is no data
+- New tests for the table component
+- Removed unused dependency `embla-carousel-react`
+
 ## 1.3.4
 
 ### Patch Changes
