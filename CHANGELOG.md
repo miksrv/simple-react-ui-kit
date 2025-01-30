@@ -1,5 +1,16 @@
 # simple-react-ui-kit
 
+## 1.3.6
+
+### Patch Changes
+
+- Added new property `hidden` for the column of the `Table` component
+- Added new UI test for testing the column property `hidden` in the `Table` component
+- Updated Storybook libraries
+- Updated UI dependencies
+- Added column interface description for the Storybook `Table` component
+- Added `build` directory to `.gitignore`, removed directory from the repository
+
 ## 1.3.5
 
 ### Patch Changes

@@ -211,4 +211,24 @@ describe('Table Component', () => {
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
     })
+
+    it('renders columns based on the hidden property', () => {
+        const columnsWithHidden: ColumnProps<TestData>[] = [
+            { header: 'ID', accessor: 'id', isSortable: true },
+            { header: 'Name', accessor: 'name', isSortable: true, hidden: true },
+            { header: 'Age', accessor: 'age', isSortable: true }
+        ]
+
+        render(
+            <Table
+                data={data}
+                columns={columnsWithHidden}
+            />
+        )
+
+        expect(screen.queryByText('Name')).not.toBeInTheDocument()
+
+        expect(screen.getByText('ID')).toBeInTheDocument()
+        expect(screen.getByText('Age')).toBeInTheDocument()
+    })
 })
