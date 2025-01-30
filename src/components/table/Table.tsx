@@ -23,6 +23,8 @@ export interface ColumnProps<T> {
     className?: string
     /** Whether the column is sortable */
     isSortable?: boolean
+    /** Whether the column is hidden */
+    hidden?: boolean
     /** Function to set background color based on the cell's value */
     background?: (value: T[keyof T], row: T) => string | undefined
     /** Formatter function to format the cell value */
@@ -72,6 +74,8 @@ const Table = <T,>({
 }: TableProps<T>) => {
     const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(defaultSort ?? null)
 
+    const visibleColumns = columns?.filter(({ hidden }) => !hidden)
+
     const sortedData = React.useMemo(() => {
         if (!sortConfig) {
             return data
@@ -109,7 +113,7 @@ const Table = <T,>({
             <table className={cn(styles.table, verticalBorder && styles.verticalBorder)}>
                 <thead>
                     <tr>
-                        {columns?.map((column) => (
+                        {visibleColumns?.map((column) => (
                             <th
                                 key={String(column.accessor)}
                                 onClick={() => handleSort(column)}
@@ -141,7 +145,7 @@ const Table = <T,>({
                             .fill(0)
                             .map((_, index) => (
                                 <tr key={`tr${index}`}>
-                                    {columns?.map((column) => (
+                                    {visibleColumns?.map((column) => (
                                         <td
                                             key={String(column.accessor)}
                                             className={column.className}
@@ -155,7 +159,7 @@ const Table = <T,>({
                     {!loading &&
                         sortedData?.map((row, rowIndex) => (
                             <tr key={`tr${rowIndex}`}>
-                                {columns?.map((column) => (
+                                {visibleColumns?.map((column) => (
                                     <td
                                         key={String(column.accessor)}
                                         className={column.className}
@@ -176,7 +180,7 @@ const Table = <T,>({
                     {!loading && !sortedData?.length && (
                         <tr>
                             <td
-                                colSpan={columns?.length}
+                                colSpan={visibleColumns?.length}
                                 className={styles.noData}
                             >
                                 {noDataCaption || 'No data'}

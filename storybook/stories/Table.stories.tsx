@@ -6,7 +6,35 @@ import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<TableProps<any>> = {
     title: 'Components/Table',
-    component: Table
+    component: Table,
+    parameters: {
+        docs: {
+            description: {
+                component: `
+\`\`\`typescript
+/**
+ * Column properties for table component
+ */
+export interface ColumnProps<T> {
+    /** Header content for the column */
+    header: string | React.ReactNode
+    /** Accessor key to map data for the column */
+    accessor: keyof T
+    /** Additional class names for custom styling */
+    className?: string
+    /** Whether the column is sortable */
+    isSortable?: boolean
+    /** Whether the column is hidden */
+    hidden?: boolean
+    /** Function to set background color based on the cell's value */
+    background?: (value: T[keyof T], row: T) => string | undefined
+    /** Formatter function to format the cell value */
+    formatter?: (value: T[keyof T], row: T[], index: number) => React.ReactNode
+}
+\`\`\``
+            }
+        }
+    }
 }
 
 export default meta
