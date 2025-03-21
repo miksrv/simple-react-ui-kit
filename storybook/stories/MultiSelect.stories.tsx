@@ -11,6 +11,7 @@ const meta: Meta<MultiSelectProps<any>> = {
         disabled: { control: 'boolean' },
         required: { control: 'boolean' },
         loading: { control: 'boolean' },
+        closeOnSelect: { control: 'boolean' },
         placeholder: { control: 'text' },
         label: { control: 'text' },
         error: { control: 'text' },
@@ -60,6 +61,7 @@ Basic.args = {
     disabled: false,
     required: false,
     loading: false,
+    closeOnSelect: false,
     label: 'MultiSelect Label',
     notFoundCaption: 'No options found'
 }

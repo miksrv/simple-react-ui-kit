@@ -1,5 +1,15 @@
 # simple-react-ui-kit
 
+## 1.3.7
+
+### Patch Changes
+
+- Migrated from React 18 to React 19
+- Updated Storybook libraries
+- Updated UI dependencies
+- Added new property `closeOnSelect` for the `MultiSelect` component
+- Improved story for the `MultiSelect` component
+
 ## 1.3.6
 
 ### Patch Changes

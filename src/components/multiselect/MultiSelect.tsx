@@ -23,6 +23,8 @@ export interface MultiSelectProps<T> {
     disabled?: boolean
     /** Show loading spinner */
     loading?: boolean
+    /** Whether to close the dropdown when an option is selected */
+    closeOnSelect?: boolean
     /** Placeholder text to display when no option is selected */
     placeholder?: string
     /** Text to display in the options list if there are no options or nothing found */
@@ -47,6 +49,7 @@ const MultiSelect = <T,>({
     options,
     disabled,
     loading,
+    closeOnSelect,
     value,
     placeholder,
     notFoundCaption,
@@ -141,6 +144,10 @@ const MultiSelect = <T,>({
 
         setSearch('')
         onSearch?.('')
+
+        if (closeOnSelect) {
+            setIsOpen(false)
+        }
     }
 
     const handleRemoveOption = (option?: DropdownOption<T>) => {
