@@ -608,6 +608,7 @@ Check out the full documentation and examples in Storybook: [MultiSelect Compone
 - **`required`**: Marks the dropdown as required.
 - **`disabled`**: Disables the dropdown, preventing user interaction.
 - **`loading`**: Indicates a loading state, displaying a spinner while data is being fetched or processed.
+- **`closeOnSelect`**: Whether to close the dropdown when an option is selected.
 - **`notFoundCaption`**: Text to display in the options list if no options are found after a search.
 
 #### Example Usage:
