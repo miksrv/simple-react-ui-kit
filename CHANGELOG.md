@@ -1,5 +1,13 @@
 # simple-react-ui-kit
 
+## 1.3.8
+
+### Patch Changes
+
+- Fixed Popout component useRef
+- Changed yarn version from 4.5.0 to 4.8.1
+- Updated UI Libraries
+
 ## 1.3.7
 
 ### Patch Changes
