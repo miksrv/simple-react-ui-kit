@@ -47,11 +47,11 @@ const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
         }
 
         const handleClickOutside = (event: MouseEvent) => {
-            if (popoutRef.current && !popoutRef.current.contains(event.target as Node)) {
+            if (popoutRef?.current && !popoutRef?.current?.contains(event.target as Node)) {
                 close()
             }
 
-            if (popoutChildrenRef.current && !popoutChildrenRef.current.contains(event.target as Node)) {
+            if (popoutChildrenRef?.current && !popoutChildrenRef?.current?.contains(event.target as Node)) {
                 close()
             }
         }
