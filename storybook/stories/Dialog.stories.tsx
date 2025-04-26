@@ -29,12 +29,6 @@ const Template: StoryFn<DialogProps> = (args) => {
                 open={isOpen}
                 parentRef={parentRef}
                 onCloseDialog={handleClose}
-                actions={
-                    <>
-                        <Button onClick={() => alert('Action 1 clicked!')}>Action 1</Button>
-                        <Button onClick={() => alert('Action 2 clicked!')}>Action 2</Button>
-                    </>
-                }
             >
                 <p>This is the dialog content!</p>
                 <Button onClick={handleClose}>Close Dialog</Button>

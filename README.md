@@ -52,6 +52,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Checkbox](#checkbox)
     - [Container](#container)
     - [Dropdown](#dropdown)
+    - [Dialog](#dialog)
     - [Icon](#icon)
     - [Input](#input)
     - [Message](#message)
@@ -419,6 +420,70 @@ In this example:
 - A clearable dropdown is demonstrated, allowing users to reset their selection.
 
 For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-dropdown--docs).
+</details>
+
+### Dialog
+
+The `Dialog` component provides a customizable modal dialog for displaying content, actions, and headers. It supports features such as a backdrop overlay, configurable dimensions, a back button, and a close button. The component is designed to be flexible and accessible, with support for custom actions and responsive positioning.
+
+<details>
+  <summary>Dialog Component Example</summary>
+
+Check out the full documentation and examples in Storybook: [Dialog Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-dialog--docs).
+
+#### Props:
+- **`open`**: Controls whether the dialog is open or closed.
+- **`header`**: Header text for the dialog.
+- **`contentHeight`**: Height of the dialog content (e.g., `300px`).
+- **`maxWidth`**: Maximum width of the dialog (e.g., `500px`).
+- **`backLinkCaption`**: Caption for the back button.
+- **`showBackLink`**: Determines if the back button is displayed.
+- **`showCloseButton`**: Determines if the close button is displayed.
+- **`parentRef`**: Reference to the parent element for positioning the dialog.
+- **`children`**: Content to be displayed inside the dialog.
+- **`onBackClick`**: Callback function triggered when the back button is clicked.
+- **`onCloseDialog`**: Callback function triggered when the dialog is closed.
+
+#### Example Usage:
+
+```tsx
+import React, { useState, useRef } from 'react';
+import { Dialog, Button } from 'simple-react-ui-kit';
+
+const App = () => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const parentRef = useRef<HTMLDivElement | null>(null);
+
+    return (
+        <div ref={parentRef} style={{ position: 'relative', height: '300px' }}>
+            <Button onClick={() => setIsDialogOpen(true)}>Open Dialog</Button>
+            <Dialog
+                open={isDialogOpen}
+                header="Dialog Header"
+                contentHeight="200px"
+                maxWidth="400px"
+                backLinkCaption="Back"
+                showBackLink
+                parentRef={parentRef}
+                onBackClick={() => alert('Back button clicked!')}
+                onCloseDialog={() => setIsDialogOpen(false)}
+            >
+                <p>This is the dialog content!</p>
+                <Button onClick={() => setIsDialogOpen(false)}>Close Dialog</Button>
+            </Dialog>
+        </div>
+    );
+};
+
+export default App;
+```
+
+In this example:
+- The `Dialog` is opened and closed using the `isDialogOpen` state.
+- The `backLinkCaption` and `showBackLink` props enable a back button with a custom caption.
+- The dialog is positioned relative to the `parentRef` container.
+
+For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-dialog--docs).
 </details>
 
 ### Icon
@@ -1022,8 +1087,10 @@ To customize the theme, simply override the default values in your stylesheet:
     --text-color-secondary-hover: #939CA9;
 
     /* Layout and Containers */
-    --body-background: #ebedf0;
     --border-radius: 4px;
+    --body-background: #ebedf0;
+    --modal-background: #ffffff;
+    --overlay-background: rgba(242, 243, 252, 0.7);
     --container-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
     --container-background-color: #ffffff;
     --container-error-background-color: #FFE9E9;

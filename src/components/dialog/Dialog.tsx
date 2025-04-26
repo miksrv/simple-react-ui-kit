@@ -23,11 +23,10 @@ export interface DialogProps extends React.HTMLAttributes<HTMLDialogElement> {
     backLinkCaption?: string
     /** Determines if the backlink button is displayed */
     showBackLink?: boolean
+    /** Determines if the close button is displayed */
     showCloseButton?: boolean
     /** Reference to the parent element for positioning the dialog */
     parentRef?: React.RefObject<HTMLElement | null>
-    /** Actions to be displayed in the dialog header */
-    actions?: React.ReactNode
     /** Content to be displayed inside the dialog */
     children?: React.ReactNode
     /** Callback function triggered when the backlink is clicked */

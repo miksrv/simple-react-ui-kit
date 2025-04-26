@@ -1,11 +1,17 @@
-# simple-react-ui-kit
+# CHANGELOG
 
 ## 1.4.0
 
-### Patch Changes
+### Minor Changes
 
+- Implemented new Dialog UI Component
+- Implemented new internal Overlay Component
+- Added new variables for CSS Vars (--modal-background, --overlay-background)
+- Created Story for UI Dialog
+- Updated README
 - Upgraded yarn version from `4.8.1` to `4.9.1`
-- Upgraded yarn version from `4.8.1` to `4.9.1`
+- Upgraded UI Libraries
+- Upgraded Storybook Libraries
 
 ## 1.3.8
 
