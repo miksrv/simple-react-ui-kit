@@ -1,5 +1,12 @@
 # simple-react-ui-kit
 
+## 1.4.0
+
+### Patch Changes
+
+- Upgraded yarn version from `4.8.1` to `4.9.1`
+- Upgraded yarn version from `4.8.1` to `4.9.1`
+
 ## 1.3.8
 
 ### Patch Changes
