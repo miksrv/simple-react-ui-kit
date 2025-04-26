@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { cn } from '../../utils'
-import Button from '../button'
 import Icon from '../icon'
 import Overlay from '../overlay'
 
@@ -102,9 +101,7 @@ const Dialog: React.FC<DialogProps> = ({
                                 </button>
                             )}
 
-                            {title && (
-                                <h2>{title}</h2>
-                            )}
+                            {title && <h2>{title}</h2>}
 
                             {showCloseButton && (
                                 <button
