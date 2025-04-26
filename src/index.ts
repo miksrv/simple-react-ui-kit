@@ -10,6 +10,10 @@ export type { ButtonProps } from './components/button'
 export { default as Checkbox } from './components/checkbox'
 export type { CheckboxProps } from './components/checkbox'
 
+// Dialog Component
+export { default as Dialog } from './components/dialog'
+export type { DialogProps } from './components/dialog'
+
 // Container Component
 export { default as Container } from './components/container'
 export type { ContainerProps } from './components/container'

@@ -1,0 +1,25 @@
+@use '../../styles/animations' as animations
+
+.overlay
+    position: fixed
+    top: 0
+    left: 0
+    min-height: 100vh
+    height: 100%
+    width: 100%
+    z-index: 500
+    background: var(--overlay-background)
+
+    &.noInitialized
+        opacity: 0
+        visibility: hidden
+
+    &.hidden
+        opacity: 0
+        visibility: hidden
+        animation: animation-fadeOut .3s ease
+
+    &.displayed
+        opacity: 1
+        visibility: visible
+        animation: animation-fadeIn .3s ease
