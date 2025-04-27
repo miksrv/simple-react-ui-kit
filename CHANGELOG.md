@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.4.1
+
+### Patch Changes
+
+- Calls onCloseDialog when Escape key is pressed and dialog is open
+
 ## 1.4.0
 
 ### Minor Changes
