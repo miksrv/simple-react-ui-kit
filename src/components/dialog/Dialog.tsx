@@ -72,6 +72,27 @@ const Dialog: React.FC<DialogProps> = ({
         }
     }, [open])
 
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape' && open) {
+                onCloseDialog?.()
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+
+        if (open) {
+            handleResize()
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = 'auto'
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [open, onCloseDialog])
+
     return (
         <>
             <Overlay

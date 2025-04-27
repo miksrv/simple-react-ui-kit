@@ -20,6 +20,10 @@ describe('Dialog Component', () => {
         children: <div>Dialog Content</div>
     }
 
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('renders the dialog when open is true', () => {
         render(
             <Dialog
@@ -177,5 +181,80 @@ describe('Dialog Component', () => {
         dialogElement.style.top = expectedTop
 
         expect(dialogElement).toHaveStyle(`top: ${expectedTop}`)
+    })
+
+    it('calls onCloseDialog when Escape key is pressed and dialog is open', () => {
+        const onCloseDialogMock = jest.fn()
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+                onCloseDialog={onCloseDialogMock}
+            />
+        )
+
+        fireEvent.keyDown(document, { key: 'Escape' })
+
+        expect(onCloseDialogMock).toHaveBeenCalled()
+    })
+
+    it('does not call onCloseDialog when Escape key is pressed and dialog is closed', () => {
+        const onCloseDialogMock = jest.fn()
+        render(
+            <Dialog
+                {...defaultProps}
+                open={false}
+                onCloseDialog={onCloseDialogMock}
+            />
+        )
+
+        fireEvent.keyDown(document, { key: 'Escape' })
+
+        expect(onCloseDialogMock).not.toHaveBeenCalled()
+    })
+
+    it('sets body overflow to hidden when dialog is open', () => {
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+
+        expect(document.body.style.overflow).toBe('hidden')
+    })
+
+    it('resets body overflow to auto when dialog is closed', () => {
+        const { rerender } = render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+        expect(document.body.style.overflow).toBe('hidden')
+
+        rerender(
+            <Dialog
+                {...defaultProps}
+                open={false}
+            />
+        )
+        expect(document.body.style.overflow).toBe('auto')
+    })
+
+    it('removes keydown event listener on unmount', () => {
+        const addEventListenerSpy = jest.spyOn(document, 'addEventListener')
+        const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener')
+
+        const { unmount } = render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+        expect(addEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
+
+        unmount()
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
     })
 })
