@@ -1,11 +1,13 @@
 import React from 'react'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Table, { ColumnProps } from './Table'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom/jest-globals'
+import '@testing-library/jest-dom'
+
+import styles from './styles.module.sass'
 
 interface TestData {
     id: number
@@ -13,7 +15,7 @@ interface TestData {
     age: number
 }
 
-const columns: ColumnProps<TestData>[] = [
+const columns: Array<ColumnProps<TestData>> = [
     { header: 'ID', accessor: 'id', isSortable: true },
     { header: 'Name', accessor: 'name', isSortable: true },
     { header: 'Age', accessor: 'age', isSortable: true }
@@ -107,7 +109,7 @@ describe('Table Component', () => {
     })
 
     it('applies formatter function to the cell value', () => {
-        const columnsWithFormatter: ColumnProps<TestData>[] = [
+        const columnsWithFormatter: Array<ColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', formatter: (value) => `Name: ${value}`, isSortable: true },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -126,7 +128,7 @@ describe('Table Component', () => {
     })
 
     it('applies background color function to the cell', () => {
-        const columnsWithBackground: ColumnProps<TestData>[] = [
+        const columnsWithBackground: Array<ColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             {
                 header: 'Name',
@@ -152,7 +154,7 @@ describe('Table Component', () => {
     })
 
     it('does not sort when the column is not sortable', () => {
-        const columnsWithNonSortable: ColumnProps<TestData>[] = [
+        const columnsWithNonSortable: Array<ColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', isSortable: false },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -175,7 +177,7 @@ describe('Table Component', () => {
     })
 
     it('displays skeletons when loading is true', () => {
-        const columns: ColumnProps<TestData>[] = [
+        const columns: Array<ColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', isSortable: true },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -195,7 +197,7 @@ describe('Table Component', () => {
     })
 
     it('displays no data message when there is no data', () => {
-        const columns: ColumnProps<TestData>[] = [
+        const columns: Array<ColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', isSortable: true },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -213,7 +215,7 @@ describe('Table Component', () => {
     })
 
     it('renders columns based on the hidden property', () => {
-        const columnsWithHidden: ColumnProps<TestData>[] = [
+        const columnsWithHidden: Array<ColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', isSortable: true, hidden: true },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -230,5 +232,41 @@ describe('Table Component', () => {
 
         expect(screen.getByText('ID')).toBeInTheDocument()
         expect(screen.getByText('Age')).toBeInTheDocument()
+    })
+
+    it('applies the correct size class when size is small', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                size='small'
+            />
+        )
+        const tableElement = container.querySelector('table')
+        expect(tableElement).toHaveClass(styles.small)
+    })
+
+    it('applies the correct size class when size is medium', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                size='medium'
+            />
+        )
+        const tableElement = container.querySelector('table')
+        expect(tableElement).toHaveClass(styles.medium)
+    })
+
+    it('applies the correct size class when size is large', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                size='large'
+            />
+        )
+        const tableElement = container.querySelector('table')
+        expect(tableElement).toHaveClass(styles.large)
     })
 })
