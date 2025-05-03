@@ -1,5 +1,6 @@
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
+import jestPlugin from 'eslint-plugin-jest'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import importPlugin from 'eslint-plugin-import'
@@ -16,6 +17,7 @@ export default defineConfig([
             ['react']: reactPlugin,
             ['react-hooks']: reactHooksPlugin,
             ['import']: importPlugin,
+            ['jest']: jestPlugin,
             ['prettier']: prettierPlugin,
             ['simple-import-sort']: simpleImportSortPlugin,
             // ['jest']: jestPlugin,
@@ -323,6 +325,30 @@ export default defineConfig([
                     ],
                 },
             ],
+
+            //
+            // jest
+            //
+            // ✅ Prevent disabled tests
+            'jest/no-disabled-tests': 'warn',
+            // ✅ Prevent focused tests (like .only)
+            'jest/no-focused-tests': 'error',
+            // ✅ Ensure expect() is called in a test
+            'jest/valid-expect': 'error',
+            // ✅ Avoid identical titles in tests
+            'jest/no-identical-title': 'error',
+            // ✅ Warn about large snapshots
+            'jest/no-large-snapshots': ['warn', { maxSize: 50 }],
+            // ✅ Disallow hooks outside describing
+            'jest/no-hooks': ['error', { allow: ['beforeEach', 'afterEach'] }],
+            // ✅ Prefer toHaveLength over comparing .length
+            'jest/prefer-to-have-length': 'warn',
+            // ✅ Prefer using toBeNull, toBeUndefined, etc.
+            'jest/prefer-to-be': 'warn',
+            // ✅ Prefer using toContain() over indexOf
+            'jest/prefer-to-contain': 'warn',
+            // ✅ Suggest using toStrictEqual
+            'jest/prefer-strict-equal': 'warn',
         },
     },
 ])
