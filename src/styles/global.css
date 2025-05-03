@@ -1,5 +1,10 @@
 /* global.css */
 :root {
+    /* Element Heights for `size` props */
+    --size-small: 24px;
+    --size-medium: 28px;
+    --size-large: 32px;
+
     /* Primary Colors */
     --color-contrast: #ffffff;
 
@@ -19,14 +24,14 @@
     --color-red-background: #ffdddd; /* For dark: #522e2e */
 
     --color-main: #2688eb;
-    --color-main-hover: #2483e4;
+    --color-main-hover: #4c96ea;
     --color-main-active: #237edd;
     --color-main-background: #d6eaff; /* For dark: #3c4957 */
 
     /* Text and Typography */
     --font-size: 14px;
-    --font-size-small: 13px;
-    --font-family: -apple-system, system-ui, 'Helvetica Neue', Roboto, sans-serif;
+    --font-size-small: 12px;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI (Custom)", Roboto, "Helvetica Neue", "Open Sans (Custom)", system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     --text-color-primary: rgba(0, 0, 0, 0.9);
     --text-color-secondary: #818c99;
     --text-color-secondary-hover: #939CA9;
@@ -50,7 +55,7 @@
     --input-background-color: #f2f3f5;
     --input-label-color: #6d7885;
     --input-border: 0.5px solid var(--input-border-color);
-    --input-border-color: #cbcccd;
+    --input-border-color: #e0e1e7;
     --input-border-focus-color: var(--color-main);
     /*--input-background-content: #ffffff;*/
 
@@ -77,10 +82,10 @@
     --popout-shadow: 0 0 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.08);
 
     /* Table */
-    --table-font-size: var(--font-size-small);
-    --table-header-background: #f2f3f5;
+    --table-header-background: #f9f9fb;
     --table-header-background-hover: rgba(255, 255, 255, 0.1);
     --table-border-color: var(--input-border-color);
+    --table-row-box-shadow: inset 0 -1px var(--input-border-color);
 
     /* Skeleton */
     --skeleton-background-animation: linear-gradient( 90deg, transparent, rgba(0, 0, 0, 0.04), transparent);
