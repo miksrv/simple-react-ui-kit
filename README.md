@@ -136,6 +136,7 @@ Check out the full documentation and examples in Storybook: [Badge Component Sto
 - **`key`**: A unique key for identifying the badge (optional).
 - **`label`**: The text content inside the badge.
 - **`icon`**: An optional icon to display alongside the badge text.
+- **`size`**: Size of the badge (`small`, `medium`, `large`).
 - **`onClickRemove`**: A callback function to handle removal of the badge. This is triggered when the remove button is clicked.
 
 #### Example Usage:
@@ -183,7 +184,7 @@ Check out the full documentation and examples in Storybook: [Button Component St
 - **`noIndex`**: Prevents search engines from indexing the button when used as a link.
 - **`stretched`**: If `true`, the button takes the full width of the container.
 - **`loading`**: Shows a loading spinner instead of button content.
-- **`size`**: Controls button size (`small`, `medium`).
+- **`size`**: Controls button size (`small`, `medium`, `large`).
 - **`mode`**: Visual style of the button (`primary`, `secondary`, `outline`, `link`).
 - **`variant`**: Variant for styling (`positive`, `negative`).
 - **`icon`**: Displays an icon inside the button.
@@ -373,8 +374,9 @@ Check out the full documentation and examples in Storybook: [Dropdown Component 
 - **`searchable`**: Allow searching within options.
 - **`loading`**: Show loading spinner.
 - **`placeholder`**: Placeholder text shown when no option is selected.
-- **`notFoundCaption`**: Text to display in the options list if there are no options or nothing found.
+- **`notFoundCaption`**: Text to display in the option list if there are no options or nothing found.
 - **`label`**: Label text for the dropdown.
+- **`size`**: Dropdown size (`small`, `medium`, `large`).
 - **`error`**: Error message shown for validation errors.
 - **`value`**: Currently selected value (key) in the dropdown.
 - **`onSelect`**: Callback function triggered when an option is selected.
@@ -551,6 +553,7 @@ Check out the full documentation and examples in Storybook: [Input Component Sto
 
 #### Props:
 - **`label`**: Optional label text displayed above the input field.
+- **`size`**: Size of the input field, can be `small`, `medium` or `large`.
 - **`error`**: Error message displayed below the input field, used for validation feedback.
 - **`className`**: Additional class names for custom styling.
 - **`required`**: Marks the input as required.
@@ -897,20 +900,16 @@ Explore the full documentation and examples in Storybook: [Table Component Story
 #### Props:
 
 - **`data`**: An optional array of data objects to be displayed in the table. Each object corresponds to a row in the table.
-
+- **`size`**: Size of the table columns and rows, can be `small`, `medium` or `large`.
 - **`defaultSort`**: An optional configuration object for default sorting behavior. It defines the key and direction (ascending or descending) for initial sorting.
-
 - **`className`**: Additional class names for custom styling, allowing you to integrate your CSS styles.
-
 - **`height`**: Specifies the table height in pixels or allows auto height if set to `null`.
-
+- **`maxHeight`**: The maximum height of the table, if there is little data, the table will not stretch.
 - **`columns`**: An array defining the column configurations, including header content, accessor keys, sortability, and custom formatters.
-
 - **`loading`**: A boolean that indicates whether the table is in a loading state. When `true`, skeleton placeholders are displayed instead of data.
-
 - **`stickyHeader`**: A boolean that, when set to `true`, keeps the table header fixed at the top during scrolling.
-
 - **`verticalBorder`**: A boolean to control the visibility of vertical borders between columns for improved readability.
+- **`noDataCaption`**: Text to display when there is no data available in the table.
 
 #### Example Usage:
 
@@ -1055,6 +1054,11 @@ To customize the theme, simply override the default values in your stylesheet:
 
 ```css
 :root {
+    /* Element Heights for `size` props */
+    --size-small: 24px;
+    --size-medium: 28px;
+    --size-large: 32px;
+
     /* Primary Colors */
     --color-contrast: #ffffff;
 
@@ -1074,14 +1078,14 @@ To customize the theme, simply override the default values in your stylesheet:
     --color-red-background: #ffdddd; /* For dark: #522e2e */
 
     --color-main: #2688eb;
-    --color-main-hover: #2483e4;
+    --color-main-hover: #4c96ea;
     --color-main-active: #237edd;
     --color-main-background: #d6eaff; /* For dark: #3c4957 */
 
     /* Text and Typography */
     --font-size: 14px;
     --font-size-small: 13px;
-    --font-family: -apple-system, system-ui, 'Helvetica Neue', Roboto, sans-serif;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI (Custom)", Roboto, "Helvetica Neue", "Open Sans (Custom)", system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     --text-color-primary: rgba(0, 0, 0, 0.9);
     --text-color-secondary: #818c99;
     --text-color-secondary-hover: #939CA9;
@@ -1105,7 +1109,7 @@ To customize the theme, simply override the default values in your stylesheet:
     --input-background-color: #f2f3f5;
     --input-label-color: #6d7885;
     --input-border: 0.5px solid var(--input-border-color);
-    --input-border-color: #cbcccd;
+    --input-border-color: #e0e1e7;
     --input-border-focus-color: var(--color-main);
 
     /* Buttons */
@@ -1131,10 +1135,10 @@ To customize the theme, simply override the default values in your stylesheet:
     --popout-shadow: 0 0 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.08);
 
     /* Table */
-    --table-font-size: var(--font-size-small);
-    --table-header-background: #f2f3f5;
+    --table-header-background: #f9f9fb;
     --table-header-background-hover: rgba(255, 255, 255, 0.1);
     --table-border-color: var(--input-border-color);
+    --table-row-box-shadow: inset 0 -1px var(--input-border-color);
 
     /* Skeleton */
     --skeleton-background-animation: linear-gradient( 90deg, transparent, rgba(0, 0, 0, 0.04), transparent );
