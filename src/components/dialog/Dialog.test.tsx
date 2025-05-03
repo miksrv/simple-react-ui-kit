@@ -257,4 +257,27 @@ describe('Dialog Component', () => {
         unmount()
         expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
     })
+
+    it('renders the overlay when showOverlay is true', () => {
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+        const overlayElement = document.body.querySelector('[data-overlay-id="dialog-overlay"]')
+        expect(overlayElement).toBeInTheDocument()
+    })
+
+    it('does not render the overlay when showOverlay is false', () => {
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+                showOverlay={false}
+            />
+        )
+        const overlayElement = document.body.querySelector('[data-overlay-id="dialog-overlay"]')
+        expect(overlayElement).not.toBeInTheDocument()
+    })
 })
