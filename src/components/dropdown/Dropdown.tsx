@@ -45,7 +45,7 @@ export interface DropdownProps<T> extends Pick<ButtonProps, 'size' | 'mode'> {
     loading?: boolean
     /** Placeholder text to display when no option is selected */
     placeholder?: string
-    /** Text to display in the options list if there are no options or nothing found */
+    /** Text to display in the option list if there are no options or nothing found */
     notFoundCaption?: string
     /** Label text for the dropdown */
     label?: string
@@ -205,8 +205,8 @@ const Dropdown = <T,>({
             >
                 {!searchable && (
                     <Button
-                        size={props?.size ?? 'small'}
-                        mode={props?.mode ?? 'secondary'}
+                        size={props?.size || 'medium'}
+                        mode={props?.mode || 'primary'}
                         variant={error ? 'negative' : undefined}
                         disabled={disabled}
                         onClick={toggleDropdown}
