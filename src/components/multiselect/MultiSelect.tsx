@@ -16,7 +16,7 @@ export interface MultiSelectProps<T> {
     /** Additional class names for custom styling */
     className?: string
     /** Array of options to display in the dropdown */
-    options?: DropdownOption<T>[]
+    options?: Array<DropdownOption<T>>
     /** Mark the dropdown as required */
     required?: boolean
     /** Disable the dropdown */
@@ -36,7 +36,7 @@ export interface MultiSelectProps<T> {
     /** Current selected value (key) in the dropdown */
     value?: T[]
     /** Callback function triggered when an option is selected */
-    onSelect?: (selectedOptions: DropdownOption<T>[] | undefined) => void
+    onSelect?: (selectedOptions: Array<DropdownOption<T>> | undefined) => void
     /** Callback function triggered when a search is made */
     onSearch?: (text?: string) => void
     /** Callback function triggered when the dropdown is opened */
@@ -65,7 +65,7 @@ const MultiSelect = <T,>({
     const [optionsListTop, setOptionsListTop] = useState<number>(30)
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [isFocused, setIsFocused] = useState<boolean>(false)
-    const [selectedOption, setSelectedOption] = useState<DropdownOption<T>[] | undefined>(undefined)
+    const [selectedOption, setSelectedOption] = useState<Array<DropdownOption<T>> | undefined>(undefined)
 
     const optionInValue = (option?: DropdownOption<T>): boolean =>
         option?.key ? !!value?.includes(option?.key) : false

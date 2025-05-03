@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 
-import { Icon, iconNames, IconTypes } from '../../src'
-
 import { Meta, StoryFn } from '@storybook/react'
+
+import { Icon, iconNames, IconTypes } from '../../src'
 
 const meta: Meta = {
     title: 'Components/Icon',
     component: Icon,
-    argTypes: {
-        fill: { control: 'color' } // Color control for changing the icon's fill
-    }
+    argTypes: { fill: { control: 'color' } } // Color control for changing the icon's fill
 }
 
 export default meta
@@ -19,8 +17,8 @@ export const AllIcons: StoryFn = ({ fill }) => {
     const [copied, setCopied] = useState<string | null>(null) // State to track the last copied icon name
 
     // Function to copy icon name to clipboard
-    const copyToClipboard = (name: string) => {
-        navigator.clipboard.writeText(name) // Copy the icon name
+    const copyToClipboard = async (name: string) => {
+        await navigator.clipboard.writeText(name) // Copy the icon name
         setCopied(name) // Update the state with the copied icon name
         setTimeout(() => setCopied(null), 2000) // Clear the copied state after 2 seconds
     }

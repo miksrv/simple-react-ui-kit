@@ -1,8 +1,6 @@
-import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Spinner, SpinnerProps } from '../../src'
-
-import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<SpinnerProps> = {
     title: 'Components/Spinner',
@@ -12,20 +10,42 @@ const meta: Meta<SpinnerProps> = {
 export default meta
 
 const Template: StoryFn<SpinnerProps> = (args) => (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+    <div
+        style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '20px'
+        }}
+    >
         {/* Spinner with different sizes */}
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <div
+            style={{
+                display: 'flex',
+                gap: '10px',
+                alignItems: 'center'
+            }}
+        >
             <Spinner
                 className={args.className}
-                style={{ width: 30, height: 30 }}
+                style={{
+                    width: 30,
+                    height: 30
+                }}
             />
             <Spinner
                 className={args.className}
-                style={{ width: 50, height: 50 }}
+                style={{
+                    width: 50,
+                    height: 50
+                }}
             />
             <Spinner
                 className={args.className}
-                style={{ width: 70, height: 70 }}
+                style={{
+                    width: 70,
+                    height: 70
+                }}
             />
         </div>
 
@@ -42,7 +62,10 @@ const Template: StoryFn<SpinnerProps> = (args) => (
         >
             <Spinner
                 className={args.className}
-                style={{ width: 20, height: 20 }}
+                style={{
+                    width: 20,
+                    height: 20
+                }}
             />
             <span style={{ color: '#fff' }}>Loading...</span>
         </div>
@@ -61,7 +84,10 @@ const Template: StoryFn<SpinnerProps> = (args) => (
         >
             <Spinner
                 className={args.className}
-                style={{ width: 20, height: 20 }}
+                style={{
+                    width: 20,
+                    height: 20
+                }}
             />
             <span>Loading...</span>
         </div>
@@ -69,6 +95,4 @@ const Template: StoryFn<SpinnerProps> = (args) => (
 )
 
 export const Default = Template.bind({})
-Default.args = {
-    className: 'custom-spinner'
-}
+Default.args = { className: 'custom-spinner' }

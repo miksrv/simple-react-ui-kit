@@ -1,11 +1,13 @@
 import React from 'react'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Input, { InputProps } from './Input'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom/jest-globals'
+import '@testing-library/jest-dom'
+
+import styles from './styles.module.sass'
 
 describe('Input Component', () => {
     const defaultProps: InputProps = {
@@ -91,5 +93,38 @@ describe('Input Component', () => {
         )
         const inputContainer = screen.getByText(/Username/i).closest('div')
         expect(inputContainer).toHaveClass('error')
+    })
+
+    it('applies the correct size class when size is small', () => {
+        const { container } = render(
+            <Input
+                {...defaultProps}
+                size='small'
+            />
+        )
+        const inputContainer = container.querySelector('div')
+        expect(inputContainer).toHaveClass(styles.small)
+    })
+
+    it('applies the correct size class when size is medium', () => {
+        const { container } = render(
+            <Input
+                {...defaultProps}
+                size='medium'
+            />
+        )
+        const inputContainer = container.querySelector('div')
+        expect(inputContainer).toHaveClass(styles.medium)
+    })
+
+    it('applies the correct size class when size is large', () => {
+        const { container } = render(
+            <Input
+                {...defaultProps}
+                size='large'
+            />
+        )
+        const inputContainer = container.querySelector('div')
+        expect(inputContainer).toHaveClass(styles.large)
     })
 })

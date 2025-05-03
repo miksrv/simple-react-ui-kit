@@ -7,6 +7,7 @@ import Spinner from '../spinner'
 
 import ClearButton from './ClearButton'
 import OptionsList from './OptionsList'
+
 import styles from './styles.module.sass'
 
 /**
@@ -32,7 +33,7 @@ export interface DropdownProps<T> extends Pick<ButtonProps, 'size' | 'mode'> {
     /** Additional class names for custom styling */
     className?: string
     /** Array of options to display in the dropdown */
-    options?: DropdownOption<T>[]
+    options?: Array<DropdownOption<T>>
     /** Mark the dropdown as required */
     required?: boolean
     /** Disable the dropdown */
@@ -45,7 +46,7 @@ export interface DropdownProps<T> extends Pick<ButtonProps, 'size' | 'mode'> {
     loading?: boolean
     /** Placeholder text to display when no option is selected */
     placeholder?: string
-    /** Text to display in the options list if there are no options or nothing found */
+    /** Text to display in the option list if there are no options or nothing found */
     notFoundCaption?: string
     /** Label text for the dropdown */
     label?: string
@@ -205,8 +206,8 @@ const Dropdown = <T,>({
             >
                 {!searchable && (
                     <Button
-                        size={props?.size ?? 'small'}
-                        mode={props?.mode ?? 'secondary'}
+                        size={props?.size || 'medium'}
+                        mode={props?.mode || 'primary'}
                         variant={error ? 'negative' : undefined}
                         disabled={disabled}
                         onClick={toggleDropdown}

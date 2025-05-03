@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { ElementSizeType } from '../../types'
 import { cn } from '../../utils'
 import Icon from '../icon'
 import Skeleton from '../skeleton'
@@ -37,6 +38,8 @@ export interface ColumnProps<T> {
 export interface TableProps<T> {
     /** Data to be displayed in the table */
     data?: T[]
+    /** Size (height) of the table rows */
+    size?: ElementSizeType
     /** Default sorting configuration for the table */
     defaultSort?: SortConfig<T>
     /** Additional class names for custom styling */
@@ -50,8 +53,8 @@ export interface TableProps<T> {
      * In summary: height is used if the container needs to be strictly fixed in height, and maxHeight - if it is not critical
      * that the height of the container will change dynamically up to the maximum value */
     maxHeight?: number | null
-    /** Columns configuration for the table */
-    columns?: ColumnProps<T>[]
+    /** Column configuration for the table */
+    columns?: Array<ColumnProps<T>>
     /** Whether the table is in loading state (displays skeletons) */
     loading?: boolean
     /** Whether the table header is sticky when scrolling */
@@ -62,6 +65,7 @@ export interface TableProps<T> {
 
 const Table = <T,>({
     data,
+    size = 'medium',
     defaultSort,
     className,
     noDataCaption,
@@ -110,7 +114,7 @@ const Table = <T,>({
             className={cn(className, styles.tableContainer, stickyHeader && styles.stickyHeader)}
             style={{ height: height || 'inherit', maxHeight: maxHeight || 'inherit' }}
         >
-            <table className={cn(styles.table, verticalBorder && styles.verticalBorder)}>
+            <table className={cn(styles.table, verticalBorder && styles.verticalBorder, size && styles[size])}>
                 <thead>
                     <tr>
                         {visibleColumns?.map((column) => (
@@ -171,7 +175,7 @@ const Table = <T,>({
                                     >
                                         {column.formatter
                                             ? column.formatter(row[column.accessor], sortedData, rowIndex)
-                                            : (row[column.accessor] as any)}
+                                            : (row[column.accessor] as React.ReactNode)}
                                     </td>
                                 ))}
                             </tr>

@@ -103,13 +103,16 @@ $iconSize: 18px
                     margin-right: 5px
                     float: left
 
+                    &:last-child
+                        margin-right: 0
+
                 &.value, &.placeholder
                     display: block
                     overflow: hidden
                     text-overflow: ellipsis
 
-                &.placeholder
-                    opacity: .8
+                    svg, img
+                        margin-right: 5px
 
         .searchContainer
             background-color: var(--input-background-color)
@@ -180,11 +183,9 @@ $iconSize: 18px
                 svg
                     width: $iconSize
                     height: $iconSize
-                    fill: var(--text-color-secondary)
 
                     &:hover
                         opacity: .7
-
 
         &.error
             .searchContainer

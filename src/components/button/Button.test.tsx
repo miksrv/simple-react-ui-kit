@@ -1,12 +1,12 @@
 import React from 'react'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
+import { fireEvent, screen } from '@testing-library/dom'
+import { render } from '@testing-library/react'
 
 import Button, { ButtonProps } from './Button'
 
-import { fireEvent, screen } from '@testing-library/dom'
-import { render } from '@testing-library/react'
+import '@testing-library/jest-dom/jest-globals'
+import '@testing-library/jest-dom'
 
 describe('Button Component', () => {
     const defaultProps: ButtonProps = {

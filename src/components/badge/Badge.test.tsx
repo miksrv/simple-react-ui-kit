@@ -1,10 +1,12 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Badge, { BadgeProps } from './Badge'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
+
+import styles from './styles.module.sass'
 
 describe('Badge Component', () => {
     const defaultProps: BadgeProps = {
@@ -60,5 +62,25 @@ describe('Badge Component', () => {
         render(<Badge {...defaultProps} />)
         const labelElement = screen.getByText(/Test Badge/i)
         expect(labelElement).toBeInTheDocument()
+    })
+
+    it('applies the correct size class based on the size prop', () => {
+        const { container } = render(
+            <Badge
+                {...defaultProps}
+                size={'large'}
+            />
+        )
+        const badgeElement = container.querySelector('div')
+        expect(badgeElement).toHaveClass(styles.large)
+
+        render(
+            <Badge
+                {...defaultProps}
+                size={'small'}
+            />
+        )
+        const smallBadgeElement = screen.getAllByText(/Test Badge/i)?.[1].parentElement
+        expect(smallBadgeElement).toHaveClass(styles.small)
     })
 })

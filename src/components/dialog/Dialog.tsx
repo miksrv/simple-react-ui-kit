@@ -20,6 +20,8 @@ export interface DialogProps extends React.HTMLAttributes<HTMLDialogElement> {
     maxWidth?: string
     /** Caption for the backlink button */
     backLinkCaption?: string
+    /** Determines if the overlay is displayed */
+    showOverlay?: boolean
     /** Determines if the backlink button is displayed */
     showBackLink?: boolean
     /** Determines if the close button is displayed */
@@ -40,6 +42,7 @@ const Dialog: React.FC<DialogProps> = ({
     contentHeight,
     maxWidth = '500px',
     backLinkCaption,
+    showOverlay = true,
     showBackLink,
     showCloseButton,
     parentRef,
@@ -95,12 +98,14 @@ const Dialog: React.FC<DialogProps> = ({
 
     return (
         <>
-            <Overlay
-                open={open}
-                parentRef={parentRef}
-                overlayId={'dialog-overlay'}
-                onClose={onCloseDialog}
-            />
+            {showOverlay && (
+                <Overlay
+                    open={open}
+                    parentRef={parentRef}
+                    overlayId={'dialog-overlay'}
+                    onClose={onCloseDialog}
+                />
+            )}
 
             {open && (
                 <dialog
@@ -111,7 +116,7 @@ const Dialog: React.FC<DialogProps> = ({
                     style={dialogStyle}
                 >
                     {(title || showBackLink || showCloseButton) && (
-                        <div className={styles.header}>
+                        <div className={cn(styles.header, !showBackLink && styles.noBackLink)}>
                             {showBackLink && (
                                 <button
                                     className={styles.innerButton}

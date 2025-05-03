@@ -1,8 +1,6 @@
-import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Container, ContainerProps } from '../../src'
-
-import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<ContainerProps> = {
     title: 'Components/Container',

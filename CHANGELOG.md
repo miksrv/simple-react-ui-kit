@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## 1.5.0
+
+### Minor Changes
+
+- Added type `ElementSizeType` for the size prop in all UI components
+- Added common `size` prop for the `Badge` component
+- Replaced `size` prop to the common type for the `Button` component
+- Updated `Badge` UI test cases
+- Added `showOverlay` with true default value for the `Dialog` component
+- Added test cases for the prop `showOverlay` for `Dialog` component
+- When `showBackLink` in `Dialog` is false (default), header has alignment to the left
+- Default medium size prop for the `Dropdown` component
+- Fixed margin for the left icon in the `Dropdown` component
+- Added common `size` prop for the `Input` component
+- Added new test cases for the `Input` component, covering the `size` prop
+- Added borders for the `Message` component
+- Added common `size` prop for the `Table` component
+- Added new test cases for the `Table` component, covering the `size` prop
+- Added new CSS variables for type `ElementSizeType` props `--size-small`, `--size-medium`, `--size-large`
+- Changed default CSS variable color for `--color-main-hover`, `--input-border-color`, `--table-header-background`
+- Added more common default fonts for `--font-family` CSS variable
+- Added new CSS variable `--table-row-box-shadow`
+- Removed CSS variable `--table-font-size`
+- Improved all stories for UI components
+- Updated README.md
+- Fixed code style for ESLint and Prettier
+
 ## 1.4.1
 
 ### Patch Changes

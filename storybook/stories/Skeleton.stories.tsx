@@ -1,8 +1,6 @@
-import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Skeleton, SkeletonProps } from '../../src'
-
-import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<SkeletonProps> = {
     title: 'Components/Skeleton',
@@ -46,6 +44,4 @@ const Template: StoryFn<SkeletonProps> = (args) => (
 )
 
 export const MultipleSizes = Template.bind({})
-MultipleSizes.args = {
-    className: 'custom-skeleton'
-}
+MultipleSizes.args = { className: 'custom-skeleton' }

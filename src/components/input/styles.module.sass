@@ -45,7 +45,33 @@
             &:focus, &:active
                 outline: none
                 border-color: var(--input-border-focus-color)
-                //box-shadow: rgba(25, 118, 210, 0.25) 0 0 0 0.05rem
+                box-shadow: rgba(var(--input-border-focus-color)) 0 0 0 0.05rem
+
+    &.small
+        *
+            font-size: var(--font-size-small)
+
+        .formField
+            .input
+                font-size: var(--font-size-small)
+                height: var(--size-small)
+                padding: 0 8px
+
+    &.medium
+        height: var(--size-medium)
+
+        .formField
+            .input
+                height: var(--size-medium)
+                padding: 0 12px
+
+    &.large
+        height: var(--size-large)
+
+        .formField
+            .input
+                height: var(--size-large)
+                padding: 0 16px
 
     &.disabled
         .label

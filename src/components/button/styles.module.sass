@@ -15,7 +15,7 @@
     cursor: pointer
     padding: 6px 10px
     border: 0
-    min-height: 28px
+    min-height: var(--size-small)
     display: flex
     align-content: center
     justify-content: center
@@ -24,8 +24,8 @@
     transition: background-color .15s ease-out, color .15s ease-out
 
     svg
-        width: 16px
-        height: 16px
+        width: 18px
+        height: 18px
         margin-right: 5px
         fill: var(--button-default-color)
 
@@ -50,21 +50,21 @@
         background-color: var(--button-default-background-active)
 
     &.small
-        padding: 6px 10px
-        height: 28px
-        line-height: 15px
+        height: var(--size-small)
+        font-size: var(--font-size-small)
+        padding: 6px 8px
 
         .loader
-            height: 16px
-            width: 16px
+            height: 14px
+            width: 14px
 
     &.medium
-        padding: 8px 10px
-        height: 34px
+        height: var(--size-medium)
+        padding: 6px 10px
 
-        svg
-            width: 18px
-            height: 18px
+    &.large
+        height: var(--size-large)
+        padding: 6px 16px
 
     &.primary
         background-color: var(--button-primary-background)
@@ -81,13 +81,14 @@
 
         &.negative
             background-color: var(--color-red)
-            color: var(--color-contrast) !important
+            color: var(--color-contrast)
 
             svg
-                fill: var(--color-red)
+                fill: var(--color-contrast)
 
             &:hover, &:focus
                 background-color: var(--color-red-hover)
+                color: var(--color-contrast)
 
             &:active
                 background-color: var(--color-red-active)
@@ -97,10 +98,11 @@
             color: var(--color-contrast) !important
 
             svg
-                fill: var(--color-green)
+                fill: var(--color-contrast)
 
             &:hover, &:focus
                 background-color: var(--color-green-hover)
+                color: var(--color-contrast)
 
             &:active
                 background-color: var(--color-green-active)

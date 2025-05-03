@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react'
 
-import { Button, Dialog, DialogProps } from '../../src'
-
 import { Meta, StoryFn } from '@storybook/react'
+
+import { Button, Dialog, DialogProps } from '../../src'
 
 const meta: Meta<DialogProps> = {
     title: 'Components/Dialog',
@@ -43,6 +43,7 @@ Default.args = {
     contentHeight: '200px',
     maxWidth: '400px',
     backLinkCaption: 'Back',
+    showOverlay: true,
     showBackLink: true,
     showCloseButton: true,
     onBackClick: () => alert('Back clicked!')

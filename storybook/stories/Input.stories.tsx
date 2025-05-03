@@ -1,8 +1,6 @@
-import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Input, InputProps } from '../../src'
-
-import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<InputProps> = {
     title: 'Components/Input',
@@ -11,6 +9,11 @@ const meta: Meta<InputProps> = {
         label: {
             control: 'text',
             description: 'Label for the input field'
+        },
+        size: {
+            control: { type: 'inline-radio' },
+            options: ['small', 'medium', 'large'],
+            table: { type: { summary: '"small", "medium", "large"' } }
         },
         error: {
             control: 'text',
@@ -38,6 +41,8 @@ const Template: StoryFn<InputProps> = (args) => <Input {...args} />
 export const DefaultInput = Template.bind({})
 DefaultInput.args = {
     label: 'Default Label',
+    size: 'medium',
+    error: '',
     placeholder: 'Enter text...'
 }
 

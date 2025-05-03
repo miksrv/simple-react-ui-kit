@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { ElementSizeType } from '../../types'
 import { cn } from '../../utils'
 import Icon, { IconTypes } from '../icon'
 import Spinner from '../spinner'
@@ -12,7 +13,7 @@ import styles from './styles.module.sass'
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     /** Additional class names for custom styling */
     className?: string
-    /** URL for link if button acts as a link */
+    /** URL for a link if the button acts as a link */
     link?: string
     /** Set to true to prevent search engines from indexing the button (if used as a link) */
     noIndex?: boolean
@@ -21,7 +22,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     /** Show loading spinner instead of button content */
     loading?: boolean
     /** Size of the button */
-    size?: 'small' | 'medium'
+    size?: ElementSizeType
     /** Visual style of the button */
     mode?: 'primary' | 'secondary' | 'outline' | 'link'
     /** Button variant for styling */
@@ -40,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
     noIndex,
     stretched,
     loading,
-    size,
+    size = 'medium',
     mode = 'primary',
     variant,
     icon,

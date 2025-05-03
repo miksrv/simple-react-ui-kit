@@ -1,10 +1,8 @@
-import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { ColumnProps, Table, TableProps } from '../../src'
 
-import { Meta, StoryFn } from '@storybook/react'
-
-const meta: Meta<TableProps<any>> = {
+const meta: Meta<TableProps<string>> = {
     title: 'Components/Table',
     component: Table,
     parameters: {
@@ -46,7 +44,7 @@ interface ExampleData {
     city: string
 }
 
-const columns: ColumnProps<ExampleData>[] = [
+const columns: Array<ColumnProps<ExampleData>> = [
     {
         header: 'ID',
         accessor: 'id',
@@ -85,6 +83,7 @@ Default.args = {
     columns: columns,
     className: 'custom-table',
     loading: false,
+    size: 'medium',
     stickyHeader: true,
     verticalBorder: true,
     defaultSort: { key: 'id', direction: 'asc' }

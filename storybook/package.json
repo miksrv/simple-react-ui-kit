@@ -23,6 +23,7 @@
         "@storybook/react": "^8.4.7",
         "@storybook/react-webpack5": "^8.4.7",
         "@storybook/test": "^8.4.7",
+        "react": "^19.1.0",
         "sass": "^1.83.0",
         "sass-loader": "^16.0.4",
         "storybook": "^8.4.7",

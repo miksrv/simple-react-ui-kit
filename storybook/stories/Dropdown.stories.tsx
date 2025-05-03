@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-import { Dropdown, DropdownOption, DropdownProps, iconNames } from '../../src'
-
 import { Meta, StoryFn } from '@storybook/react'
 
-const meta: Meta<DropdownProps<any>> = {
+import { Dropdown, DropdownOption, DropdownProps, iconNames } from '../../src'
+
+const meta: Meta<DropdownProps<string>> = {
     title: 'Components/Dropdown',
     component: Dropdown,
     argTypes: {
@@ -19,7 +19,7 @@ const meta: Meta<DropdownProps<any>> = {
 export default meta
 
 // Sample options with icons and text
-const options: DropdownOption<string>[] = [
+const options: Array<DropdownOption<string>> = [
     { key: 'apple', value: 'Heart Empty Icon', icon: iconNames.HeartEmpty },
     { key: 'banana', value: 'Simple Camera Icon', icon: iconNames.Camera },
     { key: 'cherry', value: 'Medal or Award Icon', icon: iconNames.Award },
@@ -30,7 +30,7 @@ const options: DropdownOption<string>[] = [
 export const Basic: StoryFn = (args) => {
     const [selectedOption, setSelectedOption] = useState<string | undefined>()
 
-    // Handle selection of dropdown option
+    // Handle selection of a dropdown option
     const handleSelect = (option: DropdownOption<string> | undefined) => {
         setSelectedOption(option?.key)
     }
@@ -49,12 +49,13 @@ export const Basic: StoryFn = (args) => {
 
 // Default values for controls in Storybook
 Basic.args = {
+    label: 'Label for dropdown',
     placeholder: 'Please select option',
+    size: 'medium',
     disabled: false,
     required: false,
     clearable: true,
-    searchable: false,
-    label: 'Label for dropdown'
+    searchable: false
 }
 
 // Searchable dropdown story
@@ -62,7 +63,7 @@ export const SearchableDropdown: StoryFn = (args) => {
     const [search, setSearch] = useState<string | undefined>('')
     const [selectedOption, setSelectedOption] = useState<string | undefined>()
 
-    // Handle selection of dropdown option
+    // Handle selection of a dropdown option
     const handleSelect = (option: DropdownOption<string> | undefined) => {
         setSelectedOption(option?.key)
     }

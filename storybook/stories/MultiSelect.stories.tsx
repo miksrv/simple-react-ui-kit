@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-import { DropdownOption, iconNames, MultiSelect, MultiSelectProps } from '../../src'
-
 import { Meta, StoryFn } from '@storybook/react'
 
-const meta: Meta<MultiSelectProps<any>> = {
+import { DropdownOption, iconNames, MultiSelect, MultiSelectProps } from '../../src'
+
+const meta: Meta<MultiSelectProps<string>> = {
     title: 'Components/MultiSelect',
     component: MultiSelect,
     argTypes: {
@@ -21,7 +21,7 @@ const meta: Meta<MultiSelectProps<any>> = {
 
 export default meta
 
-const options: DropdownOption<string>[] = [
+const options: Array<DropdownOption<string>> = [
     { key: 'apple', value: 'Heart Empty Icon', icon: iconNames.HeartEmpty },
     { key: 'banana', value: 'Simple Camera Icon', icon: iconNames.Camera },
     { key: 'cherry', value: 'Medal or Award Icon', icon: iconNames.Award },
@@ -31,9 +31,9 @@ const options: DropdownOption<string>[] = [
 
 export const Basic: StoryFn<MultiSelectProps<string>> = (args) => {
     const [search, setSearch] = useState<string | undefined>()
-    const [selectedOptions, setSelectedOptions] = useState<DropdownOption<string>[] | undefined>(undefined)
+    const [selectedOptions, setSelectedOptions] = useState<Array<DropdownOption<string>> | undefined>(undefined)
 
-    const handleSelect = (options: DropdownOption<string>[] | undefined) => {
+    const handleSelect = (options: Array<DropdownOption<string>> | undefined) => {
         setSelectedOptions(options)
     }
 

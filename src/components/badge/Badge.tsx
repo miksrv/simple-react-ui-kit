@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { ElementSizeType } from '../../types'
 import { cn } from '../../utils'
 import Icon, { IconTypes } from '../icon'
 
@@ -15,12 +16,14 @@ export interface BadgeProps {
     label?: string | number
     /** Icon to display alongside the badge label */
     icon?: IconTypes
+    /** Size of the badge */
+    size?: ElementSizeType
     /** Callback function to handle badge removal when the remove button is clicked */
     onClickRemove?: (key?: string | number) => void
 }
 
-const Badge: React.FC<BadgeProps> = ({ className, icon, label, onClickRemove }) => (
-    <div className={cn(className, styles.badge)}>
+const Badge: React.FC<BadgeProps> = ({ className, icon, size = 'medium', label, onClickRemove }) => (
+    <div className={cn(className, styles.badge, size && styles[size])}>
         {icon && <Icon name={icon} />}
         <span className={styles.content}>{label}</span>
         {onClickRemove && (
