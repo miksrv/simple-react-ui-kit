@@ -1,8 +1,8 @@
 import React, { useRef } from 'react'
 
-import { Button, Popout, PopoutProps } from '../../src'
-
 import { Meta, StoryFn } from '@storybook/react'
+
+import { Button, Popout, PopoutProps } from '../../src'
 
 const meta: Meta<PopoutProps> = {
     title: 'Components/Popout',

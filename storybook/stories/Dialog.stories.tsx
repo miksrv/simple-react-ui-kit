@@ -43,6 +43,7 @@ Default.args = {
     contentHeight: '200px',
     maxWidth: '400px',
     backLinkCaption: 'Back',
+    showOverlay: true,
     showBackLink: true,
     showCloseButton: true,
     onBackClick: () => alert('Back clicked!')

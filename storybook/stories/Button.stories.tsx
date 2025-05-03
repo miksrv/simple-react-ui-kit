@@ -23,10 +23,10 @@ const meta: Meta<ButtonProps> = {
         },
         size: {
             control: { type: 'inline-radio' },
-            options: ['small', 'medium'],
+            options: ['small', 'medium', 'large'],
             table: {
                 type: {
-                    summary: '"small", "medium"'
+                    summary: '"small", "medium", "large"'
                 }
             }
         },

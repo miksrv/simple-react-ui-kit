@@ -12,6 +12,15 @@ const meta: Meta<InputProps> = {
             control: 'text',
             description: 'Label for the input field'
         },
+        size: {
+            control: { type: 'inline-radio' },
+            options: ['small', 'medium', 'large'],
+            table: {
+                type: {
+                    summary: '"small", "medium", "large"'
+                }
+            }
+        },
         error: {
             control: 'text',
             description: 'Error message displayed below the input'
@@ -38,6 +47,8 @@ const Template: StoryFn<InputProps> = (args) => <Input {...args} />
 export const DefaultInput = Template.bind({})
 DefaultInput.args = {
     label: 'Default Label',
+    size: 'medium',
+    error: '',
     placeholder: 'Enter text...'
 }
 

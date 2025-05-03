@@ -4,7 +4,7 @@ import { Dropdown, DropdownOption, DropdownProps, iconNames } from '../../src'
 
 import { Meta, StoryFn } from '@storybook/react'
 
-const meta: Meta<DropdownProps<any>> = {
+const meta: Meta<DropdownProps<string>> = {
     title: 'Components/Dropdown',
     component: Dropdown,
     argTypes: {
@@ -30,7 +30,7 @@ const options: DropdownOption<string>[] = [
 export const Basic: StoryFn = (args) => {
     const [selectedOption, setSelectedOption] = useState<string | undefined>()
 
-    // Handle selection of dropdown option
+    // Handle selection of a dropdown option
     const handleSelect = (option: DropdownOption<string> | undefined) => {
         setSelectedOption(option?.key)
     }
@@ -49,12 +49,13 @@ export const Basic: StoryFn = (args) => {
 
 // Default values for controls in Storybook
 Basic.args = {
+    label: 'Label for dropdown',
     placeholder: 'Please select option',
+    size: 'medium',
     disabled: false,
     required: false,
     clearable: true,
-    searchable: false,
-    label: 'Label for dropdown'
+    searchable: false
 }
 
 // Searchable dropdown story
@@ -62,7 +63,7 @@ export const SearchableDropdown: StoryFn = (args) => {
     const [search, setSearch] = useState<string | undefined>('')
     const [selectedOption, setSelectedOption] = useState<string | undefined>()
 
-    // Handle selection of dropdown option
+    // Handle selection of a dropdown option
     const handleSelect = (option: DropdownOption<string> | undefined) => {
         setSelectedOption(option?.key)
     }
