@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 
-import { Button, Popout, PopoutProps } from '../../src'
+import { Button, Popout, PopoutHandleProps, PopoutProps } from '../../src'
 
 const meta: Meta<PopoutProps> = {
     title: 'Components/Popout',
@@ -12,7 +12,7 @@ const meta: Meta<PopoutProps> = {
 export default meta
 
 const Template: StoryFn<PopoutProps> = (args) => {
-    const popoutRef = useRef<any>(null)
+    const popoutRef = useRef<PopoutHandleProps>(null)
 
     return (
         <div style={{ position: 'relative', height: 130 }}>

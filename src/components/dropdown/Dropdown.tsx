@@ -7,6 +7,7 @@ import Spinner from '../spinner'
 
 import ClearButton from './ClearButton'
 import OptionsList from './OptionsList'
+
 import styles from './styles.module.sass'
 
 /**
@@ -32,7 +33,7 @@ export interface DropdownProps<T> extends Pick<ButtonProps, 'size' | 'mode'> {
     /** Additional class names for custom styling */
     className?: string
     /** Array of options to display in the dropdown */
-    options?: DropdownOption<T>[]
+    options?: Array<DropdownOption<T>>
     /** Mark the dropdown as required */
     required?: boolean
     /** Disable the dropdown */

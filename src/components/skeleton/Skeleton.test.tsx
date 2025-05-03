@@ -1,11 +1,11 @@
 import React from 'react'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
+import { render } from '@testing-library/react'
 
 import Skeleton from './Skeleton'
 
-import { render } from '@testing-library/react'
+import '@testing-library/jest-dom/jest-globals'
+import '@testing-library/jest-dom'
 
 describe('Skeleton Component', () => {
     it('renders the skeleton component', () => {

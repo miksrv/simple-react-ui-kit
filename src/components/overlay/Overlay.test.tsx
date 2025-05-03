@@ -1,10 +1,10 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
+import { render } from '@testing-library/react'
 
 import Overlay from './Overlay'
 
-import { render } from '@testing-library/react'
+import '@testing-library/jest-dom'
 
 describe('Overlay Component', () => {
     const defaultProps = {

@@ -1,10 +1,10 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
 
 import Message from './Message'
 
-import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 
 describe('Message Component', () => {
     it('renders the Message component with title and children', () => {

@@ -54,7 +54,7 @@ export interface TableProps<T> {
      * that the height of the container will change dynamically up to the maximum value */
     maxHeight?: number | null
     /** Column configuration for the table */
-    columns?: ColumnProps<T>[]
+    columns?: Array<ColumnProps<T>>
     /** Whether the table is in loading state (displays skeletons) */
     loading?: boolean
     /** Whether the table header is sticky when scrolling */
@@ -175,7 +175,7 @@ const Table = <T,>({
                                     >
                                         {column.formatter
                                             ? column.formatter(row[column.accessor], sortedData, rowIndex)
-                                            : (row[column.accessor] as any)}
+                                            : (row[column.accessor] as React.ReactNode)}
                                     </td>
                                 ))}
                             </tr>

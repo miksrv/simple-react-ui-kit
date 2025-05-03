@@ -1,8 +1,6 @@
-import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Badge, BadgeProps } from '../../src'
-
-import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<BadgeProps> = {
     title: 'Components/Badge',
@@ -13,11 +11,7 @@ const meta: Meta<BadgeProps> = {
         size: {
             control: { type: 'inline-radio' },
             options: ['small', 'medium', 'large'],
-            table: {
-                type: {
-                    summary: '"small", "medium", "large"'
-                }
-            }
+            table: { type: { summary: '"small", "medium", "large"' } }
         }
     }
 }
@@ -40,7 +34,7 @@ Removable.args = {
     label: 'Removable Badge',
     size: 'medium',
     icon: 'Point',
-    onClickRemove: (key) => alert(`Badge with key ${key} removed`)
+    onClickRemove: (key: string | number | undefined) => alert(`Badge with key ${key} removed`)
 }
 
 // Story without an icon

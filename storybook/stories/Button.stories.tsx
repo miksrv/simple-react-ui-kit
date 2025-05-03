@@ -1,8 +1,6 @@
-import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Button, ButtonProps, iconNames } from '../../src'
-
-import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<ButtonProps> = {
     title: 'Components/Button',
@@ -13,31 +11,19 @@ const meta: Meta<ButtonProps> = {
             options: ['primary', 'secondary', 'outline', 'link'],
             // description: 'Visual style of the button',
             table: {
-                defaultValue: {
-                    summary: 'primary'
-                },
-                type: {
-                    summary: '"primary", "secondary", "outline", "link"'
-                }
+                defaultValue: { summary: 'primary' },
+                type: { summary: '"primary", "secondary", "outline", "link"' }
             }
         },
         size: {
             control: { type: 'inline-radio' },
             options: ['small', 'medium', 'large'],
-            table: {
-                type: {
-                    summary: '"small", "medium", "large"'
-                }
-            }
+            table: { type: { summary: '"small", "medium", "large"' } }
         },
         variant: {
             control: { type: 'select' },
             options: ['', 'positive', 'negative'],
-            table: {
-                type: {
-                    summary: '"positive", "negative", null'
-                }
-            }
+            table: { type: { summary: '"positive", "negative", null' } }
         },
         icon: {
             control: { type: 'select' },
@@ -55,9 +41,7 @@ const meta: Meta<ButtonProps> = {
             description: 'Whether the button takes up the full width of the container',
             control: { type: 'boolean' }
         },
-        label: {
-            control: { type: 'text' }
-        }
+        label: { control: { type: 'text' } }
     }
 }
 
@@ -101,11 +85,7 @@ Primary.args = {
     ]
 }
 
-Primary.argTypes = {
-    buttons: {
-        table: { disable: true } // Скрываем из панели управления
-    }
-}
+Primary.argTypes = { buttons: { table: { disable: true } } }
 
 export const Secondary = Template.bind({})
 Secondary.args = {

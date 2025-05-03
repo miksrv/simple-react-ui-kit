@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
-import { Dropdown, DropdownOption, DropdownProps, iconNames } from '../../src'
-
 import { Meta, StoryFn } from '@storybook/react'
+
+import { Dropdown, DropdownOption, DropdownProps, iconNames } from '../../src'
 
 const meta: Meta<DropdownProps<string>> = {
     title: 'Components/Dropdown',
@@ -19,7 +19,7 @@ const meta: Meta<DropdownProps<string>> = {
 export default meta
 
 // Sample options with icons and text
-const options: DropdownOption<string>[] = [
+const options: Array<DropdownOption<string>> = [
     { key: 'apple', value: 'Heart Empty Icon', icon: iconNames.HeartEmpty },
     { key: 'banana', value: 'Simple Camera Icon', icon: iconNames.Camera },
     { key: 'cherry', value: 'Medal or Award Icon', icon: iconNames.Award },

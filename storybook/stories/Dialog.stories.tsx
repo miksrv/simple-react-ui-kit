@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react'
 
-import { Button, Dialog, DialogProps } from '../../src'
-
 import { Meta, StoryFn } from '@storybook/react'
+
+import { Button, Dialog, DialogProps } from '../../src'
 
 const meta: Meta<DialogProps> = {
     title: 'Components/Dialog',

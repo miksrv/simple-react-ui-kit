@@ -1,13 +1,13 @@
 import React from 'react'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import Dropdown, { DropdownOption } from './Dropdown'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import '@testing-library/jest-dom/jest-globals'
+import '@testing-library/jest-dom'
 
-const options: DropdownOption<number>[] = [
+const options: Array<DropdownOption<number>> = [
     { key: 1, value: 'Option 1' },
     { key: 2, value: 'Option 2' },
     { key: 3, value: 'Option 3' }
@@ -35,7 +35,7 @@ describe('Dropdown Component', () => {
 
         fireEvent.click(document.body)
 
-        waitFor(() => {
+        void waitFor(() => {
             expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
         })
     })

@@ -1,10 +1,10 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import MultiSelect, { MultiSelectProps } from './MultiSelect'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 
 const defaultProps: MultiSelectProps<string> = {
     label: 'Select Items',

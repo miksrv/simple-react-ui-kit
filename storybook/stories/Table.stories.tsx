@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { Meta, StoryFn } from '@storybook/react'
 
 import { ColumnProps, Table, TableProps } from '../../src'
 
-const meta: Meta<TableProps<any>> = {
+const meta: Meta<TableProps<string>> = {
     title: 'Components/Table',
     component: Table,
     parameters: {

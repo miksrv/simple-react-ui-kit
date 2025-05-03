@@ -1,8 +1,6 @@
-import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Input, InputProps } from '../../src'
-
-import { Meta, StoryFn } from '@storybook/react'
 
 const meta: Meta<InputProps> = {
     title: 'Components/Input',
@@ -15,11 +13,7 @@ const meta: Meta<InputProps> = {
         size: {
             control: { type: 'inline-radio' },
             options: ['small', 'medium', 'large'],
-            table: {
-                type: {
-                    summary: '"small", "medium", "large"'
-                }
-            }
+            table: { type: { summary: '"small", "medium", "large"' } }
         },
         error: {
             control: 'text',

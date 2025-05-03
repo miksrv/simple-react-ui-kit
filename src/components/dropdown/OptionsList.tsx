@@ -4,11 +4,12 @@ import { cn } from '../../utils'
 import Icon from '../icon'
 
 import type { DropdownOption } from './Dropdown'
+
 import styles from './styles.module.sass'
 
 interface DropdownProps<T> extends React.HTMLAttributes<HTMLUListElement> {
     notFoundCaption?: string
-    options?: DropdownOption<T>[]
+    options?: Array<DropdownOption<T>>
     selectedOption?: DropdownOption<T>
     onOptionSelect?: (selectedOption: DropdownOption<T>) => void
 }
@@ -20,7 +21,7 @@ const OptionsList = <T,>({ notFoundCaption, selectedOption, options, onOptionSel
     >
         {options?.map((option, i) => (
             <li
-                key={`option-${option.key ?? i}`}
+                key={`option-${String(option.key || i)}`}
                 className={cn(option.key === selectedOption?.key && styles.active, option.disabled && styles.disabled)}
             >
                 <button onClick={() => (!option.disabled ? onOptionSelect?.(option) : undefined)}>

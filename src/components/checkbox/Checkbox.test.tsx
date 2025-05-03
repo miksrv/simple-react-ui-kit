@@ -1,12 +1,12 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Icon from '../icon'
 
 import Checkbox, { CheckboxProps } from './Checkbox'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 
 describe('Checkbox Component', () => {
     const defaultProps: CheckboxProps = {

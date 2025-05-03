@@ -1,10 +1,10 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
 
 import Container, { ContainerProps } from './Container'
 
-import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 
 describe('Container Component', () => {
     const defaultProps: ContainerProps = {

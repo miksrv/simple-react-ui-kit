@@ -37,9 +37,7 @@ const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             setIsOpen(false)
         }
 
-        useImperativeHandle(ref, () => ({
-            close
-        }))
+        useImperativeHandle(ref, () => ({ close }))
 
         const toggleDropdown = (event: React.MouseEvent) => {
             event.stopPropagation()
