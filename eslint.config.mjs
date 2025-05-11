@@ -20,7 +20,6 @@ export default defineConfig([
             ['jest']: jestPlugin,
             ['prettier']: prettierPlugin,
             ['simple-import-sort']: simpleImportSortPlugin,
-            // ['jest']: jestPlugin,
             // ['next']: nextPlugin,
             // ['jsx-a11y']: jsxA11yPlugin,
             // ['react-hooks']: reactHooksPlugin,
