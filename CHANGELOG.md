@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.1
+
+### Patch Changes
+
+- Fixed the height for Input UI Component
+
 ## 1.5.0
 
 ### Minor Changes
