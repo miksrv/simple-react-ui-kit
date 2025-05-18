@@ -31,8 +31,7 @@ const Template: StoryFn<PopoutProps> = (args) => {
 
 export const Default = Template.bind({})
 Default.args = {
-    action: 'Open Popout',
-    mode: 'secondary',
+    trigger: 'Open Popout',
     position: 'left',
     className: 'custom-popout'
 }

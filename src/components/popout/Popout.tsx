@@ -74,6 +74,7 @@ const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                 <span
                     onClick={toggleDropdown}
                     className={styles.trigger}
+                    role={'button'}
                     {...props}
                 >
                     {trigger}
