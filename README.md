@@ -827,7 +827,7 @@ Explore the full documentation and examples in Storybook: [Popout Component Stor
 
 - **`className`**: Additional class names for custom styling.
 - **`position`**: Position of the popout relative to the trigger element. Possible values: `'left'` or `'right'`.
-- **`action`**: The content inside the button that triggers the popout (could be text, an icon, or a React node).
+- **`trigger`**: The content inside the button that triggers the popout (could be text, an icon, or a React node).
 - **`children`**: The content to display inside the popout when it's open.
 - **`closeOnChildrenClick`**: A boolean flag that, when set to `true`, closes the popout when any child inside the popout is clicked.
 - **`onOpenChange`**: Callback function triggered when isOpen state changes.
@@ -852,7 +852,7 @@ const App = () => {
             <Popout
                 ref={popoutRef}
                 position='right'
-                action='Open Popout'
+                trigger='Open Popout'
                 closeOnChildrenClick={true}
             >
                 <div>

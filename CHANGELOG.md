@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 1.5.2
+
+### Patch Changes
+
+- Updated Storybook libraries
+- Changed `Popout` component prop `action` to `trigger`
+- Removed UI Button component from `Popout` component
+- Updated Readme
+- Updated UI Popout tests and stories
+- Updated UI Kit Libraries
+
 ## 1.5.1
 
 ### Patch Changes
