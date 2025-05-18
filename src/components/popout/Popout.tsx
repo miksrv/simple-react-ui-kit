@@ -1,20 +1,19 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import { cn } from '../../utils'
-import Button, { ButtonProps } from '../button'
 
 import styles from './styles.module.sass'
 
 /**
  * Popout component properties
  */
-export interface PopoutProps extends Pick<ButtonProps, 'mode' | 'variant' | 'size' | 'icon'> {
+export interface PopoutProps extends React.HTMLAttributes<HTMLSpanElement> {
     /** Additional class names for custom styling */
     className?: string
     /** Position of the popout relative to the trigger element ('left' or 'right') */
     position?: 'left' | 'right'
-    /** Action button or link to be displayed in the popout */
-    action?: React.ReactNode | string
+    /** Trigger button or link to be displayed in the popout */
+    trigger?: React.ReactNode | string
     /** Content inside the popout */
     children?: React.ReactNode
     /** Whether the popout should close when a child element is clicked */
@@ -28,7 +27,7 @@ export interface PopoutHandleProps {
 }
 
 const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
-    ({ className, position, action, children, closeOnChildrenClick, onOpenChange, ...props }, ref) => {
+    ({ className, position, trigger, children, closeOnChildrenClick, onOpenChange, ...props }, ref) => {
         const popoutRef = useRef<HTMLDivElement>(null)
         const popoutChildrenRef = useRef<HTMLDivElement>(null)
         const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -72,12 +71,13 @@ const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                 ref={popoutRef}
                 className={cn(className, styles.popout)}
             >
-                <Button
+                <span
                     onClick={toggleDropdown}
+                    className={styles.trigger}
                     {...props}
                 >
-                    {action}
-                </Button>
+                    {trigger}
+                </span>
 
                 {isOpen && (
                     <div
