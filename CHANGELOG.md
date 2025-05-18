@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.3
+
+### Patch Changes
+
+- Fixed Dialog Header height
+
 ## 1.5.2
 
 ### Patch Changes
