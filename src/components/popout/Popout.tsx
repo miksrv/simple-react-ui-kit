@@ -78,7 +78,7 @@ const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             >
                 <span
                     onClick={toggleDropdown}
-                    className={styles.trigger}
+                    className={cn(styles.trigger, disabled && styles.disabled)}
                     role={'button'}
                     {...props}
                 >

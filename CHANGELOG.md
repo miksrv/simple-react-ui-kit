@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.5
+
+### Patch Changes
+
+- Added default cursor for disabled `Popout` component
+
 ## 1.5.4
 
 ### Patch Changes
