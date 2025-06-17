@@ -14,13 +14,13 @@ describe('Popout Component', () => {
     })
 
     it('renders the Popout component', () => {
-        render(<Popout trigger='Click me'>Popout Content</Popout>)
+        render(<Popout trigger={'Click me'}>Popout Content</Popout>)
         const buttonElement = screen.getByRole('button', { name: /Click me/i })
         expect(buttonElement).toBeInTheDocument()
     })
 
     it('toggles the popout content on button click', () => {
-        render(<Popout trigger='Click me'>Popout Content</Popout>)
+        render(<Popout trigger={'Click me'}>Popout Content</Popout>)
         const buttonElement = screen.getByRole('button', { name: /Click me/i })
 
         // Initial state: popout should not be open
@@ -39,8 +39,28 @@ describe('Popout Component', () => {
         expect(screen.queryByText(/Popout Content/i)).not.toBeInTheDocument()
     })
 
+    it('does not open popout when disabled is true', () => {
+        render(
+            <Popout
+                trigger={'Click me'}
+                disabled={true}
+            >
+                {'Popout Content'}
+            </Popout>
+        )
+        const buttonElement = screen.getByRole('button', { name: /Click me/i })
+
+        // Try to open the popout
+        act(() => {
+            fireEvent.click(buttonElement)
+        })
+
+        // Popout content should not appear
+        expect(screen.queryByText(/Popout Content/i)).not.toBeInTheDocument()
+    })
+
     it('closes popout when clicking outside', () => {
-        const { container } = render(<Popout trigger='Click me'>Popout Content</Popout>)
+        const { container } = render(<Popout trigger={'Click me'}>Popout Content</Popout>)
         const buttonElement = screen.getByRole('button', { name: /Click me/i })
 
         // Open the popout
@@ -59,7 +79,7 @@ describe('Popout Component', () => {
     it('closes popout when child element is clicked if closeOnChildrenClick is true', () => {
         render(
             <Popout
-                trigger='Click me'
+                trigger={'Click me'}
                 closeOnChildrenClick
             >
                 <div>Child Element</div>
@@ -84,7 +104,7 @@ describe('Popout Component', () => {
     it('does not close popout when child element is clicked if closeOnChildrenClick is false', () => {
         render(
             <Popout
-                trigger='Click me'
+                trigger={'Click me'}
                 closeOnChildrenClick={false}
             >
                 <div>Child Element</div>
@@ -112,7 +132,7 @@ describe('Popout Component', () => {
         render(
             <Popout
                 ref={ref}
-                trigger='Click me'
+                trigger={'Click me'}
             >
                 Popout Content
             </Popout>
@@ -138,7 +158,7 @@ describe('Popout Component', () => {
 
         render(
             <Popout
-                trigger='Click me'
+                trigger={'Click me'}
                 onOpenChange={onOpenChange}
             >
                 Popout Content

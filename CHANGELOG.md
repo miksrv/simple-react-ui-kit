@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.5.4
+
+### Patch Changes
+
+- Updated UI Libraries
+- Added new props `disabled` for `Popout` component
+
 ## 1.5.3
 
 ### Patch Changes

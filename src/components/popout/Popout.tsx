@@ -10,6 +10,8 @@ import styles from './styles.module.sass'
 export interface PopoutProps extends React.HTMLAttributes<HTMLSpanElement> {
     /** Additional class names for custom styling */
     className?: string
+    /** Whether the popout is disabled */
+    disabled?: boolean
     /** Position of the popout relative to the trigger element ('left' or 'right') */
     position?: 'left' | 'right'
     /** Trigger button or link to be displayed in the popout */
@@ -27,7 +29,7 @@ export interface PopoutHandleProps {
 }
 
 const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
-    ({ className, position, trigger, children, closeOnChildrenClick, onOpenChange, ...props }, ref) => {
+    ({ className, disabled, position, trigger, children, closeOnChildrenClick, onOpenChange, ...props }, ref) => {
         const popoutRef = useRef<HTMLDivElement>(null)
         const popoutChildrenRef = useRef<HTMLDivElement>(null)
         const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -40,7 +42,10 @@ const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
 
         const toggleDropdown = (event: React.MouseEvent) => {
             event.stopPropagation()
-            setIsOpen(!isOpen)
+
+            if (!disabled) {
+                setIsOpen(!isOpen)
+            }
         }
 
         const handleClickOutside = (event: MouseEvent) => {

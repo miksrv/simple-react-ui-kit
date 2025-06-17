@@ -22,7 +22,7 @@ const Template: StoryFn<PopoutProps> = (args) => {
             >
                 <div style={{ padding: '10px' }}>
                     <p>This is the popout content!</p>
-                    <Button onClick={() => alert('Action clicked!')}>Perform Action</Button>
+                    <Button onClick={() => alert('Action clicked!')}>{'Perform Action'}</Button>
                 </div>
             </Popout>
         </div>
