@@ -41,7 +41,11 @@ const meta: Meta<ButtonProps> = {
             description: 'Whether the button takes up the full width of the container',
             control: { type: 'boolean' }
         },
-        label: { control: { type: 'text' } }
+        label: { control: { type: 'text' } },
+        link: {
+            control: { type: 'text' },
+            description: 'Link to navigate to when the button is clicked'
+        }
     }
 }
 

@@ -1,8 +1,12 @@
 .buttonLink
+    display: inline-block
     text-decoration: none !important
 
     button
         margin: 0 auto
+
+    &.disabled
+        pointer-events: none !important
 
 .button
     font-family: var(--font-family), sans-serif

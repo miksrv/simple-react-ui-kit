@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.5.6
+
+### Patch Changes
+
+- Updated Storybook libraries
+- Fixed `disabled` prop for `Button` component with `link` variant
+
 ## 1.5.5
 
 ### Patch Changes
