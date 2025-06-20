@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import ReactDOM from 'react-dom'
 
 import { cn } from '../../utils'
 import Icon from '../icon'
@@ -53,6 +54,7 @@ const Dialog: React.FC<DialogProps> = ({
 }) => {
     const dialogRef = useRef<HTMLDialogElement>(null)
     const [dialogStyle, setDialogStyle] = useState({})
+    const [internalId] = useState(() => crypto.randomUUID())
 
     const handleResize = () => {
         const parentElement = parentRef?.current || document.documentElement
@@ -66,13 +68,17 @@ const Dialog: React.FC<DialogProps> = ({
         })
     }
 
-    useEffect(() => {
+    const handleChangeState = useCallback(() => {
         if (open) {
             handleResize()
             document.body.style.overflow = 'hidden'
         } else {
             document.body.style.overflow = 'auto'
         }
+    }, [open])
+
+    useEffect(() => {
+        handleChangeState()
     }, [open])
 
     useEffect(() => {
@@ -84,12 +90,7 @@ const Dialog: React.FC<DialogProps> = ({
 
         document.addEventListener('keydown', handleKeyDown)
 
-        if (open) {
-            handleResize()
-            document.body.style.overflow = 'hidden'
-        } else {
-            document.body.style.overflow = 'auto'
-        }
+        handleChangeState()
 
         return () => {
             document.removeEventListener('keydown', handleKeyDown)
@@ -102,52 +103,54 @@ const Dialog: React.FC<DialogProps> = ({
                 <Overlay
                     open={open}
                     parentRef={parentRef}
-                    overlayId={'dialog-overlay'}
+                    overlayId={internalId}
                     onClose={onCloseDialog}
                 />
             )}
 
-            {open && (
-                <dialog
-                    {...props}
-                    open={open}
-                    ref={dialogRef}
-                    className={styles.dialog}
-                    style={dialogStyle}
-                >
-                    {(title || showBackLink || showCloseButton) && (
-                        <div className={cn(styles.header, !showBackLink && styles.noBackLink)}>
-                            {showBackLink && (
-                                <button
-                                    className={styles.innerButton}
-                                    onClick={onBackClick}
-                                >
-                                    <Icon name={'KeyboardLeft'} />
-                                    <div>{backLinkCaption}</div>
-                                </button>
-                            )}
-
-                            {title && <h2>{title}</h2>}
-
-                            {showCloseButton && (
-                                <button
-                                    aria-label={'Close Dialog'}
-                                    className={cn(styles.innerButton, styles.closeButton)}
-                                    onClick={onCloseDialog}
-                                >
-                                    <Icon name={'Close'} />
-                                </button>
-                            )}
-                        </div>
-                    )}
-                    <div
-                        className={styles.content}
-                        style={{ height: contentHeight ? contentHeight : 'auto' }}
+            {open &&
+                ReactDOM.createPortal(
+                    <dialog
+                        {...props}
+                        open={open}
+                        ref={dialogRef}
+                        className={styles.dialog}
+                        style={dialogStyle}
                     >
-                        {children}
-                    </div>
-                </dialog>
-            )}
+                        {(title || showBackLink || showCloseButton) && (
+                            <div className={cn(styles.header, !showBackLink && styles.noBackLink)}>
+                                {showBackLink && (
+                                    <button
+                                        className={styles.innerButton}
+                                        onClick={onBackClick}
+                                    >
+                                        <Icon name={'KeyboardLeft'} />
+                                        <div>{backLinkCaption}</div>
+                                    </button>
+                                )}
+
+                                {title && <h2>{title}</h2>}
+
+                                {showCloseButton && (
+                                    <button
+                                        aria-label={'Close Dialog'}
+                                        className={cn(styles.innerButton, styles.closeButton)}
+                                        onClick={onCloseDialog}
+                                    >
+                                        <Icon name={'Close'} />
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                        <div
+                            className={styles.content}
+                            style={{ height: contentHeight ? contentHeight : 'auto' }}
+                        >
+                            {children}
+                        </div>
+                    </dialog>,
+                    (parentRef?.current as HTMLElement) || document.body
+                )}
         </>
     )
 }
