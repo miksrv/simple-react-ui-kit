@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.7
+
+### Patch Changes
+
+- Refactoring Dialog component
+
 ## 1.5.6
 
 ### Patch Changes

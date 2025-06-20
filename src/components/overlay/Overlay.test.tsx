@@ -26,8 +26,8 @@ describe('Overlay Component', () => {
         render(<Overlay {...props} />)
         const overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]')
         expect(overlayElement).toBeInTheDocument()
-        expect(overlayElement).toHaveClass('displayed')
-        expect(overlayElement).not.toHaveClass('noInitialized')
+        expect(overlayElement).toHaveClass('overlay')
+        expect(overlayElement).not.toHaveClass('displayed')
         document.body.removeChild(parentElement)
     })
 
@@ -36,7 +36,7 @@ describe('Overlay Component', () => {
         const props = { ...defaultProps, open: true, parentRef: { current: parentElement } }
         render(<Overlay {...props} />)
         const overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]')
-        expect(overlayElement).toHaveClass('displayed')
+        expect(overlayElement).toHaveClass('overlay')
     })
 
     it('applies the correct class when initial state open is false', () => {

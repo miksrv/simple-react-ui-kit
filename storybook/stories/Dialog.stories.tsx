@@ -12,26 +12,40 @@ const meta: Meta<DialogProps> = {
 export default meta
 
 const Template: StoryFn<DialogProps> = (args) => {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isGlobalOpen, setIsGlobalOpen] = useState(false)
+    const [isInlineOpen, setIsInlineOpen] = useState(false)
     const parentRef = useRef<HTMLDivElement | null>(null)
-
-    const handleOpen = () => setIsOpen(true)
-    const handleClose = () => setIsOpen(false)
 
     return (
         <div
             ref={parentRef}
+            id={'dialog-parent'}
             style={{ position: 'relative', height: 300 }}
         >
-            <Button onClick={handleOpen}>Open Dialog</Button>
+            <div style={{ display: 'flex', gap: 10 }}>
+                <Button onClick={() => setIsGlobalOpen(true)}>Open Global Dialog</Button>
+                <Button onClick={() => setIsInlineOpen(true)}>Open Inline Dialog</Button>
+            </div>
+
             <Dialog
                 {...args}
-                open={isOpen}
+                title={'Dialog'}
+                open={isInlineOpen}
                 parentRef={parentRef}
-                onCloseDialog={handleClose}
+                onCloseDialog={() => setIsInlineOpen(false)}
             >
-                <p>This is the dialog content!</p>
-                <Button onClick={handleClose}>Close Dialog</Button>
+                <p>This is the inline dialog content!</p>
+                <Button onClick={() => setIsInlineOpen(false)}>Close Dialog</Button>
+            </Dialog>
+
+            <Dialog
+                {...args}
+                title={'Global Dialog'}
+                open={isGlobalOpen}
+                showBackLink={false}
+                onCloseDialog={() => setIsGlobalOpen(false)}
+            >
+                <p>This is the global dialog content!</p>
             </Dialog>
         </div>
     )
@@ -39,7 +53,6 @@ const Template: StoryFn<DialogProps> = (args) => {
 
 export const Default = Template.bind({})
 Default.args = {
-    title: 'Dialog Header',
     contentHeight: '200px',
     maxWidth: '400px',
     backLinkCaption: 'Back',

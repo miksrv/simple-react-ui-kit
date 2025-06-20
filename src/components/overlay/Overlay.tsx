@@ -32,7 +32,7 @@ const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, onClose }
             overlayElement.setAttribute('aria-label', 'Overlay')
             overlayElement.tabIndex = 0
             overlayElement.onclick = onClose || null
-            overlayElement.className = cn(styles.overlay, styles.noInitialized)
+            overlayElement.className = cn(styles.overlay, !open && styles.noInitialized)
             parentElement.appendChild(overlayElement)
         }
 
