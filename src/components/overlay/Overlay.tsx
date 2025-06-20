@@ -13,19 +13,13 @@ interface OverlayProps {
     /** Reference to the parent element for positioning the dialog */
     parentRef?: React.RefObject<HTMLElement | null>
     /** Unique identifier for the overlay element */
-    overlayId?: string
+    overlayId: string
     /** Callback function triggered when the overlay is closed */
     onClose?: () => void
 }
 
-const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId = 'default-overlay', onClose }) => {
-    const [isInitialized, setIsInitialized] = useState(false)
-
-    useEffect(() => {
-        if (!isInitialized && open) {
-            setIsInitialized(true)
-        }
-    }, [open])
+const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, onClose }) => {
+    const [localOpen, setLocalOpen] = useState<boolean>(open || false)
 
     useEffect(() => {
         const parentElement = parentRef?.current || document.body
@@ -34,25 +28,28 @@ const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId = 'default
         if (!overlayElement) {
             overlayElement = document.createElement('div')
             overlayElement.setAttribute('data-overlay-id', overlayId)
+            overlayElement.setAttribute('role', 'button')
+            overlayElement.setAttribute('aria-label', 'Overlay')
+            overlayElement.tabIndex = 0
+            overlayElement.onclick = onClose || null
+            overlayElement.className = cn(styles.overlay, styles.noInitialized)
             parentElement.appendChild(overlayElement)
         }
 
-        // Apply styles and attributes
-        overlayElement.className = cn(
-            styles.overlay,
-            isInitialized ? (open ? styles.displayed : styles.hidden) : styles.noInitialized
-        )
-        overlayElement.tabIndex = 0
-        overlayElement.setAttribute('role', 'button')
-        overlayElement.setAttribute('aria-label', 'Overlay')
-        overlayElement.onclick = onClose || null
+        if (localOpen === open) {
+            return
+        }
+
+        overlayElement.className = cn(styles.overlay, open ? styles.displayed : styles.hidden)
+
+        setLocalOpen(open || false)
 
         return () => {
-            if (overlayElement) {
+            if (overlayElement && parentElement.contains(overlayElement)) {
                 parentElement.removeChild(overlayElement)
             }
         }
-    }, [overlayId, parentRef, open, onClose, isInitialized])
+    }, [overlayId, parentRef, open, onClose])
 
     return null
 }
