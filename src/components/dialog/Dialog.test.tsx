@@ -24,6 +24,18 @@ describe('Dialog Component', () => {
         jest.clearAllMocks()
     })
 
+    it('does not render the overlay when showOverlay is false', () => {
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+                showOverlay={false}
+            />
+        )
+        const overlayElement = document.body.querySelector('[data-overlay-id]')
+        expect(overlayElement).not.toBeInTheDocument()
+    })
+
     it('renders the dialog when open is true', () => {
         render(
             <Dialog
@@ -265,19 +277,7 @@ describe('Dialog Component', () => {
                 open={true}
             />
         )
-        const overlayElement = document.body.querySelector('[data-overlay-id="dialog-overlay"]')
+        const overlayElement = document.body.querySelector('[data-overlay-id]')
         expect(overlayElement).toBeInTheDocument()
-    })
-
-    it('does not render the overlay when showOverlay is false', () => {
-        render(
-            <Dialog
-                {...defaultProps}
-                open={true}
-                showOverlay={false}
-            />
-        )
-        const overlayElement = document.body.querySelector('[data-overlay-id="dialog-overlay"]')
-        expect(overlayElement).not.toBeInTheDocument()
     })
 })

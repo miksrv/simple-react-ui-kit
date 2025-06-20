@@ -54,7 +54,7 @@ const Dialog: React.FC<DialogProps> = ({
 }) => {
     const dialogRef = useRef<HTMLDialogElement>(null)
     const [dialogStyle, setDialogStyle] = useState({})
-    const [internalId] = useState(Math.random().toString(36).substr(2, 9))
+    const [internalId] = useState(() => crypto.randomUUID())
 
     const handleResize = () => {
         const parentElement = parentRef?.current || document.documentElement
