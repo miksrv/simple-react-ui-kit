@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.8
+
+### Patch Changes
+
+- Fixed props styles for Button as Link
+
 ## 1.5.7
 
 ### Patch Changes
