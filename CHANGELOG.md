@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.5.9
+
+### Patch Changes
+
+- Updated Dependencies
+
 ## 1.5.8
 
 ### Patch Changes

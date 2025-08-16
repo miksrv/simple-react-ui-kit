@@ -1079,7 +1079,6 @@ The components in this UI Kit are designed to be highly customizable, allowing y
 Here is a list of all the CSS variables you can override to customize the look and feel of the components:
 
 - **Primary Colors:**
-
     - `--color-contrast`: Contrast color (typically used for text on colored backgrounds).
     - `--color-green`: Default green color.
     - `--color-green-hover`: Hover state for green color.
@@ -1099,7 +1098,6 @@ Here is a list of all the CSS variables you can override to customize the look a
     - `--color-main-background`: Background main color (for info input, message etc.).
 
 - **Text and Typography:**
-
     - `--font-size`: Default font size.
     - `--font-size-small`: Font size for smaller text.
     - `--font-family`: Global font family.
@@ -1108,7 +1106,6 @@ Here is a list of all the CSS variables you can override to customize the look a
     - `--text-color-secondary-hover`: Secondary text color on hover.
 
 - **Layout and Containers:**
-
     - `--body-background`: Background color for the body.
     - `--border-radius`: Global border radius for components.
     - `--container-shadow`: Shadow effect for containers.
@@ -1119,7 +1116,6 @@ Here is a list of all the CSS variables you can override to customize the look a
     - `--container-success-color`: Text color for success containers.
 
 - **Input Fields and Dropdowns:**
-
     - `--dropdown-background-color`: Background color for dropdowns.
     - `--dropdown-background-color-hover`: Hover state for dropdown background.
     - `--input-background-color`: Background color for input fields.
@@ -1128,7 +1124,6 @@ Here is a list of all the CSS variables you can override to customize the look a
     - `--input-border`: Full border styling for inputs.
 
 - **Buttons:**
-
     - `--button-font-weight`: Font weight for buttons.
     - `--button-default-color`: Default text color for buttons.
     - `--button-default-background`: Default background color for buttons.
@@ -1144,11 +1139,9 @@ Here is a list of all the CSS variables you can override to customize the look a
     - `--button-secondary-background-active`: Active state for secondary buttons.
 
 - **Popouts:**
-
     - `--popout-shadow`: Shadow effect for popouts and modals.
 
 - **Tables:**
-
     - `--table-font-size`: Font size for table content.
     - `--table-header-background`: Background color for table headers.
     - `--table-header-background-hover`: Hover state for table headers.
