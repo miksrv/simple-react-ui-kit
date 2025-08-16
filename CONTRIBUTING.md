@@ -56,7 +56,6 @@ If your pull request is merged into the `main` branch and you're ready to releas
     ```
 
     This command will:
-
     - Update the `package.json` version number.
     - Generate the `CHANGELOG.md` file with the list of changes.
 
