@@ -21,6 +21,17 @@ describe('Button Component', () => {
         expect(buttonElement).toBeInTheDocument()
     })
 
+    it('applies stretched class when stretched prop is true', () => {
+        render(
+            <Button
+                {...defaultProps}
+                stretched={true}
+            />
+        )
+        const buttonElement = screen.getByText(/Click Me/i)
+        expect(buttonElement).toHaveClass('stretched')
+    })
+
     it('applies the correct className based on mode and size', () => {
         render(
             <Button
