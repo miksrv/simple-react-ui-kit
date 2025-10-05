@@ -1,6 +1,6 @@
 import '../../src/styles/global.css'
 
-/** @type { import('@storybook/react').Preview } */
+/** @type { import('@storybook/react-webpack5').Preview } */
 const preview = {
     parameters: {
         controls: {
@@ -10,15 +10,20 @@ const preview = {
             }
         },
         backgrounds: {
-            default: 'light',
-            values: [
-                { name: 'light', value: '#ffffff' },
-                { name: 'dark', value: '#1b1b1b' }
-            ]
+            options: {
+                light: { name: 'light', value: '#ffffff' },
+                dark: { name: 'dark', value: '#1b1b1b' }
+            }
         }
     },
 
-    tags: ['autodocs']
+    tags: ['autodocs'],
+
+    initialGlobals: {
+        backgrounds: {
+            value: 'light'
+        }
+    }
 }
 
 export default preview

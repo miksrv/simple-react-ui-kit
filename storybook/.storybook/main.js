@@ -9,9 +9,7 @@ const config = {
         '@storybook/addon-onboarding',
         '@storybook/addon-links',
         '@storybook/addon-docs',
-        '@storybook/addon-essentials',
         '@chromatic-com/storybook',
-        '@storybook/addon-interactions',
         '@storybook/addon-themes'
     ],
 
