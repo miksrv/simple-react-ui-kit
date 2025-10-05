@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.5.10
+
+### Patch Changes
+
+- Added test for `stretched` prop for button
+- Fixed Prettier issues
+- Updated node version from `20` to `22` in the CI/CD
+- Upgraded storybook from `8.6.14` to `9.1.10`
+- Upgraded UI Libraries
+
 ## 1.5.9
 
 ### Patch Changes

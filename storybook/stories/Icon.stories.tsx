@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react-webpack5'
 
 import { Icon, iconNames, IconTypes } from '../../src'
 
