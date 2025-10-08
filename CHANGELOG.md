@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.5.11
+
+### Patch Changes
+
+- Added support for custom icons in the Badge component
+- Expanded examples in Storybook for the Badge component
+
 ## 1.5.10
 
 ### Patch Changes
