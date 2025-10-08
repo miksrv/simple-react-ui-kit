@@ -43,3 +43,101 @@ WithoutIcon.args = {
     size: 'medium',
     label: 'Badge Without Icon'
 }
+
+// Story with different sizes
+export const EmojiIcons = () => (
+    <>
+        <Badge
+            label='Happy'
+            icon={
+                <span
+                    role='img'
+                    aria-label='happy'
+                >
+                    😊
+                </span>
+            }
+            size='medium'
+        />
+        <Badge
+            label='Cool'
+            icon={
+                <span
+                    role='img'
+                    aria-label='cool'
+                >
+                    😎
+                </span>
+            }
+            size='medium'
+        />
+        <Badge
+            label='Surprised'
+            icon={
+                <span
+                    role='img'
+                    aria-label='surprised'
+                >
+                    😲
+                </span>
+            }
+            size='medium'
+        />
+        <Badge
+            label='Love'
+            icon={
+                <span
+                    role='img'
+                    aria-label='love'
+                >
+                    😍
+                </span>
+            }
+            size='medium'
+        />
+    </>
+)
+EmojiIcons.storyName = 'With Emoji Icons'
+
+// Story with custom background
+export const CustomBackground = () => (
+    <>
+        <Badge
+            label='Blue BG + Emoji'
+            icon={
+                <span
+                    role='img'
+                    aria-label='star'
+                >
+                    ⭐️
+                </span>
+            }
+            size='medium'
+            style={{ backgroundColor: '#2196f3', color: '#fff', marginLeft: 8 }}
+        />
+        <Badge
+            label='Green BG'
+            size='medium'
+            style={{ backgroundColor: '#4caf50', color: '#fff', marginLeft: 8 }}
+        />
+        <Badge
+            label='Yellow BG + Emoji'
+            icon={
+                <span
+                    role='img'
+                    aria-label='fire'
+                >
+                    🔥
+                </span>
+            }
+            size='medium'
+            style={{ backgroundColor: '#ffeb3b', color: '#222', marginLeft: 8 }}
+        />
+        <Badge
+            label='Gray BG'
+            size='medium'
+            style={{ backgroundColor: '#bdbdbd', color: '#222', marginLeft: 8 }}
+        />
+    </>
+)
+CustomBackground.storyName = 'Badge With Custom Background'
