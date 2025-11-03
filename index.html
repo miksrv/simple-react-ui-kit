@@ -112,18 +112,7 @@
         
       
         
-          window['TAGS_OPTIONS'] = {
-  "dev-only": {
-    "excludeFromDocsStories": true
-  },
-  "docs-only": {
-    "excludeFromSidebar": true
-  },
-  "test-only": {
-    "excludeFromSidebar": true,
-    "excludeFromDocsStories": true
-  }
-};
+          window['TAGS_OPTIONS'] = {};
         
       
         
@@ -131,11 +120,11 @@
         
       
         
-          window['STORYBOOK_BUILDER'] = "@storybook/builder-webpack5";
+          window['STORYBOOK_BUILDER'] = "@storybook/builder-vite/dist/index.js";
         
       
         
-          window['STORYBOOK_FRAMEWORK'] = "@storybook/react-webpack5";
+          window['STORYBOOK_FRAMEWORK'] = "@storybook/react-vite";
         
       
     </script>
