@@ -287,7 +287,7 @@ export default defineConfig([
             // ✅ Disallow a module importing itself
             'import/no-self-import': 'error',
             // ✅ Enforce a consistent type specifier style in imports
-            'import/consistent-type-specifier-style': 'error',
+            'import/consistent-type-specifier-style': 'off',
 
             //
             // eslint-plugin-simple-import-sort
