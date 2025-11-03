@@ -1,143 +1,149 @@
-import { Meta, StoryFn } from '@storybook/react-webpack5'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { Badge, BadgeProps } from '../../src'
+import { Badge, type BadgeProps } from '../../src'
 
 const meta: Meta<BadgeProps> = {
     title: 'Components/Badge',
     component: Badge,
+    tags: ['autodocs'],
     argTypes: {
         label: { control: 'text' },
-        icon: { control: 'select', options: ['Close', 'Check', 'Alert'] },
+        icon: { control: 'select', options: ['Close', 'Check', 'Alert', 'Wind', 'Point'] },
         size: {
             control: { type: 'inline-radio' },
             options: ['small', 'medium', 'large'],
             table: { type: { summary: '"small", "medium", "large"' } }
-        }
-    }
+        },
+        onClickRemove: { action: 'remove' },
+        style: { control: 'object' }
+    },
+    parameters: { docs: { description: { component: 'Badge component for status and labels.' } } }
 }
 
 export default meta
 
-const Template: StoryFn<BadgeProps> = (args: BadgeProps) => <Badge {...args} />
+type Story = StoryObj<BadgeProps>
 
-// Default story
-export const Default = Template.bind({})
-Default.args = {
-    label: 'Default Badge',
-    size: 'medium',
-    icon: 'Wind'
+export const Default: Story = {
+    args: {
+        label: 'Default Badge',
+        size: 'medium',
+        icon: 'Wind'
+    }
 }
 
-// Story with removal action
-export const Removable = Template.bind({})
-Removable.args = {
-    label: 'Removable Badge',
-    size: 'medium',
-    icon: 'Point',
-    onClickRemove: (key: string | number | undefined) => alert(`Badge with key ${key} removed`)
+export const Removable: Story = {
+    args: {
+        label: 'Removable Badge',
+        size: 'medium',
+        icon: 'Point'
+    },
+    parameters: { docs: { description: { story: 'Badge with removal action.' } } }
 }
 
-// Story without an icon
-export const WithoutIcon = Template.bind({})
-WithoutIcon.args = {
-    size: 'medium',
-    label: 'Badge Without Icon'
+export const WithoutIcon: Story = {
+    args: {
+        size: 'medium',
+        label: 'Badge Without Icon'
+    }
 }
 
-// Story with different sizes
-export const EmojiIcons = () => (
-    <>
-        <Badge
-            label='Happy'
-            icon={
-                <span
-                    role='img'
-                    aria-label='happy'
-                >
-                    😊
-                </span>
-            }
-            size='medium'
-        />
-        <Badge
-            label='Cool'
-            icon={
-                <span
-                    role='img'
-                    aria-label='cool'
-                >
-                    😎
-                </span>
-            }
-            size='medium'
-        />
-        <Badge
-            label='Surprised'
-            icon={
-                <span
-                    role='img'
-                    aria-label='surprised'
-                >
-                    😲
-                </span>
-            }
-            size='medium'
-        />
-        <Badge
-            label='Love'
-            icon={
-                <span
-                    role='img'
-                    aria-label='love'
-                >
-                    😍
-                </span>
-            }
-            size='medium'
-        />
-    </>
-)
-EmojiIcons.storyName = 'With Emoji Icons'
+export const EmojiIcons: Story = {
+    render: () => (
+        <>
+            <Badge
+                label='Happy'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='happy'
+                    >
+                        😊
+                    </span>
+                }
+                size='medium'
+            />
+            <Badge
+                label='Cool'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='cool'
+                    >
+                        😎
+                    </span>
+                }
+                size='medium'
+            />
+            <Badge
+                label='Surprised'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='surprised'
+                    >
+                        😲
+                    </span>
+                }
+                size='medium'
+            />
+            <Badge
+                label='Love'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='love'
+                    >
+                        😍
+                    </span>
+                }
+                size='medium'
+            />
+        </>
+    ),
+    name: 'With Emoji Icons'
+}
 
-// Story with custom background
-export const CustomBackground = () => (
-    <>
-        <Badge
-            label='Blue BG + Emoji'
-            icon={
-                <span
-                    role='img'
-                    aria-label='star'
-                >
-                    ⭐️
-                </span>
-            }
-            size='medium'
-            style={{ backgroundColor: '#2196f3', color: '#fff', marginLeft: 8 }}
-        />
-        <Badge
-            label='Green BG'
-            size='medium'
-            style={{ backgroundColor: '#4caf50', color: '#fff', marginLeft: 8 }}
-        />
-        <Badge
-            label='Yellow BG + Emoji'
-            icon={
-                <span
-                    role='img'
-                    aria-label='fire'
-                >
-                    🔥
-                </span>
-            }
-            size='medium'
-            style={{ backgroundColor: '#ffeb3b', color: '#222', marginLeft: 8 }}
-        />
-        <Badge
-            label='Gray BG'
-            size='medium'
-            style={{ backgroundColor: '#bdbdbd', color: '#222', marginLeft: 8 }}
-        />
-    </>
-)
-CustomBackground.storyName = 'Badge With Custom Background'
+export const CustomBackground: Story = {
+    render: () => (
+        <>
+            <Badge
+                label='Blue BG + Emoji'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='star'
+                    >
+                        ⭐️
+                    </span>
+                }
+                size='medium'
+                style={{ backgroundColor: '#2196f3', color: '#fff', marginLeft: 8 }}
+            />
+            <Badge
+                label='Green BG'
+                size='medium'
+                style={{ backgroundColor: '#4caf50', color: '#fff', marginLeft: 8 }}
+            />
+            <Badge
+                label='Yellow BG + Emoji'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='fire'
+                    >
+                        🔥
+                    </span>
+                }
+                size='medium'
+                style={{ backgroundColor: '#ffeb3b', color: '#222', marginLeft: 8 }}
+            />
+            <Badge
+                label='Gray BG'
+                size='medium'
+                style={{ backgroundColor: '#bdbdbd', color: '#222', marginLeft: 8 }}
+            />
+        </>
+    ),
+    name: 'Badge With Custom Background'
+}

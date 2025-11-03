@@ -1,9 +1,9 @@
-import { Meta, StoryFn } from '@storybook/react-webpack5'
+import type { Meta, StoryFn } from '@storybook/react'
 
 import { Checkbox, CheckboxProps } from '../../src'
 
 const meta: Meta<CheckboxProps> = {
-    title: 'Components/Checkbox',
+    title: 'Controls/Checkbox',
     component: Checkbox,
     argTypes: {
         label: { control: 'text' },
