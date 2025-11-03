@@ -55,5 +55,9 @@ export { default as Spinner } from './components/spinner'
 export type { ColumnProps, TableProps } from './components/table'
 export { default as Table } from './components/table'
 
+// Progress Component
+export type { ProgressProps } from './components/progress'
+export { default as Progress } from './components/progress'
+
 // Tools
 export { cn } from './utils'

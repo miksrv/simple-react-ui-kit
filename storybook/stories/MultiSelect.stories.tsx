@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react-webpack5'
+import type { Meta, StoryFn } from '@storybook/react'
 
 import { DropdownOption, iconNames, MultiSelect, MultiSelectProps } from '../../src'
 
