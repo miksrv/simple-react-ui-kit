@@ -1,6 +1,6 @@
 // This file has been automatically migrated to valid ESM format by Storybook.
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
+import { createRequire } from 'node:module'
+const require = createRequire(import.meta.url)
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */

@@ -1095,10 +1095,17 @@ const App = () => (
         <Progress value={50} />
 
         {/* Custom height and color */}
-        <Progress value={75} height={8} color='green' />
+        <Progress
+            value={75}
+            height={8}
+            color='green'
+        />
 
         {/* Progress bar with custom styles */}
-        <Progress value={30} className='my-progress-bar' />
+        <Progress
+            value={30}
+            className='my-progress-bar'
+        />
     </div>
 )
 
