@@ -5,7 +5,7 @@ import type { Meta, StoryFn } from '@storybook/react'
 import { Icon, iconNames, IconTypes } from '../../src'
 
 const meta: Meta = {
-    title: 'Components/Icon',
+    title: 'Icon',
     component: Icon,
     argTypes: { fill: { control: 'color' } } // Color control for changing the icon's fill
 }

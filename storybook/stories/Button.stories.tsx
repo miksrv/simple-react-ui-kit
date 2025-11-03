@@ -3,7 +3,7 @@ import type { Meta, StoryFn } from '@storybook/react'
 import { Button, ButtonProps, iconNames } from '../../src'
 
 const meta: Meta<ButtonProps> = {
-    title: 'Components/Button',
+    title: 'Controls/Button',
     component: Button,
     argTypes: {
         mode: {

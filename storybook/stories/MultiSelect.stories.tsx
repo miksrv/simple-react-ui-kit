@@ -5,7 +5,7 @@ import type { Meta, StoryFn } from '@storybook/react'
 import { DropdownOption, iconNames, MultiSelect, MultiSelectProps } from '../../src'
 
 const meta: Meta<MultiSelectProps<string>> = {
-    title: 'Components/MultiSelect',
+    title: 'Controls/MultiSelect',
     component: MultiSelect,
     argTypes: {
         disabled: { control: 'boolean' },

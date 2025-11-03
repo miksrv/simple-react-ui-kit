@@ -91,4 +91,32 @@ describe('Progress Component', () => {
         const line = container.querySelector('.line')
         expect(line).toHaveClass('green')
     })
+
+    it('applies default height when height is not provided', () => {
+        const { container } = render(<Progress value={50} />)
+        const progressBar = container.querySelector('.progress')
+        expect(progressBar).toHaveStyle({ height: '2px' })
+    })
+
+    it('applies custom height when height is provided', () => {
+        const { container } = render(
+            <Progress
+                value={50}
+                height={10}
+            />
+        )
+        const progressBar = container.querySelector('.progress')
+        expect(progressBar).toHaveStyle({ height: '10px' })
+    })
+
+    it('applies height of 0px when height is set to 0', () => {
+        const { container } = render(
+            <Progress
+                value={50}
+                height={0}
+            />
+        )
+        const progressBar = container.querySelector('.progress')
+        expect(progressBar).toHaveStyle({ height: '0px' })
+    })
 })

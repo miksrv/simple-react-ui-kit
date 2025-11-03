@@ -5,7 +5,7 @@ import type { Meta, StoryFn } from '@storybook/react'
 import { Dropdown, DropdownOption, DropdownProps, iconNames } from '../../src'
 
 const meta: Meta<DropdownProps<string>> = {
-    title: 'Components/Dropdown',
+    title: 'Controls/Dropdown',
     component: Dropdown,
     argTypes: {
         disabled: { control: 'boolean' }, // Control for the disabled state

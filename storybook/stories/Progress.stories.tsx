@@ -8,6 +8,7 @@ const meta: Meta<typeof Progress> = {
     tags: ['autodocs'],
     argTypes: {
         value: { control: { type: 'number', min: 0, max: 100 } },
+        height: { control: { type: 'number', min: 2, max: 20 } },
         color: { control: 'select', options: ['main', 'red', 'orange', 'green'] },
         className: { control: 'text' }
     }

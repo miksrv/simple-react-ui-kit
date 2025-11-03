@@ -3,7 +3,7 @@ import type { Meta, StoryFn } from '@storybook/react'
 import { Input, InputProps } from '../../src'
 
 const meta: Meta<InputProps> = {
-    title: 'Components/Input',
+    title: 'Controls/Input',
     component: Input,
     argTypes: {
         label: {
