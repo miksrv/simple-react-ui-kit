@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.5.12
+
+### Patch Changes
+
+- Upgraded UI Libraries
+- Upgraded Storybook from `9` to `10`
+- Implemented Progress UI Component
+- Added stories for Progress, added new property, fixed all stories
+- Updated storybook sidemenu structure
+
 ## 1.5.11
 
 ### Patch Changes

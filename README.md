@@ -64,6 +64,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Skeleton](#skeleton)
     - [Spinner](#spinner)
     - [Table](#table)
+    - [Progress](#progress)
 - [Contributing](#contributing)
     - [Top Contributors](#top-contributors)
 - [Style Variables Customization](#style-variables-customization)
@@ -1059,6 +1060,58 @@ In this example:
 The `Table` component is perfect for displaying structured data in applications like dashboards, reports, or data management systems. It allows users to sort and view data effectively, enhancing usability and engagement.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-table--docs).
+
+</details>
+
+<p align="right">
+  (<a href="#top">Back to top</a>)
+</p>
+
+### Progress
+
+The `Progress` component displays a horizontal progress bar to visually indicate completion percentage. It supports custom height, color themes, and additional styling.
+
+<details>
+  <summary>Progress Component Example</summary>
+
+Check out the full documentation and examples in Storybook: [Progress Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-progress--docs).
+
+#### Props:
+
+- **`value`**: Current progress value (percentage, from 0 to 100).
+- **`height`**: Height of the progress bar in pixels.
+- **`color`**: Color theme for the progress bar (`main`, `red`, `orange`, `green`).
+- **`className`**: Additional class names for custom styling.
+
+#### Example Usage:
+
+```tsx
+import React from 'react'
+import { Progress } from 'simple-react-ui-kit'
+
+const App = () => (
+    <div>
+        {/* Default progress bar */}
+        <Progress value={50} />
+
+        {/* Custom height and color */}
+        <Progress value={75} height={8} color='green' />
+
+        {/* Progress bar with custom styles */}
+        <Progress value={30} className='my-progress-bar' />
+    </div>
+)
+
+export default App
+```
+
+In this example:
+
+- The first progress bar shows 50% completion with default height and color.
+- The second bar is 75% complete, taller, and uses the green color theme.
+- The third bar demonstrates adding a custom CSS class.
+
+- For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-progress--docs).
 
 </details>
 
