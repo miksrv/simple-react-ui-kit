@@ -1,4 +1,4 @@
-import{j as o}from"./index-YS-ik7lH.js";import"./iframe-CLkCKeAB.js";import{T as t}from"./Table-Cpn6-IjM.js";import"./index-DvdsEXJc.js";import"./preload-helper-PPVm8Dsz.js";const u={title:"Components/Table",component:t,parameters:{docs:{description:{component:`
+import{j as o}from"./index-Dp4qm-vq.js";import"./iframe-BsjYbfxr.js";import{T as t}from"./Table-SCBOCyvy.js";import"./index-BLJ8-H9c.js";import"./preload-helper-PPVm8Dsz.js";const u={title:"Components/Table",component:t,parameters:{docs:{description:{component:`
 \`\`\`typescript
 /**
  * Column properties for table component
