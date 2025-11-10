@@ -170,7 +170,7 @@ const Dropdown = <T,>({
 
     const handleClearClick = (event: React.MouseEvent | React.KeyboardEvent) => {
         event.stopPropagation()
-        handleSelect(undefined)
+        handleSelect()
     }
 
     useEffect(() => {
@@ -184,11 +184,10 @@ const Dropdown = <T,>({
     }, [props.size, searchable])
 
     useEffect(() => {
-        if (!value) {
-            setSelectedOption(undefined)
+        if (value) {
+            setSelectedOption(filteredOptions?.find((opt) => opt.key === value))
         } else {
-            const selected = filteredOptions?.find((opt) => opt.key === value)
-            setSelectedOption(selected)
+            setSelectedOption(undefined)
         }
     }, [value, filteredOptions])
 
