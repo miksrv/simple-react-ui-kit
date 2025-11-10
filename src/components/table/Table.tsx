@@ -165,7 +165,7 @@ const Table = <T,>({
                             <tr key={`tr${rowIndex}`}>
                                 {visibleColumns?.map((column) => (
                                     <td
-                                        key={String(column.accessor)}
+                                        key={`td${rowIndex}${String(column.accessor)}`}
                                         className={column.className}
                                         style={
                                             column?.background
