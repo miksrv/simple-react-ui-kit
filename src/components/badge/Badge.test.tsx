@@ -4,8 +4,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import Badge, { BadgeProps } from './Badge'
 
-import '@testing-library/jest-dom'
-
 import styles from './styles.module.sass'
 
 describe('Badge Component', () => {

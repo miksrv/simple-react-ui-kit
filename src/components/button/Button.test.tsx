@@ -5,9 +5,6 @@ import { render } from '@testing-library/react'
 
 import Button, { ButtonProps } from './Button'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 describe('Button Component', () => {
     const defaultProps: ButtonProps = {
         label: 'Click Me',

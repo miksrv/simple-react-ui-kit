@@ -4,9 +4,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import Dropdown, { DropdownOption } from './Dropdown'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 const options: Array<DropdownOption<number>> = [
     { key: 1, value: 'Option 1' },
     { key: 2, value: 'Option 2' },

@@ -4,8 +4,6 @@ import { render } from '@testing-library/react'
 
 import Overlay from './Overlay'
 
-import '@testing-library/jest-dom'
-
 describe('Overlay Component', () => {
     const defaultProps = {
         open: false,

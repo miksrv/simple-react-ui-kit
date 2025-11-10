@@ -4,8 +4,6 @@ import { render, screen } from '@testing-library/react'
 
 import Container, { ContainerProps } from './Container'
 
-import '@testing-library/jest-dom'
-
 describe('Container Component', () => {
     const defaultProps: ContainerProps = {
         title: 'Test Title',

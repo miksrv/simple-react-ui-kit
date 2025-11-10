@@ -4,8 +4,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import Dialog, { DialogProps } from './Dialog'
 
-import '@testing-library/jest-dom'
-
 describe('Dialog Component', () => {
     const defaultProps: DialogProps = {
         open: false,

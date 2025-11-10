@@ -4,9 +4,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import Table, { ColumnProps } from './Table'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 import styles from './styles.module.sass'
 
 interface TestData {

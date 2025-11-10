@@ -4,9 +4,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import Input, { InputProps } from './Input'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 import styles from './styles.module.sass'
 
 describe('Input Component', () => {

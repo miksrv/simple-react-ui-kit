@@ -6,8 +6,6 @@ import Icon from '../icon'
 
 import Checkbox, { CheckboxProps } from './Checkbox'
 
-import '@testing-library/jest-dom'
-
 describe('Checkbox Component', () => {
     const defaultProps: CheckboxProps = {
         label: 'Test Checkbox',
