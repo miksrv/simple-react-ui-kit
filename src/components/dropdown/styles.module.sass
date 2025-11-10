@@ -47,6 +47,12 @@ $iconSize: 18px
                 height: 15px
                 margin-right: 4px
 
+            .emoji
+                display: inline-block
+                margin-right: 8px
+                font-size: 14px
+                line-height: 14px
+
         &.disabled, &.noResult
             pointer-events: none
             cursor: not-allowed
@@ -111,8 +117,13 @@ $iconSize: 18px
                     overflow: hidden
                     text-overflow: ellipsis
 
-                    svg, img
+                    svg, img, .emoji
                         margin-right: 5px
+
+                    .emoji
+                        display: inline-block
+                        font-size: 14px
+                        line-height: 14px
 
         .searchContainer
             background-color: var(--input-background-color)
@@ -136,11 +147,15 @@ $iconSize: 18px
                 outline: none
                 border-color: var(--input-border-focus-color)
 
-            img, svg
+            img, svg, .emoji
                 width: calc($iconSize + 6px)
                 height: calc($iconSize + 6px)
                 margin-left: 10px
                 float: left
+
+            .emoji
+                width: auto
+                height: auto
 
             .searchInput
                 font-family: var(--font-family), sans-serif

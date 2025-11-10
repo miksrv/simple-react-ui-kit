@@ -36,6 +36,8 @@ const OptionsList = <T,>({ notFoundCaption, selectedOption, options, onOptionSel
                         />
                     )}
 
+                    {option?.emoji && <span className={styles.emoji}>{option.emoji}</span>}
+
                     <span>{option.value}</span>
                 </button>
             </li>

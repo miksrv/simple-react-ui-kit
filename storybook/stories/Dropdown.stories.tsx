@@ -100,3 +100,36 @@ SearchableDropdown.args = {
     searchable: true, // Enable searchable functionality
     label: 'Label for searchable dropdown'
 }
+
+// Emoji options story
+export const EmojiOptions: StoryFn = (args) => {
+    const [selectedOption, setSelectedOption] = useState<string | undefined>()
+
+    const emojiOptions: Array<DropdownOption<string>> = [
+        { key: 'smile', value: 'Smile', emoji: '😊' },
+        { key: 'rocket', value: 'Rocket', emoji: '🚀' },
+        { key: 'fire', value: 'Fire', emoji: '🔥' },
+        { key: 'star', value: 'Star', emoji: '⭐️' },
+        { key: 'disabled', value: 'Disabled', emoji: '🚫', disabled: true }
+    ]
+
+    return (
+        <div style={{ height: 300, width: 200 }}>
+            <Dropdown
+                {...args}
+                options={emojiOptions}
+                value={selectedOption}
+                onSelect={(option) => setSelectedOption(option?.key)}
+                label='Emoji Dropdown'
+                placeholder='Select emoji'
+            />
+        </div>
+    )
+}
+
+EmojiOptions.args = {
+    clearable: true,
+    searchable: true,
+    disabled: false,
+    required: false
+}
