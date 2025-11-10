@@ -4,9 +4,6 @@ import { render } from '@testing-library/react'
 
 import Skeleton from './Skeleton'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 describe('Skeleton Component', () => {
     it('renders the skeleton component', () => {
         const { container } = render(<Skeleton />)

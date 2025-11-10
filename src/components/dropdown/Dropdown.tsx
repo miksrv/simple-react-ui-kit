@@ -22,6 +22,8 @@ export type DropdownOption<T> = {
     icon?: IconTypes
     /** Optional image to display next to the option */
     image?: MediaImage
+    /** Optional emoji to display next to the option */
+    emoji?: string
     /** Disable the option from being selected */
     disabled?: boolean
 }
@@ -170,7 +172,7 @@ const Dropdown = <T,>({
 
     const handleClearClick = (event: React.MouseEvent | React.KeyboardEvent) => {
         event.stopPropagation()
-        handleSelect(undefined)
+        handleSelect()
     }
 
     useEffect(() => {
@@ -184,11 +186,10 @@ const Dropdown = <T,>({
     }, [props.size, searchable])
 
     useEffect(() => {
-        if (!value) {
-            setSelectedOption(undefined)
+        if (value) {
+            setSelectedOption(filteredOptions?.find((opt) => opt.key === value))
         } else {
-            const selected = filteredOptions?.find((opt) => opt.key === value)
-            setSelectedOption(selected)
+            setSelectedOption(undefined)
         }
     }, [value, filteredOptions])
 
@@ -224,6 +225,8 @@ const Dropdown = <T,>({
                                 />
                             )}
 
+                            {selectedOption?.emoji && <span className={styles.emoji}>{selectedOption.emoji}</span>}
+
                             {selectedOption?.value ? (
                                 selectedOption?.value
                             ) : (
@@ -248,6 +251,8 @@ const Dropdown = <T,>({
                                 alt={''}
                             />
                         )}
+
+                        {selectedOption?.emoji && <span className={styles.emoji}>{selectedOption.emoji}</span>}
 
                         <input
                             type={'text'}

@@ -27,7 +27,7 @@ const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, onClose }
 
         if (!overlayElement) {
             overlayElement = document.createElement('div')
-            overlayElement.setAttribute('data-overlay-id', overlayId)
+            overlayElement.dataset.overlayId = overlayId
             overlayElement.setAttribute('role', 'button')
             overlayElement.setAttribute('aria-label', 'Overlay')
             overlayElement.tabIndex = 0
@@ -46,7 +46,7 @@ const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, onClose }
 
         return () => {
             if (overlayElement && parentElement.contains(overlayElement)) {
-                parentElement.removeChild(overlayElement)
+                overlayElement.remove()
             }
         }
     }, [overlayId, parentRef, open, onClose])

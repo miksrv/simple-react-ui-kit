@@ -144,7 +144,7 @@ const Dialog: React.FC<DialogProps> = ({
                         )}
                         <div
                             className={styles.content}
-                            style={{ height: contentHeight ? contentHeight : 'auto' }}
+                            style={{ height: contentHeight || 'auto' }}
                         >
                             {children}
                         </div>

@@ -24,7 +24,7 @@ const OptionsList = <T,>({ notFoundCaption, selectedOption, options, onOptionSel
                 key={`option-${String(option.key || i)}`}
                 className={cn(option.key === selectedOption?.key && styles.active, option.disabled && styles.disabled)}
             >
-                <button onClick={() => (!option.disabled ? onOptionSelect?.(option) : undefined)}>
+                <button onClick={() => (option.disabled ? undefined : onOptionSelect?.(option))}>
                     {option?.icon && <Icon name={option.icon} />}
 
                     {option?.image && (
@@ -35,6 +35,8 @@ const OptionsList = <T,>({ notFoundCaption, selectedOption, options, onOptionSel
                             height={26}
                         />
                     )}
+
+                    {option?.emoji && <span className={styles.emoji}>{option.emoji}</span>}
 
                     <span>{option.value}</span>
                 </button>

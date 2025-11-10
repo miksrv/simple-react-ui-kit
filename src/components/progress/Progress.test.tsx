@@ -4,9 +4,6 @@ import { render } from '@testing-library/react'
 
 import { Progress } from './Progress'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 describe('Progress Component', () => {
     beforeEach(() => {
         jest.clearAllMocks()

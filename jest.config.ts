@@ -8,7 +8,8 @@ const config: Config = {
     transform: {
         '^.+\\.tsx?$': ['ts-jest', { useESM: true }]
     },
-    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.test.tsx'],
+    setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
+    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.test.tsx', '!src/**/index.ts', '!src/**/types.ts'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
     transformIgnorePatterns: ['node_modules/(?!(module-to-transform)/)']
 }

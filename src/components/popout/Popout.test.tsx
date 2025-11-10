@@ -5,9 +5,6 @@ import { act, render } from '@testing-library/react'
 
 import Popout, { PopoutHandleProps } from './Popout'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 describe('Popout Component', () => {
     beforeEach(() => {
         jest.clearAllMocks()

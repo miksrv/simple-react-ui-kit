@@ -4,8 +4,6 @@ import { render } from '@testing-library/react'
 
 import Overlay from './Overlay'
 
-import '@testing-library/jest-dom'
-
 describe('Overlay Component', () => {
     const defaultProps = {
         open: false,
@@ -28,7 +26,7 @@ describe('Overlay Component', () => {
         expect(overlayElement).toBeInTheDocument()
         expect(overlayElement).toHaveClass('overlay')
         expect(overlayElement).not.toHaveClass('displayed')
-        document.body.removeChild(parentElement)
+        parentElement.remove()
     })
 
     it('applies the correct class when open is true', () => {

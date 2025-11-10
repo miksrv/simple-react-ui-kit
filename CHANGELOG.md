@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.5.13
+
+### Patch Changes
+
+- Upgraded UI Libraries
+- Fixed UI Table key error (Encountered two children with the same key)
+- Refactoring UI Unit tests, improved SonarQube properties, and Jest config
+- Added emoji for Dropdown, updated Storybook story for Dropdown component
+- Refactoring SonarQube issues
+
 ## 1.5.12
 
 ### Patch Changes

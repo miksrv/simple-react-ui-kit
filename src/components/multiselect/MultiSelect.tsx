@@ -180,12 +180,12 @@ const MultiSelect = <T,>({
     }, [value, selectedOption])
 
     useEffect(() => {
-        if (!value) {
-            setSelectedOption(undefined)
-        } else {
+        if (value) {
             setSelectedOption(options?.filter((option) => optionInValue(option)))
+        } else {
+            setSelectedOption(undefined)
         }
-    }, [value, options])
+    }, [value, filteredOptions])
 
     return (
         <div className={cn(className, styles.multiselect, required && styles.required, disabled && styles.disabled)}>

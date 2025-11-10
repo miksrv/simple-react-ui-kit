@@ -4,9 +4,6 @@ import { render } from '@testing-library/react'
 
 import Spinner from './Spinner'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 describe('Spinner Component', () => {
     it('renders without crashing', () => {
         const { container } = render(<Spinner />)

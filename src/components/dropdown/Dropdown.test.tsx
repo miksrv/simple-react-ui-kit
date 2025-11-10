@@ -4,9 +4,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import Dropdown, { DropdownOption } from './Dropdown'
 
-import '@testing-library/jest-dom/jest-globals'
-import '@testing-library/jest-dom'
-
 const options: Array<DropdownOption<number>> = [
     { key: 1, value: 'Option 1' },
     { key: 2, value: 'Option 2' },
@@ -259,5 +256,48 @@ describe('Dropdown Component', () => {
         fireEvent.keyDown(inputElement, { key: 'Enter' })
 
         expect(onSelect).toHaveBeenCalledWith(options[1])
+    })
+
+    it('renders emoji in the selected option', () => {
+        const emojiOptions = [
+            { key: 1, value: 'Smile', emoji: '😊' },
+            { key: 2, value: 'Rocket', emoji: '🚀' }
+        ]
+        render(
+            <Dropdown<number>
+                options={emojiOptions}
+                value={1}
+            />
+        )
+        expect(screen.getByText('😊')).toBeInTheDocument()
+        expect(screen.getByText('Smile')).toBeInTheDocument()
+    })
+
+    it('renders emoji in the dropdown list', () => {
+        const emojiOptions = [
+            { key: 1, value: 'Smile', emoji: '😊' },
+            { key: 2, value: 'Rocket', emoji: '🚀' }
+        ]
+        render(<Dropdown<number> options={emojiOptions} />)
+        fireEvent.click(screen.getByRole('button'))
+        expect(screen.getByText('😊')).toBeInTheDocument()
+        expect(screen.getByText('🚀')).toBeInTheDocument()
+    })
+
+    it('selects an option with emoji', () => {
+        const emojiOptions = [
+            { key: 1, value: 'Smile', emoji: '😊' },
+            { key: 2, value: 'Rocket', emoji: '🚀' }
+        ]
+        const handleSelect = jest.fn()
+        render(
+            <Dropdown<number>
+                options={emojiOptions}
+                onSelect={handleSelect}
+            />
+        )
+        fireEvent.click(screen.getByRole('button'))
+        fireEvent.click(screen.getByText('Smile'))
+        expect(handleSelect).toHaveBeenCalledWith(emojiOptions[0])
     })
 })

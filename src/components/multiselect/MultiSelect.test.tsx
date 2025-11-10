@@ -4,8 +4,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import MultiSelect, { MultiSelectProps } from './MultiSelect'
 
-import '@testing-library/jest-dom'
-
 const defaultProps: MultiSelectProps<string> = {
     label: 'Select Items',
     placeholder: 'Search...',
