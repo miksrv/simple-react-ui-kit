@@ -12,7 +12,8 @@ const meta: Meta<DatepickerProps> = {
         hideDaysOfWeek: { control: 'boolean' },
         minDate: { control: 'text' },
         maxDate: { control: 'text' },
-        hidePresets: { control: false }
+        hidePresets: { control: false },
+        disabled: { control: 'boolean' }
     }
 }
 export default meta
@@ -44,3 +45,6 @@ WithMinMax.args = {
     minDate: '2024-06-01',
     maxDate: '2024-06-30'
 }
+
+export const Disabled = Template.bind({})
+Disabled.args = { disabled: true }
