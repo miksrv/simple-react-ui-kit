@@ -77,7 +77,7 @@ describe('Calendar', () => {
     it('renders with startDate and endDate props', () => {
         const startDate = dayjs().date(5).format('YYYY-MM-DD')
         const endDate = dayjs().date(10).format('YYYY-MM-DD')
-        setup({ startDate, endDate })
+        setup({ datePeriod: [startDate, endDate] })
         expect(screen.getAllByText('5')[0]).toBeInTheDocument()
         expect(screen.getAllByText('10')[0]).toBeInTheDocument()
     })
@@ -120,7 +120,7 @@ describe('Calendar', () => {
     })
 
     it('renders correct range highlight between selectedStartDate and selectedEndDate', () => {
-        setup({ startDate: dayjs().date(5).format('YYYY-MM-DD'), endDate: dayjs().date(10).format('YYYY-MM-DD') })
+        setup({ datePeriod: [dayjs().date(5).format('YYYY-MM-DD'), dayjs().date(10).format('YYYY-MM-DD')] })
         // No error means range is rendered, can add more checks if needed
     })
 
@@ -129,5 +129,80 @@ describe('Calendar', () => {
         const maxDate = dayjs().add(1, 'year').format('YYYY-MM-DD')
         setup({ minDate, maxDate })
         expect(screen.getAllByRole('combobox')[1]).toBeInTheDocument()
+    })
+
+    it('applies custom containerClassName', () => {
+        setup({ containerClassName: 'my-calendar' })
+        expect(document.querySelector('.my-calendar')).toBeInTheDocument()
+    })
+
+    it('renders days from previous month as disabled', () => {
+        setup()
+        // Previous month days have class 'prevMonth'
+        const prevMonthDays = document.querySelectorAll('[class*="prevMonth"]')
+        expect(prevMonthDays.length).toBeGreaterThan(0)
+    })
+
+    it('highlights selected range with correct classes', () => {
+        const start = dayjs().startOf('month').add(2, 'day').format('YYYY-MM-DD')
+        const end = dayjs().startOf('month').add(5, 'day').format('YYYY-MM-DD')
+        setup({ datePeriod: [start, end] })
+        // Selected start
+        const startDay = screen.getAllByText(dayjs(start).date().toString())[0]
+        expect(startDay.className).toMatch(/selectedStartDate/)
+        // Selected end
+        const endDay = screen.getAllByText(dayjs(end).date().toString())[0]
+        expect(endDay.className).toMatch(/selectedEndDate/)
+    })
+
+    it('updates selected dates when datePeriod prop changes', () => {
+        const { rerender } = render(<Calendar datePeriod={['2024-06-01', '2024-06-10']} />)
+        expect(screen.getAllByText('1')[0].className).toMatch(/day/)
+        rerender(<Calendar datePeriod={['2024-06-05', '2024-06-15']} />)
+        expect(screen.getAllByText('5')[0].className).toMatch(/day/)
+        expect(screen.getAllByText('15')[0].className).toMatch(/day/)
+    })
+
+    it('does not call any callback if neither onDateSelect nor onPeriodSelect is provided', () => {
+        setup()
+        fireEvent.click(screen.getAllByText('10')[0])
+        // No error, nothing happens
+    })
+
+    it('renders correct month and year in Russian', () => {
+        setup({ locale: 'ru' })
+        const monthSelect = screen.getAllByRole('combobox')[0]
+        expect(monthSelect).toHaveTextContent(
+            /январь|февраль|март|апрель|май|июнь|июль|август|сентябрь|октябрь|ноябрь|декабрь/i
+        )
+    })
+
+    it('renders all days of the current month', () => {
+        setup()
+        const now = dayjs().utc()
+        const days = now.daysInMonth()
+        for (let i = 1; i <= days; i++) {
+            expect(screen.getAllByText(i.toString())[0]).toBeInTheDocument()
+        }
+    })
+
+    it('does not allow selecting days outside min/max date', () => {
+        const minDate = dayjs().startOf('month').add(5, 'day').format('YYYY-MM-DD')
+        const maxDate = dayjs().startOf('month').add(10, 'day').format('YYYY-MM-DD')
+        const onDateSelect = jest.fn()
+        setup({ minDate, maxDate, onDateSelect })
+        fireEvent.click(screen.getAllByText('2')[0])
+        fireEvent.click(screen.getAllByText('15')[0])
+        expect(onDateSelect).not.toHaveBeenCalled()
+    })
+
+    it('renders correct years in year selector based on minDate and maxDate', () => {
+        const minDate = '2020-01-01'
+        const maxDate = '2022-12-31'
+        setup({ minDate, maxDate })
+        const yearSelect = screen.getAllByRole('combobox')[1]
+        expect(yearSelect).toHaveTextContent('2020')
+        expect(yearSelect).toHaveTextContent('2021')
+        expect(yearSelect).toHaveTextContent('2022')
     })
 })
