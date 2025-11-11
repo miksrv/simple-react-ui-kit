@@ -1,21 +1,7 @@
 import dayjs from 'dayjs'
 
 import { timePresets } from './DatePicker'
-
-export enum PresetOption {
-    TODAY = 'today',
-    DAY = 'day',
-    WEEK = 'week',
-    MONTH = 'month',
-    QUARTER = 'quarter',
-    HALF_YEAR = 'half_year',
-    YEAR = 'year'
-}
-
-export type CalendarPresetType = {
-    key: PresetOption
-    endDate: Date
-}
+import { PresetOption } from './types'
 
 export const enPresets = {
     [PresetOption.TODAY]: 'Today',

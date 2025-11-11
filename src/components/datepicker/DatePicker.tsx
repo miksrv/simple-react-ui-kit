@@ -5,7 +5,8 @@ import Button from '../button'
 import { Calendar, CalendarProps } from '../calendar'
 import Popout, { PopoutHandleProps } from '../popout'
 
-import { CalendarPresetType, enPresets, findPresetByDate, formatDate, PresetOption, ruPresets } from './utils'
+import { CalendarPresetType, PresetOption } from './types'
+import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
 
@@ -42,12 +43,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     singleDateFormat = 'DD MMMM YYYY',
     selectDateCaption = 'Select date',
     locale = 'en',
+    disabled = false,
     ...props
 }) => {
     const popoutRef = useRef<PopoutHandleProps>(null)
     const [periodDates, setPeriodDates] = useState<[string?, string?]>([props.datePeriod?.[0], props.datePeriod?.[1]])
-
-    const disabled = props.disabled || false
 
     const currentDatePreset = useMemo((): string => {
         const preset = findPresetByDate(nowDate, periodDates?.[0], periodDates?.[1], locale)

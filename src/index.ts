@@ -23,8 +23,13 @@ export type { ContainerProps } from './components/container'
 export { default as Container } from './components/container'
 
 // DatePicker Component
-export type { DatePickerProps } from './components/datepicker'
-export { DatePicker, findPresetByDate } from './components/datepicker'
+export {
+    type CalendarPresetType,
+    DatePicker,
+    type DatePickerProps,
+    findPresetByDate,
+    PresetOption
+} from './components/datepicker'
 
 // Dropdown Component
 export type { DropdownOption, DropdownProps } from './components/dropdown'

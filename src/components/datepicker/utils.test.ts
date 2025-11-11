@@ -1,7 +1,8 @@
 import dayjs from 'dayjs'
 
 import { timePresets } from './DatePicker'
-import { enPresets, findPresetByDate, PresetOption, ruPresets } from './utils'
+import { PresetOption } from './types'
+import { enPresets, findPresetByDate, ruPresets } from './utils'
 
 describe('PresetOption enum', () => {
     it('should contain all expected keys', () => {
