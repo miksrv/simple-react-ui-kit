@@ -6,6 +6,10 @@ export { default as Badge } from './components/badge'
 export type { ButtonProps } from './components/button'
 export { default as Button } from './components/button'
 
+// Calendar Component
+export type { CalendarProps } from './components/calendar'
+export { default } from './components/calendar'
+
 // Checkbox Component
 export type { CheckboxProps } from './components/checkbox'
 export { default as Checkbox } from './components/checkbox'

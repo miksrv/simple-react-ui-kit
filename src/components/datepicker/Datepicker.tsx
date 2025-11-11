@@ -24,7 +24,7 @@ export const timePresets: CalendarPresetType[] = [
     { key: PresetOption.YEAR, endDate: nowDate.subtract(1, 'year').toDate() }
 ]
 
-export const findPresetByDate = (
+const findPresetByDate = (
     startDate?: string,
     endDate?: string,
     locale?: CalendarProps['locale']
@@ -55,7 +55,7 @@ export const findPresetByDate = (
     return undefined
 }
 
-const DatePicker: React.FC<DatePickerProps> = (props) => {
+export const Datepicker: React.FC<DatePickerProps> = (props) => {
     const findCurrentPreset = useCallback(
         (key: PresetOption): CalendarPresetType | undefined => {
             const preset = timePresets?.find((preset) => preset.key === key)
@@ -96,4 +96,4 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     )
 }
 
-export default DatePicker
+export default Datepicker
