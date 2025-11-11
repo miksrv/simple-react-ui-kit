@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import type { Meta, StoryFn } from '@storybook/react'
 
-import Calendar, { CalendarProps } from '../../src'
+import { Calendar, CalendarProps } from '../../src'
 
 const meta: Meta<CalendarProps> = {
     title: 'Components/Calendar',
@@ -26,7 +26,7 @@ const WithPeriodSelectTemplate: StoryFn<CalendarProps> = (args) => {
     }
 
     return (
-        <div>
+        <>
             <Calendar
                 {...args}
                 onPeriodSelect={handlePeriodSelect}
@@ -34,7 +34,7 @@ const WithPeriodSelectTemplate: StoryFn<CalendarProps> = (args) => {
             <div style={{ marginTop: 16 }}>
                 <strong>Selected range:</strong> {range.start || '-'} &mdash; {range.end || '-'}
             </div>
-        </div>
+        </>
     )
 }
 
@@ -49,7 +49,7 @@ const WithDateSelectTemplate: StoryFn<CalendarProps> = (args) => {
     }
 
     return (
-        <div>
+        <>
             <Calendar
                 {...args}
                 onDateSelect={handleDateSelect}
@@ -57,7 +57,7 @@ const WithDateSelectTemplate: StoryFn<CalendarProps> = (args) => {
             <div style={{ marginTop: 16 }}>
                 <strong>Selected date:</strong> {selectedDate || '-'}
             </div>
-        </div>
+        </>
     )
 }
 

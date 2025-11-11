@@ -2,13 +2,13 @@ import React, { useCallback } from 'react'
 import dayjs from 'dayjs'
 
 import Button from '../button'
+import Calendar, { CalendarProps } from '../calendar'
 
-import Calendar, { CalendarProps } from './Calendar'
 import { CalendarPresetType, enPresets, PresetOption, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
 
-type DatePickerProps = CalendarProps & {
+export interface DatepickerProps extends CalendarProps {
     hidePresets?: PresetOption[]
 }
 
@@ -24,38 +24,38 @@ export const timePresets: CalendarPresetType[] = [
     { key: PresetOption.YEAR, endDate: nowDate.subtract(1, 'year').toDate() }
 ]
 
-const findPresetByDate = (
-    startDate?: string,
-    endDate?: string,
-    locale?: CalendarProps['locale']
-): string | undefined => {
-    if (!startDate || !endDate) {
-        return undefined
-    }
+// const findPresetByDate = (
+//     startDate?: string,
+//     endDate?: string,
+//     locale?: CalendarProps['locale']
+// ): string | undefined => {
+//     if (!startDate || !endDate) {
+//         return undefined
+//     }
+//
+//     const start = dayjs(startDate)
+//     const end = dayjs(endDate).utc(true)
+//
+//     // Check that the end date is today
+//     const isEndDateToday = end.isSame(nowDate, 'day')
+//
+//     if (!isEndDateToday) {
+//         return undefined
+//     }
+//
+//     // We go through each preset and check if the start of the period matches
+//     for (const preset of timePresets) {
+//         const presetStartDate = dayjs(preset.endDate)
+//
+//         if (start.isSame(presetStartDate, 'day')) {
+//             return locale ? (locale === 'ru' ? ruPresets[preset.key] : enPresets[preset.key]) : preset.key
+//         }
+//     }
+//
+//     return undefined
+// }
 
-    const start = dayjs(startDate)
-    const end = dayjs(endDate).utc(true)
-
-    // Check that the end date is today
-    const isEndDateToday = end.isSame(nowDate, 'day')
-
-    if (!isEndDateToday) {
-        return undefined
-    }
-
-    // We go through each preset and check if the start of the period matches
-    for (const preset of timePresets) {
-        const presetStartDate = dayjs(preset.endDate)
-
-        if (start.isSame(presetStartDate, 'day')) {
-            return locale ? (locale === 'ru' ? ruPresets[preset.key] : enPresets[preset.key]) : preset.key
-        }
-    }
-
-    return undefined
-}
-
-export const Datepicker: React.FC<DatePickerProps> = (props) => {
+const Datepicker: React.FC<DatepickerProps> = (props) => {
     const findCurrentPreset = useCallback(
         (key: PresetOption): CalendarPresetType | undefined => {
             const preset = timePresets?.find((preset) => preset.key === key)

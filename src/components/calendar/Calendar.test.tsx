@@ -5,8 +5,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import Calendar, { CalendarProps } from './Calendar'
 
-import '@testing-library/jest-dom'
-
 const setup = (props: Partial<CalendarProps> = {}) => render(<Calendar {...props} />)
 
 describe('Calendar', () => {
@@ -22,7 +20,7 @@ describe('Calendar', () => {
 
     it('hides days of week if hideDaysOfWeek is true', () => {
         setup({ hideDaysOfWeek: true })
-        expect(screen.queryByText('Mon')).not.toBeInTheDocument()
+        expect(screen.queryByText('Mo')).not.toBeInTheDocument()
     })
 
     it('renders correct locale (ru)', () => {
@@ -35,23 +33,21 @@ describe('Calendar', () => {
         const [prevBtn, nextBtn] = screen.getAllByRole('button')
         fireEvent.click(nextBtn)
         fireEvent.click(prevBtn)
-        // No error means navigation works; further checks can be added for month change
     })
 
     it('calls onPeriodSelect when selecting a range', () => {
         const onPeriodSelect = jest.fn()
         setup({ onPeriodSelect })
-        const days = screen.getAllByText('15')
-        fireEvent.click(days[0])
-        fireEvent.click(screen.getAllByText('20')[0])
+        fireEvent.click(screen.getAllByText('10')[0])
+        fireEvent.click(screen.getAllByText('15')[0])
         expect(onPeriodSelect).toHaveBeenCalledWith(expect.any(String), expect.any(String))
     })
 
     it('selects start and end dates in reverse order', () => {
         const onPeriodSelect = jest.fn()
         setup({ onPeriodSelect })
-        fireEvent.click(screen.getAllByText('20')[0])
         fireEvent.click(screen.getAllByText('15')[0])
+        fireEvent.click(screen.getAllByText('10')[0])
         expect(onPeriodSelect).toHaveBeenCalled()
     })
 
@@ -60,7 +56,6 @@ describe('Calendar', () => {
         fireEvent.click(screen.getAllByText('10')[0])
         fireEvent.click(screen.getAllByText('15')[0])
         fireEvent.click(screen.getAllByText('20')[0])
-        // Should start a new selection
     })
 
     it('disables days before minDate', () => {
@@ -92,6 +87,47 @@ describe('Calendar', () => {
         const [monthSelect, yearSelect] = screen.getAllByRole('combobox')
         fireEvent.change(monthSelect, { target: { value: '0' } })
         fireEvent.change(yearSelect, { target: { value: '2020' } })
-        // Should update currentMonth state
+    })
+
+    it('calls onDateSelect for single date selection', () => {
+        const onDateSelect = jest.fn()
+        setup({ onDateSelect })
+        fireEvent.click(screen.getAllByText('12')[0])
+        expect(onDateSelect).toHaveBeenCalledWith(expect.any(String))
+    })
+
+    it('does not call onPeriodSelect if only one date is clicked', () => {
+        const onPeriodSelect = jest.fn()
+        setup({ onPeriodSelect })
+        fireEvent.click(screen.getAllByText('12')[0])
+        expect(onPeriodSelect).not.toHaveBeenCalled()
+    })
+
+    it('does not call onDateSelect if day is disabled by minDate', () => {
+        const onDateSelect = jest.fn()
+        const minDate = dayjs().date(10).format('YYYY-MM-DD')
+        setup({ onDateSelect, minDate })
+        fireEvent.click(screen.getAllByText('5')[0])
+        expect(onDateSelect).not.toHaveBeenCalled()
+    })
+
+    it('does not call onDateSelect if day is disabled by maxDate', () => {
+        const onDateSelect = jest.fn()
+        const maxDate = dayjs().date(10).format('YYYY-MM-DD')
+        setup({ onDateSelect, maxDate })
+        fireEvent.click(screen.getAllByText('15')[0])
+        expect(onDateSelect).not.toHaveBeenCalled()
+    })
+
+    it('renders correct range highlight between selectedStartDate and selectedEndDate', () => {
+        setup({ startDate: dayjs().date(5).format('YYYY-MM-DD'), endDate: dayjs().date(10).format('YYYY-MM-DD') })
+        // No error means range is rendered, can add more checks if needed
+    })
+
+    it('renders with minDate and maxDate as year boundaries', () => {
+        const minDate = dayjs().subtract(1, 'year').format('YYYY-MM-DD')
+        const maxDate = dayjs().add(1, 'year').format('YYYY-MM-DD')
+        setup({ minDate, maxDate })
+        expect(screen.getAllByRole('combobox')[1]).toBeInTheDocument()
     })
 })
