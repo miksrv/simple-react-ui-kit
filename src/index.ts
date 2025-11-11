@@ -8,7 +8,7 @@ export { default as Button } from './components/button'
 
 // Calendar Component
 export type { CalendarProps } from './components/calendar'
-export { default as Calendar } from './components/calendar'
+export { Calendar } from './components/calendar'
 
 // Checkbox Component
 export type { CheckboxProps } from './components/checkbox'
@@ -24,7 +24,7 @@ export { default as Container } from './components/container'
 
 // Datepicker Component
 export type { DatepickerProps } from './components/datepicker'
-// export { default as Datepicker } from './components/datepicker'
+export { Datepicker } from './components/datepicker'
 
 // Dropdown Component
 export type { DropdownOption, DropdownProps } from './components/dropdown'

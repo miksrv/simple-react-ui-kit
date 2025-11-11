@@ -22,7 +22,7 @@ export interface CalendarProps {
     onPeriodSelect?: (startDate?: string, endDate?: string) => void
 }
 
-const Calendar: React.FC<CalendarProps> = ({
+export const Calendar: React.FC<CalendarProps> = ({
     hideDaysOfWeek,
     startDate,
     endDate,
@@ -245,4 +245,4 @@ const Calendar: React.FC<CalendarProps> = ({
     )
 }
 
-export default Calendar
+// export default Calendar

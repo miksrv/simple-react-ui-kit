@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import dayjs from 'dayjs'
 
 import Button from '../button'
-import Calendar, { CalendarProps } from '../calendar'
+import { Calendar, CalendarProps } from '../calendar'
 
 import { CalendarPresetType, enPresets, PresetOption, ruPresets } from './utils'
 
@@ -55,7 +55,7 @@ export const timePresets: CalendarPresetType[] = [
 //     return undefined
 // }
 
-const Datepicker: React.FC<DatepickerProps> = (props) => {
+export const Datepicker: React.FC<DatepickerProps> = (props) => {
     const findCurrentPreset = useCallback(
         (key: PresetOption): CalendarPresetType | undefined => {
             const preset = timePresets?.find((preset) => preset.key === key)
@@ -95,5 +95,3 @@ const Datepicker: React.FC<DatepickerProps> = (props) => {
         </div>
     )
 }
-
-export default Datepicker
