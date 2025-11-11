@@ -18,6 +18,7 @@ export interface CalendarProps {
     minDate?: string
     maxDate?: string
     locale?: 'ru' | 'en'
+    onDateSelect?: (date: string) => void
     onPeriodSelect?: (startDate?: string, endDate?: string) => void
 }
 
@@ -28,6 +29,7 @@ const Calendar: React.FC<CalendarProps> = ({
     minDate,
     maxDate,
     locale,
+    onDateSelect,
     onPeriodSelect
 }) => {
     const [currentMonth, setCurrentMonth] = useState(dayjs().utc())
@@ -78,21 +80,27 @@ const Calendar: React.FC<CalendarProps> = ({
             return
         }
 
-        if (!selectedStartDate) {
-            setSelectedStartDate(newDate)
-            setSelectedEndDate(null)
-        } else if (!selectedEndDate) {
-            if (newDate.isAfter(selectedStartDate)) {
-                setSelectedEndDate(newDate)
-                onPeriodSelect?.(selectedStartDate.format('YYYY-MM-DD'), newDate.format('YYYY-MM-DD'))
-            } else {
-                setSelectedEndDate(selectedStartDate)
+        if (onPeriodSelect) {
+            if (!selectedStartDate) {
                 setSelectedStartDate(newDate)
-                onPeriodSelect?.(newDate.format('YYYY-MM-DD'), selectedStartDate.format('YYYY-MM-DD'))
+                setSelectedEndDate(null)
+            } else if (!selectedEndDate) {
+                if (newDate.isAfter(selectedStartDate)) {
+                    setSelectedEndDate(newDate)
+                    onPeriodSelect?.(selectedStartDate.format('YYYY-MM-DD'), newDate.format('YYYY-MM-DD'))
+                } else {
+                    setSelectedEndDate(selectedStartDate)
+                    setSelectedStartDate(newDate)
+                    onPeriodSelect?.(newDate.format('YYYY-MM-DD'), selectedStartDate.format('YYYY-MM-DD'))
+                }
+            } else {
+                setSelectedStartDate(newDate)
+                setSelectedEndDate(null)
             }
-        } else {
+        } else if (onDateSelect) {
             setSelectedStartDate(newDate)
             setSelectedEndDate(null)
+            onDateSelect?.(newDate.format('YYYY-MM-DD'))
         }
     }
 
