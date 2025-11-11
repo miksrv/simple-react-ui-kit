@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.6.0
+
+### Minor Changes
+
+- Added new UI Component - DatePicker
+- Added new UI Component - Calendar
+- Updated Storybook - added stories for DatePicker and Calendar components
+- Implemented Unit Tests for DatePicker and Calendar components
+- Updated README.md - added descriptions for DatePicker and Calendar components
+
 ## 1.5.13
 
 ### Patch Changes

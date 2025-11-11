@@ -54,6 +54,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Button](#button)
     - [Checkbox](#checkbox)
     - [Container](#container)
+    - [DatePicker](#datepicker)
     - [Dropdown](#dropdown)
     - [Dialog](#dialog)
     - [Icon](#icon)
@@ -268,6 +269,59 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 </details>
 
+### Calendar
+
+The `Calendar` component provides an interactive calendar UI for selecting single dates or date ranges, supporting localization, min/max date limits, and custom styling.
+
+<details>
+  <summary>Calendar Component Example</summary>
+
+Check out the full documentation and examples in Storybook: [Calendar Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-calendar--docs).
+
+#### Props:
+
+- **`hideDaysOfWeek`**: Hides the days of the week row if set to `true`.
+- **`datePeriod`**: Tuple of start and end dates (`[string?, string?]`) for range selection.
+- **`minDate`**: Minimum selectable date (`YYYY-MM-DD`).
+- **`maxDate`**: Maximum selectable date (`YYYY-MM-DD`).
+- **`locale`**: Locale for month and day names (`'ru'` or `'en'`).
+- **`containerClassName`**: Additional class name for the calendar container.
+- **`onDateSelect`**: Callback for single date selection.
+- **`onPeriodSelect`**: Callback for period selection (start and end dates).
+
+```tsx
+import React, { useState } from 'react'
+import { Calendar } from 'simple-react-ui-kit'
+
+const App = () => {
+    const [period, setPeriod] = useState<[string?, string?]>([])
+
+    return (
+        <div>
+            <Calendar
+                locale='en'
+                minDate='2023-01-01'
+                maxDate='2025-12-31'
+                datePeriod={period}
+                onPeriodSelect={(start, end) => setPeriod([start, end])}
+            />
+        </div>
+    )
+}
+
+export default App
+```
+
+In this example:
+
+- The Calendar allows selecting a date range between 2023-01-01 and 2025-12-31.
+- The selected period is managed in React state and updated via the onPeriodSelect callback.
+- The calendar is displayed in English.
+
+For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-calendar--docs).
+
+</details>
+
 ### Checkbox
 
 The `Checkbox` component is a customizable input element used for toggling between checked, unchecked, and indeterminate states. It includes support for labels and provides additional flexibility with its disabled and indeterminate options.
@@ -402,6 +456,57 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 </details>
 
+### DatePicker
+
+The `DatePicker` component provides a user-friendly interface for selecting a single date or a date range, with quick-access preset options (like Today, Last Week, etc.) and full calendar support. It is ideal for dashboards, reports, and any UI requiring date or period selection.
+
+<details>
+  <summary>DatePicker Component Example</summary>
+
+Check out the full documentation and examples in Storybook: [DatePicker Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-datepicker--docs).
+
+#### Props:
+
+- **`hidePresets`**: Array of preset keys to hide from the presets list.
+- **`periodDatesFormat`**: Format for displaying period ranges (default: `DD.MM.YYYY`).
+- **`singleDateFormat`**: Format for displaying a single date (default: `DD MMMM YYYY`).
+- **`selectDateCaption`**: Caption shown when no date is selected (default: `Select date`).
+- **`disabled`**: Disables the date picker if `true`.
+- **`buttonMode`**: Button mode for the trigger (`primary`, `secondary`, etc.).
+- All other `Calendar` props are supported.
+
+#### Example Usage:
+
+```tsx
+import React, { useState } from 'react'
+import { DatePicker } from 'simple-react-ui-kit'
+
+const App = () => {
+    const [period, setPeriod] = useState<[string?, string?]>([])
+
+    return (
+        <DatePicker
+            periodDatesFormat='DD.MM.YYYY'
+            singleDateFormat='DD MMMM YYYY'
+            onPeriodSelect={(start, end) => setPeriod([start, end])}
+            selectDateCaption='Choose a date'
+            buttonMode='primary'
+        />
+    )
+}
+
+export default App
+```
+
+In this example:
+
+- The `DatePicker` component allows users to select a date or date range.
+- The selected period is stored in the `period` state variable.
+- Custom date formats and captions are provided for better user experience.
+- The button mode is set to `primary` for visual emphasis.
+
+For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/controls-datepicker--docs).
+
 ### Dropdown
 
 The `Dropdown` component provides a flexible, customizable dropdown menu for selecting options. It supports various features such as custom icons, images, placeholders, error messages, and a clearable state. It also handles clicks outside the dropdown to close it automatically.
@@ -410,6 +515,8 @@ The `Dropdown` component provides a flexible, customizable dropdown menu for sel
   <summary>Dropdown Component Example</summary>
 
 Check out the full documentation and examples in Storybook: [Dropdown Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-dropdown--docs).
+
+</details>
 
 #### Props:
 
@@ -1062,10 +1169,6 @@ The `Table` component is perfect for displaying structured data in applications 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-table--docs).
 
 </details>
-
-<p align="right">
-  (<a href="#top">Back to top</a>)
-</p>
 
 ### Progress
 

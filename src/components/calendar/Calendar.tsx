@@ -1,0 +1,263 @@
+import React, { useEffect, useState } from 'react'
+import dayjs, { Dayjs } from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+
+import { cn } from '../../utils'
+import Icon from '../icon'
+
+import { enDaysOfWeek, enMonths, ruDaysOfWeek, ruMonths } from './utils'
+
+import styles from './styles.module.sass'
+
+dayjs.extend(utc)
+
+/**
+ * Calendar component properties
+ */
+export interface CalendarProps {
+    /** Hide the days of the week row */
+    hideDaysOfWeek?: boolean
+    /** Selected date period as a tuple of start and end dates (YYYY-MM-DD) */
+    datePeriod?: [string?, string?]
+    /** Minimum selectable date (YYYY-MM-DD) */
+    minDate?: string
+    /** Maximum selectable date (YYYY-MM-DD) */
+    maxDate?: string
+    /** Locale for month and day names ('ru' or 'en') */
+    locale?: 'ru' | 'en'
+    /** Additional class name for the calendar container */
+    containerClassName?: string
+    /** Callback for single date selection */
+    onDateSelect?: (date: string) => void
+    /** Callback for period selection (start and end dates) */
+    onPeriodSelect?: (startDate?: string, endDate?: string) => void
+}
+
+export const Calendar: React.FC<CalendarProps> = ({
+    hideDaysOfWeek,
+    datePeriod,
+    minDate,
+    maxDate,
+    locale,
+    containerClassName,
+    onDateSelect,
+    onPeriodSelect
+}) => {
+    const [currentMonth, setCurrentMonth] = useState(dayjs().utc())
+    const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
+    const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(null)
+
+    const [selectedMonth, setSelectedMonth] = useState<number>(currentMonth.month())
+    const [selectedYear, setSelectedYear] = useState<number>(currentMonth.year())
+    const [yearsOptions, setYearsOptions] = useState<number[]>([])
+
+    const daysInMonth = currentMonth.daysInMonth()
+    const startDay = (currentMonth.startOf('month').day() + 6) % 7
+
+    const handlePrevMonth = () => {
+        const newMonth = currentMonth.subtract(1, 'month')
+        setCurrentMonth(newMonth)
+        setSelectedMonth(newMonth.month())
+        setSelectedYear(newMonth.year())
+    }
+
+    const handleNextMonth = () => {
+        const newMonth = currentMonth.add(1, 'month')
+        setCurrentMonth(newMonth)
+        setSelectedMonth(newMonth.month())
+        setSelectedYear(newMonth.year())
+    }
+
+    const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newMonth = Number.parseInt(event.target.value, 10)
+        setSelectedMonth(newMonth)
+        setCurrentMonth(currentMonth.month(newMonth))
+    }
+
+    const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newYear = Number.parseInt(event.target.value, 10)
+        setSelectedYear(newYear)
+        setCurrentMonth(currentMonth.year(newYear))
+    }
+
+    const handleDateClick = (day: number) => {
+        const newDate = currentMonth.date(day)
+
+        if (minDate && newDate.isBefore(dayjs(minDate))) {
+            return
+        }
+
+        if (maxDate && newDate.isAfter(dayjs(maxDate)) && !newDate.isSame(dayjs(maxDate), 'day')) {
+            return
+        }
+
+        if (onPeriodSelect) {
+            if (!selectedStartDate) {
+                setSelectedStartDate(newDate)
+                setSelectedEndDate(null)
+            } else if (!selectedEndDate) {
+                if (newDate.isAfter(selectedStartDate)) {
+                    setSelectedEndDate(newDate)
+                    onPeriodSelect?.(selectedStartDate.format('YYYY-MM-DD'), newDate.format('YYYY-MM-DD'))
+                } else {
+                    setSelectedEndDate(selectedStartDate)
+                    setSelectedStartDate(newDate)
+                    onPeriodSelect?.(newDate.format('YYYY-MM-DD'), selectedStartDate.format('YYYY-MM-DD'))
+                }
+            } else {
+                setSelectedStartDate(newDate)
+                setSelectedEndDate(null)
+            }
+        } else if (onDateSelect) {
+            setSelectedStartDate(newDate)
+            setSelectedEndDate(null)
+            onDateSelect?.(newDate.format('YYYY-MM-DD'))
+        }
+    }
+
+    const renderDays = () => {
+        const days: React.ReactNode[] = []
+
+        // Display days of the previous month
+        for (let i = 0; i < startDay; i++) {
+            days.push(
+                <div
+                    key={`prev-${i}`}
+                    className={cn(styles.day, styles.prevMonth)}
+                >
+                    {currentMonth.subtract(1, 'month').daysInMonth() - startDay + i + 1}
+                </div>
+            )
+        }
+
+        // Displaying days of the current month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = currentMonth.date(day)
+            let dayClass = styles.day
+
+            if (selectedStartDate && selectedEndDate) {
+                if (date.isAfter(selectedStartDate) && date.isBefore(selectedEndDate)) {
+                    dayClass = cn(dayClass, styles.range)
+                }
+            }
+
+            if (selectedStartDate && date.isSame(selectedStartDate, 'day')) {
+                dayClass = cn(dayClass, styles.selected, styles.selectedStartDate)
+            }
+            if (selectedEndDate && date.isSame(selectedEndDate, 'day')) {
+                dayClass = cn(dayClass, styles.selected, styles.selectedEndDate)
+            }
+            if (
+                (minDate && date.isBefore(dayjs(minDate))) ||
+                (maxDate && date.isAfter(dayjs(maxDate)) && !date.isSame(dayjs(maxDate), 'day'))
+            ) {
+                dayClass = cn(dayClass, styles.notAllowed)
+            }
+
+            days.push(
+                <div
+                    key={`day-${day}`}
+                    className={dayClass}
+                    onClick={() => handleDateClick(day)}
+                >
+                    {day}
+                </div>
+            )
+        }
+
+        return days
+    }
+
+    useEffect(() => {
+        const years: number[] = []
+
+        const minYear = minDate ? dayjs.utc(minDate).year() : 1900
+        const maxYear = maxDate ? dayjs.utc(maxDate).year() : dayjs().year()
+
+        for (let year = minYear; year <= maxYear; year++) {
+            years.push(year)
+        }
+
+        setYearsOptions(years)
+    }, [minDate, maxDate])
+
+    useEffect(() => {
+        if (datePeriod?.[0]) {
+            setSelectedStartDate(dayjs.utc(datePeriod[0]))
+        } else {
+            setSelectedStartDate(null)
+        }
+
+        if (datePeriod?.[1]) {
+            setSelectedEndDate(dayjs.utc(datePeriod[1]))
+        } else {
+            setSelectedEndDate(null)
+        }
+    }, [datePeriod])
+
+    return (
+        <div className={cn(styles.calendar, containerClassName)}>
+            <header className={styles.header}>
+                <button
+                    className={styles.navigateButton}
+                    onClick={handlePrevMonth}
+                >
+                    <Icon name={'KeyboardLeft'} />
+                </button>
+                <span>
+                    <div className={styles.selectContainer}>
+                        <select
+                            value={selectedMonth}
+                            onChange={handleMonthChange}
+                        >
+                            {(locale === 'ru' ? ruMonths : enMonths).map((month, index) => (
+                                <option
+                                    key={index}
+                                    value={index}
+                                >
+                                    {month}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className={styles.selectContainer}>
+                        <select
+                            value={selectedYear}
+                            onChange={handleYearChange}
+                        >
+                            {yearsOptions.map((year) => (
+                                <option
+                                    key={year}
+                                    value={year}
+                                >
+                                    {year}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </span>
+                <button
+                    className={styles.navigateButton}
+                    onClick={handleNextMonth}
+                >
+                    <Icon name={'KeyboardRight'} />
+                </button>
+            </header>
+
+            {!hideDaysOfWeek && (
+                <div className={styles.daysOfWeekContainer}>
+                    {(locale === 'ru' ? ruDaysOfWeek : enDaysOfWeek).map((day) => (
+                        <div
+                            key={`dayOfWeek-${day}`}
+                            className={styles.dayOfWeek}
+                        >
+                            {day}
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            <div className={styles.body}>{renderDays()}</div>
+        </div>
+    )
+}
