@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ElementSizeType } from '../../types'
+import { ButtonModeType, ElementSizeType } from '../../types'
 import { cn } from '../../utils'
 import Icon, { IconTypes } from '../icon'
 import Spinner from '../spinner'
@@ -24,7 +24,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     /** Size of the button */
     size?: ElementSizeType
     /** Visual style of the button */
-    mode?: 'primary' | 'secondary' | 'outline' | 'link'
+    mode?: ButtonModeType
     /** Button variant for styling */
     variant?: 'positive' | 'negative'
     /** Icon to display inside the button */

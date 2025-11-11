@@ -8,11 +8,25 @@ const meta: Meta<DatePickerProps> = {
     title: 'Controls/DatePicker',
     component: DatePicker,
     argTypes: {
-        locale: { control: { type: 'select', options: ['en', 'ru'] } },
-        hideDaysOfWeek: { control: 'boolean' },
+        locale: {
+            control: { type: 'select' },
+            options: ['en', 'ru'],
+            table: { type: { summary: '"en", "ru"' } }
+        },
+        datePeriod: { control: 'object', description: 'Tuple of start and end dates (YYYY-MM-DD)' },
         minDate: { control: 'text' },
         maxDate: { control: 'text' },
-        hidePresets: { control: false },
+        buttonMode: {
+            control: { type: 'select' },
+            options: ['primary', 'secondary', 'outline', 'link'],
+            table: { type: { summary: '"primary", "secondary", "outline", "link"' } }
+        },
+        onDateSelect: { action: 'date selected', table: { disable: false } },
+        onPeriodSelect: { action: 'period selected', table: { disable: false } },
+        hidePresets: { control: 'object', description: 'List of preset options to hide' },
+        periodDatesFormat: { control: 'text', description: 'Format for period range (default: DD.MM.YYYY)' },
+        singleDateFormat: { control: 'text', description: 'Format for single date (default: DD MMMM YYYY)' },
+        selectDateCaption: { control: 'text', description: 'Caption when no date is selected' },
         disabled: { control: 'boolean' }
     }
 }

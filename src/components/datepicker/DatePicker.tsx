@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 
+import { ButtonModeType } from '../../types'
 import Button from '../button'
 import { Calendar, CalendarProps } from '../calendar'
 import Popout, { PopoutHandleProps } from '../popout'
@@ -24,6 +25,8 @@ export interface DatePickerProps extends Omit<CalendarProps, 'containerClassName
     selectDateCaption?: string
     /** Disables the date picker if set to true */
     disabled?: boolean
+    /** Button mode for the trigger button */
+    buttonMode?: ButtonModeType
 }
 
 const nowDate = dayjs.utc()
@@ -42,6 +45,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     periodDatesFormat = 'DD.MM.YYYY',
     singleDateFormat = 'DD MMMM YYYY',
     selectDateCaption = 'Select date',
+    buttonMode = 'primary',
     locale = 'en',
     disabled = false,
     ...props
@@ -106,7 +110,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             disabled={disabled}
             trigger={
                 <Button
-                    mode={'secondary'}
+                    mode={buttonMode}
                     disabled={disabled}
                 >
                     {currentDatePreset || selectDateCaption}

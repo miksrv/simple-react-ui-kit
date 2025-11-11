@@ -24,6 +24,7 @@
         "sass-loader": "^16.0.4",
         "storybook": "^10.0.3",
         "style-loader": "^4.0.0",
+        "dayjs": "^1.11.19",
         "tsconfig-paths-webpack-plugin": "^4.2.0"
     }
 }

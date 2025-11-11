@@ -69,13 +69,13 @@ export const Calendar: React.FC<CalendarProps> = ({
     }
 
     const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newMonth = parseInt(event.target.value, 10)
+        const newMonth = Number.parseInt(event.target.value, 10)
         setSelectedMonth(newMonth)
         setCurrentMonth(currentMonth.month(newMonth))
     }
 
     const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newYear = parseInt(event.target.value, 10)
+        const newYear = Number.parseInt(event.target.value, 10)
         setSelectedYear(newYear)
         setCurrentMonth(currentMonth.year(newYear))
     }

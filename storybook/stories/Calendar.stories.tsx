@@ -12,7 +12,14 @@ const meta: Meta<CalendarProps> = {
         datePeriod: { control: 'object' },
         minDate: { control: 'text' },
         maxDate: { control: 'text' },
-        locale: { control: { type: 'select', options: ['en', 'ru'] } }
+        locale: {
+            control: { type: 'select' },
+            options: ['en', 'ru'],
+            table: {
+                defaultValue: { summary: 'en' },
+                type: { summary: '"en" | "ru"' }
+            }
+        }
     }
 }
 export default meta
