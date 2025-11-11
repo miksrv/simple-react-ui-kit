@@ -1,5 +1,7 @@
-// utils.test.ts
-import { enDaysOfWeek, enMonths, enPresets, PresetOption, ruDaysOfWeek, ruMonths, ruPresets } from './utils'
+import dayjs from 'dayjs'
+
+import { timePresets } from './Datepicker'
+import { enPresets, findPresetByDate, PresetOption, ruPresets } from './utils'
 
 describe('PresetOption enum', () => {
     it('should contain all expected keys', () => {
@@ -37,52 +39,50 @@ describe('ruPresets', () => {
     })
 })
 
-describe('enDaysOfWeek', () => {
-    it('should contain 7 English day abbreviations', () => {
-        expect(enDaysOfWeek).toStrictEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'])
-    })
-})
+describe('findPresetByDate', () => {
+    const nowDate = dayjs.utc()
 
-describe('ruDaysOfWeek', () => {
-    it('should contain 7 Russian day abbreviations', () => {
-        expect(ruDaysOfWeek).toStrictEqual(['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'])
+    it('returns undefined if startDate is missing', () => {
+        expect(findPresetByDate(nowDate, undefined, nowDate.format('YYYY-MM-DD'), 'en')).toBeUndefined()
     })
-})
 
-describe('enMonths', () => {
-    it('should contain 12 English month names', () => {
-        expect(enMonths).toStrictEqual([
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December'
-        ])
+    it('returns undefined if endDate is missing', () => {
+        expect(findPresetByDate(nowDate, nowDate.format('YYYY-MM-DD'), undefined, 'en')).toBeUndefined()
     })
-})
 
-describe('ruMonths', () => {
-    it('should contain 12 Russian month names', () => {
-        expect(ruMonths).toStrictEqual([
-            'Январь',
-            'Февраль',
-            'Март',
-            'Апрель',
-            'Май',
-            'Июнь',
-            'Июль',
-            'Август',
-            'Сентябрь',
-            'Октябрь',
-            'Ноябрь',
-            'Декабрь'
-        ])
+    it('returns undefined if endDate is not today', () => {
+        const yesterday = nowDate.subtract(1, 'day').format('YYYY-MM-DD')
+        expect(findPresetByDate(nowDate, yesterday, yesterday, 'en')).toBeUndefined()
+    })
+
+    it('returns correct English preset label for each preset', () => {
+        const today = nowDate.format('YYYY-MM-DD')
+        for (const preset of timePresets) {
+            const start = dayjs(preset.endDate).format('YYYY-MM-DD')
+            const result = findPresetByDate(nowDate, start, today, 'en')
+            expect(result).toBe(enPresets[preset.key])
+        }
+    })
+
+    it('returns correct Russian preset label for each preset', () => {
+        const today = nowDate.format('YYYY-MM-DD')
+        for (const preset of timePresets) {
+            const start = dayjs(preset.endDate).format('YYYY-MM-DD')
+            const result = findPresetByDate(nowDate, start, today, 'ru')
+            expect(result).toBe(ruPresets[preset.key])
+        }
+    })
+
+    it('returns undefined if no preset matches the startDate', () => {
+        const today = nowDate.format('YYYY-MM-DD')
+        const randomDate = nowDate.subtract(10, 'years').format('YYYY-MM-DD')
+        expect(findPresetByDate(nowDate, randomDate, today, 'en')).toBeUndefined()
+    })
+
+    it('defaults to English if locale is not provided', () => {
+        const today = nowDate.format('YYYY-MM-DD')
+        const preset = timePresets[0]
+        const start = dayjs(preset.endDate).format('YYYY-MM-DD')
+        expect(findPresetByDate(nowDate, start, today)).toBe(enPresets[preset.key])
     })
 })

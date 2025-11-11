@@ -13,8 +13,7 @@ dayjs.extend(utc)
 
 export interface CalendarProps {
     hideDaysOfWeek?: boolean
-    startDate?: string
-    endDate?: string
+    datePeriod?: [string?, string?]
     minDate?: string
     maxDate?: string
     locale?: 'ru' | 'en'
@@ -24,8 +23,7 @@ export interface CalendarProps {
 
 export const Calendar: React.FC<CalendarProps> = ({
     hideDaysOfWeek,
-    startDate,
-    endDate,
+    datePeriod,
     minDate,
     maxDate,
     locale,
@@ -171,14 +169,18 @@ export const Calendar: React.FC<CalendarProps> = ({
     }, [minDate, maxDate])
 
     useEffect(() => {
-        if (startDate) {
-            setSelectedStartDate(dayjs.utc(startDate))
+        if (datePeriod?.[0]) {
+            setSelectedStartDate(dayjs.utc(datePeriod[0]))
+        } else {
+            setSelectedStartDate(null)
         }
 
-        if (endDate) {
-            setSelectedEndDate(dayjs.utc(endDate))
+        if (datePeriod?.[1]) {
+            setSelectedEndDate(dayjs.utc(datePeriod[1]))
+        } else {
+            setSelectedEndDate(null)
         }
-    }, [startDate, endDate])
+    }, [datePeriod])
 
     return (
         <div className={styles.calendar}>

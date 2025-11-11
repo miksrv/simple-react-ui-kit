@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import Calendar, { CalendarProps } from './Calendar'
+import { Calendar, CalendarProps } from './Calendar'
 
 const setup = (props: Partial<CalendarProps> = {}) => render(<Calendar {...props} />)
 

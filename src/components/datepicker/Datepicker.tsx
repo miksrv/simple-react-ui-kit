@@ -5,7 +5,7 @@ import Button from '../button'
 import { Calendar, CalendarProps } from '../calendar'
 import Popout, { PopoutHandleProps } from '../popout'
 
-import { CalendarPresetType, enPresets, PresetOption, ruPresets } from './utils'
+import { CalendarPresetType, enPresets, findPresetByDate, PresetOption, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
 
@@ -26,39 +26,23 @@ export const timePresets: CalendarPresetType[] = [
     { key: PresetOption.YEAR, endDate: nowDate.subtract(1, 'year').toDate() }
 ]
 
-const findPresetByDate = (startDate?: string, endDate?: string, locale?: 'en' | 'ru'): string | undefined => {
-    if (!startDate || !endDate) {
-        return undefined
-    }
-
-    const start = dayjs(startDate)
-    const end = dayjs(endDate).utc(true)
-    const isEndDateToday = end.isSame(nowDate, 'day')
-
-    if (!isEndDateToday) {
-        return undefined
-    }
-
-    for (const preset of timePresets) {
-        const presetStartDate = dayjs(preset.endDate)
-        if (start.isSame(presetStartDate, 'day')) {
-            return locale === 'ru' ? ruPresets[preset.key] : enPresets[preset.key]
-        }
-    }
-
-    return undefined
-}
-
 export const Datepicker: React.FC<DatepickerProps> = (props) => {
     const popoutRef = useRef<PopoutHandleProps>(null)
-    const [periodDates, setPeriodDates] = useState<[string?, string?]>([props.startDate, props.endDate])
+    const [periodDates, setPeriodDates] = useState<[string?, string?]>([props.datePeriod?.[0], props.datePeriod?.[1]])
 
     const locale = props.locale || 'en'
     const disabled = props.disabled || false
 
     const currentDatePreset = useMemo((): string => {
-        const preset = findPresetByDate(periodDates?.[0], periodDates?.[1], locale)
-        return preset ? preset : periodDates?.[0] && periodDates?.[1] ? `${periodDates?.[0]} - ${periodDates?.[1]}` : ''
+        const preset = findPresetByDate(nowDate, periodDates?.[0], periodDates?.[1], locale)
+
+        return preset
+            ? preset
+            : periodDates?.[0] && periodDates?.[1]
+              ? periodDates?.[0] === periodDates?.[1]
+                  ? periodDates?.[0]
+                  : `${periodDates?.[0]} - ${periodDates?.[1]}`
+              : ''
     }, [periodDates, locale])
 
     const findCurrentPreset = useCallback(
@@ -91,6 +75,14 @@ export const Datepicker: React.FC<DatepickerProps> = (props) => {
         }
     }
 
+    const handleDateSelect = (date: string) => {
+        setPeriodDates([date, date])
+        props?.onDateSelect?.(date)
+        if (popoutRef.current) {
+            popoutRef.current.close()
+        }
+    }
+
     return (
         <Popout
             ref={popoutRef}
@@ -106,25 +98,27 @@ export const Datepicker: React.FC<DatepickerProps> = (props) => {
             }
         >
             <div className={styles.datePickerContainer}>
-                <div className={styles.presetList}>
-                    {timePresets
-                        ?.filter(({ key }) => (props.hidePresets ? !props.hidePresets.includes(key) : true))
-                        ?.map(({ key }) => (
-                            <Button
-                                key={key}
-                                mode={findCurrentPreset(key)?.key ? 'secondary' : 'outline'}
-                                onClick={() => handlePresetSelect(key)}
-                            >
-                                {locale === 'ru' ? ruPresets[key] : enPresets[key]}
-                            </Button>
-                        ))}
-                </div>
+                {props?.onPeriodSelect && (
+                    <div className={styles.presetList}>
+                        {timePresets
+                            ?.filter(({ key }) => (props.hidePresets ? !props.hidePresets.includes(key) : true))
+                            ?.map(({ key }) => (
+                                <Button
+                                    key={key}
+                                    mode={findCurrentPreset(key)?.key ? 'secondary' : 'outline'}
+                                    onClick={() => handlePresetSelect(key)}
+                                >
+                                    {locale === 'ru' ? ruPresets[key] : enPresets[key]}
+                                </Button>
+                            ))}
+                    </div>
+                )}
                 <Calendar
                     {...props}
-                    startDate={periodDates?.[0]}
-                    endDate={periodDates?.[1]}
                     locale={locale}
-                    onPeriodSelect={handlePeriodSelect}
+                    datePeriod={[periodDates?.[0], periodDates?.[1]]}
+                    onDateSelect={props?.onDateSelect ? handleDateSelect : undefined}
+                    onPeriodSelect={props?.onPeriodSelect ? handlePeriodSelect : undefined}
                 />
             </div>
         </Popout>

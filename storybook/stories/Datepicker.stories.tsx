@@ -5,7 +5,7 @@ import type { Meta, StoryFn } from '@storybook/react'
 import { Datepicker, DatepickerProps } from '../../src'
 
 const meta: Meta<DatepickerProps> = {
-    title: 'Components/Datepicker',
+    title: 'Controls/Datepicker',
     component: Datepicker,
     argTypes: {
         locale: { control: { type: 'select', options: ['en', 'ru'] } },
@@ -22,7 +22,7 @@ const Template: StoryFn<DatepickerProps> = (args) => {
     const [range, setRange] = useState<{ start?: string; end?: string }>({})
 
     return (
-        <div>
+        <div style={{ position: 'relative', height: 290 }}>
             <Datepicker
                 {...args}
                 onPeriodSelect={(start, end) => setRange({ start, end })}
@@ -36,6 +36,26 @@ const Template: StoryFn<DatepickerProps> = (args) => {
 
 export const Default = Template.bind({})
 Default.args = { locale: 'en' }
+
+export const DateSelect = Template.bind({})
+DateSelect.args = { locale: 'en' }
+DateSelect.decorators = [
+    () => {
+        const [selectedDate, setSelectedDate] = React.useState<string | undefined>(undefined)
+        const handleDateSelect = (date: string) => setSelectedDate(date)
+        return (
+            <div style={{ position: 'relative', height: 290 }}>
+                <Datepicker
+                    locale='en'
+                    onDateSelect={handleDateSelect}
+                />
+                <div style={{ marginTop: 16 }}>
+                    <strong>Selected date:</strong> {selectedDate || '-'}
+                </div>
+            </div>
+        )
+    }
+]
 
 export const RussianLocale = Template.bind({})
 RussianLocale.args = { locale: 'ru' }

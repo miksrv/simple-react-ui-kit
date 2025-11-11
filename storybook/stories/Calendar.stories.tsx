@@ -9,8 +9,7 @@ const meta: Meta<CalendarProps> = {
     component: Calendar,
     argTypes: {
         hideDaysOfWeek: { control: 'boolean' },
-        startDate: { control: 'text' },
-        endDate: { control: 'text' },
+        datePeriod: { control: 'object' },
         minDate: { control: 'text' },
         maxDate: { control: 'text' },
         locale: { control: { type: 'select', options: ['en', 'ru'] } }
@@ -73,10 +72,7 @@ export const RussianLocale = Template.bind({})
 RussianLocale.args = { locale: 'ru' }
 
 export const WithRange = Template.bind({})
-WithRange.args = {
-    startDate: '2024-06-01',
-    endDate: '2024-06-10'
-}
+WithRange.args = { datePeriod: ['2024-06-01', '2024-06-10'] }
 
 export const HideDaysOfWeek = Template.bind({})
 HideDaysOfWeek.args = { hideDaysOfWeek: true }
