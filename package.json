@@ -82,6 +82,7 @@
         "typescript-eslint": "^8.46.4"
     },
     "dependencies": {
+        "dayjs": "^1.11.19",
         "lodash-es": "^4.17.21",
         "react": "^19.2.0",
         "react-dom": "^19.2.0"
