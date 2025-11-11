@@ -5,12 +5,23 @@ import Button from '../button'
 import { Calendar, CalendarProps } from '../calendar'
 import Popout, { PopoutHandleProps } from '../popout'
 
-import { CalendarPresetType, enPresets, findPresetByDate, PresetOption, ruPresets } from './utils'
+import { CalendarPresetType, enPresets, findPresetByDate, formatDate, PresetOption, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
 
-export interface DatepickerProps extends CalendarProps {
+/**
+ * DatePicker component properties
+ */
+export interface DatePickerProps extends Omit<CalendarProps, 'containerClassName'> {
+    /** List of preset options to hide from the presets list */
     hidePresets?: PresetOption[]
+    /** Date format for displaying period ranges (default: 'DD.MM.YYYY') */
+    periodDatesFormat?: string
+    /** Date format for displaying a single date (default: 'DD MMMM YYYY') */
+    singleDateFormat?: string
+    /** Caption text shown when no date is selected (default: 'Select date') */
+    selectDateCaption?: string
+    /** Disables the date picker if set to true */
     disabled?: boolean
 }
 
@@ -26,11 +37,16 @@ export const timePresets: CalendarPresetType[] = [
     { key: PresetOption.YEAR, endDate: nowDate.subtract(1, 'year').toDate() }
 ]
 
-export const Datepicker: React.FC<DatepickerProps> = (props) => {
+export const DatePicker: React.FC<DatePickerProps> = ({
+    periodDatesFormat = 'DD.MM.YYYY',
+    singleDateFormat = 'DD MMMM YYYY',
+    selectDateCaption = 'Select date',
+    locale = 'en',
+    ...props
+}) => {
     const popoutRef = useRef<PopoutHandleProps>(null)
     const [periodDates, setPeriodDates] = useState<[string?, string?]>([props.datePeriod?.[0], props.datePeriod?.[1]])
 
-    const locale = props.locale || 'en'
     const disabled = props.disabled || false
 
     const currentDatePreset = useMemo((): string => {
@@ -40,8 +56,8 @@ export const Datepicker: React.FC<DatepickerProps> = (props) => {
             ? preset
             : periodDates?.[0] && periodDates?.[1]
               ? periodDates?.[0] === periodDates?.[1]
-                  ? periodDates?.[0]
-                  : `${periodDates?.[0]} - ${periodDates?.[1]}`
+                  ? formatDate(periodDates?.[0], singleDateFormat)
+                  : `${formatDate(periodDates?.[0], periodDatesFormat)} - ${formatDate(periodDates?.[1], periodDatesFormat)}`
               : ''
     }, [periodDates, locale])
 
@@ -93,7 +109,7 @@ export const Datepicker: React.FC<DatepickerProps> = (props) => {
                     mode={'secondary'}
                     disabled={disabled}
                 >
-                    {currentDatePreset || (locale === 'ru' ? 'Выберите период' : 'Select period')}
+                    {currentDatePreset || selectDateCaption}
                 </Button>
             }
         >
@@ -113,9 +129,10 @@ export const Datepicker: React.FC<DatepickerProps> = (props) => {
                             ))}
                     </div>
                 )}
+
                 <Calendar
                     {...props}
-                    locale={locale}
+                    containerClassName={props?.onPeriodSelect && styles.calendarWithPresets}
                     datePeriod={[periodDates?.[0], periodDates?.[1]]}
                     onDateSelect={props?.onDateSelect ? handleDateSelect : undefined}
                     onPeriodSelect={props?.onPeriodSelect ? handlePeriodSelect : undefined}

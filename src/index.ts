@@ -22,9 +22,9 @@ export { default as Dialog } from './components/dialog'
 export type { ContainerProps } from './components/container'
 export { default as Container } from './components/container'
 
-// Datepicker Component
-export type { DatepickerProps } from './components/datepicker'
-export { Datepicker } from './components/datepicker'
+// DatePicker Component
+export type { DatePickerProps } from './components/datepicker'
+export { DatePicker, findPresetByDate } from './components/datepicker'
 
 // Dropdown Component
 export type { DropdownOption, DropdownProps } from './components/dropdown'

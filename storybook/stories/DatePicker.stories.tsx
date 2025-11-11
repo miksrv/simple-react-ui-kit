@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 
 import type { Meta, StoryFn } from '@storybook/react'
 
-import { Datepicker, DatepickerProps } from '../../src'
+import { DatePicker, DatePickerProps } from '../../src'
 
-const meta: Meta<DatepickerProps> = {
-    title: 'Controls/Datepicker',
-    component: Datepicker,
+const meta: Meta<DatePickerProps> = {
+    title: 'Controls/DatePicker',
+    component: DatePicker,
     argTypes: {
         locale: { control: { type: 'select', options: ['en', 'ru'] } },
         hideDaysOfWeek: { control: 'boolean' },
@@ -18,12 +18,12 @@ const meta: Meta<DatepickerProps> = {
 }
 export default meta
 
-const Template: StoryFn<DatepickerProps> = (args) => {
+const Template: StoryFn<DatePickerProps> = (args) => {
     const [range, setRange] = useState<{ start?: string; end?: string }>({})
 
     return (
         <div style={{ position: 'relative', height: 290 }}>
-            <Datepicker
+            <DatePicker
                 {...args}
                 onPeriodSelect={(start, end) => setRange({ start, end })}
             />
@@ -45,7 +45,7 @@ DateSelect.decorators = [
         const handleDateSelect = (date: string) => setSelectedDate(date)
         return (
             <div style={{ position: 'relative', height: 290 }}>
-                <Datepicker
+                <DatePicker
                     locale='en'
                     onDateSelect={handleDateSelect}
                 />

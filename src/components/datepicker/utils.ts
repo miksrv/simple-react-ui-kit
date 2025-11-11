@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-import { timePresets } from './Datepicker'
+import { timePresets } from './DatePicker'
 
 export enum PresetOption {
     TODAY = 'today',
@@ -36,6 +36,8 @@ export const ruPresets = {
     [PresetOption.HALF_YEAR]: 'Последние полгода',
     [PresetOption.YEAR]: 'Последний год'
 }
+
+export const formatDate = (date: string, format: string = 'YYYY-MM-DD'): string => dayjs(date).format(format)
 
 export const findPresetByDate = (
     nowDate: dayjs.Dayjs,
