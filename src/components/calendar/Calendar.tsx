@@ -38,7 +38,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     datePeriod,
     minDate,
     maxDate,
-    locale,
+    locale = 'en',
     containerClassName,
     onDateSelect,
     onPeriodSelect
