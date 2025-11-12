@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 
 import { ButtonModeType } from '../../types'
@@ -102,6 +102,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             popoutRef.current.close()
         }
     }
+
+    useEffect(() => {
+        if (props.datePeriod?.[0] !== periodDates?.[0] || props.datePeriod?.[1] !== periodDates?.[1]) {
+            setPeriodDates([props.datePeriod?.[0], props.datePeriod?.[1]])
+        }
+    }, [props.datePeriod])
 
     return (
         <Popout
