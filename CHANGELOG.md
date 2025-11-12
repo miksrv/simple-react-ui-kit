@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.6.1
+
+### Patch Changes
+
+- Fixed DatePicker default date issue
+- Updated DatePicker story - added default date example
+
 ## 1.6.0
 
 ### Minor Changes

@@ -49,7 +49,13 @@ const Template: StoryFn<DatePickerProps> = (args) => {
 }
 
 export const Default = Template.bind({})
-Default.args = { locale: 'en' }
+Default.args = {
+    locale: 'en',
+    datePeriod: [
+        new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+        new Date().toISOString().slice(0, 10)
+    ]
+}
 
 export const DateSelect = Template.bind({})
 DateSelect.args = { locale: 'en' }
