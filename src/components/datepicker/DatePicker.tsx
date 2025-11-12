@@ -46,7 +46,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     singleDateFormat = 'DD MMMM YYYY',
     selectDateCaption = 'Select date',
     buttonMode = 'primary',
-    locale = 'en',
     disabled = false,
     ...props
 }) => {
@@ -54,7 +53,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     const [periodDates, setPeriodDates] = useState<[string?, string?]>([props.datePeriod?.[0], props.datePeriod?.[1]])
 
     const currentDatePreset = useMemo((): string => {
-        const preset = findPresetByDate(nowDate, periodDates?.[0], periodDates?.[1], locale)
+        const preset = findPresetByDate(nowDate, periodDates?.[0], periodDates?.[1], props?.locale)
 
         return preset
             ? preset
@@ -63,7 +62,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                   ? formatDate(periodDates?.[0], singleDateFormat)
                   : `${formatDate(periodDates?.[0], periodDatesFormat)} - ${formatDate(periodDates?.[1], periodDatesFormat)}`
               : ''
-    }, [periodDates, locale])
+    }, [periodDates, props?.locale])
 
     const findCurrentPreset = useCallback(
         (key: PresetOption): CalendarPresetType | undefined => {
@@ -134,7 +133,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                                     mode={findCurrentPreset(key)?.key ? 'secondary' : 'outline'}
                                     onClick={() => handlePresetSelect(key)}
                                 >
-                                    {locale === 'ru' ? ruPresets[key] : enPresets[key]}
+                                    {props?.locale === 'ru' ? ruPresets[key] : enPresets[key]}
                                 </Button>
                             ))}
                     </div>

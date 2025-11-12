@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.6.2
+
+### Patch Changes
+
+- Fixed UI Calendar `locale` prop issue
+
 ## 1.6.1
 
 ### Patch Changes
