@@ -9,7 +9,7 @@ const config: Config = {
         '^.+\\.tsx?$': ['ts-jest', { useESM: true }]
     },
     setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
-    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.test.tsx', '!src/**/index.ts', '!src/**/types.ts'],
+    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.test.{ts,tsx}', '!src/**/index.ts', '!src/**/types.ts'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
     transformIgnorePatterns: ['node_modules/(?!(module-to-transform)/)']
 }
