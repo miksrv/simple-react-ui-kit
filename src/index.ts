@@ -72,5 +72,8 @@ export { default as Table } from './components/table'
 export type { ProgressProps } from './components/progress'
 export { default as Progress } from './components/progress'
 
+// Select Component
+export { default as Select, type SelectOptionType, type SelectProps } from './components/select'
+
 // Tools
 export { cn } from './utils'
