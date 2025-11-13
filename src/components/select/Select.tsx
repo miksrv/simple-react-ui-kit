@@ -274,7 +274,7 @@ const Select = <T,>({
         const rect = rootRef.current.getBoundingClientRect()
         return {
             position: 'absolute' as const,
-            top: rect.bottom + window.scrollY - (error ? 54 : 34),
+            top: rect.bottom + window.scrollY - (error ? 50 : 34),
             left: rect.left + window.scrollX,
             width: rect.width,
             zIndex: 9999,
