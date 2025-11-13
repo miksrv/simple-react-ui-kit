@@ -31,10 +31,6 @@ export {
     PresetOption
 } from './components/datepicker'
 
-// Dropdown Component
-export type { DropdownOption, DropdownProps } from './components/dropdown'
-export { default as Dropdown } from './components/dropdown'
-
 // Icon Component
 export type { IconTypes } from './components/icon'
 export { default as Icon } from './components/icon'
@@ -47,10 +43,6 @@ export { default as Input } from './components/input'
 // Message Component
 export type { MessageProps } from './components/message'
 export { default as Message } from './components/message'
-
-// Message Component
-export type { MultiSelectProps } from './components/multiselect'
-export { default as MultiSelect } from './components/multiselect'
 
 // Popout Component
 export type { PopoutHandleProps, PopoutProps } from './components/popout'
