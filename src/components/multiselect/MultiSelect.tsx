@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import { cn } from '../../utils'
 import Badge from '../badge'
@@ -10,250 +11,315 @@ import Spinner from '../spinner'
 import styles from './styles.module.sass'
 
 /**
- * Dropdown component properties
+ * MultiSelect component properties
  */
 export interface MultiSelectProps<T> {
     /** Additional class names for custom styling */
     className?: string
-    /** Array of options to display in the dropdown */
+    /** Array of options to display in the multiselect */
     options?: Array<DropdownOption<T>>
-    /** Mark the dropdown as required */
+    /** Mark the multiselect as required */
     required?: boolean
-    /** Disable the dropdown */
+    /** Disable the multiselect */
     disabled?: boolean
     /** Show loading spinner */
     loading?: boolean
-    /** Whether to close the dropdown when an option is selected */
+    /** Whether the dropdown should close after selecting an option */
     closeOnSelect?: boolean
     /** Placeholder text to display when no option is selected */
     placeholder?: string
-    /** Text to display in the options list if there are no options or nothing found */
+    /** Text to display if no options are found */
     notFoundCaption?: string
-    /** Label text for the dropdown */
+    /** Label text for the multiselect */
     label?: string
     /** Error message to display when validation fails */
     error?: string
-    /** Current selected value (key) in the dropdown */
+    /** Currently selected values (keys) in the multiselect */
     value?: T[]
-    /** Callback function triggered when an option is selected */
+    /** Callback triggered when options are selected */
     onSelect?: (selectedOptions: Array<DropdownOption<T>> | undefined) => void
-    /** Callback function triggered when a search is made */
+    /** Callback triggered when a search is made */
     onSearch?: (text?: string) => void
-    /** Callback function triggered when the dropdown is opened */
+    /** Callback triggered when the dropdown is opened */
     onOpen?: () => void
 }
 
 const MultiSelect = <T,>({
     className,
+    options = [],
     required,
-    options,
     disabled,
-    loading,
-    closeOnSelect,
-    value,
+    loading = false,
+    closeOnSelect = true,
     placeholder,
     notFoundCaption,
     label,
     error,
-    onSearch,
+    value,
     onSelect,
+    onSearch,
     onOpen
 }: MultiSelectProps<T>) => {
-    const dropdownRef = useRef<HTMLDivElement>(null)
-    const [search, setSearch] = useState<string>('')
-    const [localLoading, setLocalLoading] = useState<boolean>(false)
-    const [optionsListTop, setOptionsListTop] = useState<number>(30)
-    const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [isFocused, setIsFocused] = useState<boolean>(false)
-    const [selectedOption, setSelectedOption] = useState<Array<DropdownOption<T>> | undefined>(undefined)
+    const rootRef = useRef<HTMLDivElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null)
+    const [search, setSearch] = useState('')
+    const [isOpen, setIsOpen] = useState(false)
+    const [isFocused, setIsFocused] = useState(false)
+    const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null)
 
-    const optionInValue = (option?: DropdownOption<T>): boolean =>
-        option?.key ? !!value?.includes(option?.key) : false
+    useEffect(() => {
+        const div = document.createElement('div')
+        div.style.position = 'absolute'
+        div.style.top = '0'
+        div.style.left = '0'
+        div.style.pointerEvents = 'none'
+        document.body.appendChild(div)
+        setPortalNode(div)
 
-    const filteredOptions = useMemo(
-        () =>
-            options?.filter(
-                (option) =>
-                    option.value.toLocaleLowerCase().includes(search.toLocaleLowerCase()) && !optionInValue(option)
-            ),
-        [options, search, value]
+        return () => {
+            document.body.removeChild(div)
+            setPortalNode(null)
+        }
+    }, [])
+
+    const selectedOptions = useMemo(() => {
+        if (!value || !options.length) {
+            return undefined
+        }
+        return options.filter((opt) => opt.key != null && value.includes(opt.key))
+    }, [options, value])
+
+    const filteredOptions = useMemo(() => {
+        return options.filter(
+            (opt) =>
+                opt.value.toLowerCase().includes(search.toLowerCase()) &&
+                !selectedOptions?.some((s) => s.key === opt.key)
+        )
+    }, [options, search, selectedOptions])
+
+    const isOptionSelected = useCallback(
+        (option?: DropdownOption<T>) => option?.key != null && value?.includes(option.key),
+        [value]
     )
 
-    const toggleDropdown = () => {
-        if (onOpen) {
-            onOpen()
-        } else {
-            setIsOpen(!isOpen)
+    const toggleDropdown = useCallback(() => {
+        if (disabled) {
+            return
         }
-    }
-
-    const handleSearchKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (
-            event.key === 'Enter' &&
-            filteredOptions?.length &&
-            filteredOptions.length >= 1 &&
-            search !== '' &&
-            !filteredOptions[0]?.disabled
-        ) {
-            handleSelect(filteredOptions[0])
+        if (!isOpen) {
+            onOpen?.()
         }
+        setIsOpen((prev) => !prev)
+    }, [disabled, isOpen, onOpen])
 
-        if (event.key === 'Backspace' || event.key === 'Delete') {
-            if (search !== '') {
+    const handleSelect = useCallback(
+        (option?: DropdownOption<T>) => {
+            if (!option || isOptionSelected(option) || option.disabled) {
                 return
             }
 
-            const selected = [...(selectedOption || [])]
+            const newSelected = [...(selectedOptions || []), option]
+            onSelect?.(newSelected)
+            setSearch('')
+            onSearch?.('')
+            if (closeOnSelect) {
+                setIsOpen(false)
+            }
+        },
+        [selectedOptions, isOptionSelected, onSelect, onSearch, closeOnSelect]
+    )
 
-            selected.pop()
+    const handleRemove = useCallback(
+        (option?: DropdownOption<T>) => {
+            if (!option?.key) {
+                return
+            }
+            const newSelected = selectedOptions?.filter((opt) => opt.key !== option.key)
+            onSelect?.(newSelected)
+        },
+        [selectedOptions, onSelect]
+    )
 
-            setSelectedOption(selected)
-            onSelect?.(selected)
-        }
+    const handleSearchChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const val = e.target.value
+            setSearch(val)
+            onSearch?.(val)
+            if (val && !isOpen) {
+                setIsOpen(true)
+            }
+            if (!val && isOpen) {
+                setIsOpen(false)
+            }
+        },
+        [onSearch, isOpen]
+    )
 
-        if (event.key === 'Escape' && isOpen) {
-            setIsOpen(false)
-        }
-    }
+    const handleKeyDown = useCallback(
+        (e: KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter' && filteredOptions[0] && search && !filteredOptions[0].disabled) {
+                e.preventDefault()
+                handleSelect(filteredOptions[0])
+            }
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value
+            if ((e.key === 'Backspace' || e.key === 'Delete') && !search && selectedOptions?.length) {
+                e.preventDefault()
+                handleRemove(selectedOptions[selectedOptions.length - 1])
+            }
 
-        setLocalLoading(true)
-        setSearch(value)
+            if (e.key === 'Escape' && isOpen) {
+                e.preventDefault()
+                setIsOpen(false)
+                inputRef.current?.blur()
+            }
 
-        if (value === '' && isOpen) {
-            setIsOpen(false)
-        }
+            if (e.key === 'ArrowDown' && !isOpen) {
+                e.preventDefault()
+                setIsOpen(true)
+            }
+        },
+        [filteredOptions, search, selectedOptions, handleSelect, handleRemove, isOpen]
+    )
 
-        if (value !== '' && !isOpen) {
-            setIsOpen(true)
-        }
-
-        onSearch?.(value)
-        setLocalLoading(false)
-    }
-
-    const handleSelect = (option?: DropdownOption<T>) => {
-        if (!optionInValue(option) && option) {
-            const selected = [...(selectedOption || []), option]
-
-            setSelectedOption(selected)
-            onSelect?.(selected)
-        }
-
-        setSearch('')
-        onSearch?.('')
-
-        if (closeOnSelect) {
-            setIsOpen(false)
-        }
-    }
-
-    const handleRemoveOption = (option?: DropdownOption<T>) => {
-        const selected = selectedOption?.filter(({ key }) => key !== option?.key)
-
-        setSelectedOption(selected)
-        onSelect?.(selected)
-    }
-
-    const handleClickOutside = (event: MouseEvent) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-            setIsOpen(false)
-        }
-    }
-
-    const handleToggleDropdownClick = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-        if (event.key === 'Enter' || event.key === 'Escape') {
-            toggleDropdown()
-        }
-    }
+    const handleToggleKeyDown = useCallback(
+        (e: KeyboardEvent<HTMLSpanElement>) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                toggleDropdown()
+            }
+            if (e.key === 'Escape' && isOpen) {
+                e.preventDefault()
+                setIsOpen(false)
+            }
+        },
+        [toggleDropdown, isOpen]
+    )
 
     useEffect(() => {
+        if (!isOpen || !portalNode) {
+            return
+        }
+
+        const handleClickOutside = (e: globalThis.MouseEvent) => {
+            const target = e.target as Node
+            if (rootRef.current && !rootRef.current.contains(target) && portalNode && !portalNode.contains(target)) {
+                setIsOpen(false)
+            }
+        }
+
         document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [isOpen, portalNode])
 
-        setOptionsListTop(dropdownRef?.current?.clientHeight ?? 0)
+    const handleFocus = () => setIsFocused(true)
+    const handleBlur = () => setTimeout(() => setIsFocused(false), 150)
 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
+    const getPortalStyle = useCallback(() => {
+        if (!rootRef.current) {
+            return { display: 'none' }
         }
-    }, [value, selectedOption])
 
-    useEffect(() => {
-        if (value) {
-            setSelectedOption(options?.filter((option) => optionInValue(option)))
-        } else {
-            setSelectedOption(undefined)
+        const rect = rootRef.current.getBoundingClientRect()
+        return {
+            position: 'absolute' as const,
+            top: rect.bottom + window.scrollY - (error ? 52 : 34),
+            left: rect.left + window.scrollX,
+            width: rect.width,
+            zIndex: 9999,
+            pointerEvents: 'auto' as const
         }
-    }, [value, filteredOptions])
+    }, [error])
 
     return (
         <div className={cn(className, styles.multiselect, required && styles.required, disabled && styles.disabled)}>
-            {label && <label className={styles.label}>{label}</label>}
+            {label && (
+                <label
+                    className={styles.label}
+                    onClick={() => inputRef.current?.focus()}
+                >
+                    {label}
+                </label>
+            )}
+
             <div
-                ref={dropdownRef}
+                ref={rootRef}
                 className={cn(
                     styles.container,
                     isOpen && styles.open,
                     disabled && styles.disabled,
                     error && styles.error
                 )}
+                role='combobox'
+                aria-expanded={isOpen}
+                aria-haspopup='listbox'
+                aria-disabled={disabled}
             >
-                <div className={cn(styles.searchContainer, isOpen && styles.open, isFocused && styles.focused)}>
+                <div
+                    className={cn(styles.searchContainer, isOpen && styles.open, isFocused && styles.focused)}
+                    onClick={() => !disabled && inputRef.current?.focus()}
+                >
                     <div className={styles.controlsContainer}>
-                        {selectedOption?.map((option) => (
+                        {selectedOptions?.map((option) => (
                             <Badge
+                                key={String(option.key ?? option.value)}
                                 className={styles.badge}
-                                key={option.value}
                                 label={option.value}
                                 icon={option.icon}
-                                onClickRemove={() => handleRemoveOption(option)}
+                                onClickRemove={() => handleRemove(option)}
                             />
                         ))}
 
                         <input
-                            type={'text'}
-                            value={search || ''}
+                            ref={inputRef}
+                            type='text'
+                            value={search}
                             className={styles.searchInput}
-                            placeholder={placeholder ?? ''}
+                            placeholder={selectedOptions?.length ? '' : (placeholder ?? '')}
                             disabled={disabled}
-                            onFocus={() => setIsFocused(true)}
-                            onBlur={() => setIsFocused(false)}
-                            onMouseMove={(e) => e.stopPropagation()}
-                            onWheelCapture={(e) => e.stopPropagation()}
-                            onKeyDown={handleSearchKeyPress}
                             onChange={handleSearchChange}
+                            onKeyDown={handleKeyDown}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            aria-autocomplete='list'
+                            aria-controls='multiselect-options'
                         />
                     </div>
 
                     <span className={styles.buttonContainer}>
-                        {loading || localLoading ? (
+                        {loading ? (
                             <Spinner />
                         ) : (
                             <span
-                                role={'button'}
+                                role='button'
                                 tabIndex={0}
                                 className={styles.toggleButton}
                                 onClick={toggleDropdown}
-                                onKeyDown={handleToggleDropdownClick}
+                                onKeyDown={handleToggleKeyDown}
+                                aria-label={isOpen ? 'Close dropdown' : 'Open dropdown'}
                             >
-                                {isOpen ? <Icon name={'KeyboardUp'} /> : <Icon name={'KeyboardDown'} />}
+                                <Icon name={isOpen ? 'KeyboardUp' : 'KeyboardDown'} />
                             </span>
                         )}
                     </span>
                 </div>
 
-                {!!error?.length && <div className={styles.error}>{error}</div>}
-
-                {isOpen && (
-                    <OptionsList<T>
-                        notFoundCaption={notFoundCaption}
-                        style={{ top: optionsListTop }}
-                        options={filteredOptions}
-                        onOptionSelect={handleSelect}
-                    />
-                )}
+                {error && <div className={styles.error}>{error}</div>}
             </div>
+
+            {/* Портал */}
+            {isOpen &&
+                portalNode &&
+                createPortal(
+                    <div style={getPortalStyle()}>
+                        <OptionsList<T>
+                            id='multiselect-options'
+                            options={filteredOptions}
+                            onOptionSelect={handleSelect}
+                            notFoundCaption={notFoundCaption}
+                        />
+                    </div>,
+                    portalNode
+                )}
         </div>
     )
 }

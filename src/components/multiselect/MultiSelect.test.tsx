@@ -27,8 +27,8 @@ describe('MultiSelect Component', () => {
 
     it('opens dropdown when clicked', () => {
         render(<MultiSelect<string> {...defaultProps} />)
-        fireEvent.click(screen.getByRole('button'))
-        expect(screen.getByRole('button')).toBeInTheDocument()
+        const toggleButton = screen.getByLabelText(/open dropdown/i)
+        fireEvent.click(toggleButton)
         expect(defaultProps.onOpen).toHaveBeenCalledTimes(1)
     })
 
@@ -150,7 +150,7 @@ describe('MultiSelect Component', () => {
             />
         )
 
-        const inputElement = screen.getByPlaceholderText(/Search.../i)
+        const inputElement = screen.getByRole('textbox')
         fireEvent.focus(inputElement)
 
         fireEvent.keyDown(inputElement, { key: 'Backspace' })

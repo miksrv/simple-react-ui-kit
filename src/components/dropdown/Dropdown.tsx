@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import { cn } from '../../utils'
 import Button, { ButtonProps } from '../button'
@@ -10,21 +11,12 @@ import OptionsList from './OptionsList'
 
 import styles from './styles.module.sass'
 
-/**
- * Dropdown option type, representing a single option in the dropdown list
- */
 export type DropdownOption<T> = {
-    /** Unique key to identify the option */
     key: T
-    /** Display value of the option */
     value: string
-    /** Optional icon to display next to the option */
     icon?: IconTypes
-    /** Optional image to display next to the option */
     image?: MediaImage
-    /** Optional emoji to display next to the option */
     emoji?: string
-    /** Disable the option from being selected */
     disabled?: boolean
 }
 
@@ -40,266 +32,316 @@ export interface DropdownProps<T> extends Pick<ButtonProps, 'size' | 'mode'> {
     required?: boolean
     /** Disable the dropdown */
     disabled?: boolean
-    /** Whether the dropdown can be cleared (reset to no selection) */
+    /** Show clear button to reset selection */
     clearable?: boolean
-    /** Allow searching within options */
+    /** Enable search functionality */
     searchable?: boolean
     /** Show loading spinner */
     loading?: boolean
     /** Placeholder text to display when no option is selected */
     placeholder?: string
-    /** Text to display in the option list if there are no options or nothing found */
+    /** Text to display if no options are found */
     notFoundCaption?: string
     /** Label text for the dropdown */
     label?: string
     /** Error message to display when validation fails */
     error?: string
-    /** Current selected value (key) in the dropdown */
+    /** Currently selected value (key) in the dropdown */
     value?: T
-    /** Callback function triggered when an option is selected */
+    /** Callback triggered when an option is selected */
     onSelect?: (selectedOption: DropdownOption<T> | undefined) => void
-    /** Callback function triggered when a search is made */
+    /** Callback triggered when a search is made */
     onSearch?: (text?: string) => void
-    /** Callback function triggered when the dropdown is opened */
+    /** Callback triggered when the dropdown is opened */
     onOpen?: () => void
 }
 
 const Dropdown = <T,>({
     className,
+    options = [],
     required,
-    options,
     disabled,
     clearable,
     searchable,
-    loading,
-    value,
+    loading = false,
     placeholder,
     notFoundCaption,
     label,
     error,
-    onSearch,
+    value,
     onSelect,
+    onSearch,
     onOpen,
-    ...props
+    size = 'medium',
+    mode = 'primary'
 }: DropdownProps<T>) => {
-    const dropdownRef = useRef<HTMLDivElement>(null)
-    const [search, setSearch] = useState<string>('')
-    const [localLoading, setLocalLoading] = useState<boolean>(false)
-    const [optionsListTop, setOptionsListTop] = useState<number>(30)
-    const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [isFocused, setIsFocused] = useState<boolean>(false)
-    const [selectedOption, setSelectedOption] = useState<DropdownOption<T> | undefined>(undefined)
-
-    const filteredOptions = useMemo(
-        () =>
-            options?.filter(({ value }) =>
-                searchable ? value.toLocaleLowerCase().includes(search.toLocaleLowerCase()) : true
-            ),
-        [options, searchable, search]
-    )
-
-    const toggleDropdown = () => {
-        if (onOpen) {
-            onOpen()
-        } else {
-            setIsOpen(!isOpen)
-        }
-    }
-
-    const handleSearchKeyPress = (event: React.KeyboardEvent<HTMLInputElement | HTMLButtonElement>) => {
-        if (
-            event.key === 'Enter' &&
-            filteredOptions?.length &&
-            filteredOptions.length >= 1 &&
-            search !== '' &&
-            !filteredOptions[0]?.disabled
-        ) {
-            handleSelect(filteredOptions[0])
-        }
-
-        if ((event.key === 'Backspace' || event.key === 'Delete') && selectedOption?.key) {
-            if (search !== '') {
-                return
-            }
-
-            setSearch(selectedOption?.value)
-            setSelectedOption(undefined)
-            onSelect?.(undefined)
-        }
-
-        if (event.key === 'Escape' && isOpen) {
-            setIsOpen(false)
-        }
-    }
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value
-
-        setLocalLoading(true)
-        setSearch(value)
-
-        if (value === '' && isOpen) {
-            setIsOpen(false)
-        }
-
-        if (value !== '' && !isOpen) {
-            setIsOpen(true)
-        }
-
-        onSearch?.(value)
-        setLocalLoading(false)
-    }
-
-    const handleSelect = (option?: DropdownOption<T>) => {
-        if (selectedOption?.key !== option?.key) {
-            setSelectedOption(option)
-            onSelect?.(option ?? undefined)
-        }
-
-        if (searchable) {
-            setSearch('')
-            onSearch?.('')
-        }
-
-        setIsOpen(false)
-    }
-
-    const handleClickOutside = (event: MouseEvent) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-            setIsOpen(false)
-        }
-    }
-
-    const handleClearClick = (event: React.MouseEvent | React.KeyboardEvent) => {
-        event.stopPropagation()
-        handleSelect()
-    }
+    const rootRef = useRef<HTMLDivElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null)
+    const [search, setSearch] = useState('')
+    const [isOpen, setIsOpen] = useState(false)
+    const [isFocused, setIsFocused] = useState(false)
+    const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null)
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-
-        setOptionsListTop(dropdownRef?.current?.clientHeight ?? 0)
+        const div = document.createElement('div')
+        div.style.position = 'absolute'
+        div.style.top = '0'
+        div.style.left = '0'
+        div.style.pointerEvents = 'none'
+        document.body.appendChild(div)
+        setPortalNode(div)
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
+            document.body.removeChild(div)
+            setPortalNode(null)
         }
-    }, [props.size, searchable])
+    }, [])
+
+    const selectedOption = useMemo(() => {
+        return value != null ? options.find((opt) => opt.key === value) : undefined
+    }, [options, value])
+
+    const filteredOptions = useMemo(() => {
+        if (!searchable) {
+            return options
+        }
+        const lower = search.toLowerCase()
+        return options.filter((opt) => opt.value.toLowerCase().includes(lower))
+    }, [options, searchable, search])
+
+    const toggleDropdown = useCallback(() => {
+        if (disabled) {
+            return
+        }
+        if (!isOpen) {
+            onOpen?.()
+        }
+        setIsOpen((prev) => !prev)
+    }, [disabled, isOpen, onOpen])
+
+    const handleSelect = useCallback(
+        (option?: DropdownOption<T>) => {
+            if (option?.disabled) {
+                return
+            }
+            onSelect?.(option)
+            setSearch('')
+            onSearch?.('')
+            setIsOpen(false)
+        },
+        [onSelect, onSearch]
+    )
+
+    const handleClear = useCallback(
+        (e: React.MouseEvent | React.KeyboardEvent) => {
+            e.stopPropagation()
+            handleSelect(undefined)
+        },
+        [handleSelect]
+    )
+
+    const handleSearchChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const val = e.target.value
+            setSearch(val)
+            onSearch?.(val)
+            if (val && !isOpen) {
+                setIsOpen(true)
+            }
+            if (!val && isOpen) {
+                setIsOpen(false)
+            }
+        },
+        [onSearch, isOpen]
+    )
+
+    const handleKeyDown = useCallback(
+        (e: KeyboardEvent<HTMLInputElement | HTMLButtonElement>) => {
+            if (e.key === 'Enter' && filteredOptions[0] && search && !filteredOptions[0].disabled) {
+                e.preventDefault()
+                handleSelect(filteredOptions[0])
+            }
+
+            if ((e.key === 'Backspace' || e.key === 'Delete') && selectedOption && !search) {
+                e.preventDefault()
+                handleSelect(undefined)
+                if (searchable) {
+                    setSearch(selectedOption.value)
+                    inputRef.current?.focus()
+                }
+            }
+
+            if (e.key === 'Escape' && isOpen) {
+                e.preventDefault()
+                setIsOpen(false)
+                inputRef.current?.blur()
+            }
+
+            if (e.key === 'ArrowDown' && !isOpen) {
+                e.preventDefault()
+                setIsOpen(true)
+            }
+        },
+        [filteredOptions, search, selectedOption, handleSelect, searchable, isOpen]
+    )
 
     useEffect(() => {
-        if (value) {
-            setSelectedOption(filteredOptions?.find((opt) => opt.key === value))
-        } else {
-            setSelectedOption(undefined)
+        if (!isOpen || !portalNode) {
+            return
         }
-    }, [value, filteredOptions])
+
+        const handleClickOutside = (e: globalThis.MouseEvent) => {
+            const target = e.target as Node
+            if (rootRef.current && !rootRef.current.contains(target) && portalNode && !portalNode.contains(target)) {
+                setIsOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [isOpen, portalNode])
+
+    const handleFocus = () => setIsFocused(true)
+    const handleBlur = () => setTimeout(() => setIsFocused(false), 150)
+
+    const getPortalStyle = useCallback(() => {
+        if (!rootRef.current) {
+            return { display: 'none' }
+        }
+        const rect = rootRef.current.getBoundingClientRect()
+        return {
+            position: 'absolute' as const,
+            top: rect.bottom + window.scrollY - (error ? 52 : 34),
+            left: rect.left + window.scrollX,
+            width: rect.width,
+            zIndex: 9999,
+            pointerEvents: 'auto' as const
+        }
+    }, [error])
 
     return (
         <div className={cn(className, styles.dropdown, required && styles.required, disabled && styles.disabled)}>
-            {label && <label className={styles.label}>{label}</label>}
+            {label && (
+                <label
+                    className={styles.label}
+                    onClick={() => inputRef.current?.focus()}
+                >
+                    {label}
+                </label>
+            )}
+
             <div
-                ref={dropdownRef}
+                ref={rootRef}
                 className={cn(
                     styles.container,
                     isOpen && styles.open,
                     disabled && styles.disabled,
                     error && styles.error
                 )}
+                role='combobox'
+                aria-expanded={isOpen}
+                aria-haspopup='listbox'
+                aria-disabled={disabled}
             >
                 {!searchable && (
                     <Button
-                        size={props?.size || 'medium'}
-                        mode={props?.mode || 'primary'}
+                        size={size}
+                        mode={mode}
                         variant={error ? 'negative' : undefined}
                         disabled={disabled}
                         onClick={toggleDropdown}
-                        onKeyDown={handleSearchKeyPress}
+                        onKeyDown={handleKeyDown}
                         className={cn(styles.dropdownButton, selectedOption && styles.selected, isOpen && styles.open)}
                     >
                         <span className={styles.value}>
                             {selectedOption?.icon && <Icon name={selectedOption.icon} />}
-
                             {selectedOption?.image && (
                                 <img
                                     src={selectedOption.image.src}
-                                    alt={''}
+                                    alt=''
                                 />
                             )}
-
                             {selectedOption?.emoji && <span className={styles.emoji}>{selectedOption.emoji}</span>}
-
                             {selectedOption?.value ? (
-                                selectedOption?.value
+                                selectedOption.value
                             ) : (
                                 <span className={styles.placeholder}>{placeholder ?? ''}</span>
                             )}
                         </span>
-
                         <span className={styles.buttonContainer}>
-                            {clearable && selectedOption?.key && <ClearButton onClick={handleClearClick} />}
-                            {isOpen ? <Icon name={'KeyboardUp'} /> : <Icon name={'KeyboardDown'} />}
+                            {clearable && selectedOption?.key && <ClearButton onClick={handleClear} />}
+                            <Icon name={isOpen ? 'KeyboardUp' : 'KeyboardDown'} />
                         </span>
                     </Button>
                 )}
 
                 {searchable && (
-                    <div className={cn(styles.searchContainer, isOpen && styles.open, isFocused && styles.focused)}>
+                    <div
+                        className={cn(styles.searchContainer, isOpen && styles.open, isFocused && styles.focused)}
+                        onClick={() => !disabled && inputRef.current?.focus()}
+                    >
                         {selectedOption?.icon && <Icon name={selectedOption.icon} />}
-
                         {selectedOption?.image && (
                             <img
                                 src={selectedOption.image.src}
-                                alt={''}
+                                alt=''
                             />
                         )}
-
                         {selectedOption?.emoji && <span className={styles.emoji}>{selectedOption.emoji}</span>}
 
                         <input
-                            type={'text'}
-                            value={selectedOption?.value ?? search ?? ''}
+                            ref={inputRef}
+                            type='text'
+                            value={selectedOption?.value ?? search}
                             className={styles.searchInput}
                             placeholder={placeholder ?? ''}
                             disabled={disabled}
-                            onFocus={() => setIsFocused(true)}
-                            onBlur={() => setIsFocused(false)}
-                            onMouseMove={(e) => e.stopPropagation()}
-                            onWheelCapture={(e) => e.stopPropagation()}
-                            onKeyDown={handleSearchKeyPress}
                             onChange={handleSearchChange}
+                            onKeyDown={handleKeyDown}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            aria-autocomplete='list'
+                            aria-controls='dropdown-options'
                         />
 
                         <span className={styles.buttonContainer}>
-                            {loading || localLoading ? (
+                            {loading ? (
                                 <Spinner />
                             ) : clearable && selectedOption?.key ? (
-                                <ClearButton onClick={handleClearClick} />
+                                <ClearButton onClick={handleClear} />
                             ) : (
                                 <span
-                                    role={'button'}
+                                    role='button'
                                     tabIndex={0}
                                     className={styles.toggleButton}
                                     onClick={toggleDropdown}
-                                    onKeyDown={(e) => e.key === 'Enter' && toggleDropdown()}
+                                    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && toggleDropdown()}
+                                    aria-label={isOpen ? 'Close dropdown' : 'Open dropdown'}
                                 >
-                                    {isOpen ? <Icon name={'KeyboardUp'} /> : <Icon name={'KeyboardDown'} />}
+                                    <Icon name={isOpen ? 'KeyboardUp' : 'KeyboardDown'} />
                                 </span>
                             )}
                         </span>
                     </div>
                 )}
 
-                {!!error?.length && <div className={styles.error}>{error}</div>}
-
-                {isOpen && (
-                    <OptionsList<T>
-                        notFoundCaption={notFoundCaption}
-                        style={{ top: optionsListTop }}
-                        options={filteredOptions}
-                        selectedOption={selectedOption}
-                        onOptionSelect={handleSelect}
-                    />
-                )}
+                {error && <div className={styles.error}>{error}</div>}
             </div>
+
+            {isOpen &&
+                portalNode &&
+                createPortal(
+                    <div style={getPortalStyle()}>
+                        <OptionsList<T>
+                            id='dropdown-options'
+                            options={filteredOptions}
+                            selectedOption={selectedOption}
+                            onOptionSelect={handleSelect}
+                            notFoundCaption={notFoundCaption}
+                        />
+                    </div>,
+                    portalNode
+                )}
         </div>
     )
 }

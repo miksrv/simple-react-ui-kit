@@ -69,6 +69,7 @@ $iconSize: 18px
 
             .badge
                 background-color: var(--dropdown-badge-background-color)
+                height: 28px
 
         .buttonContainer
             margin-left: 5px
@@ -129,3 +130,72 @@ $iconSize: 18px
         color: var(--color-red)
         font-size: var(--font-size-small)
         margin-top: 5px
+
+.optionsList
+    font-family: var(--font-family), sans-serif
+    font-size: var(--font-size)
+    background-color: var(--dropdown-background-color)
+    border: var(--input-border)
+    border-bottom-left-radius: var(--border-radius)
+    border-bottom-right-radius: var(--border-radius)
+    overflow: hidden
+    overflow-y: scroll
+    box-sizing: border-box
+    list-style: none
+    position: absolute
+    top: 33px
+    padding: 0
+    margin: 0
+    width: 100%
+    z-index: 405
+    max-height: 200px
+
+    li
+        &.noResult, button
+            padding: 8px 10px
+
+        button
+            margin: 0
+            height: 100%
+            width: 100%
+            color: var(--text-color-primary)
+            font-size: var(--font-size)
+            cursor: pointer
+            background: transparent
+            border: none
+            text-align: left
+            display: flex
+            align-items: center
+
+            svg
+                width: 14px
+                height: 14px
+                fill: var(--text-color-primary)
+                margin-right: 8px
+
+            img
+                width: 14px
+                height: 15px
+                margin-right: 4px
+
+            .emoji
+                display: inline-block
+                margin-right: 8px
+                font-size: 14px
+                line-height: 14px
+
+        &.disabled, &.noResult
+            pointer-events: none
+            cursor: not-allowed
+            opacity: .5
+
+        &:hover, &.active
+            background-color: var(--dropdown-background-color-hover)
+
+        &:last-of-type
+            border-bottom-left-radius: var(--border-radius)
+            border-bottom-right-radius: var(--border-radius)
+
+        &.noResult
+            text-align: center
+            font-style: italic
