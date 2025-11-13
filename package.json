@@ -21,7 +21,7 @@
         "release": "changeset publish",
         "test": "jest",
         "test:coverage": "jest --coverage",
-        "test:watch": "jest --watch --testNamePattern",
+        "test:watch": "jest --watch --testNamePattern Select",
         "eslint:check": "eslint",
         "eslint:fix": "eslint --fix",
         "prettier:check": "prettier --check .",

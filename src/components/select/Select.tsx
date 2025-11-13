@@ -397,6 +397,7 @@ const Select = <T,>({
                                 className={styles.toggleButton}
                                 onClick={toggleDropdown}
                                 onKeyDown={handleToggleKeyDown}
+                                aria-disabled={disabled}
                                 aria-label={isOpen ? 'Close dropdown' : 'Open dropdown'}
                             >
                                 <Icon name={isOpen ? 'KeyboardUp' : 'KeyboardDown'} />
