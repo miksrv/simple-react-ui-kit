@@ -93,7 +93,7 @@ const OptionsList = <T,>({
                         aria-disabled={option.disabled}
                         className={cn(
                             styles.option,
-                            selected && styles.selected,
+                            selected && styles.active,
                             option.disabled && styles.disabled,
                             highlighted && styles.highlighted
                         )}
@@ -101,8 +101,8 @@ const OptionsList = <T,>({
                         <button
                             type='button'
                             disabled={option.disabled}
-                            onClick={() => handleClick(option)}
                             className={styles.optionButton}
+                            onClick={() => handleClick(option)}
                         >
                             {option.icon && (
                                 <Icon
@@ -121,12 +121,6 @@ const OptionsList = <T,>({
                             )}
                             {option.emoji && <span className={styles.emoji}>{option.emoji}</span>}
                             <span className={styles.label}>{option.value}</span>
-                            {selected && (
-                                <Icon
-                                    name='Award'
-                                    className={styles.check}
-                                />
-                            )}
                         </button>
                     </li>
                 )

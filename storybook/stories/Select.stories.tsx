@@ -64,27 +64,23 @@ const images = [
 ]
 
 // Универсальный шаблон
-const Template: StoryFn<SelectProps<string>> = (args) => {
+const Template: React.FC<SelectProps<string>> = (args) => {
     const [value, setValue] = useState<string | string[] | undefined>(args.value)
 
     return (
-        <div style={{ padding: '40px', minHeight: '300px' }}>
-            <Select
-                {...args}
-                value={value}
-                onSelect={(opts) => {
-                    if (args.multiple) {
-                        setValue(opts?.map((o) => o.key) || [])
-                    } else {
-                        setValue(opts?.[0]?.key)
-                    }
-                }}
-            />
-        </div>
+        <Select
+            {...args}
+            value={value}
+            onSelect={(opts) => {
+                if (args.multiple) {
+                    setValue(opts?.map((o) => o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }}
+        />
     )
 }
-
-// === Сторисы ===
 
 export const Default: Story = {
     render: Template,
@@ -95,6 +91,61 @@ export const Default: Story = {
         searchable: true,
         placeholder: 'Select a country',
         label: 'Country'
+    }
+}
+
+export const VariantsInOneStory: Story = {
+    render: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
+            <Template
+                multiple={false}
+                placeholder='Single Select'
+                label='Single Select, No Search'
+                options={countries}
+            />
+            <Template
+                multiple={false}
+                searchable={true}
+                closeOnSelect={false}
+                placeholder='Search...'
+                label='Single Select, Search'
+                options={countries}
+            />
+            <Template
+                multiple={true}
+                closeOnSelect={false}
+                placeholder='Multiple Select'
+                label='Multiple Select, No Search'
+                options={countries}
+            />
+            <Template
+                multiple={true}
+                searchable={true}
+                closeOnSelect={false}
+                placeholder='Search...'
+                label='Multiple Select, Search'
+                options={countries}
+            />
+            <Template
+                options={countries}
+                loading
+                placeholder='Loading'
+                label='Loading'
+            />
+            <Template
+                options={countries}
+                error='Error example'
+                placeholder='With Error'
+                label='With Error'
+            />
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'Несколько вариантов компонента Select с разными пропсами в одной сторис.'
+            }
+        }
     }
 }
 

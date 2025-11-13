@@ -207,9 +207,16 @@ const Select = <T,>({
                 handleSelect(filteredOptions[0])
             }
 
-            if ((e.key === 'Backspace' || e.key === 'Delete') && !search && multiple && selectedOptions?.length) {
-                e.preventDefault()
-                handleRemove(selectedOptions[selectedOptions.length - 1])
+            if (e.key === 'Backspace' || e.key === 'Delete') {
+                if (!search && multiple && selectedOptions?.length) {
+                    e.preventDefault()
+                    handleRemove(selectedOptions[selectedOptions.length - 1])
+                }
+
+                if (!multiple && selectedOption) {
+                    e.preventDefault()
+                    onSelect?.(undefined)
+                }
             }
 
             if (e.key === 'Escape' && isOpen) {
@@ -267,13 +274,13 @@ const Select = <T,>({
         const rect = rootRef.current.getBoundingClientRect()
         return {
             position: 'absolute' as const,
-            top: rect.bottom + window.scrollY - 32,
+            top: rect.bottom + window.scrollY - (error ? 54 : 34),
             left: rect.left + window.scrollX,
             width: rect.width,
             zIndex: 9999,
             pointerEvents: 'auto' as const
         }
-    }, [])
+    }, [error])
 
     const displayValue = multiple ? search : selectedOption?.value || search || ''
     const hasSelection = multiple ? selectedOptions && selectedOptions.length > 0 : !!selectedOption
@@ -315,7 +322,7 @@ const Select = <T,>({
                     {/* Left part: selected value / search */}
                     <div className={styles.valueContainer}>
                         {/* Icon/Image/Emoji of selected option (only for single) */}
-                        {!multiple && !searchable && selectedOption && (
+                        {!multiple && selectedOption && (
                             <span className={styles.prefix}>
                                 {selectedOption.icon && <Icon name={selectedOption.icon} />}
                                 {selectedOption.image && (
@@ -360,7 +367,7 @@ const Select = <T,>({
                         )}
 
                         {/* Selected value for non-multiple or placeholder for multiple without selection */}
-                        {(!multiple || !selectedOptions?.length) && (
+                        {(!multiple || !selectedOptions?.length) && !searchable && (
                             <span className={styles.value}>
                                 {selectedOption?.value || (
                                     <span className={styles.placeholder}>{placeholder ?? ''}</span>
