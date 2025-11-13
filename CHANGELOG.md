@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 1.7.0
+
+### Minor Changes
+
+- Fixed styles for Calendar and Popout UI Components
+- Replaced `selectDateCaption` prop with `placeholder` prop in DatePicker
+- Created new `WithForm` story for Dialog in Storybook
+- Fixed ESLint config, updated global styles (element sizes)
+- Added portal support for Popout, Dropdown, and MultiSelect components
+- Updated README, added new `CombinedForm` story
+- Implemented new Select UI Component
+- Fixed Select UI Component
+- Improved error styles for Select
+- Refactored Select story for Storybook
+- Updated Dialog and Form stories, fixed OptionsList
+- Removed Dropdown UI Component
+- Removed MultiSelect UI Component
+
 ## 1.6.2
 
 ### Patch Changes

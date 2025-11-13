@@ -1,33 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 
-import { ButtonModeType } from '../../types'
-import Button from '../button'
-import { Calendar, CalendarProps } from '../calendar'
-import Popout, { PopoutHandleProps } from '../popout'
+import { Button } from '../button'
+import { Calendar } from '../calendar'
+import { Popout, PopoutHandleProps } from '../popout'
 
-import { CalendarPresetType, PresetOption } from './types'
+import { CalendarPresetType, DatePickerProps, PresetOption } from './types'
 import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
-
-/**
- * DatePicker component properties
- */
-export interface DatePickerProps extends Omit<CalendarProps, 'containerClassName'> {
-    /** List of preset options to hide from the presets list */
-    hidePresets?: PresetOption[]
-    /** Date format for displaying period ranges (default: 'DD.MM.YYYY') */
-    periodDatesFormat?: string
-    /** Date format for displaying a single date (default: 'DD MMMM YYYY') */
-    singleDateFormat?: string
-    /** Caption text shown when no date is selected (default: 'Select date') */
-    selectDateCaption?: string
-    /** Disables the date picker if set to true */
-    disabled?: boolean
-    /** Button mode for the trigger button */
-    buttonMode?: ButtonModeType
-}
 
 const nowDate = dayjs.utc()
 
@@ -44,7 +25,7 @@ export const timePresets: CalendarPresetType[] = [
 export const DatePicker: React.FC<DatePickerProps> = ({
     periodDatesFormat = 'DD.MM.YYYY',
     singleDateFormat = 'DD MMMM YYYY',
-    selectDateCaption = 'Select date',
+    placeholder = 'Select date',
     buttonMode = 'primary',
     disabled = false,
     ...props
@@ -118,7 +99,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                     mode={buttonMode}
                     disabled={disabled}
                 >
-                    {currentDatePreset || selectDateCaption}
+                    {currentDatePreset || placeholder}
                 </Button>
             }
         >

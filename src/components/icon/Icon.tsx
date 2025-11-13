@@ -1,18 +1,8 @@
 import React from 'react'
 
-import { IconTypes } from './types'
+import { IconProps } from './types'
 
-/**
- * Icon component properties
- */
-interface IconProps extends React.SVGProps<SVGSVGElement> {
-    /** The name of the icon to be displayed */
-    name: IconTypes
-    /** Additional class names for custom styling */
-    className?: string
-}
-
-const Icon: React.FC<IconProps> = ({ name, ...props }) => {
+export const Icon: React.FC<IconProps> = ({ name, ...props }) => {
     let render
 
     switch (name) {
@@ -364,5 +354,3 @@ const Icon: React.FC<IconProps> = ({ name, ...props }) => {
         </svg>
     )
 }
-
-export default Icon

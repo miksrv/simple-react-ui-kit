@@ -2,7 +2,8 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import Input, { InputProps } from './Input'
+import { Input } from './Input'
+import { InputProps } from './types'
 
 import styles from './styles.module.sass'
 

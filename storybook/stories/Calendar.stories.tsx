@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Calendar, CalendarProps } from '../../src'
 

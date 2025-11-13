@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { DatePicker, DatePickerProps } from '../../src'
 
@@ -26,13 +26,13 @@ const meta: Meta<DatePickerProps> = {
         hidePresets: { control: 'object', description: 'List of preset options to hide' },
         periodDatesFormat: { control: 'text', description: 'Format for period range (default: DD.MM.YYYY)' },
         singleDateFormat: { control: 'text', description: 'Format for single date (default: DD MMMM YYYY)' },
-        selectDateCaption: { control: 'text', description: 'Caption when no date is selected' },
+        placeholder: { control: 'text', description: 'Caption when no date is selected' },
         disabled: { control: 'boolean' }
     }
 }
 export default meta
 
-const Template: StoryFn<DatePickerProps> = (args) => {
+const Template: StoryFn<DatePickerProps> = (args: DatePickerProps) => {
     const [range, setRange] = useState<{ start?: string; end?: string }>({})
 
     return (

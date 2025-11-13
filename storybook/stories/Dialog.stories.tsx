@@ -1,8 +1,20 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
-import { Button, Dialog, DialogProps } from '../../src'
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Dialog,
+    DialogProps,
+    iconNames,
+    Input,
+    Message,
+    Progress,
+    Select,
+    SelectOptionType
+} from '../../src'
 
 const meta: Meta<DialogProps> = {
     title: 'Components/Dialog',
@@ -60,4 +72,108 @@ Default.args = {
     showBackLink: true,
     showCloseButton: true,
     onBackClick: () => alert('Back clicked!')
+}
+
+export const WithForm: StoryFn = (args) => {
+    const [open, setOpen] = useState(false)
+    const [progress, setProgress] = useState(40)
+    const [selectedDate, setSelectedDate] = useState<string | undefined>()
+    const [checked, setChecked] = useState<string[]>([])
+    const [dropdownValue, setDropdownValue] = useState<string | undefined>()
+    const [selectedOptions, setSelectedOptions] = useState<Array<SelectOptionType<string>> | undefined>(undefined)
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setProgress(Math.floor(Math.random() * 101))
+        }, 1000)
+
+        return () => clearInterval(interval)
+    }, [])
+
+    return (
+        <>
+            <Button onClick={() => setOpen(true)}>Open Form Dialog</Button>
+            <Dialog
+                {...args}
+                title={'Form Dialog'}
+                open={open}
+                onCloseDialog={() => setOpen(false)}
+            >
+                <div style={{ display: 'flex', gap: 8, flexDirection: 'column' }}>
+                    <Message type='info'>Please fill out the form below</Message>
+                    <Progress
+                        value={progress}
+                        style={{ margin: '10px 0' }}
+                    />
+                    <DatePicker
+                        placeholder='Select a date'
+                        buttonMode='secondary'
+                        datePeriod={[selectedDate, selectedDate]}
+                        onDateSelect={setSelectedDate}
+                    />
+                    <Input
+                        label='First Name'
+                        placeholder='Enter first name'
+                    />
+                    <Input
+                        label='Last Name'
+                        placeholder='Enter last name'
+                    />
+                    <Checkbox
+                        label='Option A'
+                        checked={checked.includes('a')}
+                        onChange={(e) =>
+                            setChecked((val) => (e.target.checked ? [...val, 'a'] : val.filter((i) => i !== 'a')))
+                        }
+                    />
+                    <Checkbox
+                        label='Option B'
+                        checked={checked.includes('b')}
+                        onChange={(e) =>
+                            setChecked((val) => (e.target.checked ? [...val, 'b'] : val.filter((i) => i !== 'b')))
+                        }
+                    />
+                    <Checkbox
+                        label='Option C'
+                        checked={checked.includes('c')}
+                        onChange={(e) =>
+                            setChecked((val) => (e.target.checked ? [...val, 'c'] : val.filter((i) => i !== 'c')))
+                        }
+                    />
+                    <Select
+                        multiple={true}
+                        clearable={true}
+                        closeOnSelect={false}
+                        placeholder={'Select multiple options'}
+                        value={selectedOptions?.map((option) => option.key) as string[]}
+                        onSelect={(options) => setSelectedOptions(options)}
+                        options={[
+                            { key: 'apple', value: 'Heart Empty Icon', icon: iconNames.HeartEmpty },
+                            { key: 'banana', value: 'Simple Camera Icon', icon: iconNames.Camera },
+                            { key: 'cherry', value: 'Medal or Award Icon', icon: iconNames.Award }
+                        ]}
+                    />
+                    <Select
+                        multiple={false}
+                        clearable={true}
+                        value={dropdownValue}
+                        placeholder={'Select an option'}
+                        onSelect={(option) => setDropdownValue(option?.[0]?.key)}
+                        options={[
+                            { key: '1', value: 'One' },
+                            { key: '2', value: 'Two' },
+                            { key: '3', value: 'Three' }
+                        ]}
+                    />
+                    <Button
+                        onClick={() => setOpen(false)}
+                        style={{ marginTop: 16 }}
+                        size={'large'}
+                    >
+                        Submit
+                    </Button>
+                </div>
+            </Dialog>
+        </>
+    )
 }

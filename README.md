@@ -55,17 +55,16 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Checkbox](#checkbox)
     - [Container](#container)
     - [DatePicker](#datepicker)
-    - [Dropdown](#dropdown)
     - [Dialog](#dialog)
     - [Icon](#icon)
     - [Input](#input)
     - [Message](#message)
-    - [MultiSelect](#multiselect)
     - [Popout](#popout)
+    - [Progress](#progress)
+    - [Select](#select)
     - [Skeleton](#skeleton)
     - [Spinner](#spinner)
     - [Table](#table)
-    - [Progress](#progress)
 - [Contributing](#contributing)
     - [Top Contributors](#top-contributors)
 - [Style Variables Customization](#style-variables-customization)
@@ -507,77 +506,6 @@ In this example:
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/controls-datepicker--docs).
 
-### Dropdown
-
-The `Dropdown` component provides a flexible, customizable dropdown menu for selecting options. It supports various features such as custom icons, images, placeholders, error messages, and a clearable state. It also handles clicks outside the dropdown to close it automatically.
-
-<details>
-  <summary>Dropdown Component Example</summary>
-
-Check out the full documentation and examples in Storybook: [Dropdown Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-dropdown--docs).
-
-</details>
-
-#### Props:
-
-- **`className`**: Additional class names for custom styling.
-- **`options`**: Array of dropdown options (with a `key`, `value`, and optional `icon` or `image`).
-- **`required`**: Marks the dropdown as required.
-- **`disabled`**: Disables the dropdown.
-- **`clearable`**: Allows the dropdown to be cleared (reset to no selection).
-- **`searchable`**: Allow searching within options.
-- **`loading`**: Show loading spinner.
-- **`placeholder`**: Placeholder text shown when no option is selected.
-- **`notFoundCaption`**: Text to display in the option list if there are no options or nothing found.
-- **`label`**: Label text for the dropdown.
-- **`size`**: Dropdown size (`small`, `medium`, `large`).
-- **`error`**: Error message shown for validation errors.
-- **`value`**: Currently selected value (key) in the dropdown.
-- **`onSelect`**: Callback function triggered when an option is selected.
-- **`onSearch`**: Callback function triggered when a search is made.
-- **`onOpen`**: Callback function triggered when the dropdown is opened.
-
-#### Example Usage:
-
-```tsx
-import React, { useState } from 'react'
-import { Dropdown, DropdownOption } from 'simple-react-ui-kit'
-
-const options: DropdownOption<string>[] = [
-    { key: 'option1', value: 'Option 1' },
-    { key: 'option2', value: 'Option 2', icon: 'Check' },
-    { key: 'option3', value: 'Option 3', disabled: true }
-]
-
-const App = () => {
-    const [selectedOption, setSelectedOption] = useState<string | undefined>()
-
-    return (
-        <div>
-            <Dropdown
-                label='Choose an option'
-                options={options}
-                placeholder='Select an option'
-                value={selectedOption}
-                onSelect={(option) => setSelectedOption(option?.key)}
-                clearable
-                searchable
-            />
-        </div>
-    )
-}
-
-export default App
-```
-
-In this example:
-
-- The `Dropdown` is populated with three options, where one of the options is disabled.
-- The selected option is stored in the `selectedOption` state.
-- A clearable dropdown is demonstrated, allowing users to reset their selection.
-
-For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-dropdown--docs).
-
 </details>
 
 ### Dialog
@@ -839,89 +767,6 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 </details>
 
-### MultiSelect
-
-The `MultiSelect` component allows users to select multiple options from a dropdown list with customizable features such as search, loading state, and error handling. It supports adding and removing selected options, making it a great choice for forms requiring multiple selections.
-
-<details>
-  <summary>MultiSelect Component Example</summary>
-
-Check out the full documentation and examples in Storybook: [MultiSelect Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-multiselect--docs).
-
-#### Props:
-
-- **`options`**: Array of options to display in the dropdown. Each option should be an object with a `key` and `value`.
-- **`value`**: Array of selected values (keys) in the dropdown.
-- **`onSelect`**: Callback function triggered when an option is selected or deselected. Receives the updated list of selected options.
-- **`onSearch`**: Callback function triggered when a search is made, receiving the search text.
-- **`onOpen`**: Callback function triggered when the dropdown is opened.
-- **`placeholder`**: Placeholder text to display in the search input field when no value is selected.
-- **`label`**: Optional label text displayed above the dropdown.
-- **`error`**: Optional error message displayed below the dropdown for validation feedback.
-- **`required`**: Marks the dropdown as required.
-- **`disabled`**: Disables the dropdown, preventing user interaction.
-- **`loading`**: Indicates a loading state, displaying a spinner while data is being fetched or processed.
-- **`closeOnSelect`**: Whether to close the dropdown when an option is selected.
-- **`notFoundCaption`**: Text to display in the options list if no options are found after a search.
-
-#### Example Usage:
-
-```tsx
-import React, { useState } from 'react'
-import MultiSelect from 'simple-react-ui-kit'
-
-const App = () => {
-    const [selectedValues, setSelectedValues] = useState<string[]>([])
-    const [searchText, setSearchText] = useState<string>('')
-    const [loading, setLoading] = useState<boolean>(false)
-
-    const options = [
-        { key: '1', value: 'Option 1' },
-        { key: '2', value: 'Option 2' },
-        { key: '3', value: 'Option 3' }
-        // Add more options here
-    ]
-
-    const handleSelect = (selectedOptions: { key: string; value: string }[]) => {
-        setSelectedValues(selectedOptions.map((option) => option.key))
-    }
-
-    const handleSearch = (text: string) => {
-        setSearchText(text)
-        // You can implement search logic here
-    }
-
-    return (
-        <div>
-            <MultiSelect
-                label='Select Options'
-                options={options}
-                value={selectedValues}
-                onSelect={handleSelect}
-                onSearch={handleSearch}
-                placeholder='Search options'
-                loading={loading}
-                required
-                notFoundCaption='No options found'
-            />
-        </div>
-    )
-}
-
-export default App
-```
-
-In this example:
-
-- The `MultiSelect` component displays a list of options and allows for multiple selections.
-- The `onSelect` callback updates the selected values in state.
-- The `onSearch` callback handles search functionality, updating the list of options based on user input.
-- The component handles loading states and error messages to improve user experience.
-
-For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-multiselect--docs).
-
-</details>
-
 ### Popout
 
 The `Popout` component is designed to create a floating container that opens and closes when triggered, often used for menus, tooltips, or additional actions. It provides a button as a trigger and offers flexible positioning for the popout content, either to the left or right of the button.
@@ -986,6 +831,70 @@ In this example:
 The `Popout` component provides an imperative handle with a `close()` method, which allows programmatic control over closing the popout.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-popout--docs).
+
+</details>
+
+### Select
+
+The `Select` component is a flexible dropdown selector supporting single and multiple selection, search, custom option rendering, and async loading states. It is ideal for forms and filters where users need to pick from a list of options.
+
+<details>
+  <summary>Select Component Example</summary>
+
+Check out the full documentation and examples in Storybook: [Select Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/controls-select--docs).
+
+#### Props:
+
+- **`options`**: Array of selectable options, each with a `key` and `value`.
+- **`value`**: Selected value(s); can be a single key or an array of keys for multiple selection.
+- **`multiple`**: Enables multiple selection mode.
+- **`searchable`**: Allows searching/filtering options.
+- **`clearable`**: Shows a button to clear the selection.
+- **`loading`**: Displays a loading spinner in the dropdown.
+- **`label`**: Optional label for the select field.
+- **`placeholder`**: Placeholder text when nothing is selected.
+- **`error`**: Error message for validation feedback.
+- **`onSelect`**: Callback when the selection changes.
+- **`onSearch`**: Callback when the search input changes.
+- **`onOpen`**: Callback when the dropdown is opened.
+
+#### Example Usage:
+
+```tsx
+import React, { useState } from 'react'
+import { Select } from 'simple-react-ui-kit'
+
+const options = [
+    { key: 'apple', value: 'Apple' },
+    { key: 'banana', value: 'Banana' },
+    { key: 'orange', value: 'Orange' }
+]
+
+const App = () => {
+    const [selected, setSelected] = useState<string | undefined>()
+
+    return (
+        <Select
+            options={options}
+            value={selected}
+            onSelect={(opts) => setSelected(opts?.[0]?.key)}
+            label='Choose a fruit'
+            placeholder='Select...'
+            clearable
+            searchable
+        />
+    )
+}
+
+export default App
+```
+
+In this example:
+
+- The `Select` component displays a searchable dropdown of fruits.
+- The user can clear the selection or search for an option.
+- The selected value is managed in React state.
+- For more details and live examples, check out the Storybook Documentation.
 
 </details>
 

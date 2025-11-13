@@ -2,9 +2,10 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import Icon from '../icon'
+import { Icon } from '../icon'
 
-import Checkbox, { CheckboxProps } from './Checkbox'
+import { Checkbox } from './Checkbox'
+import { CheckboxProps } from './types'
 
 describe('Checkbox Component', () => {
     const defaultProps: CheckboxProps = {

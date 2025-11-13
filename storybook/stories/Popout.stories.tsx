@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Button, Popout, PopoutHandleProps, PopoutProps } from '../../src'
 
