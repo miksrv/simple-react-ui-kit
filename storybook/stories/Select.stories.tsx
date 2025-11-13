@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-import type { Meta, StoryFn, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Select, type SelectOptionType, SelectProps } from '../../src'
 
-const meta: Meta<typeof Select> = {
+const meta: Meta<SelectProps<string>> = {
     title: 'Components/Select',
     component: Select,
     parameters: {
@@ -12,31 +12,36 @@ const meta: Meta<typeof Select> = {
         docs: {
             description: {
                 component:
-                    'Универсальный компонент выбора: `Dropdown` и `MultiSelect` в одном. Поддерживает поиск, порталы, иконки, эмодзи, изображения, валидацию и доступность.'
+                    'Universal select component: `Dropdown` and `MultiSelect` in one. Supports search, portals, icons, emojis, images, validation, and accessibility.'
             }
         }
     },
     argTypes: {
-        multiple: {
+        className: { control: 'text', description: 'Additional class names for custom styling' },
+        required: { control: 'boolean', description: 'Mark the select as required' },
+        disabled: { control: 'boolean', description: 'Disable the select' },
+        multiple: { control: 'boolean', description: 'Enable multiple selection' },
+        searchable: { control: 'boolean', description: 'Enable search input' },
+        clearable: { control: 'boolean', description: 'Show clear button to remove selection' },
+        loading: { control: 'boolean', description: 'Show loading spinner' },
+        closeOnSelect: {
             control: 'boolean',
-            description: 'Режим мультиселекта'
+            description: 'Whether the dropdown should close after selecting an option'
         },
-        placeholder: { control: 'text' },
-        label: { control: 'text' },
-        error: { control: 'text' },
-        notFoundCaption: { control: 'text' },
-        required: { control: 'boolean' },
-        disabled: { control: 'boolean' },
-        loading: { control: 'boolean' },
-        closeOnSelect: { control: 'boolean' }
+        options: { control: false, description: 'Array of options to display in the select' },
+        placeholder: { control: 'text', description: 'Placeholder text to display when no option is selected' },
+        notFoundCaption: { control: 'text', description: 'Text to display if no options are found' },
+        label: { control: 'text', description: 'Label text for the select' },
+        error: { control: 'text', description: 'Error message to display when validation fails' },
+        value: { control: false, description: 'Currently selected value(s)' },
+        onSelect: { action: 'onSelect', description: 'Callback triggered when options are selected' },
+        onSearch: { action: 'onSearch', description: 'Callback triggered when a search is made' },
+        onOpen: { action: 'onOpen', description: 'Callback triggered when the dropdown is opened' }
     }
 }
 
 export default meta
 
-type Story = StoryObj<typeof meta>
-
-// Мок-данные
 const countries: Array<SelectOptionType<string>> = [
     { key: 'us', value: 'United States', emoji: '🇺🇸' },
     { key: 'ru', value: 'Russia', emoji: '🇷🇺' },
@@ -48,23 +53,16 @@ const countries: Array<SelectOptionType<string>> = [
 ]
 
 const techStack: Array<SelectOptionType<string>> = [
-    { key: 'react', value: 'React', icon: 'React' },
-    { key: 'vue', value: 'Vue.js', icon: 'Vue' },
-    { key: 'angular', value: 'Angular', icon: 'Angular' },
-    { key: 'svelte', value: 'Svelte', icon: 'Svelte' },
-    { key: 'node', value: 'Node.js', icon: 'Node' },
-    { key: 'python', value: 'Python', icon: 'Python' },
+    { key: 'react', value: 'React', icon: 'StarFilled' },
+    { key: 'vue', value: 'Vue.js', icon: 'Award' },
+    { key: 'angular', value: 'Angular', icon: 'Chart' },
+    { key: 'svelte', value: 'Svelte', icon: 'Lightning' },
+    { key: 'node', value: 'Node.js', icon: 'Cloud' },
+    { key: 'python', value: 'Python', icon: 'Moon' },
     { key: 'disabled', value: 'Disabled Option', disabled: true }
 ]
 
-const images = [
-    { key: 'img1', value: 'Image 1', image: { src: 'https://via.placeholder.com/40x40/ff6b6b/fff?text=1' } },
-    { key: 'img2', value: 'Image 2', image: { src: 'https://via.placeholder.com/40x40/4ecdc4/fff?text=2' } },
-    { key: 'img3', value: 'Image 3', image: { src: 'https://via.placeholder.com/40x40/45b7d1/fff?text=3' } }
-]
-
-// Универсальный шаблон
-const Template: React.FC<SelectProps<string>> = (args) => {
+const Template = (args: SelectProps<string>) => {
     const [value, setValue] = useState<string | string[] | undefined>(args.value)
 
     return (
@@ -82,7 +80,7 @@ const Template: React.FC<SelectProps<string>> = (args) => {
     )
 }
 
-export const Default: Story = {
+export const Default: StoryObj<typeof meta> = {
     render: Template,
     args: {
         options: countries,
@@ -94,7 +92,7 @@ export const Default: Story = {
     }
 }
 
-export const VariantsInOneStory: Story = {
+export const VariantsInOneStory: StoryObj<typeof meta> = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
             <Template
@@ -143,42 +141,34 @@ export const VariantsInOneStory: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'Несколько вариантов компонента Select с разными пропсами в одной сторис.'
+                story: 'Several variants of the Select component with different props in one story.'
             }
         }
     }
 }
 
-export const MultiSelect: Story = {
+export const MultiSelect: StoryObj<typeof meta> = {
     render: Template,
     args: {
         multiple: true,
+        closeOnSelect: false,
         options: techStack,
         placeholder: 'Choose technologies',
         label: 'Tech Stack'
     }
 }
 
-export const WithSearch: Story = {
+export const WithSearch: StoryObj<typeof meta> = {
     render: Template,
     args: {
+        searchable: true,
         options: [...countries, ...techStack],
         placeholder: 'Search options...',
         label: 'Searchable Select'
     }
 }
 
-export const WithIcons: Story = {
-    render: Template,
-    args: {
-        multiple: true,
-        options: techStack,
-        placeholder: 'Select frameworks',
-        label: 'Frameworks'
-    }
-}
-
-export const WithEmojis: Story = {
+export const WithEmojis: StoryObj<typeof meta> = {
     render: Template,
     args: {
         options: countries,
@@ -187,46 +177,7 @@ export const WithEmojis: Story = {
     }
 }
 
-export const WithImages: Story = {
-    render: Template,
-    args: {
-        options: images,
-        placeholder: 'Select image',
-        label: 'Image Options'
-    }
-}
-
-export const LoadingState: Story = {
-    render: Template,
-    args: {
-        options: countries,
-        loading: true,
-        placeholder: 'Loading...',
-        label: 'Loading'
-    }
-}
-
-export const Disabled: Story = {
-    render: Template,
-    args: {
-        options: countries,
-        disabled: true,
-        placeholder: 'Disabled',
-        label: 'Disabled Select'
-    }
-}
-
-export const WithError: Story = {
-    render: Template,
-    args: {
-        options: countries,
-        error: 'This field is required',
-        placeholder: 'Select country',
-        label: 'Error State'
-    }
-}
-
-export const Required: Story = {
+export const Required: StoryObj<typeof meta> = {
     render: Template,
     args: {
         options: countries,
@@ -236,62 +187,12 @@ export const Required: Story = {
     }
 }
 
-export const NotFoundCaption: Story = {
+export const NotFoundCaption: StoryObj<typeof meta> = {
     render: Template,
     args: {
         options: [],
         notFoundCaption: 'No countries available',
         placeholder: 'Search...',
         label: 'Empty List'
-    }
-}
-
-export const CloseOnSelect: Story = {
-    render: Template,
-    args: {
-        multiple: true,
-        options: techStack,
-        closeOnSelect: false,
-        placeholder: 'Click to keep open',
-        label: 'Keep Open After Select'
-    }
-}
-
-export const MixedContent: Story = {
-    render: () => {
-        const [country, setCountry] = useState<string | undefined>()
-        const [stack, setStack] = useState<string[]>([])
-
-        return (
-            <div style={{ display: 'grid', gap: '24px', maxWidth: '400px' }}>
-                <Select
-                    label='Country'
-                    options={countries}
-                    value={country}
-                    onSelect={(opts) => setCountry(opts?.[0]?.key)}
-                    placeholder='Select country'
-                />
-                <Select
-                    multiple
-                    label='Tech Stack'
-                    options={techStack}
-                    value={stack}
-                    onSelect={(opts) => setStack(opts?.map((o) => o.key) || [])}
-                    placeholder='Choose multiple'
-                />
-                <Select
-                    options={images}
-                    value={undefined}
-                    placeholder='With images'
-                />
-            </div>
-        )
-    },
-    parameters: {
-        docs: {
-            description: {
-                story: 'Комбинированное использование: обычный селект, мультиселект, изображения.'
-            }
-        }
     }
 }
