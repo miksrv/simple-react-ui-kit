@@ -76,7 +76,7 @@ Default.args = {
 }
 
 export const WithForm: StoryFn = (args) => {
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false)
     const [progress, setProgress] = useState(40)
     const [selectedDate, setSelectedDate] = useState<string | undefined>()
     const [checked, setChecked] = useState<string[]>([])
@@ -141,6 +141,16 @@ export const WithForm: StoryFn = (args) => {
                             setChecked((val) => (e.target.checked ? [...val, 'c'] : val.filter((i) => i !== 'c')))
                         }
                     />
+                    <MultiSelect
+                        placeholder={'Select multiple options'}
+                        value={selectedOptions?.map((option) => option.key) as string[]}
+                        onSelect={(options) => setSelectedOptions(options)}
+                        options={[
+                            { key: 'apple', value: 'Heart Empty Icon', icon: iconNames.HeartEmpty },
+                            { key: 'banana', value: 'Simple Camera Icon', icon: iconNames.Camera },
+                            { key: 'cherry', value: 'Medal or Award Icon', icon: iconNames.Award }
+                        ]}
+                    />
                     <Dropdown
                         value={dropdownValue}
                         mode={'secondary'}
@@ -150,16 +160,6 @@ export const WithForm: StoryFn = (args) => {
                             { key: '1', value: 'One' },
                             { key: '2', value: 'Two' },
                             { key: '3', value: 'Three' }
-                        ]}
-                    />
-                    <MultiSelect
-                        placeholder={'Select multiple options'}
-                        value={selectedOptions?.map((option) => option.key) as string[]}
-                        onSelect={(options) => setSelectedOptions(options)}
-                        options={[
-                            { key: 'apple', value: 'Heart Empty Icon', icon: iconNames.HeartEmpty },
-                            { key: 'banana', value: 'Simple Camera Icon', icon: iconNames.Camera },
-                            { key: 'cherry', value: 'Medal or Award Icon', icon: iconNames.Award }
                         ]}
                     />
                     <Button

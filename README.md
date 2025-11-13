@@ -470,7 +470,7 @@ Check out the full documentation and examples in Storybook: [DatePicker Componen
 - **`hidePresets`**: Array of preset keys to hide from the presets list.
 - **`periodDatesFormat`**: Format for displaying period ranges (default: `DD.MM.YYYY`).
 - **`singleDateFormat`**: Format for displaying a single date (default: `DD MMMM YYYY`).
-- **`placeholder`**: Caption shown when no date is selected (default: `Select date`).
+- **`selectDateCaption`**: Caption shown when no date is selected (default: `Select date`).
 - **`disabled`**: Disables the date picker if `true`.
 - **`buttonMode`**: Button mode for the trigger (`primary`, `secondary`, etc.).
 - All other `Calendar` props are supported.
@@ -489,7 +489,7 @@ const App = () => {
             periodDatesFormat='DD.MM.YYYY'
             singleDateFormat='DD MMMM YYYY'
             onPeriodSelect={(start, end) => setPeriod([start, end])}
-            placeholder='Choose a date'
+            selectDateCaption='Choose a date'
             buttonMode='primary'
         />
     )
