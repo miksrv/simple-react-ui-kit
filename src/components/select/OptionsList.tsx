@@ -7,16 +7,17 @@ import type { SelectOptionType } from './types'
 
 import styles from './styles.module.sass'
 
+/** OptionsList component properties */
 export interface OptionsListProps<T> extends React.HTMLAttributes<HTMLUListElement> {
-    /** Текст, если ничего не найдено */
+    /** Text to display when no options are found */
     notFoundCaption?: string
-    /** Список опций */
+    /** List of selectable options */
     options?: Array<SelectOptionType<T>>
-    /** Выбранные опции (для мульти: массив, для обычного: одна) */
+    /** Currently selected options (array for multi-select, single for regular) */
     selectedOptions?: Array<SelectOptionType<T>>
-    /** Выделенная опция (для клавиатуры) */
+    /** Index of the highlighted option (for keyboard navigation) */
     highlightedIndex?: number
-    /** Колбэк при выборе */
+    /** Callback triggered when an option is selected */
     onOptionSelect?: (option: SelectOptionType<T>) => void
 }
 
@@ -32,7 +33,7 @@ const OptionsList = <T,>({
     const listRef = useRef<HTMLUListElement>(null)
     const itemRefs = useRef<Map<number, HTMLLIElement>>(new Map())
 
-    // Автоскролл к выделенному элементу
+    // Auto-scroll to highlighted item
     useEffect(() => {
         if (highlightedIndex < 0 || !listRef.current) {
             return

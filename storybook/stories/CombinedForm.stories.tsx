@@ -2,18 +2,7 @@ import React, { useState } from 'react'
 
 import type { Meta, StoryObj } from '@storybook/react'
 
-import {
-    Button,
-    Checkbox,
-    Container,
-    Dropdown,
-    DropdownOption,
-    Input,
-    Message,
-    MultiSelect,
-    Progress,
-    Spinner
-} from '../../src'
+import { Button, Checkbox, Container, Input, Message, Progress, Select, SelectOptionType, Spinner } from '../../src'
 
 const meta: Meta = {
     title: 'Examples/Registration Form',
@@ -30,7 +19,7 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const countries: Array<DropdownOption<string>> = [
+const countries: Array<SelectOptionType<string>> = [
     { key: 'us', value: 'United States', emoji: '🇺🇸' },
     { key: 'ru', value: 'Russia', emoji: '🇷🇺' },
     { key: 'de', value: 'Germany', emoji: '🇩🇪' },
@@ -184,30 +173,34 @@ const CombinedForm: React.FC = () => {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
 
-                {/* Country Dropdown */}
-                <Dropdown
-                    searchable
-                    clearable
+                {/* Country Select */}
+                <Select<string>
+                    searchable={true}
+                    clearable={true}
+                    multiple={false}
                     label='Country'
                     options={countries}
                     value={formData.country}
                     placeholder='Select your country'
                     disabled={loading}
                     error={errors.country}
-                    onSelect={(opt) => setFormData({ ...formData, country: opt?.key || '' })}
+                    onSelect={(opt) => setFormData({ ...formData, country: opt?.[0]?.key || '' })}
                 />
 
-                {/* Interests MultiSelect */}
-                <MultiSelect
-                    label='Interests'
-                    options={interests}
-                    value={formData.interests}
+                {/* Interests Select */}
+                <Select<string>
+                    multiple={true}
                     closeOnSelect={false}
+                    label='Interests'
                     placeholder='Choose interests'
                     notFoundCaption='No interests found'
+                    options={interests}
+                    value={formData.interests}
                     error={errors.interests}
                     disabled={loading}
-                    onSelect={(opts) => setFormData({ ...formData, interests: opts?.map((o) => o.key) || [] })}
+                    onSelect={(opts) =>
+                        setFormData({ ...formData, interests: opts?.map((option) => option.key) || [] })
+                    }
                 />
 
                 {/* Password */}

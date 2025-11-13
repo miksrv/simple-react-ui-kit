@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Select, type SelectOptionType, SelectProps } from '../../src'
 
 const meta: Meta<SelectProps<string>> = {
-    title: 'Components/Select',
+    title: 'Controls/Select',
     component: Select,
     parameters: {
         layout: 'padded',

@@ -8,13 +8,12 @@ import {
     DatePicker,
     Dialog,
     DialogProps,
-    Dropdown,
-    DropdownOption,
     iconNames,
     Input,
     Message,
-    MultiSelect,
-    Progress
+    Progress,
+    Select,
+    SelectOptionType
 } from '../../src'
 
 const meta: Meta<DialogProps> = {
@@ -81,7 +80,7 @@ export const WithForm: StoryFn = (args) => {
     const [selectedDate, setSelectedDate] = useState<string | undefined>()
     const [checked, setChecked] = useState<string[]>([])
     const [dropdownValue, setDropdownValue] = useState<string | undefined>()
-    const [selectedOptions, setSelectedOptions] = useState<Array<DropdownOption<string>> | undefined>(undefined)
+    const [selectedOptions, setSelectedOptions] = useState<Array<SelectOptionType<string>> | undefined>(undefined)
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -141,7 +140,10 @@ export const WithForm: StoryFn = (args) => {
                             setChecked((val) => (e.target.checked ? [...val, 'c'] : val.filter((i) => i !== 'c')))
                         }
                     />
-                    <MultiSelect
+                    <Select
+                        multiple={true}
+                        clearable={true}
+                        closeOnSelect={false}
                         placeholder={'Select multiple options'}
                         value={selectedOptions?.map((option) => option.key) as string[]}
                         onSelect={(options) => setSelectedOptions(options)}
@@ -151,11 +153,12 @@ export const WithForm: StoryFn = (args) => {
                             { key: 'cherry', value: 'Medal or Award Icon', icon: iconNames.Award }
                         ]}
                     />
-                    <Dropdown
+                    <Select
+                        multiple={false}
+                        clearable={true}
                         value={dropdownValue}
-                        mode={'secondary'}
                         placeholder={'Select an option'}
-                        onSelect={(option) => setDropdownValue(option?.key)}
+                        onSelect={(option) => setDropdownValue(option?.[0]?.key)}
                         options={[
                             { key: '1', value: 'One' },
                             { key: '2', value: 'Two' },
