@@ -22,7 +22,7 @@ describe('DatePicker', () => {
         expect(screen.getAllByRole('button').length).toBeGreaterThan(0)
     })
 
-    it('shows selectDateCaption when no date is selected', () => {
+    it('shows placeholder when no date is selected', () => {
         render(
             <DatePicker
                 {...defaultProps}

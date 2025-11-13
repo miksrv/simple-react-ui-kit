@@ -26,7 +26,7 @@ const meta: Meta<DatePickerProps> = {
         hidePresets: { control: 'object', description: 'List of preset options to hide' },
         periodDatesFormat: { control: 'text', description: 'Format for period range (default: DD.MM.YYYY)' },
         singleDateFormat: { control: 'text', description: 'Format for single date (default: DD MMMM YYYY)' },
-        selectDateCaption: { control: 'text', description: 'Caption when no date is selected' },
+        placeholder: { control: 'text', description: 'Caption when no date is selected' },
         disabled: { control: 'boolean' }
     }
 }

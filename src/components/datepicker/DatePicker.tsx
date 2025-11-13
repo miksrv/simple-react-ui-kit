@@ -22,7 +22,7 @@ export interface DatePickerProps extends Omit<CalendarProps, 'containerClassName
     /** Date format for displaying a single date (default: 'DD MMMM YYYY') */
     singleDateFormat?: string
     /** Caption text shown when no date is selected (default: 'Select date') */
-    selectDateCaption?: string
+    placeholder?: string
     /** Disables the date picker if set to true */
     disabled?: boolean
     /** Button mode for the trigger button */
@@ -44,7 +44,7 @@ export const timePresets: CalendarPresetType[] = [
 export const DatePicker: React.FC<DatePickerProps> = ({
     periodDatesFormat = 'DD.MM.YYYY',
     singleDateFormat = 'DD MMMM YYYY',
-    selectDateCaption = 'Select date',
+    placeholder = 'Select date',
     buttonMode = 'primary',
     disabled = false,
     ...props
@@ -118,7 +118,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                     mode={buttonMode}
                     disabled={disabled}
                 >
-                    {currentDatePreset || selectDateCaption}
+                    {currentDatePreset || placeholder}
                 </Button>
             }
         >
