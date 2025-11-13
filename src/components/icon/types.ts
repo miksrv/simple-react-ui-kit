@@ -1,3 +1,15 @@
+import React from 'react'
+
+/**
+ * Icon component properties
+ */
+export interface IconProps extends React.SVGProps<SVGSVGElement> {
+    /** The name of the icon to be displayed */
+    name: IconTypes
+    /** Additional class names for custom styling */
+    className?: string
+}
+
 export const iconNames = {
     AddressSign: 'AddressSign',
     Award: 'Award',

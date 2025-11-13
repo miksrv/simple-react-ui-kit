@@ -1,2 +1,2 @@
-export type { DialogProps } from './Dialog'
-export { default } from './Dialog'
+export { Dialog } from './Dialog'
+export { type DialogProps } from './types'

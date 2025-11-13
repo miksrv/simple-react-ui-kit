@@ -3,7 +3,8 @@ import React from 'react'
 import { fireEvent, screen } from '@testing-library/dom'
 import { render } from '@testing-library/react'
 
-import Button, { ButtonProps } from './Button'
+import { Button } from './Button'
+import { ButtonProps } from './types'
 
 describe('Button Component', () => {
     const defaultProps: ButtonProps = {

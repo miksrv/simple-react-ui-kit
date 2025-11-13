@@ -1,2 +1,2 @@
-export type { PopoutHandleProps, PopoutProps } from './Popout'
-export { default } from './Popout'
+export { Popout } from './Popout'
+export { type PopoutHandleProps, type PopoutProps } from './types'

@@ -2,56 +2,16 @@ import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, use
 import { createPortal } from 'react-dom'
 
 import { cn } from '../../utils'
-import Badge from '../badge'
-import Icon from '../icon'
+import { Badge } from '../badge'
+import { Icon } from '../icon'
 import Spinner from '../spinner'
 
 import OptionsList from './OptionsList'
-import { SelectOptionType } from './types'
+import { SelectOptionType, SelectProps } from './types'
 
 import styles from './styles.module.sass'
 
-/**
- * Select component properties
- */
-export interface SelectProps<T> {
-    /** Additional class names for custom styling */
-    className?: string
-    /** Mark the select as required */
-    required?: boolean
-    /** Disable the select */
-    disabled?: boolean
-    /** Enable multiple selection */
-    multiple?: boolean
-    /** Enable search input */
-    searchable?: boolean
-    /** Show clear button to remove selection */
-    clearable?: boolean
-    /** Show loading spinner */
-    loading?: boolean
-    /** Whether the dropdown should close after selecting an option */
-    closeOnSelect?: boolean
-    /** Array of options to display in the select */
-    options?: Array<SelectOptionType<T>>
-    /** Placeholder text to display when no option is selected */
-    placeholder?: string
-    /** Text to display if no options are found */
-    notFoundCaption?: string
-    /** Label text for the select */
-    label?: string
-    /** Error message to display when validation fails */
-    error?: string
-    /** Currently selected value(s) */
-    value?: T | T[]
-    /** Callback triggered when options are selected */
-    onSelect?: (selected: Array<SelectOptionType<T>> | undefined) => void
-    /** Callback triggered when a search is made */
-    onSearch?: (text?: string) => void
-    /** Callback triggered when the dropdown is opened */
-    onOpen?: () => void
-}
-
-const Select = <T,>({
+export const Select = <T,>({
     className,
     required,
     disabled,
@@ -427,5 +387,3 @@ const Select = <T,>({
         </div>
     )
 }
-
-export default Select

@@ -2,7 +2,8 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import Badge, { BadgeProps } from './Badge'
+import { Badge } from './Badge'
+import { BadgeProps } from './types'
 
 import styles from './styles.module.sass'
 

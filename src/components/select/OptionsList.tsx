@@ -1,25 +1,11 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 
 import { cn } from '../../utils'
-import Icon from '../icon'
+import { Icon } from '../icon'
 
-import type { SelectOptionType } from './types'
+import { OptionsListProps, SelectOptionType } from './types'
 
 import styles from './styles.module.sass'
-
-/** OptionsList component properties */
-export interface OptionsListProps<T> extends React.HTMLAttributes<HTMLUListElement> {
-    /** Text to display when no options are found */
-    notFoundCaption?: string
-    /** List of selectable options */
-    options?: Array<SelectOptionType<T>>
-    /** Currently selected options (array for multi-select, single for regular) */
-    selectedOptions?: Array<SelectOptionType<T>>
-    /** Index of the highlighted option (for keyboard navigation) */
-    highlightedIndex?: number
-    /** Callback triggered when an option is selected */
-    onOptionSelect?: (option: SelectOptionType<T>) => void
-}
 
 const OptionsList = <T,>({
     notFoundCaption = 'Nothing found',

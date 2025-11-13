@@ -2,23 +2,11 @@ import React, { useEffect, useState } from 'react'
 
 import { cn } from '../../utils'
 
+import { OverlayProps } from './types'
+
 import styles from './styles.module.sass'
 
-/**
- * Overlay component properties
- */
-interface OverlayProps {
-    /** Controls whether the overlay is open or closed */
-    open?: boolean
-    /** Reference to the parent element for positioning the dialog */
-    parentRef?: React.RefObject<HTMLElement | null>
-    /** Unique identifier for the overlay element */
-    overlayId: string
-    /** Callback function triggered when the overlay is closed */
-    onClose?: () => void
-}
-
-const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, onClose }) => {
+export const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, onClose }) => {
     const [localOpen, setLocalOpen] = useState<boolean>(open || false)
 
     useEffect(() => {
@@ -53,5 +41,3 @@ const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, onClose }
 
     return null
 }
-
-export default Overlay

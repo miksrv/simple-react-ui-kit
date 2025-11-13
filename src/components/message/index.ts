@@ -1,2 +1,2 @@
-export type { MessageProps } from './Message'
-export { default } from './Message'
+export { Message } from './Message'
+export { type MessageProps } from './types'

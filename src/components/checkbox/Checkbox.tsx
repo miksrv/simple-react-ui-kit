@@ -3,19 +3,11 @@ import React, { forwardRef, useEffect, useId, useRef } from 'react'
 import { cn } from '../../utils'
 import Icon from '../icon'
 
+import { CheckboxProps } from './types'
+
 import styles from './styles.module.sass'
 
-/** Checkbox component properties */
-export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
-    /** Label for the checkbox (can be a string or a React node) */
-    label?: string | React.ReactNode
-    /** Set to true for an indeterminate state (partially checked) */
-    indeterminate?: boolean
-    /** Additional class names for custom styling */
-    className?: string
-}
-
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     ({ label, indeterminate, className, disabled, checked, id, ...props }, ref) => {
         const generatedId = useId()
         const inputId = id ?? generatedId
@@ -80,5 +72,3 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 )
 
 Checkbox.displayName = 'Checkbox'
-
-export default Checkbox

@@ -2,17 +2,11 @@ import React from 'react'
 
 import { cn } from '../../utils'
 
+import { SpinnerProps } from './types'
+
 import styles from './styles.module.sass'
 
-/**
- * Spinner component properties
- */
-export interface SpinnerProps extends React.SVGProps<SVGSVGElement> {
-    /** Additional class names for custom styling */
-    className?: string
-}
-
-const Spinner: React.FC<SpinnerProps> = ({ className, ...props }) => (
+export const Spinner: React.FC<SpinnerProps> = ({ className, ...props }) => (
     <svg
         {...props}
         viewBox={'0 0 100 101'}
@@ -28,5 +22,3 @@ const Spinner: React.FC<SpinnerProps> = ({ className, ...props }) => (
         />
     </svg>
 )
-
-export default Spinner

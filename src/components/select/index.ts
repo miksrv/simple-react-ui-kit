@@ -1,2 +1,2 @@
-export { default, type SelectProps } from './Select'
-export { type SelectOptionType } from './types'
+export { Select } from './Select'
+export { type OptionsListProps, type SelectOptionType, type SelectProps } from './types'
