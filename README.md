@@ -60,10 +60,11 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
     - [Input](#input)
     - [Message](#message)
     - [Popout](#popout)
+    - [Progress](#progress)
+    - [Select](#select)
     - [Skeleton](#skeleton)
     - [Spinner](#spinner)
     - [Table](#table)
-    - [Progress](#progress)
 - [Contributing](#contributing)
     - [Top Contributors](#top-contributors)
 - [Style Variables Customization](#style-variables-customization)
@@ -505,6 +506,8 @@ In this example:
 
 For more details and live examples, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/controls-datepicker--docs).
 
+</details>
+
 ### Dialog
 
 The `Dialog` component provides a customizable modal dialog for displaying content, actions, and headers. It supports features such as a backdrop overlay, configurable dimensions, a back button, and a close button. The component is designed to be flexible and accessible, with support for custom actions and responsive positioning.
@@ -828,6 +831,70 @@ In this example:
 The `Popout` component provides an imperative handle with a `close()` method, which allows programmatic control over closing the popout.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-popout--docs).
+
+</details>
+
+### Select
+
+The `Select` component is a flexible dropdown selector supporting single and multiple selection, search, custom option rendering, and async loading states. It is ideal for forms and filters where users need to pick from a list of options.
+
+<details>
+  <summary>Select Component Example</summary>
+
+Check out the full documentation and examples in Storybook: [Select Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/controls-select--docs).
+
+#### Props:
+
+- **`options`**: Array of selectable options, each with a `key` and `value`.
+- **`value`**: Selected value(s); can be a single key or an array of keys for multiple selection.
+- **`multiple`**: Enables multiple selection mode.
+- **`searchable`**: Allows searching/filtering options.
+- **`clearable`**: Shows a button to clear the selection.
+- **`loading`**: Displays a loading spinner in the dropdown.
+- **`label`**: Optional label for the select field.
+- **`placeholder`**: Placeholder text when nothing is selected.
+- **`error`**: Error message for validation feedback.
+- **`onSelect`**: Callback when the selection changes.
+- **`onSearch`**: Callback when the search input changes.
+- **`onOpen`**: Callback when the dropdown is opened.
+
+#### Example Usage:
+
+```tsx
+import React, { useState } from 'react'
+import { Select } from 'simple-react-ui-kit'
+
+const options = [
+    { key: 'apple', value: 'Apple' },
+    { key: 'banana', value: 'Banana' },
+    { key: 'orange', value: 'Orange' }
+]
+
+const App = () => {
+    const [selected, setSelected] = useState<string | undefined>()
+
+    return (
+        <Select
+            options={options}
+            value={selected}
+            onSelect={(opts) => setSelected(opts?.[0]?.key)}
+            label='Choose a fruit'
+            placeholder='Select...'
+            clearable
+            searchable
+        />
+    )
+}
+
+export default App
+```
+
+In this example:
+
+- The `Select` component displays a searchable dropdown of fruits.
+- The user can clear the selection or search for an option.
+- The selected value is managed in React state.
+- For more details and live examples, check out the Storybook Documentation.
 
 </details>
 
