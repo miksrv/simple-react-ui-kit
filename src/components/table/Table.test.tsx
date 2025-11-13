@@ -2,7 +2,8 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import Table, { ColumnProps } from './Table'
+import { Table } from './Table'
+import { ColumnProps } from './types'
 
 import styles from './styles.module.sass'
 

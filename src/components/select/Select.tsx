@@ -4,9 +4,9 @@ import { createPortal } from 'react-dom'
 import { cn } from '../../utils'
 import { Badge } from '../badge'
 import { Icon } from '../icon'
-import Spinner from '../spinner'
+import { Spinner } from '../spinner'
 
-import OptionsList from './OptionsList'
+import { OptionsList } from './OptionsList'
 import { SelectOptionType, SelectProps } from './types'
 
 import styles from './styles.module.sass'

@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { cn } from '../../utils'
-import Icon from '../icon'
-import Spinner from '../spinner'
+import { Icon } from '../icon'
+import { Spinner } from '../spinner'
 
 import { ButtonProps } from './types'
 

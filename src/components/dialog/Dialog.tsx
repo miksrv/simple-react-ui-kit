@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 import { cn } from '../../utils'
-import Icon from '../icon'
-import Overlay from '../overlay'
+import { Icon } from '../icon'
+import { Overlay } from '../overlay'
 
 import { DialogProps } from './types'
 

@@ -2,8 +2,8 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { DatePicker, DatePickerProps, timePresets } from './DatePicker'
-import { PresetOption } from './types'
+import { DatePicker, timePresets } from './DatePicker'
+import { DatePickerProps, PresetOption } from './types'
 
 describe('DatePicker', () => {
     const defaultProps: DatePickerProps = {

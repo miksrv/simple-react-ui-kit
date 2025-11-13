@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { cn } from '../../utils'
-import Icon from '../icon'
+import { Icon } from '../icon'
 
 import { BadgeProps } from './types'
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import Select from './Select'
+import { Select } from './Select'
 import { SelectOptionType } from './types'
 
 const options: Array<SelectOptionType<string>> = [

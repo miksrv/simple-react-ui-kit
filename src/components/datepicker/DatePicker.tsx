@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 
 import { Button } from '../button'
 import { Calendar } from '../calendar'
-import Popout, { PopoutHandleProps } from '../popout'
+import { Popout, PopoutHandleProps } from '../popout'
 
 import { CalendarPresetType, DatePickerProps, PresetOption } from './types'
 import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'

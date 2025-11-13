@@ -7,7 +7,7 @@ import { OptionsListProps, SelectOptionType } from './types'
 
 import styles from './styles.module.sass'
 
-const OptionsList = <T,>({
+export const OptionsList = <T,>({
     notFoundCaption = 'Nothing found',
     options = [],
     selectedOptions,
@@ -125,5 +125,3 @@ const OptionsList = <T,>({
         </ul>
     )
 }
-
-export default OptionsList

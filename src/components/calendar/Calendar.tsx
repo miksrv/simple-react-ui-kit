@@ -3,7 +3,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 
 import { cn } from '../../utils'
-import Icon from '../icon'
+import { Icon } from '../icon'
 
 import { CalendarProps } from './types'
 import { enDaysOfWeek, enMonths, ruDaysOfWeek, ruMonths } from './utils'

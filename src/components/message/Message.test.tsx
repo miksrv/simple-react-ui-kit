@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import Message from './Message'
+import { Message } from './Message'
 
 describe('Message Component', () => {
     it('renders the Message component with title and children', () => {

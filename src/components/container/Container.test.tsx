@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import Container, { ContainerProps } from './Container'
+import { Container } from './Container'
+import { ContainerProps } from './types'
 
 describe('Container Component', () => {
     const defaultProps: ContainerProps = {

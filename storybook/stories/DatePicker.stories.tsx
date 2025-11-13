@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { DatePicker, DatePickerProps } from '../../src'
 
@@ -32,7 +32,7 @@ const meta: Meta<DatePickerProps> = {
 }
 export default meta
 
-const Template: StoryFn<DatePickerProps> = (args) => {
+const Template: StoryFn<DatePickerProps> = (args: DatePickerProps) => {
     const [range, setRange] = useState<{ start?: string; end?: string }>({})
 
     return (

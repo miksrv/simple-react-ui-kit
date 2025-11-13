@@ -3,7 +3,8 @@ import React, { createRef } from 'react'
 import { fireEvent, screen } from '@testing-library/dom'
 import { act, render } from '@testing-library/react'
 
-import Popout, { PopoutHandleProps } from './Popout'
+import { Popout } from './Popout'
+import { PopoutHandleProps } from './types'
 
 describe('Popout Component', () => {
     beforeEach(() => {

@@ -2,8 +2,8 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import OptionsList from './OptionsList'
-import type { SelectOptionType } from './types'
+import { OptionsList } from './OptionsList'
+import { SelectOptionType } from './types'
 
 const options: Array<SelectOptionType<string>> = [
     { key: '1', value: 'Option 1' },

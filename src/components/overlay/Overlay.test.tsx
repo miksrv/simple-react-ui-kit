@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import Overlay from './Overlay'
+import { Overlay } from './Overlay'
 
 describe('Overlay Component', () => {
     const defaultProps = {

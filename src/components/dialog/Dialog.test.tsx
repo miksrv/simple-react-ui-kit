@@ -2,7 +2,8 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import Dialog, { DialogProps } from './Dialog'
+import { Dialog } from './Dialog'
+import { DialogProps } from './types'
 
 describe('Dialog Component', () => {
     const defaultProps: DialogProps = {

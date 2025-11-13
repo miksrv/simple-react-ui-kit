@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
 import { Button, Checkbox, Container, Input, Message, Progress, Select, SelectOptionType, Spinner } from '../../src'
 
