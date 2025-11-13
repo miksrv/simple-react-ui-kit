@@ -132,19 +132,19 @@ export default defineConfig([
             ],
             // ✅ Enforce consistent indentation (2 spaces)
             'object-curly-spacing': ['error', 'always'],
-            // ✅ Enforce consistent spacing inside braces
+            // ❌ Enforce consistent spacing inside braces
             'object-curly-newline': [
-                'error',
-                {
-                    ObjectExpression: {
-                        multiline: true,
-                        minProperties: 6, // Wrap to new lines if there are more than 5 properties
-                    },
-                    ImportDeclaration: {
-                        multiline: true,
-                        minProperties: 6, // Wrap to new lines if there are more than 5 imports
-                    },
-                },
+                'off',
+                // {
+                //     ObjectExpression: {
+                //         multiline: true,
+                //         minProperties: 6, // Wrap to new lines if there are more than 5 properties
+                //     },
+                //     ImportDeclaration: {
+                //         multiline: true,
+                //         minProperties: 6, // Wrap to new lines if there are more than 5 imports
+                //     },
+                // },
             ],
             // ✅ Enforce consistent line breaks inside braces
             'padding-line-between-statements': [

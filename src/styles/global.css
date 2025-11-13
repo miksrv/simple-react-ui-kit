@@ -1,9 +1,9 @@
 /* global.css */
 :root {
     /* Element Heights for `size` props */
-    --size-small: 24px;
-    --size-medium: 28px;
-    --size-large: 32px;
+    --size-small: 28px;
+    --size-medium: 34px;
+    --size-large: 38px;
 
     /* Primary Colors */
     --color-contrast: #ffffff;
