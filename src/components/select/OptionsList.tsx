@@ -91,12 +91,7 @@ export const OptionsList = <T,>({
                             className={styles.optionButton}
                             onClick={() => handleClick(option)}
                         >
-                            {option.icon && (
-                                <Icon
-                                    name={option.icon}
-                                    className={styles.icon}
-                                />
-                            )}
+                            {option.icon && <Icon name={option.icon} />}
                             {option.image && (
                                 <img
                                     src={option.image.src}
