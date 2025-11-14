@@ -1036,17 +1036,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/compat@npm:^1.4.1":
-  version: 1.4.1
-  resolution: "@eslint/compat@npm:1.4.1"
+"@eslint/compat@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@eslint/compat@npm:2.0.0"
   dependencies:
-    "@eslint/core": "npm:^0.17.0"
+    "@eslint/core": "npm:^1.0.0"
   peerDependencies:
     eslint: ^8.40 || 9
   peerDependenciesMeta:
     eslint:
       optional: true
-  checksum: 10c0/46f5ff884873c2e2366df55dd7b2d6b12f7f852bfba8e2a48dae4819cc5e58756deefa9b7f87f1b107af725ee883a05fcc02caf969b58fb142e790c6036a0450
+  checksum: 10c0/ba848e8ea02fbfba9985d6a6e5aeedf5c44c4f57cb01fb6b9629d2ebfa37f9eafa4506ad9690fb805e0c395269d84e09eae46bfe41884bfff6171ebd68e17373
   languageName: node
   linkType: hard
 
@@ -1076,6 +1076,15 @@ __metadata:
   dependencies:
     "@types/json-schema": "npm:^7.0.15"
   checksum: 10c0/9a580f2246633bc752298e7440dd942ec421860d1946d0801f0423830e67887e4aeba10ab9a23d281727a978eb93d053d1922a587d502942a713607f40ed704e
+  languageName: node
+  linkType: hard
+
+"@eslint/core@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@eslint/core@npm:1.0.0"
+  dependencies:
+    "@types/json-schema": "npm:^7.0.15"
+  checksum: 10c0/ce94edc4e7f78afac5815ba9afcae8c99d286a7d6f80efd596f6ba08dd1984277c4f3b2d6585f7a31d8235f9124ca311780ace664a7340a0cb19d9a71b413285
   languageName: node
   linkType: hard
 
@@ -2415,21 +2424,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^19.2.2":
-  version: 19.2.2
-  resolution: "@types/react-dom@npm:19.2.2"
+"@types/react-dom@npm:^19.2.3":
+  version: 19.2.3
+  resolution: "@types/react-dom@npm:19.2.3"
   peerDependencies:
     "@types/react": ^19.2.0
-  checksum: 10c0/6154dfb8e7a638313d7fa15b2b16494f2235afda4c43be37d10f34e5c7a730f6b95117facb5e6eebc73b15cceea7f6da23be46cda5d2262fd00fd7e6069547e3
+  checksum: 10c0/b486ebe0f4e2fb35e2e108df1d8fc0927ca5d6002d5771e8a739de11239fe62d0e207c50886185253c99eb9dedfeeb956ea7429e5ba17f6693c7acb4c02f8cd1
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.2.2":
-  version: 19.2.2
-  resolution: "@types/react@npm:19.2.2"
+"@types/react@npm:^19.2.4":
+  version: 19.2.4
+  resolution: "@types/react@npm:19.2.4"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/f830b1204aca4634ce3c6cb3477b5d3d066b80a4dd832a4ee0069acb504b6debd2416548a43a11c1407c12bc60e2dc6cf362934a18fe75fe06a69c0a98cba8ab
+  checksum: 10c0/c878262c4bce047e53a44ef644088fce359ebdfdca7060a4ac1717c8362563b9506a7ebae145977836e95d5948b8f8b426dcd516044c3a3c0563a6f1b60408ce
   languageName: node
   linkType: hard
 
@@ -8551,9 +8560,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.93.3":
-  version: 1.93.3
-  resolution: "sass@npm:1.93.3"
+"sass@npm:^1.94.0":
+  version: 1.94.0
+  resolution: "sass@npm:1.94.0"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -8564,7 +8573,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10c0/b9facc64de10c9d1514272c1dcbb48ca99d5f591a1cd43fd27d641275d9d95948f1299107ab5b309e2abb552667cca84a38a1a3df5116eb72eba4144bf850b6a
+  checksum: 10c0/e32968180d4a98b4a6468920ce77ca0428c651dbdfe139572138dc0264d8329a93d652299b1d6ffce20db3d8a4981e497a4e5c3a5e0163d47db41b1e1d913123
   languageName: node
   linkType: hard
 
@@ -8767,7 +8776,7 @@ __metadata:
   resolution: "simple-react-ui-kit@workspace:."
   dependencies:
     "@changesets/cli": "npm:^2.29.7"
-    "@eslint/compat": "npm:^1.4.1"
+    "@eslint/compat": "npm:^2.0.0"
     "@eslint/js": "npm:^9.39.1"
     "@rollup/plugin-commonjs": "npm:^29.0.0"
     "@rollup/plugin-node-resolve": "npm:^16.0.3"
@@ -8778,8 +8787,8 @@ __metadata:
     "@types/identity-obj-proxy": "npm:^3.0.2"
     "@types/jest": "npm:^30.0.0"
     "@types/lodash-es": "npm:^4.17.12"
-    "@types/react": "npm:^19.2.2"
-    "@types/react-dom": "npm:^19.2.2"
+    "@types/react": "npm:^19.2.4"
+    "@types/react-dom": "npm:^19.2.3"
     dayjs: "npm:^1.11.19"
     eslint: "npm:^9.39.1"
     eslint-config-prettier: "npm:^10.1.8"
@@ -8802,7 +8811,7 @@ __metadata:
     rollup-plugin-postcss: "npm:^4.0.2"
     rollup-plugin-terser: "npm:^7.0.2"
     rollup-plugin-typescript2: "npm:^0.36.0"
-    sass: "npm:^1.93.3"
+    sass: "npm:^1.94.0"
     sass-loader: "npm:^16.0.6"
     style-loader: "npm:^4.0.0"
     ts-jest: "npm:^29.4.5"

@@ -62,6 +62,14 @@ const techStack: Array<SelectOptionType<string>> = [
     { key: 'disabled', value: 'Disabled Option', disabled: true }
 ]
 
+const weatherIcons: Array<SelectOptionType<string>> = [
+    { key: 'temperature', value: 'Temperature Inside', icon: 'Thermometer' },
+    { key: 'pressure', value: 'Press.', icon: 'Pressure' },
+    { key: 'humidity', value: 'Humidity', icon: 'Water' },
+    { key: 'precipitation', value: 'Precipitation', icon: 'WaterDrop' },
+    { key: 'clouds', value: 'Clouds', icon: 'Cloud' }
+]
+
 const Template = (args: SelectProps<string>) => {
     const [value, setValue] = useState<string | string[] | undefined>(args.value)
 
@@ -123,6 +131,11 @@ export const VariantsInOneStory: StoryObj<typeof meta> = {
                 placeholder='Search...'
                 label='Multiple Select, Search'
                 options={countries}
+            />
+            <Template
+                placeholder='Select'
+                label='Single Select, Icons'
+                options={weatherIcons}
             />
             <Template
                 options={countries}

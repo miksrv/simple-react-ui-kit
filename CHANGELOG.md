@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.7.1
+
+### Patch Changes
+
+- Updated UI Libraries
+- Added new story for Select, fixed icons for single Select
+- Fixed flex shrink for svg in the Select Options
+
 ## 1.7.0
 
 ### Minor Changes
