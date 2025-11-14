@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.7.2
+
+### Patch Changes
+
+- Added extends props as HTMLAttributes for Select UI Component
+- Fixed Select UI Component click on arow down icon
+
 ## 1.7.1
 
 ### Patch Changes

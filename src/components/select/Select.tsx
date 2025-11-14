@@ -28,7 +28,8 @@ export const Select = <T,>({
     value,
     onSelect,
     onSearch,
-    onOpen
+    onOpen,
+    ...props
 }: SelectProps<T>) => {
     const rootRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -92,7 +93,7 @@ export const Select = <T,>({
         if (!isOpen) {
             onOpen?.()
         }
-        setIsOpen((prev) => !prev)
+        setIsOpen(!isOpen)
     }, [disabled, isOpen, onOpen])
 
     const handleSelect = useCallback(
@@ -246,7 +247,10 @@ export const Select = <T,>({
     const hasSelection = multiple ? selectedOptions && selectedOptions.length > 0 : !!selectedOption
 
     return (
-        <div className={cn(className, styles.select, required && styles.required, disabled && styles.disabled)}>
+        <div
+            className={cn(className, styles.select, required && styles.required, disabled && styles.disabled)}
+            {...props}
+        >
             {label && (
                 <label
                     className={styles.label}
@@ -351,7 +355,7 @@ export const Select = <T,>({
                                 <Icon name='Close' />
                             </button>
                         ) : (
-                            <span
+                            <button
                                 role='button'
                                 tabIndex={0}
                                 className={styles.toggleButton}
@@ -361,7 +365,7 @@ export const Select = <T,>({
                                 aria-label={isOpen ? 'Close dropdown' : 'Open dropdown'}
                             >
                                 <Icon name={isOpen ? 'KeyboardUp' : 'KeyboardDown'} />
-                            </span>
+                            </button>
                         )}
                     </span>
                 </div>
