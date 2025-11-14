@@ -5,7 +5,7 @@ import { IconTypes } from '../icon'
 /**
  * Select component properties
  */
-export interface SelectProps<T> {
+export interface SelectProps<T> extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSelect'> {
     /** Additional class names for custom styling */
     className?: string
     /** Mark the select as required */
