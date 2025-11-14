@@ -125,6 +125,11 @@ export const VariantsInOneStory: StoryObj<typeof meta> = {
                 options={countries}
             />
             <Template
+                placeholder='Select'
+                label='Single Select, Icons'
+                options={techStack}
+            />
+            <Template
                 options={countries}
                 loading
                 placeholder='Loading'
