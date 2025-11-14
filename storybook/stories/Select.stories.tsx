@@ -102,58 +102,54 @@ export const Default: StoryObj<typeof meta> = {
 
 export const VariantsInOneStory: StoryObj<typeof meta> = {
     render: () => (
-        <>
-            <div style={{ width: 120 }}>
-                <Template
-                    placeholder='Select'
-                    label='Single Select, Icons'
-                    options={weatherIcons}
-                />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
-                <Template
-                    multiple={false}
-                    placeholder='Single Select'
-                    label='Single Select, No Search'
-                    options={countries}
-                />
-                <Template
-                    multiple={false}
-                    searchable={true}
-                    closeOnSelect={false}
-                    placeholder='Search...'
-                    label='Single Select, Search'
-                    options={countries}
-                />
-                <Template
-                    multiple={true}
-                    closeOnSelect={false}
-                    placeholder='Multiple Select'
-                    label='Multiple Select, No Search'
-                    options={countries}
-                />
-                <Template
-                    multiple={true}
-                    searchable={true}
-                    closeOnSelect={false}
-                    placeholder='Search...'
-                    label='Multiple Select, Search'
-                    options={countries}
-                />
-                <Template
-                    options={countries}
-                    loading
-                    placeholder='Loading'
-                    label='Loading'
-                />
-                <Template
-                    options={countries}
-                    error='Error example'
-                    placeholder='With Error'
-                    label='With Error'
-                />
-            </div>
-        </>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
+            <Template
+                multiple={false}
+                placeholder='Single Select'
+                label='Single Select, No Search'
+                options={countries}
+            />
+            <Template
+                multiple={false}
+                searchable={true}
+                closeOnSelect={false}
+                placeholder='Search...'
+                label='Single Select, Search'
+                options={countries}
+            />
+            <Template
+                multiple={true}
+                closeOnSelect={false}
+                placeholder='Multiple Select'
+                label='Multiple Select, No Search'
+                options={countries}
+            />
+            <Template
+                multiple={true}
+                searchable={true}
+                closeOnSelect={false}
+                placeholder='Search...'
+                label='Multiple Select, Search'
+                options={countries}
+            />
+            <Template
+                placeholder='Select'
+                label='Single Select, Icons'
+                options={weatherIcons}
+            />
+            <Template
+                options={countries}
+                loading
+                placeholder='Loading'
+                label='Loading'
+            />
+            <Template
+                options={countries}
+                error='Error example'
+                placeholder='With Error'
+                label='With Error'
+            />
+        </div>
     ),
     parameters: {
         docs: {
