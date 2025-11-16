@@ -15,7 +15,6 @@
         white-space: nowrap
 
     .formField
-        background-color: var(--input-background-color)
         border-radius: var(--border-radius)
         line-height: 20px
         position: relative
@@ -46,6 +45,20 @@
                 outline: none
                 border-color: var(--input-border-focus-color)
                 box-shadow: rgba(var(--input-border-focus-color)) 0 0 0 0.05rem
+
+        &.primary
+            background-color: var(--input-background-color)
+
+        &.ghost
+            background-color: transparent
+            border: none
+            box-shadow: none
+
+            input
+                border: none
+                box-shadow: none
+                background: transparent
+                padding: 0 !important
 
     &.small
         *

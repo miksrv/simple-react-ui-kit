@@ -10,6 +10,14 @@ const meta: Meta<InputProps> = {
             control: 'text',
             description: 'Label for the input field'
         },
+        mode: {
+            control: { type: 'select' },
+            options: ['primary', 'ghost'],
+            table: {
+                defaultValue: { summary: 'primary' },
+                type: { summary: '"primary", "ghost"' }
+            }
+        },
         size: {
             control: { type: 'inline-radio' },
             options: ['small', 'medium', 'large'],

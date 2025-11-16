@@ -6,7 +6,14 @@ import { InputProps } from './types'
 
 import styles from './styles.module.sass'
 
-export const Input: React.FC<InputProps> = ({ className, label, error, size = 'medium', ...props }) => (
+export const Input: React.FC<InputProps> = ({
+    className,
+    label,
+    error,
+    mode = 'primary',
+    size = 'medium',
+    ...props
+}) => (
     <div
         className={cn(
             className,
@@ -19,7 +26,7 @@ export const Input: React.FC<InputProps> = ({ className, label, error, size = 'm
     >
         {label && <label className={styles.label}>{label}</label>}
 
-        <span className={styles.formField}>
+        <span className={cn(styles.formField, mode && styles[mode])}>
             <input
                 {...props}
                 className={styles.input}
