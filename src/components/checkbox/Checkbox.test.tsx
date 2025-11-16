@@ -80,4 +80,32 @@ describe('Checkbox Component', () => {
         const labelElement = screen.getByText(/Test Checkbox/i)
         expect(labelElement).toBeInTheDocument()
     })
+
+    it('forwards ref as a function', () => {
+        const refFn = jest.fn()
+        render(
+            <Checkbox
+                label='Ref test'
+                checked={false}
+                indeterminate={false}
+                onChange={jest.fn()}
+                ref={refFn}
+            />
+        )
+        expect(refFn).toHaveBeenCalledWith(expect.any(HTMLInputElement))
+    })
+
+    it('forwards ref as an object', () => {
+        const refObj = React.createRef<HTMLInputElement>()
+        render(
+            <Checkbox
+                label='Ref test'
+                checked={false}
+                indeterminate={false}
+                onChange={jest.fn()}
+                ref={refObj}
+            />
+        )
+        expect(refObj.current).toBeInstanceOf(HTMLInputElement)
+    })
 })

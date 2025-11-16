@@ -319,6 +319,58 @@ describe('Select Component', () => {
         expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     })
 
+    it('closes dropdown and blurs input on Escape', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        fireEvent.click(screen.getByRole('combobox'))
+        const input = screen.getByRole('textbox')
+        input.focus()
+        expect(document.activeElement).toBe(input)
+        fireEvent.keyDown(input, { key: 'Escape' })
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+        expect(document.activeElement).toBe(input)
+    })
+
+    it('opens dropdown on ArrowDown when closed', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+        expect(screen.getByRole('listbox')).toBeInTheDocument()
+    })
+
+    it('opens dropdown on Enter key on toggle button', () => {
+        render(<Select options={options} />)
+        const toggleButton = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleButton, { key: 'Enter' })
+        expect(screen.getByRole('listbox')).toBeInTheDocument()
+    })
+
+    it('opens dropdown on Space key on toggle button', () => {
+        render(<Select options={options} />)
+        const toggleButton = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleButton, { key: ' ' })
+        expect(screen.getByRole('listbox')).toBeInTheDocument()
+    })
+
+    it('closes dropdown on Escape key on toggle button', () => {
+        render(<Select options={options} />)
+        const toggleButton = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.click(toggleButton)
+        expect(screen.getByRole('listbox')).toBeInTheDocument()
+        fireEvent.keyDown(toggleButton, { key: 'Escape' })
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
     // === Portal and Outside Click ===
 
     it('closes dropdown when clicking outside', async () => {
