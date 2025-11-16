@@ -20,6 +20,7 @@ export const Select = <T,>({
     clearable = false,
     loading = false,
     closeOnSelect = true,
+    size = 'medium',
     options = [],
     placeholder,
     notFoundCaption,
@@ -266,7 +267,8 @@ export const Select = <T,>({
                     styles.container,
                     isOpen && styles.open,
                     disabled && styles.disabled,
-                    error && styles.error
+                    error && styles.error,
+                    size && styles[size]
                 )}
                 role='combobox'
                 aria-expanded={isOpen}

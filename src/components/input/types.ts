@@ -10,6 +10,8 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
     className?: string
     /** Label text displayed above the input field */
     label?: string
+    /** Visual style of the button */
+    mode?: 'primary' | 'ghost'
     /** Size of the input field */
     size?: ElementSizeType
     /** Error message displayed below the input field when an error occurs */

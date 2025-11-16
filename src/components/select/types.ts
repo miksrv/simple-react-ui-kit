@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { ElementSizeType } from '../../types'
 import { IconTypes } from '../icon'
 
 /**
@@ -20,6 +21,8 @@ export interface SelectProps<T> extends Omit<React.HTMLAttributes<HTMLDivElement
     clearable?: boolean
     /** Show loading spinner */
     loading?: boolean
+    /** Size of the Select */
+    size?: ElementSizeType
     /** Whether the dropdown should close after selecting an option */
     closeOnSelect?: boolean
     /** Array of options to display in the select */

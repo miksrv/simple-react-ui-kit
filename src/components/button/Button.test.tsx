@@ -3,6 +3,8 @@ import React from 'react'
 import { fireEvent, screen } from '@testing-library/dom'
 import { render } from '@testing-library/react'
 
+import { ButtonModeType } from '../../types'
+
 import { Button } from './Button'
 import { ButtonProps } from './types'
 
@@ -101,5 +103,48 @@ describe('Button Component', () => {
         )
         const linkElement = screen.getByRole('link')
         expect(linkElement).toHaveAttribute('rel', 'noindex nofollow')
+    })
+
+    it('applies the correct class for each mode', () => {
+        const modes: ButtonModeType[] = ['primary', 'secondary', 'outline', 'link']
+        modes.forEach((mode) => {
+            const { unmount } = render(
+                <Button
+                    {...defaultProps}
+                    mode={mode}
+                />
+            )
+            const button = screen.getByText('Click Me')
+            expect(button).toHaveClass(mode)
+            unmount()
+        })
+    })
+
+    it('applies the correct class for each variant', () => {
+        const variants: Array<'positive' | 'negative'> = ['positive', 'negative']
+        variants.forEach((variant) => {
+            const { unmount } = render(
+                <Button
+                    {...defaultProps}
+                    variant={variant}
+                />
+            )
+            const button = screen.getByText('Click Me')
+            expect(button).toHaveClass(variant)
+            unmount()
+        })
+    })
+
+    it('applies both mode and variant classes together', () => {
+        render(
+            <Button
+                {...defaultProps}
+                mode='secondary'
+                variant='positive'
+            />
+        )
+        const button = screen.getByText('Click Me')
+        expect(button).toHaveClass('secondary')
+        expect(button).toHaveClass('positive')
     })
 })

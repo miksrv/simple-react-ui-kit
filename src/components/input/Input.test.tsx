@@ -125,4 +125,32 @@ describe('Input Component', () => {
         const inputContainer = container.querySelector('div')
         expect(inputContainer).toHaveClass(styles.large)
     })
+
+    it('applies the correct class for primary mode (default)', () => {
+        const { container } = render(<Input {...defaultProps} />)
+        const formField = container.querySelector(`.${styles.formField}`)
+        expect(formField).toHaveClass(styles.primary)
+    })
+
+    it('applies the correct class for secondary mode', () => {
+        const { container } = render(
+            <Input
+                {...defaultProps}
+                mode='primary'
+            />
+        )
+        const formField = container.querySelector(`.${styles.formField}`)
+        expect(formField).toHaveClass(/primary/)
+    })
+
+    it('applies the correct class for danger mode', () => {
+        const { container } = render(
+            <Input
+                {...defaultProps}
+                mode='ghost'
+            />
+        )
+        const formField = container.querySelector(`.${styles.formField}`)
+        expect(formField).toHaveClass(/ghost/)
+    })
 })

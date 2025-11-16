@@ -24,6 +24,11 @@ const meta: Meta<SelectProps<string>> = {
         searchable: { control: 'boolean', description: 'Enable search input' },
         clearable: { control: 'boolean', description: 'Show clear button to remove selection' },
         loading: { control: 'boolean', description: 'Show loading spinner' },
+        size: {
+            control: { type: 'inline-radio' },
+            options: ['small', 'medium', 'large'],
+            table: { type: { summary: '"small", "medium", "large"' } }
+        },
         closeOnSelect: {
             control: 'boolean',
             description: 'Whether the dropdown should close after selecting an option'

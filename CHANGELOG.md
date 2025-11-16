@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.7.3
+
+### Patch Changes
+
+- Updated Select story, added size prop, fixed image styles
+- Added Input `mode` prop
+- Added some UI Unit test for increase coverage
+
 ## 1.7.2
 
 ### Patch Changes
