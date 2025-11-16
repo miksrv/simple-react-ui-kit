@@ -22,7 +22,8 @@ $iconSize: 18px
         .trigger
             display: flex
             align-items: center
-            min-height: var(--size-medium)
+            height: 100%
+            min-height: var(--size-small)
             padding: 0 12px 0 0
             background: var(--input-background-color)
             border: var(--input-border)
@@ -59,6 +60,10 @@ $iconSize: 18px
                         width: $iconSize
                         height: $iconSize
                         fill: var(--text-color-primary)
+
+                    .image
+                        width: $iconSize
+                        height: $iconSize
 
                 .badge
                     background-color: var(--dropdown-badge-background-color)
@@ -128,6 +133,20 @@ $iconSize: 18px
                 background-color: var(--color-red-background)
                 border-color: var(--color-red)
 
+        &.small
+            height: var(--size-small)
+            font-size: var(--font-size-small)
+
+            svg
+                height: 14px
+                width: 14px
+
+        &.medium
+            height: var(--size-medium)
+
+        &.large
+            height: var(--size-large)
+
     &.disabled
         *
             pointer-events: none
@@ -135,7 +154,7 @@ $iconSize: 18px
         .label
             opacity: 0.7
 
-        .searchContainer
+        .valueContainer
             opacity: 0.5
             cursor: default
 
