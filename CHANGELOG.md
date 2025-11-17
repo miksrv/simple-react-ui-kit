@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.7.6
+
+### Patch Changes
+
+- Upgraded UI Libraries, Improved `size` param for Select
+
 ## 1.7.5
 
 ### Patch Changes

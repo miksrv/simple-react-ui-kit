@@ -1,6 +1,6 @@
 {
     "name": "simple-react-ui-kit",
-    "version": "1.7.5",
+    "version": "1.7.6",
     "description": "A lightweight and flexible UI framework for building responsive React applications with customizable components.",
     "repository": "https://github.com/miksrv/simple-react-ui-kit.git",
     "keywords": [
@@ -53,7 +53,7 @@
         "@types/identity-obj-proxy": "^3.0.2",
         "@types/jest": "^30.0.0",
         "@types/lodash-es": "^4.17.12",
-        "@types/react": "^19.2.4",
+        "@types/react": "^19.2.5",
         "@types/react-dom": "^19.2.3",
         "eslint": "^9.39.1",
         "eslint-config-prettier": "^10.1.8",
@@ -79,7 +79,7 @@
         "ts-jest": "^29.4.5",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.46.4"
+        "typescript-eslint": "^8.47.0"
     },
     "dependencies": {
         "dayjs": "^1.11.19",
