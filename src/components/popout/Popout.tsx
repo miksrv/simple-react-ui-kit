@@ -19,10 +19,7 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
 
         useEffect(() => {
             const div = document.createElement('div')
-            div.style.position = 'absolute'
-            div.style.top = '0'
-            div.style.left = '0'
-            div.style.pointerEvents = 'none'
+            div.className = styles.portal
             document.body.appendChild(div)
             setPortalNode(div)
 
