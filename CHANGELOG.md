@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.7.5
+
+### Patch Changes
+
+- Fixed height for Select UI Component
+
 ## 1.7.4
 
 ### Patch Changes
