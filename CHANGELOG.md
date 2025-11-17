@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.7.4
+
+### Patch Changes
+
+- Fixed Select options with image styles
+- Fixed Popout portal positioning issue
+
 ## 1.7.3
 
 ### Patch Changes
