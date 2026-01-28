@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.7.7
+
+### Patch Changes
+
+- Upgrade UI Dependencies
+
 ## 1.7.6
 
 ### Patch Changes
