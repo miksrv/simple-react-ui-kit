@@ -64,8 +64,6 @@ export const ComponentName: React.FC<ComponentNameProps> = ({
         </div>
     )
 }
-
-export default ComponentName
 ```
 
 ### types.ts Template
@@ -82,7 +80,7 @@ export interface ComponentNameProps {
 ### index.ts Template
 
 ```typescript
-export { default as ComponentName, ComponentNameProps } from './ComponentName'
+export { ComponentName, type ComponentNameProps } from './ComponentName'
 ```
 
 ### styles.module.sass Template
@@ -124,33 +122,59 @@ export { default as ComponentName, ComponentNameProps } from './ComponentName'
 
 ### CSS Variables
 
+All design tokens are defined in `src/styles/global.css`. Use these in Sass modules — never hardcode colors or dimensions.
+
 ```css
-/* Forms */
---simple-ui-form-background
---simple-ui-form-background-hover
---simple-ui-form-border-color
---simple-ui-form-border-color-hover
---simple-ui-form-border-color-active
---simple-ui-form-text-color
---simple-ui-form-placeholder-color
+/* Semantic colors (each has -hover, -active, -background variants) */
+--color-main          /* blue, used for interactive elements */
+--color-green         /* success */
+--color-orange        /* warning */
+--color-red           /* error */
+
+/* Sizes (drive height for size prop) */
+--size-small: 28px
+--size-medium: 34px
+--size-large: 38px
+
+/* Typography */
+--font-size
+--font-size-small
+--font-family
+--text-color-primary
+--text-color-secondary
+
+/* Layout */
+--border-radius
+--body-background
+--container-background-color
+--container-shadow
+--overlay-background
+--modal-background
+
+/* Inputs & Dropdowns */
+--input-background-color
+--input-border-color
+--input-border-focus-color
+--input-label-color
+--dropdown-background-color
+--dropdown-background-color-hover
 
 /* Buttons */
---simple-ui-button-primary-background
---simple-ui-button-primary-border-color
---simple-ui-button-primary-text-color
---simple-ui-button-secondary-background
---simple-ui-button-secondary-border-color
---simple-ui-button-secondary-text-color
+--button-primary-background
+--button-primary-color
+--button-secondary-background
+--button-secondary-color
+--button-default-color
+--button-font-weight
 
-/* States */
---simple-ui-color-green
---simple-ui-color-red
---simple-ui-color-orange
---simple-ui-color-blue
+/* Table */
+--table-header-background
+--table-border-color
+--table-row-box-shadow
 
-/* Common */
---simple-ui-border-radius
---simple-ui-font-family
+/* Other */
+--popout-shadow
+--skeleton-background-animation
 ```
 
 ### Component Sizes
@@ -191,12 +215,26 @@ yarn build
 # Type check
 npx tsc --noEmit
 
-# Linter
+# Linter (check only)
 yarn eslint:check
+
+# Linter (auto-fix)
+yarn eslint:fix
 
 # Formatting
 yarn prettier:fix
 ```
+
+## ⚠️ Mandatory: After every change to src/components/
+
+**Always run both commands in this exact order after editing any file inside `src/components/`:**
+
+```bash
+yarn eslint:fix
+yarn prettier:fix
+```
+
+Do not skip either step. Do not reverse the order.
 
 ## 📝 Pre-commit Checklist
 
@@ -204,5 +242,5 @@ yarn prettier:fix
 - [ ] All props have TypeScript types
 - [ ] Props documented via JSDoc
 - [ ] CSS variables used for colors
-- [ ] Code passes linter
+- [ ] `yarn eslint:fix` and `yarn prettier:fix` run after changes
 - [ ] No TypeScript errors
