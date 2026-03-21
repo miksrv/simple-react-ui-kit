@@ -1,149 +1,165 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
 
-import { Badge, type BadgeProps } from '../../src'
+import { Badge, type BadgeProps, iconNames } from '../../src'
 
 const meta: Meta<BadgeProps> = {
     title: 'Components/Badge',
     component: Badge,
     tags: ['autodocs'],
-    argTypes: {
-        label: { control: 'text' },
-        icon: { control: 'select', options: ['Close', 'Check', 'Alert', 'Wind', 'Point'] },
-        size: {
-            control: { type: 'inline-radio' },
-            options: ['small', 'medium', 'large'],
-            table: { type: { summary: '"small", "medium", "large"' } }
-        },
-        onClickRemove: { action: 'remove' },
-        style: { control: 'object' }
+    parameters: {
+        docs: {
+            description: {
+                component:
+                    'A compact label used to highlight status, categories, or metadata. Supports icons (named or custom React elements), three sizes, and an optional remove button for interactive tag-like use cases.'
+            }
+        }
     },
-    parameters: { docs: { description: { component: 'Badge component for status and labels.' } } }
+    argTypes: {
+        label: {
+            control: 'text',
+            description: 'Text label displayed inside the badge',
+            table: { type: { summary: 'string | number' } }
+        },
+        icon: {
+            control: 'select',
+            options: Object.keys(iconNames),
+            description: 'Named icon or a custom React element displayed alongside the label',
+            table: { type: { summary: 'IconTypes | React.ReactElement' } }
+        },
+        size: {
+            control: 'inline-radio',
+            options: ['small', 'medium', 'large'],
+            description: 'Controls the visual size of the badge',
+            table: {
+                defaultValue: { summary: 'medium' },
+                type: { summary: '"small" | "medium" | "large"' }
+            }
+        },
+        onClickRemove: {
+            control: false,
+            description: 'Callback fired when the remove (×) button is clicked. Receives the label value as the argument. Renders a remove button when provided.',
+            table: { type: { summary: '(key?: string | number) => void' } }
+        },
+        className: {
+            control: 'text',
+            description: 'Additional CSS class names for custom styling'
+        },
+        style: {
+            control: 'object',
+            description: 'Inline style object applied to the badge wrapper'
+        }
+    }
 }
 
 export default meta
-
-type Story = StoryObj<BadgeProps>
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+    name: 'Default',
     args: {
-        label: 'Default Badge',
-        size: 'medium',
-        icon: 'Wind'
-    }
-}
-
-export const Removable: Story = {
-    args: {
-        label: 'Removable Badge',
-        size: 'medium',
-        icon: 'Point'
+        label: 'Badge',
+        size: 'medium'
     },
-    parameters: { docs: { description: { story: 'Badge with removal action.' } } }
-}
-
-export const WithoutIcon: Story = {
-    args: {
-        size: 'medium',
-        label: 'Badge Without Icon'
+    parameters: {
+        docs: {
+            description: { story: 'A basic badge with just a text label. Use the Controls panel to explore all props.' }
+        }
     }
 }
 
-export const EmojiIcons: Story = {
-    render: () => (
-        <>
-            <Badge
-                label='Happy'
-                icon={
-                    <span
-                        role='img'
-                        aria-label='happy'
-                    >
-                        😊
-                    </span>
-                }
-                size='medium'
-            />
-            <Badge
-                label='Cool'
-                icon={
-                    <span
-                        role='img'
-                        aria-label='cool'
-                    >
-                        😎
-                    </span>
-                }
-                size='medium'
-            />
-            <Badge
-                label='Surprised'
-                icon={
-                    <span
-                        role='img'
-                        aria-label='surprised'
-                    >
-                        😲
-                    </span>
-                }
-                size='medium'
-            />
-            <Badge
-                label='Love'
-                icon={
-                    <span
-                        role='img'
-                        aria-label='love'
-                    >
-                        😍
-                    </span>
-                }
-                size='medium'
-            />
-        </>
-    ),
-    name: 'With Emoji Icons'
+export const WithIcon: Story = {
+    name: 'With Icon',
+    args: {
+        label: 'Wind Speed',
+        icon: 'Wind',
+        size: 'medium'
+    },
+    parameters: {
+        docs: {
+            description: { story: 'Badge with a named icon rendered to the left of the label.' }
+        }
+    }
 }
 
-export const CustomBackground: Story = {
+export const WithRemove: Story = {
+    name: 'With Remove Button',
+    args: {
+        label: 'Removable',
+        icon: 'Tag',
+        size: 'medium',
+        onClickRemove: (key) => alert(`Removed: ${key}`)
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'When `onClickRemove` is provided a close (×) button appears. Clicking it fires the callback with the badge label as the argument — useful for tag-style inputs.'
+            }
+        }
+    }
+}
+
+export const Sizes: Story = {
+    name: 'Sizes',
     render: () => (
-        <>
-            <Badge
-                label='Blue BG + Emoji'
-                icon={
-                    <span
-                        role='img'
-                        aria-label='star'
-                    >
-                        ⭐️
-                    </span>
-                }
-                size='medium'
-                style={{ backgroundColor: '#2196f3', color: '#fff', marginLeft: 8 }}
-            />
-            <Badge
-                label='Green BG'
-                size='medium'
-                style={{ backgroundColor: '#4caf50', color: '#fff', marginLeft: 8 }}
-            />
-            <Badge
-                label='Yellow BG + Emoji'
-                icon={
-                    <span
-                        role='img'
-                        aria-label='fire'
-                    >
-                        🔥
-                    </span>
-                }
-                size='medium'
-                style={{ backgroundColor: '#ffeb3b', color: '#222', marginLeft: 8 }}
-            />
-            <Badge
-                label='Gray BG'
-                size='medium'
-                style={{ backgroundColor: '#bdbdbd', color: '#222', marginLeft: 8 }}
-            />
-        </>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <Badge label='Small' icon='Point' size='small' />
+            <Badge label='Medium' icon='Point' size='medium' />
+            <Badge label='Large' icon='Point' size='large' />
+        </div>
     ),
-    name: 'Badge With Custom Background'
+    parameters: {
+        docs: {
+            description: { story: 'The three available sizes — `small`, `medium`, and `large` — displayed side by side.' }
+        }
+    }
+}
+
+export const AllVariants: Story = {
+    name: 'All Variants',
+    render: () => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+            <Badge label='Icon Badge' icon='StarFilled' size='medium' />
+            <Badge label='Removable' icon='Tag' size='medium' onClickRemove={() => {}} />
+            <Badge
+                label='Emoji'
+                icon={<span role='img' aria-label='fire'>🔥</span>}
+                size='medium'
+            />
+            <Badge
+                label='Custom Color'
+                size='medium'
+                style={{ backgroundColor: '#3b82f6', color: '#fff' }}
+            />
+            <Badge label='No Icon' size='medium' />
+            <Badge label='Small + Icon' icon='Bell' size='small' />
+            <Badge label='Large + Remove' icon='Close' size='large' onClickRemove={() => {}} />
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'An overview of the most common badge configurations: icon-only, removable, emoji icon, custom colour, no icon, and mixed sizes.'
+            }
+        }
+    }
+}
+
+export const WithEmojiIcon: Story = {
+    name: 'With Emoji Icon',
+    render: () => (
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <Badge label='Happy' icon={<span role='img' aria-label='happy'>😊</span>} size='medium' />
+            <Badge label='Cool' icon={<span role='img' aria-label='cool'>😎</span>} size='medium' />
+            <Badge label='Surprised' icon={<span role='img' aria-label='surprised'>😲</span>} size='medium' />
+            <Badge label='Love' icon={<span role='img' aria-label='love'>😍</span>} size='medium' />
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'The `icon` prop accepts any `React.ReactElement`, making it easy to embed emoji spans or custom SVGs alongside the label.'
+            }
+        }
+    }
 }
