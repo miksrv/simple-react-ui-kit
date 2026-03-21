@@ -36,4 +36,23 @@ describe('Spinner Component', () => {
         expect(spinnerElement).toHaveAttribute('height', '50')
         expect(spinnerElement).toHaveAttribute('fill', 'red')
     })
+
+    it('renders with correct viewBox attribute', () => {
+        const { container } = render(<Spinner />)
+        const spinnerElement = container.querySelector('svg')
+        expect(spinnerElement).toHaveAttribute('viewBox', '0 0 100 101')
+    })
+
+    it('renders two path elements inside', () => {
+        const { container } = render(<Spinner />)
+        const paths = container.querySelectorAll('path')
+        expect(paths.length).toBe(2)
+    })
+
+    it('applies both spinner base class and custom class', () => {
+        const { container } = render(<Spinner className='my-spinner' />)
+        const spinnerElement = container.querySelector('svg')
+        expect(spinnerElement).toHaveClass('spinner')
+        expect(spinnerElement).toHaveClass('my-spinner')
+    })
 })

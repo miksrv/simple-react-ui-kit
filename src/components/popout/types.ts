@@ -22,4 +22,6 @@ export interface PopoutProps extends React.HTMLAttributes<HTMLSpanElement> {
     closeOnChildrenClick?: boolean
     /** Callback function triggered when isOpen state changes */
     onOpenChange?: (isOpen: boolean) => void
+    /** Whether to render popout content in a portal with fixed positioning (useful for fixed containers) */
+    portal?: boolean
 }

@@ -153,4 +153,45 @@ describe('Input Component', () => {
         const formField = container.querySelector(`.${styles.formField}`)
         expect(formField).toHaveClass(/ghost/)
     })
+
+    it('renders without label when label prop is not provided', () => {
+        render(<Input placeholder='No label' />)
+        expect(screen.queryByText('Username')).not.toBeInTheDocument()
+    })
+
+    it('does not render error div when error is an empty string', () => {
+        const { container } = render(
+            <Input
+                {...defaultProps}
+                error=''
+            />
+        )
+        expect(container.querySelector('.error')).not.toBeInTheDocument()
+    })
+
+    it('passes type attribute through to input', () => {
+        render(
+            <Input
+                {...defaultProps}
+                type='email'
+            />
+        )
+        expect(screen.getByPlaceholderText('Enter your username')).toHaveAttribute('type', 'email')
+    })
+
+    it('passes value attribute through to input', () => {
+        render(
+            <Input
+                {...defaultProps}
+                value='initial value'
+                onChange={jest.fn()}
+            />
+        )
+        expect(screen.getByPlaceholderText('Enter your username')).toHaveValue('initial value')
+    })
+
+    it('does not apply error class when error is undefined', () => {
+        const { container } = render(<Input {...defaultProps} />)
+        expect(container.querySelector('div')).not.toHaveClass('error')
+    })
 })

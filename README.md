@@ -52,6 +52,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 - [Usage Components](#usage)
     - [Badge](#badge)
     - [Button](#button)
+    - [Calendar](#calendar)
     - [Checkbox](#checkbox)
     - [Container](#container)
     - [DatePicker](#datepicker)
@@ -161,7 +162,7 @@ const App = () => (
         {/* Badge with label and icon */}
         <Badge
             label='New'
-            icon='Check'
+            icon='CheckCircle'
         />
 
         {/* Removable Badge */}
@@ -230,7 +231,7 @@ const App = () => (
         {/* Secondary Button with Icon */}
         <Button
             mode='secondary'
-            icon='check'
+            icon='CheckCircle'
             onClick={() => alert('Secondary Button Clicked!')}
         >
             Secondary Button
@@ -469,7 +470,7 @@ Check out the full documentation and examples in Storybook: [DatePicker Componen
 - **`hidePresets`**: Array of preset keys to hide from the presets list.
 - **`periodDatesFormat`**: Format for displaying period ranges (default: `DD.MM.YYYY`).
 - **`singleDateFormat`**: Format for displaying a single date (default: `DD MMMM YYYY`).
-- **`selectDateCaption`**: Caption shown when no date is selected (default: `Select date`).
+- **`placeholder`**: Caption shown when no date is selected (default: `Select date`).
 - **`disabled`**: Disables the date picker if `true`.
 - **`buttonMode`**: Button mode for the trigger (`primary`, `secondary`, etc.).
 - All other `Calendar` props are supported.
@@ -488,7 +489,7 @@ const App = () => {
             periodDatesFormat='DD.MM.YYYY'
             singleDateFormat='DD MMMM YYYY'
             onPeriodSelect={(start, end) => setPeriod([start, end])}
-            selectDateCaption='Choose a date'
+            placeholder='Choose a date'
             buttonMode='primary'
         />
     )
@@ -520,7 +521,7 @@ Check out the full documentation and examples in Storybook: [Dialog Component St
 #### Props:
 
 - **`open`**: Controls whether the dialog is open or closed.
-- **`header`**: Header text for the dialog.
+- **`title`**: Title text displayed in the dialog header.
 - **`contentHeight`**: Height of the dialog content (e.g., `300px`).
 - **`maxWidth`**: Maximum width of the dialog (e.g., `500px`).
 - **`backLinkCaption`**: Caption for the back button.
@@ -549,7 +550,7 @@ const App = () => {
             <Button onClick={() => setIsDialogOpen(true)}>Open Dialog</Button>
             <Dialog
                 open={isDialogOpen}
-                header='Dialog Header'
+                title='Dialog Header'
                 contentHeight='200px'
                 maxWidth='400px'
                 backLinkCaption='Back'
@@ -606,8 +607,8 @@ const App = () => {
         <div>
             <h1>My Application</h1>
             <Icon
-                name='Home'
-                className='icon-home'
+                name='Search'
+                className='icon-search'
             />
             <Icon
                 name='Settings'
@@ -668,7 +669,7 @@ Additionally, the `Input` component accepts all standard input attributes from `
 
 ```tsx
 import React, { useState } from 'react'
-import Input from 'simple-react-ui-kit'
+import { Input } from 'simple-react-ui-kit'
 
 const App = () => {
     const [inputValue, setInputValue] = useState<string>('')
@@ -1214,10 +1215,10 @@ Here is a list of all the CSS variables you can override to customize the look a
     - `--popout-shadow`: Shadow effect for popouts and modals.
 
 - **Tables:**
-    - `--table-font-size`: Font size for table content.
     - `--table-header-background`: Background color for table headers.
     - `--table-header-background-hover`: Hover state for table headers.
     - `--table-border-color`: Border color for tables.
+    - `--table-row-box-shadow`: Box shadow for table row separators.
 
 - **Skeleton:**
     - `--skeleton-background-animation`: Background gradient for content loading animation.
@@ -1383,9 +1384,9 @@ This project is distributed under the MIT License. See [LICENSE](LICENSE) for mo
 
 Here are a few resources that helped inspire or were invaluable during the development of this project:
 
-1. [GutHub Readme Template](https://github.com/miksrv/GitHub-Project-README-Template)
+1. [GitHub Readme Template](https://github.com/miksrv/GitHub-Project-README-Template)
 2. [React Documentation](https://react.dev/)
-3. [Styled Components](https://styled-components.com/)
+3. [Sass Documentation](https://sass-lang.com/)
 4. [Jest Testing Framework](https://jestjs.io/)
 
 <p align="right">

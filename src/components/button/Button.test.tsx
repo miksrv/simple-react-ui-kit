@@ -147,4 +147,86 @@ describe('Button Component', () => {
         expect(button).toHaveClass('secondary')
         expect(button).toHaveClass('positive')
     })
+
+    it('renders children content when label is not provided', () => {
+        render(<Button>Child Content</Button>)
+        expect(screen.getByText('Child Content')).toBeInTheDocument()
+    })
+
+    it('prefers label over children when both provided', () => {
+        render(<Button label='Label Text'>Child Text</Button>)
+        expect(screen.getByText('Label Text')).toBeInTheDocument()
+        expect(screen.queryByText('Child Text')).not.toBeInTheDocument()
+    })
+
+    it('applies loading class when loading is true', () => {
+        render(
+            <Button
+                {...defaultProps}
+                loading={true}
+            />
+        )
+        const button = screen.getByText(/Click Me/i)
+        expect(button).toHaveClass('loading')
+    })
+
+    it('does not render icon when loading is true', () => {
+        const { container } = render(
+            <Button
+                {...defaultProps}
+                icon='CheckCircle'
+                loading={true}
+            />
+        )
+        // When loading, spinner replaces icon — svg should still be present (spinner)
+        const svgElements = container.querySelectorAll('svg')
+        expect(svgElements.length).toBe(1) // only spinner, not icon + spinner
+    })
+
+    it('applies noText class when neither label nor children provided', () => {
+        render(<Button mode='primary' />)
+        const button = screen.getByRole('button')
+        expect(button).toHaveClass('noText')
+    })
+
+    it('renders link without rel attribute when noIndex is false', () => {
+        render(
+            <Button
+                {...defaultProps}
+                link='https://example.com'
+                noIndex={false}
+            />
+        )
+        const linkElement = screen.getByRole('link')
+        expect(linkElement).not.toHaveAttribute('rel', 'noindex nofollow')
+    })
+
+    it('applies disabled class to link wrapper when disabled', () => {
+        render(
+            <Button
+                {...defaultProps}
+                link='https://example.com'
+                disabled
+            />
+        )
+        const linkElement = screen.getByRole('link')
+        expect(linkElement).toHaveClass('disabled')
+    })
+
+    it('button has default type of button', () => {
+        render(<Button {...defaultProps} />)
+        const button = screen.getByRole('button')
+        expect(button).toHaveAttribute('type', 'button')
+    })
+
+    it('allows overriding button type', () => {
+        render(
+            <Button
+                {...defaultProps}
+                type='submit'
+            />
+        )
+        const button = screen.getByRole('button')
+        expect(button).toHaveAttribute('type', 'submit')
+    })
 })
