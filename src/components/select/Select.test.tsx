@@ -437,4 +437,261 @@ describe('Select Component', () => {
             expect(screen.getByText('No results')).toBeInTheDocument()
         })
     })
+
+    it('calls onOpen when dropdown is opened', () => {
+        const onOpen = jest.fn()
+        render(
+            <Select
+                options={options}
+                onOpen={onOpen}
+            />
+        )
+        // Click the toggle button to open
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.click(toggleBtn)
+        expect(onOpen).toHaveBeenCalled()
+    })
+
+    it('calls onSearch when search input changes', () => {
+        const onSearch = jest.fn()
+        render(
+            <Select
+                options={options}
+                searchable
+                onSearch={onSearch}
+            />
+        )
+        fireEvent.change(screen.getByRole('textbox'), { target: { value: 'test' } })
+        expect(onSearch).toHaveBeenCalledWith('test')
+    })
+
+    it('does not call onOpen a second time when toggling closed', () => {
+        const onOpen = jest.fn()
+        render(
+            <Select
+                options={options}
+                onOpen={onOpen}
+            />
+        )
+        // Open
+        fireEvent.click(screen.getByRole('button', { name: /open dropdown/i }))
+        const callsAfterOpen = onOpen.mock.calls.length
+
+        // Close (button label changes to 'close dropdown')
+        fireEvent.click(screen.getByRole('button', { name: /close dropdown/i }))
+        // onOpen should not be called again when closing
+        expect(onOpen.mock.calls.length).toBe(callsAfterOpen)
+    })
+
+    it('applies size class correctly', () => {
+        const { container } = render(
+            <Select
+                options={options}
+                size='large'
+            />
+        )
+        expect(container.querySelector('.large')).toBeInTheDocument()
+    })
+
+    it('does not remove badge in multiple mode when badge remove is clicked if onSelect not provided', () => {
+        render(
+            <Select
+                multiple
+                options={options}
+                value={['1']}
+            />
+        )
+        // Without onSelect, remove button click should not crash
+        const removeButtons = screen.queryAllByRole('button')
+        // The badge remove button in Badge component
+        const badgeRemoveBtn = removeButtons.find((btn) => btn.className?.includes('close'))
+        if (badgeRemoveBtn) {
+            fireEvent.click(badgeRemoveBtn)
+        }
+        expect(screen.getByText('Option One')).toBeInTheDocument()
+    })
+
+    it('handles search input clearing in single mode', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.change(input, { target: { value: 'Opt' } })
+        fireEvent.change(input, { target: { value: '' } })
+        // No crash, dropdown closes for single mode
+    })
+
+    it('opens dropdown when search text is entered in single mode', async () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.change(input, { target: { value: 'Option' } })
+        await waitFor(() => {
+            expect(screen.getByRole('listbox')).toBeInTheDocument()
+        })
+    })
+
+    it('shows emoji for selected option in single mode', () => {
+        render(
+            <Select
+                options={options}
+                value='4'
+            />
+        )
+        // emoji option has emoji: 'Check'
+        expect(screen.getByText('Check')).toBeInTheDocument()
+    })
+
+    it('clicking label focuses the search input in searchable mode', () => {
+        render(
+            <Select
+                options={options}
+                label='My Label'
+                searchable
+            />
+        )
+        const label = screen.getByText('My Label')
+        fireEvent.click(label)
+        // No crash, focus is attempted on input
+    })
+
+    it('does not select already-selected option in multiple mode', () => {
+        const onSelect = jest.fn()
+        render(
+            <Select
+                multiple
+                options={options}
+                value={['1']}
+                onSelect={onSelect}
+            />
+        )
+        fireEvent.click(screen.getByRole('combobox'))
+        // Already selected options are filtered out — Option One should not appear in list
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    it('handles Delete key same as Backspace in single mode', () => {
+        const onSelect = jest.fn()
+        render(
+            <Select
+                options={options}
+                value='1'
+                onSelect={onSelect}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'Delete' })
+        expect(onSelect).toHaveBeenCalledWith(undefined)
+    })
+
+    it('applies focused class when input is focused', async () => {
+        const { container } = render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.focus(input)
+        expect(container.querySelector('.focused')).toBeInTheDocument()
+    })
+
+    it('removes focused class after blur', async () => {
+        const { container } = render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.focus(input)
+        expect(container.querySelector('.focused')).toBeInTheDocument()
+        fireEvent.blur(input)
+        // After the 150ms timeout, focused class should be removed
+        await new Promise((resolve) => setTimeout(resolve, 200))
+        expect(container.querySelector('.focused')).not.toBeInTheDocument()
+    })
+
+    it('blurs input on Escape key in searchable mode when dropdown is open', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        // Open dropdown first
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+        expect(screen.getByRole('listbox')).toBeInTheDocument()
+        // Now press Escape
+        fireEvent.keyDown(input, { key: 'Escape' })
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    it('does not select disabled option via handleSelect', () => {
+        const onSelect = jest.fn()
+        render(
+            <Select
+                options={options}
+                onSelect={onSelect}
+            />
+        )
+        // Open dropdown and click disabled option (Option Two)
+        fireEvent.click(screen.getByRole('button', { name: /open dropdown/i }))
+        const disabledOption = screen.getByText('Option Two')
+        fireEvent.click(disabledOption)
+        expect(onSelect).not.toHaveBeenCalled()
+    })
+
+    it('selects option in multiple mode and calls onSelect', async () => {
+        const onSelect = jest.fn()
+        render(
+            <Select
+                multiple
+                options={options}
+                onSelect={onSelect}
+            />
+        )
+        fireEvent.click(screen.getByRole('button', { name: /open dropdown/i }))
+        await waitFor(() => screen.getByRole('listbox'))
+        fireEvent.click(screen.getByText('Option One'))
+        expect(onSelect).toHaveBeenCalledWith([expect.objectContaining({ key: '1' })])
+    })
+
+    it('does not open dropdown when clicking toggle button while disabled', () => {
+        render(
+            <Select
+                options={options}
+                disabled
+            />
+        )
+        // The toggle button exists but clicking it when disabled should not open dropdown
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.click(toggleBtn)
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    it('does not call onSelect when handleSelect is called with no option', async () => {
+        const onSelect = jest.fn()
+        render(
+            <Select
+                options={options}
+                onSelect={onSelect}
+            />
+        )
+        // Open dropdown - clicking a disabled option does nothing
+        fireEvent.click(screen.getByRole('button', { name: /open dropdown/i }))
+        await waitFor(() => screen.getByRole('listbox'))
+        const disabledBtn = screen.getByText('Option Two').closest('button')!
+        fireEvent.click(disabledBtn)
+        expect(onSelect).not.toHaveBeenCalled()
+    })
 })

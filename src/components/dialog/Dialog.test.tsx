@@ -279,4 +279,90 @@ describe('Dialog Component', () => {
         const overlayElement = document.body.querySelector('[data-overlay-id]')
         expect(overlayElement).toBeInTheDocument()
     })
+
+    it('renders without header when title, showBackLink and showCloseButton are all absent', () => {
+        render(
+            <Dialog
+                open={true}
+                showBackLink={false}
+                showCloseButton={false}
+            >
+                <div>Content only</div>
+            </Dialog>
+        )
+        expect(screen.queryByRole('heading')).not.toBeInTheDocument()
+        expect(screen.getByText('Content only')).toBeInTheDocument()
+    })
+
+    it('renders dialog portal to parentRef element', () => {
+        const parentElement = document.createElement('div')
+        document.body.appendChild(parentElement)
+        const parentRef = { current: parentElement }
+
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+                parentRef={parentRef}
+            >
+                <div>Portal content</div>
+            </Dialog>
+        )
+
+        expect(parentElement.querySelector('dialog')).toBeInTheDocument()
+        parentElement.remove()
+    })
+
+    it('applies maxWidth style to dialog element', () => {
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+                maxWidth='800px'
+            />
+        )
+        const dialogElement = screen.getByRole('dialog')
+        expect(dialogElement).toHaveStyle('max-width: 800px')
+    })
+
+    it('renders content with auto height when contentHeight is not provided', () => {
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+                contentHeight={undefined}
+            >
+                <div>Auto height content</div>
+            </Dialog>
+        )
+        const content = screen.getByText('Auto height content').parentElement
+        expect(content).toHaveStyle('height: auto')
+    })
+
+    it('does not call onCloseDialog when non-Escape key is pressed', () => {
+        const onCloseDialogMock = jest.fn()
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+                onCloseDialog={onCloseDialogMock}
+            />
+        )
+        fireEvent.keyDown(document, { key: 'Enter' })
+        expect(onCloseDialogMock).not.toHaveBeenCalled()
+    })
+
+    it('applies noBackLink class when showBackLink is false', () => {
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+                showBackLink={false}
+                title='No Back Link'
+            />
+        )
+        // header should have the noBackLink class
+        const heading = screen.getByText('No Back Link')
+        expect(heading.closest('div')).toHaveClass('noBackLink')
+    })
 })

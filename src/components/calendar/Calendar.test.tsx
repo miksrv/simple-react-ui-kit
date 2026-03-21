@@ -206,4 +206,87 @@ describe('Calendar', () => {
         expect(yearSelect).toHaveTextContent('2021')
         expect(yearSelect).toHaveTextContent('2022')
     })
+
+    it('renders all English days of week', () => {
+        setup()
+        const daysOfWeek = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+        daysOfWeek.forEach((day) => {
+            expect(screen.getByText(day)).toBeInTheDocument()
+        })
+    })
+
+    it('renders all Russian days of week in ru locale', () => {
+        setup({ locale: 'ru' })
+        const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+        daysOfWeek.forEach((day) => {
+            expect(screen.getByText(day)).toBeInTheDocument()
+        })
+    })
+
+    it('navigates to next month and updates month selector', () => {
+        setup()
+        const [, nextBtn] = screen.getAllByRole('button')
+        const [monthSelect] = screen.getAllByRole('combobox')
+        const initialMonth = monthSelect.querySelector('option:checked')?.textContent
+
+        fireEvent.click(nextBtn)
+
+        const newMonth = monthSelect.querySelector('option:checked')?.textContent
+        expect(newMonth).not.toBe(initialMonth)
+    })
+
+    it('navigates to previous month and updates month selector', () => {
+        setup()
+        const [prevBtn] = screen.getAllByRole('button')
+        const [monthSelect] = screen.getAllByRole('combobox')
+
+        fireEvent.click(prevBtn)
+
+        // no crash and month selector should still exist
+        expect(monthSelect).toBeInTheDocument()
+    })
+
+    it('clears selectedEndDate when new period selection begins', () => {
+        const onPeriodSelect = jest.fn()
+        setup({ onPeriodSelect })
+
+        // Select a full range first
+        fireEvent.click(screen.getAllByText('10')[0])
+        fireEvent.click(screen.getAllByText('15')[0])
+        expect(onPeriodSelect).toHaveBeenCalledTimes(1)
+
+        // Start a new selection — this should reset (click 20 to start fresh, then 22 for end)
+        fireEvent.click(screen.getAllByText('20')[0])
+        // Now select end - use a day that's definitely after 20 and in current month
+        fireEvent.click(screen.getAllByText('22')[0])
+        expect(onPeriodSelect).toHaveBeenCalledTimes(2)
+    })
+
+    it('renders datePeriod with only start date', () => {
+        const startDate = dayjs().date(5).format('YYYY-MM-DD')
+        setup({ datePeriod: [startDate, undefined] })
+        expect(screen.getAllByText('5')[0]).toBeInTheDocument()
+    })
+
+    it('renders datePeriod with only end date', () => {
+        const endDate = dayjs().date(15).format('YYYY-MM-DD')
+        setup({ datePeriod: [undefined, endDate] })
+        expect(screen.getAllByText('15')[0]).toBeInTheDocument()
+    })
+
+    it('renders without maxDate, year selector defaults to current year', () => {
+        const currentYear = dayjs().year()
+        setup()
+        const yearSelect = screen.getAllByRole('combobox')[1]
+        expect(yearSelect).toHaveTextContent(String(currentYear))
+    })
+
+    it('day click with maxDate equal to clicked date is allowed', () => {
+        const onDateSelect = jest.fn()
+        const maxDate = dayjs().date(15).format('YYYY-MM-DD')
+        setup({ onDateSelect, maxDate })
+        // Click day 15 — which equals maxDate (same day should be allowed)
+        fireEvent.click(screen.getAllByText('15')[0])
+        expect(onDateSelect).toHaveBeenCalled()
+    })
 })

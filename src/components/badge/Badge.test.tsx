@@ -82,4 +82,54 @@ describe('Badge Component', () => {
         const smallBadgeElement = screen.getAllByText(/Test Badge/i)?.[1].parentElement
         expect(smallBadgeElement).toHaveClass(styles.small)
     })
+
+    it('renders a React element icon when icon is a ReactElement', () => {
+        const customIcon = <span data-testid='custom-icon'>★</span>
+        const { getByTestId } = render(
+            <Badge
+                label='Badge'
+                icon={customIcon}
+            />
+        )
+        expect(getByTestId('custom-icon')).toBeInTheDocument()
+    })
+
+    it('renders without icon when icon prop is not provided', () => {
+        const { container } = render(<Badge label='No Icon' />)
+        const svgElement = container.querySelector('svg')
+        expect(svgElement).not.toBeInTheDocument()
+    })
+
+    it('renders with a numeric label', () => {
+        render(<Badge label={42} />)
+        expect(screen.getByText('42')).toBeInTheDocument()
+    })
+
+    it('calls onClickRemove with numeric label', () => {
+        const onClickRemoveMock = jest.fn()
+        render(
+            <Badge
+                label={99}
+                onClickRemove={onClickRemoveMock}
+            />
+        )
+        fireEvent.click(screen.getByRole('button'))
+        expect(onClickRemoveMock).toHaveBeenCalledWith(99)
+    })
+
+    it('applies medium size class by default', () => {
+        const { container } = render(<Badge label='Default' />)
+        const badgeElement = container.querySelector('div')
+        expect(badgeElement).toHaveClass(styles.medium)
+    })
+
+    it('passes through additional HTML attributes', () => {
+        const { container } = render(
+            <Badge
+                label='Test'
+                data-testid='badge-test'
+            />
+        )
+        expect(container.querySelector('[data-testid="badge-test"]')).toBeInTheDocument()
+    })
 })
