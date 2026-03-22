@@ -111,13 +111,13 @@ import { Badge } from 'simple-react-ui-kit'
 <Badge label="Removable" onClickRemove={(key) => console.log('removed', key)} />
 ```
 
-| Prop            | Type                               | Default | Description                         |
-| --------------- | ---------------------------------- | ------- | ----------------------------------- |
+| Prop            | Type                               | Default    | Description                         |
+| --------------- | ---------------------------------- | ---------- | ----------------------------------- |
 | `label`         | `string \| number`                 | —          | Text content                        |
 | `icon`          | `IconTypes \| React.ReactElement`  | —          | Icon displayed alongside label      |
 | `size`          | `'small' \| 'medium' \| 'large'`   | `'medium'` | Badge size                          |
-| `onClickRemove` | `(key?: string \| number) => void` | —       | Shows remove button, fires on click |
-| `className`     | `string`                           | —       | Additional CSS classes              |
+| `onClickRemove` | `(key?: string \| number) => void` | —          | Shows remove button, fires on click |
+| `className`     | `string`                           | —          | Additional CSS classes              |
 
 ---
 
@@ -419,12 +419,12 @@ import { Message } from 'simple-react-ui-kit'
 <Message type="info">This action cannot be undone.</Message>
 ```
 
-| Prop        | Type                                          | Default  | Description            |
-| ----------- | --------------------------------------------- | -------- | ---------------------- |
-| `type`      | `'error' \| 'warning' \| 'success' \| 'info'` | —        | Variant style          |
-| `title`     | `string`                                      | —        | Bold message heading   |
-| `children`  | `React.ReactNode`                             | —        | Message body           |
-| `className` | `string`                                      | —        | Additional CSS classes |
+| Prop        | Type                                          | Default | Description            |
+| ----------- | --------------------------------------------- | ------- | ---------------------- |
+| `type`      | `'error' \| 'warning' \| 'success' \| 'info'` | —       | Variant style          |
+| `title`     | `string`                                      | —       | Bold message heading   |
+| `children`  | `React.ReactNode`                             | —       | Message body           |
+| `className` | `string`                                      | —       | Additional CSS classes |
 
 ---
 

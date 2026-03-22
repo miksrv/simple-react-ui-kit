@@ -240,7 +240,7 @@ export const Select = <T,>({
         const rect = rootRef.current.getBoundingClientRect()
         setPortalStyle({
             position: 'absolute' as const,
-            top: rect.bottom + window.scrollY,
+            top: rect.bottom + window.scrollY - 34, // -1px to overlap border
             left: rect.left + window.scrollX,
             width: rect.width,
             zIndex: 9999,
