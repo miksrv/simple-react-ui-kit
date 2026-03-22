@@ -40,4 +40,75 @@ describe('Message Component', () => {
 
         expect(screen.queryByRole('heading')).not.toBeInTheDocument()
     })
+
+    it('applies error type class', () => {
+        render(
+            <Message
+                type='error'
+                title='Error'
+            >
+                Error content
+            </Message>
+        )
+        const section = screen.getByText('Error').closest('section')
+        expect(section).toHaveClass('error')
+    })
+
+    it('applies success type class', () => {
+        render(
+            <Message
+                type='success'
+                title='Success'
+            >
+                Success content
+            </Message>
+        )
+        const section = screen.getByText('Success').closest('section')
+        expect(section).toHaveClass('success')
+    })
+
+    it('applies info type class', () => {
+        render(
+            <Message
+                type='info'
+                title='Info'
+            >
+                Info content
+            </Message>
+        )
+        const section = screen.getByText('Info').closest('section')
+        expect(section).toHaveClass('info')
+    })
+
+    it('renders without children', () => {
+        const { container } = render(<Message title='Title only' />)
+        expect(screen.getByText('Title only')).toBeInTheDocument()
+        expect(container.querySelector('.content')).not.toBeInTheDocument()
+    })
+
+    it('does not render title div when title is not provided', () => {
+        const { container } = render(<Message>Content only</Message>)
+        expect(container.querySelector('.title')).not.toBeInTheDocument()
+    })
+
+    it('does not apply type class when type is not provided', () => {
+        render(<Message title='No type'>Content</Message>)
+        const section = screen.getByText('No type').closest('section')
+        expect(section).not.toHaveClass('error')
+        expect(section).not.toHaveClass('warning')
+        expect(section).not.toHaveClass('success')
+        expect(section).not.toHaveClass('info')
+    })
+
+    it('passes additional HTML attributes to section', () => {
+        render(
+            <Message
+                title='Test'
+                data-testid='message-test'
+            >
+                Content
+            </Message>
+        )
+        expect(screen.getByTestId('message-test')).toBeInTheDocument()
+    })
 })

@@ -75,4 +75,71 @@ describe('Overlay Component', () => {
         const overlayElement = document.body.querySelector('[data-overlay-id="test-overlay"]')
         expect(overlayElement).toBeInTheDocument()
     })
+
+    it('transitions overlay from closed to open state', () => {
+        const parentElement = document.createElement('div')
+        document.body.appendChild(parentElement)
+        const props = { ...defaultProps, open: false, parentRef: { current: parentElement } }
+        const { rerender } = render(<Overlay {...props} />)
+
+        let overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]')
+        expect(overlayElement).toHaveClass('noInitialized')
+
+        rerender(
+            <Overlay
+                {...props}
+                open={true}
+            />
+        )
+        overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]')
+        expect(overlayElement).toHaveClass('displayed')
+        parentElement.remove()
+    })
+
+    it('transitions overlay from open to hidden state', () => {
+        const parentElement = document.createElement('div')
+        document.body.appendChild(parentElement)
+        const props = { ...defaultProps, open: true, parentRef: { current: parentElement } }
+        const { rerender } = render(<Overlay {...props} />)
+
+        rerender(
+            <Overlay
+                {...props}
+                open={false}
+            />
+        )
+        const overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]')
+        expect(overlayElement).toHaveClass('hidden')
+        parentElement.remove()
+    })
+
+    it('sets role and aria-label on overlay element', () => {
+        const parentElement = document.createElement('div')
+        document.body.appendChild(parentElement)
+        const props = { ...defaultProps, open: true, parentRef: { current: parentElement } }
+        render(<Overlay {...props} />)
+
+        const overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]')
+        expect(overlayElement).toHaveAttribute('role', 'button')
+        expect(overlayElement).toHaveAttribute('aria-label', 'Overlay')
+        parentElement.remove()
+    })
+
+    it('reuses existing overlay element if already present', () => {
+        const parentElement = document.createElement('div')
+        document.body.appendChild(parentElement)
+
+        // pre-create an overlay element
+        const existing = document.createElement('div')
+        existing.dataset.overlayId = 'test-overlay'
+        existing.className = 'overlay noInitialized'
+        parentElement.appendChild(existing)
+
+        const props = { ...defaultProps, open: true, parentRef: { current: parentElement } }
+        render(<Overlay {...props} />)
+
+        const overlays = parentElement.querySelectorAll('[data-overlay-id="test-overlay"]')
+        expect(overlays).toHaveLength(1)
+        parentElement.remove()
+    })
 })

@@ -9,14 +9,26 @@ import styles from './styles.module.sass'
 
 export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
     (
-        { className, disabled, position = 'right', trigger, children, closeOnChildrenClick, onOpenChange, ...props },
+        {
+            className,
+            disabled,
+            position = 'right',
+            trigger,
+            children,
+            closeOnChildrenClick,
+            onOpenChange,
+            portal = false,
+            ...props
+        },
         ref
     ) => {
         const triggerRef = useRef<HTMLSpanElement>(null)
         const contentRef = useRef<HTMLDivElement>(null)
         const [isOpen, setIsOpen] = useState<boolean>(false)
         const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null)
+        const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({})
 
+        // Create portal container
         useEffect(() => {
             const div = document.createElement('div')
             div.className = styles.portal
@@ -47,6 +59,67 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             [disabled]
         )
 
+        // Calculate position for portal mode with fixed positioning
+        const updatePortalPosition = useCallback(() => {
+            if (!triggerRef.current || !isOpen) {
+                return
+            }
+
+            const rect = triggerRef.current.getBoundingClientRect()
+
+            if (portal) {
+                // Fixed positioning - stays in place during scroll
+                const style: React.CSSProperties = {
+                    position: 'fixed',
+                    top: rect.bottom + 4,
+                    zIndex: 9999,
+                    pointerEvents: 'auto'
+                }
+
+                if (position === 'left') {
+                    style.left = rect.left
+                } else {
+                    style.right = window.innerWidth - rect.right
+                }
+
+                setPortalStyle(style)
+            } else {
+                // Absolute positioning - default behavior
+                const style: React.CSSProperties = {
+                    position: 'absolute',
+                    top: rect.bottom + window.scrollY + 4,
+                    zIndex: 9999,
+                    pointerEvents: 'auto'
+                }
+
+                if (position === 'left') {
+                    style.left = rect.left + window.scrollX
+                } else {
+                    style.right = window.innerWidth - rect.right - window.scrollX
+                }
+
+                setPortalStyle(style)
+            }
+        }, [isOpen, position, portal])
+
+        // Update position on scroll and resize when dropdown is open
+        useEffect(() => {
+            if (!isOpen) {
+                return
+            }
+
+            updatePortalPosition()
+
+            window.addEventListener('scroll', updatePortalPosition, { capture: true, passive: true })
+            window.addEventListener('resize', updatePortalPosition)
+
+            return () => {
+                window.removeEventListener('scroll', updatePortalPosition, true)
+                window.removeEventListener('resize', updatePortalPosition)
+            }
+        }, [isOpen, portal, updatePortalPosition])
+
+        // Handle click outside
         useEffect(() => {
             if (!isOpen || !portalNode) {
                 return
@@ -71,28 +144,6 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             onOpenChange?.(isOpen)
         }, [isOpen, onOpenChange])
 
-        const getPortalStyle = useCallback(() => {
-            if (!triggerRef.current) {
-                return
-            }
-
-            const rect = triggerRef.current.getBoundingClientRect()
-            const style: React.CSSProperties = {
-                position: 'absolute',
-                top: rect.bottom + window.scrollY + 4,
-                zIndex: 9999,
-                pointerEvents: 'auto'
-            }
-
-            if (position === 'left') {
-                style.left = rect.left + window.scrollX
-            } else {
-                style.right = window.innerWidth - rect.right - window.scrollX
-            }
-
-            return style
-        }, [position])
-
         return (
             <>
                 <div className={cn(className, styles.popout)}>
@@ -116,7 +167,7 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                         <div
                             ref={contentRef}
                             className={styles.popoutContent}
-                            style={getPortalStyle()}
+                            style={portalStyle}
                             onClick={(e) => {
                                 if (closeOnChildrenClick) {
                                     close()

@@ -28,4 +28,18 @@ describe('Skeleton Component', () => {
 
         expect(skeletonElement).toHaveAttribute('data-testid', 'skeleton')
     })
+
+    it('applies inline styles when provided', () => {
+        const { container } = render(<Skeleton style={{ width: '200px', height: '20px' }} />)
+        const skeletonElement = container.querySelector('div') as HTMLElement
+        expect(skeletonElement.style.width).toBe('200px')
+        expect(skeletonElement.style.height).toBe('20px')
+    })
+
+    it('has skeleton as base class and custom class together', () => {
+        const { container } = render(<Skeleton className='loading-block' />)
+        const skeletonElement = container.querySelector('div')
+        expect(skeletonElement).toHaveClass('skeleton')
+        expect(skeletonElement).toHaveClass('loading-block')
+    })
 })

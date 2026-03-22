@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
 import { Button } from '../button'
 import { Calendar } from '../calendar'
@@ -10,16 +11,16 @@ import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
 
-const nowDate = dayjs.utc()
+dayjs.extend(utc)
 
 export const timePresets: CalendarPresetType[] = [
-    { key: PresetOption.TODAY, endDate: nowDate.toDate() },
-    { key: PresetOption.DAY, endDate: nowDate.subtract(1, 'day').toDate() },
-    { key: PresetOption.WEEK, endDate: nowDate.subtract(1, 'week').toDate() },
-    { key: PresetOption.MONTH, endDate: nowDate.subtract(1, 'month').toDate() },
-    { key: PresetOption.QUARTER, endDate: nowDate.subtract(3, 'month').toDate() },
-    { key: PresetOption.HALF_YEAR, endDate: nowDate.subtract(6, 'month').toDate() },
-    { key: PresetOption.YEAR, endDate: nowDate.subtract(1, 'year').toDate() }
+    { key: PresetOption.TODAY, endDate: dayjs.utc().toDate() },
+    { key: PresetOption.DAY, endDate: dayjs.utc().subtract(1, 'day').toDate() },
+    { key: PresetOption.WEEK, endDate: dayjs.utc().subtract(1, 'week').toDate() },
+    { key: PresetOption.MONTH, endDate: dayjs.utc().subtract(1, 'month').toDate() },
+    { key: PresetOption.QUARTER, endDate: dayjs.utc().subtract(3, 'month').toDate() },
+    { key: PresetOption.HALF_YEAR, endDate: dayjs.utc().subtract(6, 'month').toDate() },
+    { key: PresetOption.YEAR, endDate: dayjs.utc().subtract(1, 'year').toDate() }
 ]
 
 export const DatePicker: React.FC<DatePickerProps> = ({
@@ -32,6 +33,21 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 }) => {
     const popoutRef = useRef<PopoutHandleProps>(null)
     const [periodDates, setPeriodDates] = useState<[string?, string?]>([props.datePeriod?.[0], props.datePeriod?.[1]])
+
+    const nowDate = useMemo(() => dayjs.utc(), [])
+
+    const timePresets = useMemo<CalendarPresetType[]>(
+        () => [
+            { key: PresetOption.TODAY, endDate: nowDate.toDate() },
+            { key: PresetOption.DAY, endDate: nowDate.subtract(1, 'day').toDate() },
+            { key: PresetOption.WEEK, endDate: nowDate.subtract(1, 'week').toDate() },
+            { key: PresetOption.MONTH, endDate: nowDate.subtract(1, 'month').toDate() },
+            { key: PresetOption.QUARTER, endDate: nowDate.subtract(3, 'month').toDate() },
+            { key: PresetOption.HALF_YEAR, endDate: nowDate.subtract(6, 'month').toDate() },
+            { key: PresetOption.YEAR, endDate: nowDate.subtract(1, 'year').toDate() }
+        ],
+        [nowDate]
+    )
 
     const currentDatePreset = useMemo((): string => {
         const preset = findPresetByDate(nowDate, periodDates?.[0], periodDates?.[1], props?.locale)

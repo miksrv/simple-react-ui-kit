@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 1.7.9
+
+### Patch Changes
+
+- Fixed accessibility issues in Button (disabled link), Calendar (min/max date boundaries), DatePicker (UTC plugin registration), Dialog (body overflow restoration), and Select (unique ARIA IDs per instance)
+- Fixed Calendar month navigation when `datePeriod` prop changes externally
+- Fixed Badge CSS class ordering
+- Improved Popout and Select dropdown portal positioning — now updates on window scroll and resize
+- Improved rendering performance: memoized Calendar day-cell grid, optimized Dialog style state updates, stabilized Table sort handler with `useCallback`
+- Added `portal` prop for Popout component
+- Added comprehensive unit test suites across all components
+- Expanded and improved Storybook stories for all components, migrated to `StoryObj` pattern
+- Added `LIBRARY_SUMMARY.md` component API reference and `ROADMAP.md`
+- Updated README with missing props and corrected defaults
+- Upgraded ESLint, Storybook, Rollup, and related dev dependencies
+
 ## 1.7.8
 
 ### Patch Changes

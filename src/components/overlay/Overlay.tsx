@@ -24,13 +24,10 @@ export const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, on
             parentElement.appendChild(overlayElement)
         }
 
-        if (localOpen === open) {
-            return
+        if (localOpen !== open) {
+            overlayElement.className = cn(styles.overlay, open ? styles.displayed : styles.hidden)
+            setLocalOpen(open || false)
         }
-
-        overlayElement.className = cn(styles.overlay, open ? styles.displayed : styles.hidden)
-
-        setLocalOpen(open || false)
 
         return () => {
             if (overlayElement && parentElement.contains(overlayElement)) {

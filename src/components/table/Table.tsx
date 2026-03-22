@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { cn } from '../../utils'
 import { Icon } from '../icon'
@@ -41,18 +41,21 @@ export const Table = <T,>({
         })
     }, [data, sortConfig])
 
-    const handleSort = (column: ColumnProps<T>) => {
-        if (!column.isSortable) {
-            return
-        }
+    const handleSort = useCallback(
+        (column: ColumnProps<T>) => {
+            if (!column.isSortable) {
+                return
+            }
 
-        let direction: 'asc' | 'desc' = 'asc'
-        if (sortConfig && sortConfig.key === column.accessor && sortConfig.direction === 'asc') {
-            direction = 'desc'
-        }
+            let direction: 'asc' | 'desc' = 'asc'
+            if (sortConfig && sortConfig.key === column.accessor && sortConfig.direction === 'asc') {
+                direction = 'desc'
+            }
 
-        setSortConfig({ key: column.accessor, direction })
-    }
+            setSortConfig({ key: column.accessor, direction })
+        },
+        [sortConfig]
+    )
 
     return (
         <div

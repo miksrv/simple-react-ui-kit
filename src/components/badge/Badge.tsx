@@ -9,7 +9,7 @@ import styles from './styles.module.sass'
 
 export const Badge: React.FC<BadgeProps> = ({ className, icon, size = 'medium', label, onClickRemove, ...props }) => (
     <div
-        className={cn(className, styles.badge, size && styles[size])}
+        className={cn(styles.badge, size && styles[size], className)}
         {...props}
     >
         {icon && (React.isValidElement(icon) ? <span className={styles.icon}>{icon}</span> : <Icon name={icon} />)}

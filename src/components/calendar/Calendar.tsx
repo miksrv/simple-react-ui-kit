@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 
@@ -59,47 +59,50 @@ export const Calendar: React.FC<CalendarProps> = ({
         setCurrentMonth(currentMonth.year(newYear))
     }
 
-    const handleDateClick = (day: number) => {
-        const newDate = currentMonth.date(day)
+    const handleDateClick = useCallback(
+        (day: number) => {
+            const newDate = currentMonth.date(day)
 
-        if (minDate && newDate.isBefore(dayjs(minDate))) {
-            return
-        }
-
-        if (maxDate && newDate.isAfter(dayjs(maxDate)) && !newDate.isSame(dayjs(maxDate), 'day')) {
-            return
-        }
-
-        if (onPeriodSelect) {
-            if (!selectedStartDate) {
-                setSelectedStartDate(newDate)
-                setSelectedEndDate(null)
-            } else if (!selectedEndDate) {
-                if (newDate.isAfter(selectedStartDate)) {
-                    setSelectedEndDate(newDate)
-                    onPeriodSelect?.(selectedStartDate.format('YYYY-MM-DD'), newDate.format('YYYY-MM-DD'))
-                } else {
-                    setSelectedEndDate(selectedStartDate)
-                    setSelectedStartDate(newDate)
-                    onPeriodSelect?.(newDate.format('YYYY-MM-DD'), selectedStartDate.format('YYYY-MM-DD'))
-                }
-            } else {
-                setSelectedStartDate(newDate)
-                setSelectedEndDate(null)
+            if (minDate && newDate.isBefore(dayjs(minDate), 'day')) {
+                return
             }
-        } else if (onDateSelect) {
-            setSelectedStartDate(newDate)
-            setSelectedEndDate(null)
-            onDateSelect?.(newDate.format('YYYY-MM-DD'))
-        }
-    }
 
-    const renderDays = () => {
-        const days: React.ReactNode[] = []
+            if (maxDate && newDate.isAfter(dayjs(maxDate), 'day')) {
+                return
+            }
+
+            if (onPeriodSelect) {
+                if (!selectedStartDate) {
+                    setSelectedStartDate(newDate)
+                    setSelectedEndDate(null)
+                } else if (!selectedEndDate) {
+                    if (newDate.isAfter(selectedStartDate)) {
+                        setSelectedEndDate(newDate)
+                        onPeriodSelect?.(selectedStartDate.format('YYYY-MM-DD'), newDate.format('YYYY-MM-DD'))
+                    } else {
+                        setSelectedEndDate(selectedStartDate)
+                        setSelectedStartDate(newDate)
+                        onPeriodSelect?.(newDate.format('YYYY-MM-DD'), selectedStartDate.format('YYYY-MM-DD'))
+                    }
+                } else {
+                    setSelectedStartDate(newDate)
+                    setSelectedEndDate(null)
+                }
+            } else if (onDateSelect) {
+                setSelectedStartDate(newDate)
+                setSelectedEndDate(null)
+                onDateSelect?.(newDate.format('YYYY-MM-DD'))
+            }
+        },
+        [currentMonth, selectedStartDate, selectedEndDate, onPeriodSelect, onDateSelect, minDate, maxDate]
+    )
+
+    const days = useMemo(() => {
+        const result: React.ReactNode[] = []
 
         // Display days of the previous month
         for (let i = 0; i < startDay; i++) {
-            days.push(
+            result.push(
                 <div
                     key={`prev-${i}`}
                     className={cn(styles.day, styles.prevMonth)}
@@ -126,14 +129,11 @@ export const Calendar: React.FC<CalendarProps> = ({
             if (selectedEndDate && date.isSame(selectedEndDate, 'day')) {
                 dayClass = cn(dayClass, styles.selected, styles.selectedEndDate)
             }
-            if (
-                (minDate && date.isBefore(dayjs(minDate))) ||
-                (maxDate && date.isAfter(dayjs(maxDate)) && !date.isSame(dayjs(maxDate), 'day'))
-            ) {
+            if ((minDate && date.isBefore(dayjs(minDate), 'day')) || (maxDate && date.isAfter(dayjs(maxDate), 'day'))) {
                 dayClass = cn(dayClass, styles.notAllowed)
             }
 
-            days.push(
+            result.push(
                 <div
                     key={`day-${day}`}
                     className={dayClass}
@@ -144,8 +144,17 @@ export const Calendar: React.FC<CalendarProps> = ({
             )
         }
 
-        return days
-    }
+        return result
+    }, [
+        currentMonth,
+        selectedYear,
+        selectedMonth,
+        selectedStartDate,
+        selectedEndDate,
+        minDate,
+        maxDate,
+        handleDateClick
+    ])
 
     useEffect(() => {
         const years: number[] = []
@@ -162,7 +171,11 @@ export const Calendar: React.FC<CalendarProps> = ({
 
     useEffect(() => {
         if (datePeriod?.[0]) {
-            setSelectedStartDate(dayjs.utc(datePeriod[0]))
+            const startDate = dayjs.utc(datePeriod[0])
+            setSelectedStartDate(startDate)
+            setCurrentMonth(startDate)
+            setSelectedMonth(startDate.month())
+            setSelectedYear(startDate.year())
         } else {
             setSelectedStartDate(null)
         }
@@ -236,7 +249,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                 </div>
             )}
 
-            <div className={styles.body}>{renderDays()}</div>
+            <div className={styles.body}>{days}</div>
         </div>
     )
 }

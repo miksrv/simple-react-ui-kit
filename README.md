@@ -52,6 +52,7 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 - [Usage Components](#usage)
     - [Badge](#badge)
     - [Button](#button)
+    - [Calendar](#calendar)
     - [Checkbox](#checkbox)
     - [Container](#container)
     - [DatePicker](#datepicker)
@@ -161,7 +162,7 @@ const App = () => (
         {/* Badge with label and icon */}
         <Badge
             label='New'
-            icon='Check'
+            icon='CheckCircle'
         />
 
         {/* Removable Badge */}
@@ -210,6 +211,7 @@ Check out the full documentation and examples in Storybook: [Button Component St
 - **`icon`**: Displays an icon inside the button.
 - **`children`**: React children to be displayed inside the button.
 - **`label`**: Text content for the button.
+- **`disabled`**: Disables the button. When used together with `link`, the anchor renders with `aria-disabled="true"`, `tabIndex={-1}`, and no `href`, making it non-navigable and accessible.
 
 #### Example Usage:
 
@@ -230,7 +232,7 @@ const App = () => (
         {/* Secondary Button with Icon */}
         <Button
             mode='secondary'
-            icon='check'
+            icon='CheckCircle'
             onClick={() => alert('Secondary Button Clicked!')}
         >
             Secondary Button
@@ -469,7 +471,7 @@ Check out the full documentation and examples in Storybook: [DatePicker Componen
 - **`hidePresets`**: Array of preset keys to hide from the presets list.
 - **`periodDatesFormat`**: Format for displaying period ranges (default: `DD.MM.YYYY`).
 - **`singleDateFormat`**: Format for displaying a single date (default: `DD MMMM YYYY`).
-- **`selectDateCaption`**: Caption shown when no date is selected (default: `Select date`).
+- **`placeholder`**: Caption shown when no date is selected (default: `Select date`).
 - **`disabled`**: Disables the date picker if `true`.
 - **`buttonMode`**: Button mode for the trigger (`primary`, `secondary`, etc.).
 - All other `Calendar` props are supported.
@@ -488,7 +490,7 @@ const App = () => {
             periodDatesFormat='DD.MM.YYYY'
             singleDateFormat='DD MMMM YYYY'
             onPeriodSelect={(start, end) => setPeriod([start, end])}
-            selectDateCaption='Choose a date'
+            placeholder='Choose a date'
             buttonMode='primary'
         />
     )
@@ -520,16 +522,17 @@ Check out the full documentation and examples in Storybook: [Dialog Component St
 #### Props:
 
 - **`open`**: Controls whether the dialog is open or closed.
-- **`header`**: Header text for the dialog.
+- **`title`**: Title text displayed in the dialog header.
 - **`contentHeight`**: Height of the dialog content (e.g., `300px`).
-- **`maxWidth`**: Maximum width of the dialog (e.g., `500px`).
+- **`maxWidth`**: Maximum width of the dialog (e.g., `500px`). Defaults to `500px`.
+- **`showOverlay`**: Determines if the backdrop overlay is displayed. Defaults to `true`.
 - **`backLinkCaption`**: Caption for the back button.
 - **`showBackLink`**: Determines if the back button is displayed.
 - **`showCloseButton`**: Determines if the close button is displayed.
 - **`parentRef`**: Reference to the parent element for positioning the dialog.
 - **`children`**: Content to be displayed inside the dialog.
 - **`onBackClick`**: Callback function triggered when the back button is clicked.
-- **`onCloseDialog`**: Callback function triggered when the dialog is closed.
+- **`onCloseDialog`**: Callback function triggered when the dialog is closed (including Escape key).
 
 #### Example Usage:
 
@@ -549,7 +552,7 @@ const App = () => {
             <Button onClick={() => setIsDialogOpen(true)}>Open Dialog</Button>
             <Dialog
                 open={isDialogOpen}
-                header='Dialog Header'
+                title='Dialog Header'
                 contentHeight='200px'
                 maxWidth='400px'
                 backLinkCaption='Back'
@@ -606,8 +609,8 @@ const App = () => {
         <div>
             <h1>My Application</h1>
             <Icon
-                name='Home'
-                className='icon-home'
+                name='Search'
+                className='icon-search'
             />
             <Icon
                 name='Settings'
@@ -656,6 +659,7 @@ Check out the full documentation and examples in Storybook: [Input Component Sto
 #### Props:
 
 - **`label`**: Optional label text displayed above the input field.
+- **`mode`**: Visual style of the input field (`primary`, `ghost`). Defaults to `primary`.
 - **`size`**: Size of the input field, can be `small`, `medium` or `large`.
 - **`error`**: Error message displayed below the input field, used for validation feedback.
 - **`className`**: Additional class names for custom styling.
@@ -668,7 +672,7 @@ Additionally, the `Input` component accepts all standard input attributes from `
 
 ```tsx
 import React, { useState } from 'react'
-import Input from 'simple-react-ui-kit'
+import { Input } from 'simple-react-ui-kit'
 
 const App = () => {
     const [inputValue, setInputValue] = useState<string>('')
@@ -769,7 +773,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### Popout
 
-The `Popout` component is designed to create a floating container that opens and closes when triggered, often used for menus, tooltips, or additional actions. It provides a button as a trigger and offers flexible positioning for the popout content, either to the left or right of the button.
+The `Popout` component is designed to create a floating container that opens and closes when triggered, often used for menus, tooltips, or additional actions. It provides a button as a trigger and offers flexible positioning for the popout content, either to the left or right of the button. While the popout is open, its position is updated automatically on window scroll and resize, keeping the panel correctly anchored even in scrollable or dynamic layouts.
 
 <details>
   <summary>Popout Component Example</summary>
@@ -779,11 +783,13 @@ Explore the full documentation and examples in Storybook: [Popout Component Stor
 #### Props:
 
 - **`className`**: Additional class names for custom styling.
+- **`disabled`**: Disables the popout trigger, preventing the popout from opening.
 - **`position`**: Position of the popout relative to the trigger element. Possible values: `'left'` or `'right'`.
 - **`trigger`**: The content inside the button that triggers the popout (could be text, an icon, or a React node).
 - **`children`**: The content to display inside the popout when it's open.
 - **`closeOnChildrenClick`**: A boolean flag that, when set to `true`, closes the popout when any child inside the popout is clicked.
 - **`onOpenChange`**: Callback function triggered when isOpen state changes.
+- **`portal`**: When set to `true`, renders the popout content with fixed positioning (useful inside fixed or overflow-hidden containers).
 
 #### Example Usage:
 
@@ -836,7 +842,7 @@ For more detailed examples and interactive demonstrations, visit the [Storybook 
 
 ### Select
 
-The `Select` component is a flexible dropdown selector supporting single and multiple selection, search, custom option rendering, and async loading states. It is ideal for forms and filters where users need to pick from a list of options.
+The `Select` component is a flexible dropdown selector supporting single and multiple selection, search, custom option rendering, and async loading states. It is ideal for forms and filters where users need to pick from a list of options. The dropdown is rendered in a portal and its position updates on window scroll and resize while open, keeping it correctly anchored in scrollable or dynamic layouts.
 
 <details>
   <summary>Select Component Example</summary>
@@ -851,9 +857,14 @@ Check out the full documentation and examples in Storybook: [Select Component St
 - **`searchable`**: Allows searching/filtering options.
 - **`clearable`**: Shows a button to clear the selection.
 - **`loading`**: Displays a loading spinner in the dropdown.
+- **`closeOnSelect`**: Whether the dropdown closes after selecting an option (default: `true`).
+- **`size`**: Size of the select field (`small`, `medium`, `large`).
 - **`label`**: Optional label for the select field.
 - **`placeholder`**: Placeholder text when nothing is selected.
+- **`notFoundCaption`**: Text shown when no options match the search.
 - **`error`**: Error message for validation feedback.
+- **`required`**: Marks the field as required.
+- **`disabled`**: Disables the select. The component uses `aria-disabled` for accessibility.
 - **`onSelect`**: Callback when the selection changes.
 - **`onSearch`**: Callback when the search input changes.
 - **`onOpen`**: Callback when the dropdown is opened.
@@ -1214,10 +1225,10 @@ Here is a list of all the CSS variables you can override to customize the look a
     - `--popout-shadow`: Shadow effect for popouts and modals.
 
 - **Tables:**
-    - `--table-font-size`: Font size for table content.
     - `--table-header-background`: Background color for table headers.
     - `--table-header-background-hover`: Hover state for table headers.
     - `--table-border-color`: Border color for tables.
+    - `--table-row-box-shadow`: Box shadow for table row separators.
 
 - **Skeleton:**
     - `--skeleton-background-animation`: Background gradient for content loading animation.
@@ -1383,9 +1394,9 @@ This project is distributed under the MIT License. See [LICENSE](LICENSE) for mo
 
 Here are a few resources that helped inspire or were invaluable during the development of this project:
 
-1. [GutHub Readme Template](https://github.com/miksrv/GitHub-Project-README-Template)
+1. [GitHub Readme Template](https://github.com/miksrv/GitHub-Project-README-Template)
 2. [React Documentation](https://react.dev/)
-3. [Styled Components](https://styled-components.com/)
+3. [Sass Documentation](https://sass-lang.com/)
 4. [Jest Testing Framework](https://jestjs.io/)
 
 <p align="right">

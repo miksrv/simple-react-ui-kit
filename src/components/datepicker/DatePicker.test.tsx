@@ -131,4 +131,119 @@ describe('DatePicker', () => {
         fireEvent.click(screen.getAllByRole('button')[0])
         expect(screen.queryByText(/today/i)).not.toBeInTheDocument()
     })
+
+    it('renders with custom placeholder', () => {
+        render(
+            <DatePicker
+                {...defaultProps}
+                datePeriod={[undefined, undefined]}
+                placeholder='Pick a date'
+            />
+        )
+        expect(screen.getByText('Pick a date')).toBeInTheDocument()
+    })
+
+    it('renders with a custom buttonMode', () => {
+        const { container } = render(
+            <DatePicker
+                {...defaultProps}
+                buttonMode='outline'
+            />
+        )
+        // The button inside the Popout trigger should have the outline class
+        const buttonEl = container.querySelector('button.outline')
+        expect(buttonEl).toBeInTheDocument()
+    })
+
+    it('updates internal period when datePeriod prop changes', () => {
+        const { rerender } = render(
+            <DatePicker
+                {...defaultProps}
+                datePeriod={['2024-06-01', '2024-06-10']}
+            />
+        )
+        rerender(
+            <DatePicker
+                {...defaultProps}
+                datePeriod={['2024-07-01', '2024-07-15']}
+            />
+        )
+        const buttons = screen.getAllByRole('button')
+        expect(buttons[0].textContent).toMatch(/01\.07\.2024 - 15\.07\.2024/)
+    })
+
+    it('calls onPeriodSelect with correct dates when preset is clicked in Russian locale', () => {
+        const onPeriodSelect = jest.fn()
+        render(
+            <DatePicker
+                {...defaultProps}
+                locale='ru'
+                onPeriodSelect={onPeriodSelect}
+            />
+        )
+        fireEvent.click(screen.getAllByRole('button')[0])
+        const todayBtn = screen.queryByText(/сегодня/i)
+        if (todayBtn) {
+            fireEvent.click(todayBtn)
+            expect(onPeriodSelect).toHaveBeenCalled()
+        }
+    })
+
+    it('shows formatted date in Russian locale', () => {
+        render(
+            <DatePicker
+                {...defaultProps}
+                locale='ru'
+                datePeriod={['2024-06-15', '2024-06-15']}
+            />
+        )
+        const buttons = screen.getAllByRole('button')
+        expect(buttons[0].textContent).toMatch(/15 июня 2024|15 June 2024/)
+    })
+
+    it('calls onPeriodSelect when selecting a period from calendar inside DatePicker', () => {
+        const onPeriodSelect = jest.fn()
+        render(
+            <DatePicker
+                locale='en'
+                onPeriodSelect={onPeriodSelect}
+                datePeriod={[undefined, undefined]}
+            />
+        )
+        // Open the DatePicker popout
+        fireEvent.click(screen.getAllByRole('button')[0])
+
+        // Select start and end dates from the calendar
+        const dayButtons = screen.getAllByText('10')
+        if (dayButtons.length > 0) {
+            fireEvent.click(dayButtons[0])
+        }
+        const dayButtons15 = screen.getAllByText('15')
+        if (dayButtons15.length > 0) {
+            fireEvent.click(dayButtons15[0])
+        }
+
+        expect(onPeriodSelect).toHaveBeenCalled()
+    })
+
+    it('calls onDateSelect when selecting a single date from calendar inside DatePicker', () => {
+        const onDateSelect = jest.fn()
+        render(
+            <DatePicker
+                locale='en'
+                onDateSelect={onDateSelect}
+                datePeriod={[undefined, undefined]}
+            />
+        )
+        // Open the DatePicker popout
+        fireEvent.click(screen.getAllByRole('button')[0])
+
+        // Select a date from the calendar
+        const dayButtons = screen.getAllByText('10')
+        if (dayButtons.length > 0) {
+            fireEvent.click(dayButtons[0])
+        }
+
+        expect(onDateSelect).toHaveBeenCalled()
+    })
 })

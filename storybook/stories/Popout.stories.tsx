@@ -1,37 +1,226 @@
 import React, { useRef } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { Button, Popout, PopoutHandleProps, PopoutProps } from '../../src'
+import { Button, Popout, type PopoutHandleProps, type PopoutProps } from '../../src'
 
-const meta: Meta<PopoutProps> = {
-    title: 'Components/Popout',
-    component: Popout
-}
-
-export default meta
-
-const Template: StoryFn<PopoutProps> = (args) => {
+// Helper component for ImperativeClose story with useRef hook
+const ImperativeCloseDemo: React.FC = () => {
     const popoutRef = useRef<PopoutHandleProps>(null)
-
     return (
-        <div style={{ position: 'relative', height: 130 }}>
+        <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
             <Popout
                 ref={popoutRef}
-                {...args}
+                trigger='Open Popout'
+                position='right'
             >
-                <div style={{ padding: '10px' }}>
-                    <p>This is the popout content!</p>
-                    <Button onClick={() => alert('Action clicked!')}>{'Perform Action'}</Button>
+                <div style={{ padding: 12, minWidth: 200 }}>
+                    <p style={{ margin: '0 0 12px' }}>Click the button below to close programmatically.</p>
+                    <Button onClick={() => popoutRef.current?.close()}>Close via ref</Button>
                 </div>
             </Popout>
         </div>
     )
 }
 
-export const Default = Template.bind({})
-Default.args = {
-    trigger: 'Open Popout',
-    position: 'left',
-    className: 'custom-popout'
+const meta: Meta<PopoutProps> = {
+    title: 'Components/Popout',
+    component: Popout,
+    tags: ['autodocs'],
+    parameters: {
+        docs: {
+            description: {
+                component:
+                    'A dropdown popout that renders its content in a portal anchored to a trigger element. Supports left/right positioning, auto-close on child click, and imperative close via a forwarded `ref`. The trigger can be any React node or a plain string.'
+            }
+        }
+    },
+    argTypes: {
+        trigger: {
+            control: 'text',
+            description: 'Content rendered as the clickable trigger — can be a string, button, or any React node'
+        },
+        position: {
+            control: 'inline-radio',
+            options: ['left', 'right'],
+            description: 'Anchors the popout to the left or right edge of the trigger element',
+            table: {
+                defaultValue: { summary: 'right' },
+                type: { summary: '"left" | "right"' }
+            }
+        },
+        disabled: {
+            control: 'boolean',
+            description: 'Prevents the popout from opening when the trigger is clicked',
+            table: { defaultValue: { summary: 'false' } }
+        },
+        closeOnChildrenClick: {
+            control: 'boolean',
+            description: 'Automatically closes the popout when any child element inside it is clicked',
+            table: { defaultValue: { summary: 'false' } }
+        },
+        children: {
+            control: false,
+            description: 'Content rendered inside the popout panel'
+        },
+        className: {
+            control: 'text',
+            description: 'Additional CSS class names applied to the wrapper element'
+        },
+        onOpenChange: {
+            control: false,
+            description: 'Callback fired whenever the open state changes — receives `isOpen: boolean`'
+        }
+    }
+}
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+    render: (args) => (
+        <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
+            <Popout {...args}>
+                <div style={{ padding: 12, minWidth: 200 }}>
+                    <p style={{ margin: '0 0 8px', fontWeight: 600 }}>Popout Menu</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <Button mode='link'>Profile</Button>
+                        <Button mode='link'>Settings</Button>
+                        <Button
+                            mode='link'
+                            variant='negative'
+                        >
+                            Sign out
+                        </Button>
+                    </div>
+                </div>
+            </Popout>
+        </div>
+    ),
+    args: {
+        trigger: 'Open Menu',
+        position: 'right'
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'Default right-anchored popout with a text trigger. Click the trigger to open/close the panel. Click outside to dismiss.'
+            }
+        }
+    }
+}
+
+export const LeftPosition: Story = {
+    name: 'Left Position',
+    render: () => (
+        <div style={{ minHeight: 160 }}>
+            <Popout
+                trigger='Open (left)'
+                position='left'
+            >
+                <div style={{ padding: 12, minWidth: 180 }}>
+                    <p style={{ margin: '0 0 8px', fontWeight: 600 }}>Left-anchored</p>
+                    <p style={{ margin: 0, fontSize: 13, color: '#555' }}>
+                        The panel aligns to the left edge of the trigger.
+                    </p>
+                </div>
+            </Popout>
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'With `position="left"` the popout panel aligns its left edge with the trigger element.'
+            }
+        }
+    }
+}
+
+export const WithCloseOnChildClick: Story = {
+    name: 'Close on Child Click',
+    render: () => (
+        <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
+            <Popout
+                trigger={<Button mode='outline'>Actions</Button>}
+                position='right'
+                closeOnChildrenClick
+            >
+                <div style={{ padding: 8, minWidth: 160 }}>
+                    <Button
+                        mode='link'
+                        onClick={() => alert('Edit clicked')}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        mode='link'
+                        onClick={() => alert('Duplicate clicked')}
+                    >
+                        Duplicate
+                    </Button>
+                    <Button
+                        mode='link'
+                        variant='negative'
+                        onClick={() => alert('Delete clicked')}
+                    >
+                        Delete
+                    </Button>
+                </div>
+            </Popout>
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'When `closeOnChildrenClick` is `true` the popout automatically closes whenever the user clicks any item inside it — ideal for action menus.'
+            }
+        }
+    }
+}
+
+export const ImperativeClose: Story = {
+    name: 'Imperative Close (via ref)',
+    render: () => <ImperativeCloseDemo />,
+    parameters: {
+        docs: {
+            description: {
+                story: 'Use a forwarded `ref` (typed as `PopoutHandleProps`) to call `ref.current.close()` and dismiss the popout from within child content — useful when you need to close after an async action.'
+            }
+        }
+    }
+}
+
+export const WithButtonTrigger: Story = {
+    name: 'Button as Trigger',
+    render: () => (
+        <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
+            <Popout
+                trigger={
+                    <Button
+                        icon='VerticalDots'
+                        aria-label='More options'
+                    />
+                }
+                position='right'
+            >
+                <div style={{ padding: 8, minWidth: 160 }}>
+                    <Button mode='link'>View details</Button>
+                    <Button mode='link'>Edit</Button>
+                    <Button
+                        mode='link'
+                        variant='negative'
+                    >
+                        Remove
+                    </Button>
+                </div>
+            </Popout>
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'The `trigger` prop accepts any React node — here a three-dot icon button acts as the trigger for a context menu.'
+            }
+        }
+    }
 }

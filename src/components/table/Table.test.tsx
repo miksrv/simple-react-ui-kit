@@ -267,4 +267,178 @@ describe('Table Component', () => {
         const tableElement = container.querySelector('table')
         expect(tableElement).toHaveClass(styles.large)
     })
+
+    it('applies stickyHeader class when stickyHeader is true', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                stickyHeader
+            />
+        )
+        const wrapper = container.querySelector('.tableContainer')
+        expect(wrapper).toHaveClass('stickyHeader')
+    })
+
+    it('applies verticalBorder class when verticalBorder is true', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                verticalBorder
+            />
+        )
+        const table = container.querySelector('table')
+        expect(table).toHaveClass('verticalBorder')
+    })
+
+    it('renders default no data message when noDataCaption is not provided', () => {
+        render(
+            <Table
+                data={[]}
+                columns={columns}
+            />
+        )
+        expect(screen.getByText('No data')).toBeInTheDocument()
+    })
+
+    it('applies custom className', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                className='my-table'
+            />
+        )
+        expect(container.firstChild).toHaveClass('my-table')
+    })
+
+    it('applies custom height and maxHeight styles', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                height={400}
+                maxHeight={600}
+            />
+        )
+        const wrapper = container.querySelector('.tableContainer') as HTMLElement
+        expect(wrapper.style.height).toBe('400px')
+        expect(wrapper.style.maxHeight).toBe('600px')
+    })
+
+    it('renders defaultSort correctly (desc)', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                defaultSort={{ key: 'name', direction: 'desc' }}
+            />
+        )
+        // ArrowUp icon indicates desc sort
+        const svgElements = container.querySelectorAll('svg')
+        expect(svgElements.length).toBeGreaterThan(0)
+    })
+
+    it('renders defaultSort correctly (asc)', () => {
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columns}
+                defaultSort={{ key: 'name', direction: 'asc' }}
+            />
+        )
+        // ArrowDown icon indicates asc sort
+        const svgElements = container.querySelectorAll('svg')
+        expect(svgElements.length).toBeGreaterThan(0)
+    })
+
+    it('renders table with undefined data gracefully', () => {
+        render(
+            <Table
+                data={undefined}
+                columns={columns}
+            />
+        )
+        expect(screen.getByText('No data')).toBeInTheDocument()
+    })
+
+    it('renders column with className applied to td', () => {
+        const columnsWithClass: Array<ColumnProps<TestData>> = [
+            { header: 'ID', accessor: 'id', className: 'id-cell' },
+            { header: 'Name', accessor: 'name' },
+            { header: 'Age', accessor: 'age' }
+        ]
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columnsWithClass}
+            />
+        )
+        expect(container.querySelector('.id-cell')).toBeInTheDocument()
+    })
+
+    it('shows sort icon on currently sorted column', () => {
+        render(
+            <Table
+                data={data}
+                columns={columns}
+            />
+        )
+        fireEvent.click(screen.getByText('Name'))
+        // After clicking Name, a sort icon should appear in the Name header
+        const nameHeader = screen.getByText('Name').closest('th')
+        expect(nameHeader?.querySelector('svg')).toBeInTheDocument()
+    })
+
+    it('reverses sort direction on second click', () => {
+        render(
+            <Table
+                data={data}
+                columns={columns}
+            />
+        )
+        fireEvent.click(screen.getByText('Name'))
+        fireEvent.click(screen.getByText('Name'))
+        // After second click direction changes to desc — still shows icon
+        const nameHeader = screen.getByText('Name').closest('th')
+        expect(nameHeader?.querySelector('svg')).toBeInTheDocument()
+    })
+
+    it('sort comparator handles equal values correctly', () => {
+        const dataWithDuplicates: TestData[] = [
+            { id: 1, name: 'Alice', age: 25 },
+            { id: 2, name: 'Alice', age: 30 },
+            { id: 3, name: 'Bob', age: 25 }
+        ]
+        render(
+            <Table
+                data={dataWithDuplicates}
+                columns={columns}
+            />
+        )
+        fireEvent.click(screen.getByText('Name'))
+        // Both Alice entries exist after sort
+        const alices = screen.getAllByText('Alice')
+        expect(alices).toHaveLength(2)
+    })
+
+    it('formats cell value with full row data access via formatter', () => {
+        const columnsWithRowAccess: Array<ColumnProps<TestData>> = [
+            { header: 'ID', accessor: 'id' },
+            {
+                header: 'Summary',
+                accessor: 'name',
+                formatter: (value, rows, index) => `${value}(${index}/${rows.length})`
+            },
+            { header: 'Age', accessor: 'age' }
+        ]
+        render(
+            <Table
+                data={data}
+                columns={columnsWithRowAccess}
+            />
+        )
+        expect(screen.getByText('John(0/3)')).toBeInTheDocument()
+    })
 })

@@ -7,6 +7,7 @@ import { Select, type SelectOptionType, SelectProps } from '../../src'
 const meta: Meta<SelectProps<string>> = {
     title: 'Controls/Select',
     component: Select,
+    tags: ['autodocs'],
     parameters: {
         layout: 'padded',
         docs: {

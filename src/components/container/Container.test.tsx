@@ -60,4 +60,44 @@ describe('Container Component', () => {
         const actionButton = screen.getByText(/Action Button/i)
         expect(actionButton).toBeInTheDocument()
     })
+
+    it('does not render header section when neither title, header, nor action is provided', () => {
+        const { container } = render(<Container>Content only</Container>)
+        expect(container.querySelector('.header')).not.toBeInTheDocument()
+    })
+
+    it('renders only title in header without action or custom header', () => {
+        render(<Container title='Only Title'>Content</Container>)
+        expect(screen.getByText('Only Title')).toBeInTheDocument()
+        const heading = screen.getByRole('heading', { level: 2 })
+        expect(heading).toHaveTextContent('Only Title')
+    })
+
+    it('renders only action in header without title', () => {
+        const { container } = render(<Container action={<button>Do It</button>}>Content</Container>)
+        expect(screen.getByText('Do It')).toBeInTheDocument()
+        expect(container.querySelector('.header')).toBeInTheDocument()
+    })
+
+    it('does not render footer when footer prop is not provided', () => {
+        const { container } = render(<Container title='No Footer'>Content</Container>)
+        expect(container.querySelector('.footer')).not.toBeInTheDocument()
+    })
+
+    it('renders as section element', () => {
+        const { container } = render(<Container title='Section'>Content</Container>)
+        expect(container.querySelector('section')).toBeInTheDocument()
+    })
+
+    it('passes additional HTML attributes to section', () => {
+        const { container } = render(
+            <Container
+                title='Test'
+                data-testid='my-container'
+            >
+                Content
+            </Container>
+        )
+        expect(container.querySelector('[data-testid="my-container"]')).toBeInTheDocument()
+    })
 })
