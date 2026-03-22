@@ -299,4 +299,71 @@ describe('Calendar', () => {
         fireEvent.click(screen.getAllByText('10')[0])
         expect(onDateSelect).toHaveBeenCalled()
     })
+
+    // PERF-03: useMemo re-computes days when currentMonth changes (month navigation)
+    it('re-renders days when navigating to next month', () => {
+        setup()
+        const now = dayjs().utc()
+        const [, nextBtn] = screen.getAllByRole('button')
+        const nextMonth = now.add(1, 'month')
+
+        fireEvent.click(nextBtn)
+
+        // After navigation, the correct number of days for the next month should be rendered
+        const daysInNextMonth = nextMonth.daysInMonth()
+        // The last day of the next month should be present
+        expect(screen.getAllByText(daysInNextMonth.toString())[0]).toBeInTheDocument()
+    })
+
+    it('re-renders days when navigating to previous month', () => {
+        setup()
+        const now = dayjs().utc()
+        const [prevBtn] = screen.getAllByRole('button')
+        const prevMonth = now.subtract(1, 'month')
+
+        fireEvent.click(prevBtn)
+
+        // After navigation, the correct number of days for the previous month should be rendered
+        const daysInPrevMonth = prevMonth.daysInMonth()
+        expect(screen.getAllByText(daysInPrevMonth.toString())[0]).toBeInTheDocument()
+    })
+
+    it('re-renders days correctly after selectedStartDate changes (useMemo dependency)', () => {
+        const onDateSelect = jest.fn()
+        setup({ onDateSelect })
+
+        // Click day 5 to set selectedStartDate
+        fireEvent.click(screen.getAllByText('5')[0])
+        expect(onDateSelect).toHaveBeenCalledTimes(1)
+
+        // Click day 10 — days should re-render with new selection highlight
+        fireEvent.click(screen.getAllByText('10')[0])
+        expect(onDateSelect).toHaveBeenCalledTimes(2)
+
+        // Both clicks succeeded, confirming useMemo re-ran with updated handleDateClick
+        expect(onDateSelect.mock.calls[1][0]).toContain('-10')
+    })
+
+    it('re-renders days when minDate or maxDate changes', () => {
+        const onDateSelect = jest.fn()
+        const { rerender } = render(<Calendar onDateSelect={onDateSelect} />)
+
+        // Try to click day 2 — should succeed without minDate
+        fireEvent.click(screen.getAllByText('2')[0])
+        expect(onDateSelect).toHaveBeenCalledTimes(1)
+
+        // Now set minDate to day 5 — day 2 should become disabled
+        const minDate = dayjs().date(5).format('YYYY-MM-DD')
+        rerender(
+            <Calendar
+                onDateSelect={onDateSelect}
+                minDate={minDate}
+            />
+        )
+
+        // Clicking day 2 after minDate change should be blocked
+        fireEvent.click(screen.getAllByText('2')[0])
+        // onDateSelect should still only have 1 call (day 2 is now disabled)
+        expect(onDateSelect).toHaveBeenCalledTimes(1)
+    })
 })

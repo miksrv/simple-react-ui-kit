@@ -113,9 +113,9 @@ import { Badge } from 'simple-react-ui-kit'
 
 | Prop            | Type                               | Default | Description                         |
 | --------------- | ---------------------------------- | ------- | ----------------------------------- |
-| `label`         | `string \| number`                 | —       | Text content                        |
-| `icon`          | `IconTypes \| React.ReactElement`  | —       | Icon displayed alongside label      |
-| `size`          | `'small' \| 'medium' \| 'large'`   | —       | Badge size                          |
+| `label`         | `string \| number`                 | —          | Text content                        |
+| `icon`          | `IconTypes \| React.ReactElement`  | —          | Icon displayed alongside label      |
+| `size`          | `'small' \| 'medium' \| 'large'`   | `'medium'` | Badge size                          |
 | `onClickRemove` | `(key?: string \| number) => void` | —       | Shows remove button, fires on click |
 | `className`     | `string`                           | —       | Additional CSS classes              |
 
@@ -400,7 +400,7 @@ import { Input } from 'simple-react-ui-kit'
 | `label`                             | `string`                         | —           | Input label                                                  |
 | `error`                             | `string`                         | —           | Error message below input                                    |
 | `mode`                              | `'primary' \| 'ghost'`           | `'primary'` | Visual style                                                 |
-| `size`                              | `'small' \| 'medium' \| 'large'` | —           | Input size                                                   |
+| `size`                              | `'small' \| 'medium' \| 'large'` | `'medium'`  | Input size                                                   |
 | `className`                         | `string`                         | —           | Additional CSS classes                                       |
 | + all standard `<input>` attributes | —                                | —           | `type`, `value`, `onChange`, `disabled`, `placeholder`, etc. |
 
@@ -421,7 +421,7 @@ import { Message } from 'simple-react-ui-kit'
 
 | Prop        | Type                                          | Default  | Description            |
 | ----------- | --------------------------------------------- | -------- | ---------------------- |
-| `type`      | `'error' \| 'warning' \| 'success' \| 'info'` | `'info'` | Variant style          |
+| `type`      | `'error' \| 'warning' \| 'success' \| 'info'` | —        | Variant style          |
 | `title`     | `string`                                      | —        | Bold message heading   |
 | `children`  | `React.ReactNode`                             | —        | Message body           |
 | `className` | `string`                                      | —        | Additional CSS classes |
@@ -459,7 +459,7 @@ const containerRef = useRef<HTMLDivElement>(null)
 
 ### Popout
 
-Dropdown panel anchored to a trigger element, with portal rendering and click-outside close.
+Dropdown panel anchored to a trigger element, with portal rendering and click-outside close. While open, the dropdown position is updated reactively on window scroll and resize, so the panel stays correctly anchored even when the page scrolls or the viewport changes.
 
 ```tsx
 import { Popout } from 'simple-react-ui-kit'
@@ -533,7 +533,7 @@ import { Progress } from 'simple-react-ui-kit'
 
 ### Select
 
-Full-featured dropdown select with search, multi-select, and custom option rendering. Each instance generates a unique ID via `useId()` so that multiple selects on the same page do not conflict. ARIA attributes (`aria-controls`, `aria-expanded`, `aria-disabled`, `aria-multiselectable`) are set correctly for screen reader support.
+Full-featured dropdown select with search, multi-select, and custom option rendering. Each instance generates a unique ID via `useId()` so that multiple selects on the same page do not conflict. ARIA attributes (`aria-controls`, `aria-expanded`, `aria-disabled`, `aria-multiselectable`) are set correctly for screen reader support. The dropdown is rendered in a portal and its position updates on window scroll and resize while open, keeping it correctly anchored in scrollable or dynamic layouts.
 
 ```tsx
 import { Select } from 'simple-react-ui-kit'
@@ -602,7 +602,7 @@ const options: SelectOptionType<number>[] = [
 | `required`        | `boolean`                                                | `false`           | Mark field as required           |
 | `closeOnSelect`   | `boolean`                                                | `true`            | Close dropdown after selection   |
 | `error`           | `string`                                                 | —                 | Error message below select       |
-| `size`            | `'small' \| 'medium' \| 'large'`                         | —                 | Select size                      |
+| `size`            | `'small' \| 'medium' \| 'large'`                         | `'medium'`        | Select size                      |
 | `onSelect`        | `(selected: SelectOptionType<T>[] \| undefined) => void` | —                 | Called on selection change       |
 | `onSearch`        | `(text?: string) => void`                                | —                 | Called on search input change    |
 | `onOpen`          | `() => void`                                             | —                 | Called when dropdown opens       |

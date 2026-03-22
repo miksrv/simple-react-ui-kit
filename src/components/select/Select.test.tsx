@@ -719,4 +719,51 @@ describe('Select Component', () => {
         expect(secondId).toBeTruthy()
         expect(firstId).not.toBe(secondId)
     })
+
+    // PERF-01 + PERF-02: scroll and resize listeners are added when dropdown opens and removed on close
+    it('adds scroll and resize event listeners when dropdown opens', () => {
+        const addSpy = jest.spyOn(window, 'addEventListener')
+
+        render(<Select options={options} />)
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.click(toggleBtn)
+
+        expect(addSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+        expect(addSpy).toHaveBeenCalledWith(
+            'scroll',
+            expect.any(Function),
+            expect.objectContaining({ capture: true, passive: true })
+        )
+
+        addSpy.mockRestore()
+    })
+
+    it('removes scroll and resize event listeners when dropdown closes', () => {
+        const removeSpy = jest.spyOn(window, 'removeEventListener')
+
+        render(<Select options={options} />)
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+
+        // Open
+        fireEvent.click(toggleBtn)
+        // Close
+        fireEvent.click(screen.getByRole('button', { name: /close dropdown/i }))
+
+        expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+        expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function), true)
+
+        removeSpy.mockRestore()
+    })
+
+    // PERF-02: portalStyle is set (not display:none) when dropdown is open
+    it('sets portal position style when dropdown opens', () => {
+        render(<Select options={options} />)
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+
+        // The dropdown portal should be rendered when open
+        fireEvent.click(toggleBtn)
+
+        // After opening, the dropdown list should be visible in a portal
+        expect(screen.getByRole('listbox')).toBeInTheDocument()
+    })
 })

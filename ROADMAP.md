@@ -4,48 +4,6 @@ This document captures the results of a systematic code audit of **Simple React 
 
 ---
 
-## Performance
-
-### PERF-01 — Popout/Select dropdown position is not updated on window resize or page scroll
-
-**File:** `src/components/popout/Popout.tsx`, `src/components/select/Select.tsx`
-**Priority:** High
-**Description:** Both components compute the dropdown position once when `isOpen` becomes `true` using `getBoundingClientRect()`, with no `resize` or `scroll` listeners. If the user scrolls or resizes the window while the dropdown is open, the portal element drifts away from its trigger. Fix: add `window.addEventListener('resize', updatePosition)` and `window.addEventListener('scroll', updatePosition, { capture: true, passive: true })` while the dropdown is open, and remove them on close.
-
----
-
-### PERF-02 — Popout `getPortalStyle` performs a live DOM measurement on every render
-
-**File:** `src/components/popout/Popout.tsx`
-**Priority:** Medium
-**Description:** `getPortalStyle` is called as `style={getPortalStyle()}` directly in JSX, triggering a forced layout (`getBoundingClientRect`) on every render while the popout is open. Fix: store the computed style in a `useState` value; update it only when the dropdown opens or when a resize/scroll event fires.
-
----
-
-### PERF-03 — Calendar `renderDays` rebuilds the full day-cell array on every render
-
-**File:** `src/components/calendar/Calendar.tsx`
-**Priority:** Medium
-**Description:** `renderDays` is a plain (un-memoised) function called directly in JSX. It rebuilds the entire day-cell array on every render, including intermediate re-renders during month navigation. Fix: wrap the computation in `useMemo` with the relevant dependencies so it only re-runs when the displayed month, selected dates, or constraints actually change.
-
----
-
-### PERF-04 — Table `handleSort` is recreated on every render
-
-**File:** `src/components/table/Table.tsx`
-**Priority:** Low
-**Description:** `handleSort` is defined as a plain arrow function inside the component body and creates a new reference on every render. Wrap it in `useCallback([sortConfig])` for consistency with the already-memoised `sortedData`.
-
----
-
-### PERF-05 — Dialog `handleResize` triggers a state update on every `open` transition regardless of size change
-
-**File:** `src/components/dialog/Dialog.tsx`
-**Priority:** Low
-**Description:** `handleResize` always reads `dialogRef.current?.offsetHeight` and calls `setDialogStyle`, causing a state update (and re-render) on every `open` change even when the dimensions are unchanged. Fix: compare the computed values to the previous style and skip `setDialogStyle` if nothing changed, or migrate to a `ResizeObserver`.
-
----
-
 ## Accessibility
 
 ### A11Y-01 — Calendar previous/next month buttons have no accessible label

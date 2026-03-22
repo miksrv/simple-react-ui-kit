@@ -25,7 +25,7 @@ export const Dialog: React.FC<DialogProps> = ({
     ...props
 }) => {
     const dialogRef = useRef<HTMLDialogElement>(null)
-    const [dialogStyle, setDialogStyle] = useState({})
+    const [dialogStyle, setDialogStyle] = useState<React.CSSProperties>({})
     const [internalId] = useState(() => crypto.randomUUID())
 
     const handleResize = () => {
@@ -33,10 +33,16 @@ export const Dialog: React.FC<DialogProps> = ({
         const parentHeight = parentElement.clientHeight
         const dialogHeight = dialogRef.current?.offsetHeight || 0
         const top = (parentHeight - dialogHeight) / 2
+        const newTop = `${top}px`
 
-        setDialogStyle({
-            maxWidth,
-            top: `${top}px`
+        setDialogStyle((prev) => {
+            if (prev.top === newTop && prev.maxWidth === maxWidth) {
+                return prev
+            }
+            return {
+                maxWidth,
+                top: newTop
+            }
         })
     }
 

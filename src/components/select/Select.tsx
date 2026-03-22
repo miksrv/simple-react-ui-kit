@@ -40,6 +40,7 @@ export const Select = <T,>({
     const [isOpen, setIsOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
     const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null)
+    const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({ display: 'none' })
 
     // Portal for dropdown
     useEffect(() => {
@@ -231,20 +232,37 @@ export const Select = <T,>({
     const handleFocus = () => setIsFocused(true)
     const handleBlur = () => setTimeout(() => setIsFocused(false), 150)
 
-    const getPortalStyle = useCallback(() => {
+    const updatePosition = useCallback(() => {
         if (!rootRef.current) {
-            return { display: 'none' }
+            setPortalStyle({ display: 'none' })
+            return
         }
         const rect = rootRef.current.getBoundingClientRect()
-        return {
+        setPortalStyle({
             position: 'absolute' as const,
             top: rect.bottom + window.scrollY,
             left: rect.left + window.scrollX,
             width: rect.width,
             zIndex: 9999,
             pointerEvents: 'auto' as const
-        }
+        })
     }, [])
+
+    useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+
+        updatePosition()
+
+        window.addEventListener('resize', updatePosition)
+        window.addEventListener('scroll', updatePosition, { capture: true, passive: true })
+
+        return () => {
+            window.removeEventListener('resize', updatePosition)
+            window.removeEventListener('scroll', updatePosition, true)
+        }
+    }, [isOpen, updatePosition])
 
     const displayValue = multiple ? search : selectedOption?.value || search || ''
     const hasSelection = multiple ? selectedOptions && selectedOptions.length > 0 : !!selectedOption
@@ -381,7 +399,7 @@ export const Select = <T,>({
             {isOpen &&
                 portalNode &&
                 createPortal(
-                    <div style={getPortalStyle()}>
+                    <div style={portalStyle}>
                         <OptionsList<T>
                             id={optionsListId}
                             options={filteredOptions}

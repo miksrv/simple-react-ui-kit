@@ -408,4 +408,66 @@ describe('Popout Component', () => {
         })
         expect(screen.queryByText(/Portal Content/i)).not.toBeInTheDocument()
     })
+
+    // PERF-01: scroll and resize listeners are added on open and removed on close
+    it('adds scroll and resize event listeners when dropdown opens and removes them on close', () => {
+        const addSpy = jest.spyOn(window, 'addEventListener')
+        const removeSpy = jest.spyOn(window, 'removeEventListener')
+
+        render(<Popout trigger={'Click me'}>Content</Popout>)
+        const trigger = screen.getByRole('button', { name: /Click me/i })
+
+        act(() => {
+            fireEvent.click(trigger)
+        })
+
+        expect(addSpy).toHaveBeenCalledWith(
+            'scroll',
+            expect.any(Function),
+            expect.objectContaining({ capture: true, passive: true })
+        )
+        expect(addSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+
+        act(() => {
+            fireEvent.click(trigger)
+        })
+
+        expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function), true)
+        expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+
+        addSpy.mockRestore()
+        removeSpy.mockRestore()
+    })
+
+    it('removes scroll and resize event listeners on unmount when open', () => {
+        const removeSpy = jest.spyOn(window, 'removeEventListener')
+
+        const { unmount } = render(<Popout trigger={'Click me'}>Content</Popout>)
+        const trigger = screen.getByRole('button', { name: /Click me/i })
+
+        act(() => {
+            fireEvent.click(trigger)
+        })
+
+        unmount()
+
+        expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function), true)
+        expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+
+        removeSpy.mockRestore()
+    })
+
+    it('does not add scroll and resize listeners when popout is closed', () => {
+        const addSpy = jest.spyOn(window, 'addEventListener')
+
+        render(<Popout trigger={'Click me'}>Content</Popout>)
+
+        // Popout is closed — listeners should not be attached
+        const scrollCalls = addSpy.mock.calls.filter(([event]) => event === 'scroll')
+        const resizeCalls = addSpy.mock.calls.filter(([event]) => event === 'resize')
+        expect(scrollCalls).toHaveLength(0)
+        expect(resizeCalls).toHaveLength(0)
+
+        addSpy.mockRestore()
+    })
 })

@@ -66,7 +66,6 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             }
 
             const rect = triggerRef.current.getBoundingClientRect()
-            const _contentWidth = contentRef.current?.offsetWidth || 0
 
             if (portal) {
                 // Fixed positioning - stays in place during scroll
@@ -103,7 +102,7 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             }
         }, [isOpen, position, portal])
 
-        // Update position on scroll and resize when portal mode is enabled
+        // Update position on scroll and resize when dropdown is open
         useEffect(() => {
             if (!isOpen) {
                 return
@@ -111,15 +110,12 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
 
             updatePortalPosition()
 
-            if (portal) {
-                // For fixed positioning, update on scroll and resize
-                window.addEventListener('scroll', updatePortalPosition, true)
-                window.addEventListener('resize', updatePortalPosition)
+            window.addEventListener('scroll', updatePortalPosition, { capture: true, passive: true })
+            window.addEventListener('resize', updatePortalPosition)
 
-                return () => {
-                    window.removeEventListener('scroll', updatePortalPosition, true)
-                    window.removeEventListener('resize', updatePortalPosition)
-                }
+            return () => {
+                window.removeEventListener('scroll', updatePortalPosition, true)
+                window.removeEventListener('resize', updatePortalPosition)
             }
         }, [isOpen, portal, updatePortalPosition])
 

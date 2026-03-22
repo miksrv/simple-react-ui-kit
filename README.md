@@ -773,7 +773,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### Popout
 
-The `Popout` component is designed to create a floating container that opens and closes when triggered, often used for menus, tooltips, or additional actions. It provides a button as a trigger and offers flexible positioning for the popout content, either to the left or right of the button.
+The `Popout` component is designed to create a floating container that opens and closes when triggered, often used for menus, tooltips, or additional actions. It provides a button as a trigger and offers flexible positioning for the popout content, either to the left or right of the button. While the popout is open, its position is updated automatically on window scroll and resize, keeping the panel correctly anchored even in scrollable or dynamic layouts.
 
 <details>
   <summary>Popout Component Example</summary>
@@ -842,7 +842,7 @@ For more detailed examples and interactive demonstrations, visit the [Storybook 
 
 ### Select
 
-The `Select` component is a flexible dropdown selector supporting single and multiple selection, search, custom option rendering, and async loading states. It is ideal for forms and filters where users need to pick from a list of options.
+The `Select` component is a flexible dropdown selector supporting single and multiple selection, search, custom option rendering, and async loading states. It is ideal for forms and filters where users need to pick from a list of options. The dropdown is rendered in a portal and its position updates on window scroll and resize while open, keeping it correctly anchored in scrollable or dynamic layouts.
 
 <details>
   <summary>Select Component Example</summary>
