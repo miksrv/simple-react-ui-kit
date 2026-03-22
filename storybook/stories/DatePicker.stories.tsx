@@ -83,8 +83,7 @@ const meta: Meta<DatePickerProps> = {
         },
         onPeriodSelect: {
             control: false,
-            description:
-                'Callback for range mode. Receives `(startDate, endDate)`. Also enables the preset buttons.'
+            description: 'Callback for range mode. Receives `(startDate, endDate)`. Also enables the preset buttons.'
         }
     }
 }
@@ -176,7 +175,11 @@ export const Disabled: Story = {
         placeholder: 'Date picker disabled'
     },
     parameters: {
-        docs: { description: { story: 'When `disabled` is `true` the trigger button is non-interactive and visually muted.' } }
+        docs: {
+            description: {
+                story: 'When `disabled` is `true` the trigger button is non-interactive and visually muted.'
+            }
+        }
     }
 }
 

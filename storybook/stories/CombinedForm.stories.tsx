@@ -119,13 +119,21 @@ const CombinedForm: React.FC = () => {
                     <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 6 }}>
                         {filledFields} of {totalFields} fields completed
                     </div>
-                    <Progress value={formProgress} height={4} color='main' />
+                    <Progress
+                        value={formProgress}
+                        height={4}
+                        color='main'
+                    />
                 </div>
             }
             footer={
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: 13, color: '#6b7280' }}>All fields marked * are required</span>
-                    <Button mode='primary' onClick={handleSubmit} loading={loading}>
+                    <Button
+                        mode='primary'
+                        onClick={handleSubmit}
+                        loading={loading}
+                    >
                         Create Account
                     </Button>
                 </div>
@@ -133,7 +141,10 @@ const CombinedForm: React.FC = () => {
         >
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {showSuccess && (
-                    <Message type='success' title='Account Created!'>
+                    <Message
+                        type='success'
+                        title='Account Created!'
+                    >
                         Welcome aboard! You can now sign in with your credentials.
                     </Message>
                 )}
@@ -181,9 +192,7 @@ const CombinedForm: React.FC = () => {
                     value={formData.interests}
                     disabled={loading}
                     error={errors.interests}
-                    onSelect={(opts) =>
-                        setFormData({ ...formData, interests: opts?.map((o) => o.key) || [] })
-                    }
+                    onSelect={(opts) => setFormData({ ...formData, interests: opts?.map((o) => o.key) || [] })}
                 />
 
                 <Input
@@ -236,8 +245,7 @@ export const RegistrationForm: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    'An interactive registration form demonstrating `Container`, `Input`, `Select`, `Checkbox`, `Button`, `Message`, `Progress`, and `Spinner` working together. Fill in the fields and click "Create Account" to see validation, loading state, and success feedback.'
+                story: 'An interactive registration form demonstrating `Container`, `Input`, `Select`, `Checkbox`, `Button`, `Message`, `Progress`, and `Spinner` working together. Fill in the fields and click "Create Account" to see validation, loading state, and success feedback.'
             }
         }
     }

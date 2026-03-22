@@ -66,7 +66,12 @@ export const Default: Story = {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                         <Button mode='link'>Profile</Button>
                         <Button mode='link'>Settings</Button>
-                        <Button mode='link' variant='negative'>Sign out</Button>
+                        <Button
+                            mode='link'
+                            variant='negative'
+                        >
+                            Sign out
+                        </Button>
                     </div>
                 </div>
             </Popout>
@@ -89,10 +94,15 @@ export const LeftPosition: Story = {
     name: 'Left Position',
     render: () => (
         <div style={{ minHeight: 160 }}>
-            <Popout trigger='Open (left)' position='left'>
+            <Popout
+                trigger='Open (left)'
+                position='left'
+            >
                 <div style={{ padding: 12, minWidth: 180 }}>
                     <p style={{ margin: '0 0 8px', fontWeight: 600 }}>Left-anchored</p>
-                    <p style={{ margin: 0, fontSize: 13, color: '#555' }}>The panel aligns to the left edge of the trigger.</p>
+                    <p style={{ margin: 0, fontSize: 13, color: '#555' }}>
+                        The panel aligns to the left edge of the trigger.
+                    </p>
                 </div>
             </Popout>
         </div>
@@ -110,11 +120,31 @@ export const WithCloseOnChildClick: Story = {
     name: 'Close on Child Click',
     render: () => (
         <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
-            <Popout trigger={<Button mode='outline'>Actions</Button>} position='right' closeOnChildrenClick>
+            <Popout
+                trigger={<Button mode='outline'>Actions</Button>}
+                position='right'
+                closeOnChildrenClick
+            >
                 <div style={{ padding: 8, minWidth: 160 }}>
-                    <Button mode='link' onClick={() => alert('Edit clicked')}>Edit</Button>
-                    <Button mode='link' onClick={() => alert('Duplicate clicked')}>Duplicate</Button>
-                    <Button mode='link' variant='negative' onClick={() => alert('Delete clicked')}>Delete</Button>
+                    <Button
+                        mode='link'
+                        onClick={() => alert('Edit clicked')}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        mode='link'
+                        onClick={() => alert('Duplicate clicked')}
+                    >
+                        Duplicate
+                    </Button>
+                    <Button
+                        mode='link'
+                        variant='negative'
+                        onClick={() => alert('Delete clicked')}
+                    >
+                        Delete
+                    </Button>
                 </div>
             </Popout>
         </div>
@@ -134,7 +164,11 @@ export const ImperativeClose: Story = {
         const popoutRef = useRef<PopoutHandleProps>(null)
         return (
             <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
-                <Popout ref={popoutRef} trigger='Open Popout' position='right'>
+                <Popout
+                    ref={popoutRef}
+                    trigger='Open Popout'
+                    position='right'
+                >
                     <div style={{ padding: 12, minWidth: 200 }}>
                         <p style={{ margin: '0 0 12px' }}>Click the button below to close programmatically.</p>
                         <Button onClick={() => popoutRef.current?.close()}>Close via ref</Button>
@@ -156,11 +190,24 @@ export const WithButtonTrigger: Story = {
     name: 'Button as Trigger',
     render: () => (
         <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
-            <Popout trigger={<Button icon='VerticalDots' aria-label='More options' />} position='right'>
+            <Popout
+                trigger={
+                    <Button
+                        icon='VerticalDots'
+                        aria-label='More options'
+                    />
+                }
+                position='right'
+            >
                 <div style={{ padding: 8, minWidth: 160 }}>
                     <Button mode='link'>View details</Button>
                     <Button mode='link'>Edit</Button>
-                    <Button mode='link' variant='negative'>Remove</Button>
+                    <Button
+                        mode='link'
+                        variant='negative'
+                    >
+                        Remove
+                    </Button>
                 </div>
             </Popout>
         </div>

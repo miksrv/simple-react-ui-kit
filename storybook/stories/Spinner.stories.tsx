@@ -52,7 +52,10 @@ export const Sizes: Story = {
     render: () => (
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
             {[16, 24, 32, 48, 64].map((size) => (
-                <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div
+                    key={size}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}
+                >
                     <Spinner style={{ width: size, height: size }} />
                     <span style={{ fontSize: 12, color: '#666' }}>{size}px</span>
                 </div>
@@ -70,11 +73,26 @@ export const CustomColor: Story = {
     name: 'Custom Color',
     render: () => (
         <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
-            <Spinner style={{ width: 32, height: 32 }} fill='#3b82f6' />
-            <Spinner style={{ width: 32, height: 32 }} fill='#ef4444' />
-            <Spinner style={{ width: 32, height: 32 }} fill='#22c55e' />
-            <Spinner style={{ width: 32, height: 32 }} fill='#f59e0b' />
-            <Spinner style={{ width: 32, height: 32 }} fill='#8b5cf6' />
+            <Spinner
+                style={{ width: 32, height: 32 }}
+                fill='#3b82f6'
+            />
+            <Spinner
+                style={{ width: 32, height: 32 }}
+                fill='#ef4444'
+            />
+            <Spinner
+                style={{ width: 32, height: 32 }}
+                fill='#22c55e'
+            />
+            <Spinner
+                style={{ width: 32, height: 32 }}
+                fill='#f59e0b'
+            />
+            <Spinner
+                style={{ width: 32, height: 32 }}
+                fill='#8b5cf6'
+            />
         </div>
     ),
     parameters: {
@@ -103,7 +121,10 @@ export const InlineWithText: Story = {
                     color: '#fff'
                 }}
             >
-                <Spinner style={{ width: 20, height: 20 }} fill='#fff' />
+                <Spinner
+                    style={{ width: 20, height: 20 }}
+                    fill='#fff'
+                />
                 <span>Loading data, please wait...</span>
             </div>
         </div>

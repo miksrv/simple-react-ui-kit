@@ -38,7 +38,8 @@ const meta: Meta<BadgeProps> = {
         },
         onClickRemove: {
             control: false,
-            description: 'Callback fired when the remove (×) button is clicked. Receives the label value as the argument. Renders a remove button when provided.',
+            description:
+                'Callback fired when the remove (×) button is clicked. Receives the label value as the argument. Renders a remove button when provided.',
             table: { type: { summary: '(key?: string | number) => void' } }
         },
         className: {
@@ -103,14 +104,28 @@ export const Sizes: Story = {
     name: 'Sizes',
     render: () => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            <Badge label='Small' icon='Point' size='small' />
-            <Badge label='Medium' icon='Point' size='medium' />
-            <Badge label='Large' icon='Point' size='large' />
+            <Badge
+                label='Small'
+                icon='Point'
+                size='small'
+            />
+            <Badge
+                label='Medium'
+                icon='Point'
+                size='medium'
+            />
+            <Badge
+                label='Large'
+                icon='Point'
+                size='large'
+            />
         </div>
     ),
     parameters: {
         docs: {
-            description: { story: 'The three available sizes — `small`, `medium`, and `large` — displayed side by side.' }
+            description: {
+                story: 'The three available sizes — `small`, `medium`, and `large` — displayed side by side.'
+            }
         }
     }
 }
@@ -119,11 +134,27 @@ export const AllVariants: Story = {
     name: 'All Variants',
     render: () => (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
-            <Badge label='Icon Badge' icon='StarFilled' size='medium' />
-            <Badge label='Removable' icon='Tag' size='medium' onClickRemove={() => {}} />
+            <Badge
+                label='Icon Badge'
+                icon='StarFilled'
+                size='medium'
+            />
+            <Badge
+                label='Removable'
+                icon='Tag'
+                size='medium'
+                onClickRemove={() => {}}
+            />
             <Badge
                 label='Emoji'
-                icon={<span role='img' aria-label='fire'>🔥</span>}
+                icon={
+                    <span
+                        role='img'
+                        aria-label='fire'
+                    >
+                        🔥
+                    </span>
+                }
                 size='medium'
             />
             <Badge
@@ -131,9 +162,21 @@ export const AllVariants: Story = {
                 size='medium'
                 style={{ backgroundColor: '#3b82f6', color: '#fff' }}
             />
-            <Badge label='No Icon' size='medium' />
-            <Badge label='Small + Icon' icon='Bell' size='small' />
-            <Badge label='Large + Remove' icon='Close' size='large' onClickRemove={() => {}} />
+            <Badge
+                label='No Icon'
+                size='medium'
+            />
+            <Badge
+                label='Small + Icon'
+                icon='Bell'
+                size='small'
+            />
+            <Badge
+                label='Large + Remove'
+                icon='Close'
+                size='large'
+                onClickRemove={() => {}}
+            />
         </div>
     ),
     parameters: {
@@ -149,10 +192,54 @@ export const WithEmojiIcon: Story = {
     name: 'With Emoji Icon',
     render: () => (
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            <Badge label='Happy' icon={<span role='img' aria-label='happy'>😊</span>} size='medium' />
-            <Badge label='Cool' icon={<span role='img' aria-label='cool'>😎</span>} size='medium' />
-            <Badge label='Surprised' icon={<span role='img' aria-label='surprised'>😲</span>} size='medium' />
-            <Badge label='Love' icon={<span role='img' aria-label='love'>😍</span>} size='medium' />
+            <Badge
+                label='Happy'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='happy'
+                    >
+                        😊
+                    </span>
+                }
+                size='medium'
+            />
+            <Badge
+                label='Cool'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='cool'
+                    >
+                        😎
+                    </span>
+                }
+                size='medium'
+            />
+            <Badge
+                label='Surprised'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='surprised'
+                    >
+                        😲
+                    </span>
+                }
+                size='medium'
+            />
+            <Badge
+                label='Love'
+                icon={
+                    <span
+                        role='img'
+                        aria-label='love'
+                    >
+                        😍
+                    </span>
+                }
+                size='medium'
+            />
         </div>
     ),
     parameters: {

@@ -73,7 +73,10 @@ export const Colors: Story = {
                         <span>{label}</span>
                         <span>{value}%</span>
                     </div>
-                    <Progress value={value} color={color} />
+                    <Progress
+                        value={value}
+                        color={color}
+                    />
                 </div>
             ))}
         </div>
@@ -89,10 +92,22 @@ export const CustomHeight: Story = {
     name: 'Custom Height',
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 400 }}>
-            <Progress value={60} height={3} />
-            <Progress value={60} height={6} />
-            <Progress value={60} height={10} />
-            <Progress value={60} height={16} />
+            <Progress
+                value={60}
+                height={3}
+            />
+            <Progress
+                value={60}
+                height={6}
+            />
+            <Progress
+                value={60}
+                height={10}
+            />
+            <Progress
+                value={60}
+                height={16}
+            />
         </div>
     ),
     parameters: {

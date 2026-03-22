@@ -59,7 +59,8 @@ const meta: Meta<DialogProps> = {
         },
         parentRef: {
             control: false,
-            description: 'Optional React ref to a parent element — the dialog portal mounts inside it instead of `document.body`'
+            description:
+                'Optional React ref to a parent element — the dialog portal mounts inside it instead of `document.body`'
         },
         onCloseDialog: {
             control: false,
@@ -90,8 +91,18 @@ export const Default: Story = {
                 >
                     <p>Are you sure you want to proceed with this action?</p>
                     <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-                        <Button onClick={() => setOpen(false)} variant='positive'>Confirm</Button>
-                        <Button mode='outline' onClick={() => setOpen(false)}>Cancel</Button>
+                        <Button
+                            onClick={() => setOpen(false)}
+                            variant='positive'
+                        >
+                            Confirm
+                        </Button>
+                        <Button
+                            mode='outline'
+                            onClick={() => setOpen(false)}
+                        >
+                            Cancel
+                        </Button>
                     </div>
                 </Dialog>
             </>
@@ -117,7 +128,14 @@ export const WithBackLink: Story = {
 
         return (
             <>
-                <Button onClick={() => { setStep(1); setOpen(true) }}>Open Multi-step Dialog</Button>
+                <Button
+                    onClick={() => {
+                        setStep(1)
+                        setOpen(true)
+                    }}
+                >
+                    Open Multi-step Dialog
+                </Button>
                 <Dialog
                     open={open}
                     title={`Step ${step} of 3`}
@@ -132,7 +150,12 @@ export const WithBackLink: Story = {
                         {step < 3 ? (
                             <Button onClick={handleNext}>Next</Button>
                         ) : (
-                            <Button onClick={() => setOpen(false)} variant='positive'>Finish</Button>
+                            <Button
+                                onClick={() => setOpen(false)}
+                                variant='positive'
+                            >
+                                Finish
+                            </Button>
                         )}
                     </div>
                 </Dialog>
@@ -164,12 +187,14 @@ export const CustomDimensions: Story = {
                     onCloseDialog={() => setOpen(false)}
                 >
                     <p>
-                        This dialog uses <code>maxWidth="800px"</code> and a fixed{' '}
-                        <code>contentHeight="300px"</code>. The content area becomes scrollable when
-                        its content exceeds the specified height.
+                        This dialog uses <code>maxWidth="800px"</code> and a fixed <code>contentHeight="300px"</code>.
+                        The content area becomes scrollable when its content exceeds the specified height.
                     </p>
                     {Array.from({ length: 10 }).map((_, i) => (
-                        <p key={i} style={{ margin: '8px 0', color: '#555' }}>
+                        <p
+                            key={i}
+                            style={{ margin: '8px 0', color: '#555' }}
+                        >
                             Content line {i + 1}
                         </p>
                     ))}
@@ -199,8 +224,14 @@ export const WithoutCloseButton: Story = {
                     showOverlay={false}
                     onCloseDialog={() => setOpen(false)}
                 >
-                    <p>This dialog has no close button and no overlay — the user must use the button below to dismiss it.</p>
-                    <Button style={{ marginTop: 16 }} onClick={() => setOpen(false)}>
+                    <p>
+                        This dialog has no close button and no overlay — the user must use the button below to dismiss
+                        it.
+                    </p>
+                    <Button
+                        style={{ marginTop: 16 }}
+                        onClick={() => setOpen(false)}
+                    >
                         Dismiss
                     </Button>
                 </Dialog>

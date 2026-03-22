@@ -67,7 +67,10 @@ export const Default: Story = {
         const [selected, setSelected] = useState<string>('')
         return (
             <div>
-                <Calendar {...args} onDateSelect={(date) => setSelected(date)} />
+                <Calendar
+                    {...args}
+                    onDateSelect={(date) => setSelected(date)}
+                />
                 {selected && (
                     <p style={{ marginTop: 8, fontSize: 13, color: '#555' }}>
                         Selected: <strong>{selected}</strong>
@@ -80,8 +83,7 @@ export const Default: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    'Single-date selection mode. Click any day to select it; the chosen date is displayed below the calendar. Use the Controls panel to switch locale or hide the days-of-week row.'
+                story: 'Single-date selection mode. Click any day to select it; the chosen date is displayed below the calendar. Use the Controls panel to switch locale or hide the days-of-week row.'
             }
         }
     }
@@ -108,8 +110,7 @@ export const PeriodSelection: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    'Range-selection mode is activated by providing the `onPeriodSelect` callback. Click once to set the start date, then again to set the end date.'
+                story: 'Range-selection mode is activated by providing the `onPeriodSelect` callback. Click once to set the start date, then again to set the end date.'
             }
         }
     }
@@ -127,7 +128,11 @@ export const WithMinMaxDates: Story = {
                 <p style={{ fontSize: 13, marginBottom: 8, color: '#555' }}>
                     Selectable range: <strong>{minDate}</strong> to <strong>{maxDate}</strong>
                 </p>
-                <Calendar minDate={minDate} maxDate={maxDate} onDateSelect={() => {}} />
+                <Calendar
+                    minDate={minDate}
+                    maxDate={maxDate}
+                    onDateSelect={() => {}}
+                />
             </div>
         )
     },
@@ -146,11 +151,17 @@ export const Locales: Story = {
         <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
             <div>
                 <p style={{ fontWeight: 600, marginBottom: 8 }}>English</p>
-                <Calendar locale='en' onDateSelect={() => {}} />
+                <Calendar
+                    locale='en'
+                    onDateSelect={() => {}}
+                />
             </div>
             <div>
                 <p style={{ fontWeight: 600, marginBottom: 8 }}>Russian</p>
-                <Calendar locale='ru' onDateSelect={() => {}} />
+                <Calendar
+                    locale='ru'
+                    onDateSelect={() => {}}
+                />
             </div>
         </div>
     ),
@@ -165,7 +176,12 @@ export const Locales: Story = {
 
 export const HiddenDaysOfWeek: Story = {
     name: 'Hidden Days-of-Week Row',
-    render: (args) => <Calendar {...args} onDateSelect={() => {}} />,
+    render: (args) => (
+        <Calendar
+            {...args}
+            onDateSelect={() => {}}
+        />
+    ),
     args: {
         hideDaysOfWeek: true,
         locale: 'en'

@@ -70,7 +70,14 @@ export const WithAction: Story = {
     render: () => (
         <Container
             title='Latest Updates'
-            action={<Button size='small' mode='outline'>See all</Button>}
+            action={
+                <Button
+                    size='small'
+                    mode='outline'
+                >
+                    See all
+                </Button>
+            }
         >
             <p>Content with an action button in the header.</p>
         </Container>
@@ -92,7 +99,11 @@ export const WithCustomHeader: Story = {
             header={
                 <div style={{ fontSize: 12, color: '#666', marginBottom: 4 }}>
                     Complete your profile to unlock all features
-                    <Progress value={60} height={4} color='main' />
+                    <Progress
+                        value={60}
+                        height={4}
+                        color='main'
+                    />
                 </div>
             }
         >
@@ -115,7 +126,12 @@ export const WithFooter: Story = {
             title='Invoice #1042'
             footer={
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                    <Button mode='outline' size='small'>Cancel</Button>
+                    <Button
+                        mode='outline'
+                        size='small'
+                    >
+                        Cancel
+                    </Button>
                     <Button size='small'>Pay now</Button>
                 </div>
             }
@@ -137,11 +153,22 @@ export const FullExample: Story = {
     render: () => (
         <Container
             title='User Registration'
-            action={<Button size='small' mode='link'>Need help?</Button>}
+            action={
+                <Button
+                    size='small'
+                    mode='link'
+                >
+                    Need help?
+                </Button>
+            }
             header={
                 <div style={{ fontSize: 12, color: '#666' }}>
                     Fill in all required fields to create your account
-                    <Progress value={40} height={3} color='main' />
+                    <Progress
+                        value={40}
+                        height={3}
+                        color='main'
+                    />
                 </div>
             }
             footer={

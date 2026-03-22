@@ -91,9 +91,21 @@ export const Indeterminate: Story = {
 export const Disabled: Story = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <Checkbox label='Disabled unchecked' disabled />
-            <Checkbox label='Disabled checked' disabled checked readOnly />
-            <Checkbox label='Disabled indeterminate' disabled indeterminate />
+            <Checkbox
+                label='Disabled unchecked'
+                disabled
+            />
+            <Checkbox
+                label='Disabled checked'
+                disabled
+                checked
+                readOnly
+            />
+            <Checkbox
+                label='Disabled indeterminate'
+                disabled
+                indeterminate
+            />
         </div>
     ),
     parameters: {
@@ -111,11 +123,17 @@ export const WithReactNodeLabel: Story = {
         label: (
             <span>
                 I agree to the{' '}
-                <a href='#' style={{ color: '#3b82f6' }}>
+                <a
+                    href='#'
+                    style={{ color: '#3b82f6' }}
+                >
                     Terms of Service
                 </a>{' '}
                 and{' '}
-                <a href='#' style={{ color: '#3b82f6' }}>
+                <a
+                    href='#'
+                    style={{ color: '#3b82f6' }}
+                >
                     Privacy Policy
                 </a>
             </span>

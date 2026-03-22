@@ -144,9 +144,21 @@ export const Sizes: Story = {
     name: 'Sizes',
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 400 }}>
-            <Input label='Small' placeholder='Small input' size='small' />
-            <Input label='Medium' placeholder='Medium input' size='medium' />
-            <Input label='Large' placeholder='Large input' size='large' />
+            <Input
+                label='Small'
+                placeholder='Small input'
+                size='small'
+            />
+            <Input
+                label='Medium'
+                placeholder='Medium input'
+                size='medium'
+            />
+            <Input
+                label='Large'
+                placeholder='Large input'
+                size='large'
+            />
         </div>
     ),
     parameters: {

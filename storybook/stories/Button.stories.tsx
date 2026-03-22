@@ -139,10 +139,23 @@ export const WithIcon: Story = {
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button icon='Map'>With Map Icon</Button>
             <Button icon='Settings'>Settings</Button>
-            <Button icon='Bell' mode='secondary'>Notifications</Button>
-            <Button icon='Download' mode='outline'>Download</Button>
+            <Button
+                icon='Bell'
+                mode='secondary'
+            >
+                Notifications
+            </Button>
+            <Button
+                icon='Download'
+                mode='outline'
+            >
+                Download
+            </Button>
             {/* Icon-only button (no text) */}
-            <Button icon='Settings' aria-label='Settings' />
+            <Button
+                icon='Settings'
+                aria-label='Settings'
+            />
         </div>
     ),
     parameters: {
@@ -159,8 +172,18 @@ export const LoadingState: Story = {
     render: () => (
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button loading>Primary Loading</Button>
-            <Button loading mode='secondary'>Secondary Loading</Button>
-            <Button loading mode='outline'>Outline Loading</Button>
+            <Button
+                loading
+                mode='secondary'
+            >
+                Secondary Loading
+            </Button>
+            <Button
+                loading
+                mode='outline'
+            >
+                Outline Loading
+            </Button>
         </div>
     ),
     parameters: {
@@ -178,8 +201,18 @@ export const Variants: Story = {
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button variant='positive'>Confirm</Button>
             <Button variant='negative'>Delete</Button>
-            <Button mode='outline' variant='positive'>Outline Positive</Button>
-            <Button mode='outline' variant='negative'>Outline Negative</Button>
+            <Button
+                mode='outline'
+                variant='positive'
+            >
+                Outline Positive
+            </Button>
+            <Button
+                mode='outline'
+                variant='negative'
+            >
+                Outline Negative
+            </Button>
         </div>
     ),
     parameters: {
@@ -227,8 +260,18 @@ export const Disabled: Story = {
     render: () => (
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button disabled>Disabled Primary</Button>
-            <Button disabled mode='secondary'>Disabled Secondary</Button>
-            <Button disabled mode='outline'>Disabled Outline</Button>
+            <Button
+                disabled
+                mode='secondary'
+            >
+                Disabled Secondary
+            </Button>
+            <Button
+                disabled
+                mode='outline'
+            >
+                Disabled Outline
+            </Button>
         </div>
     ),
     parameters: {

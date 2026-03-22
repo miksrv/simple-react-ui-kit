@@ -59,16 +59,28 @@ export const AllTypes: Story = {
     name: 'All Types',
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Message type='info' title='Info'>
+            <Message
+                type='info'
+                title='Info'
+            >
                 This is an informational message to guide the user.
             </Message>
-            <Message type='success' title='Success!'>
+            <Message
+                type='success'
+                title='Success!'
+            >
                 Your changes have been saved successfully.
             </Message>
-            <Message type='warning' title='Warning'>
+            <Message
+                type='warning'
+                title='Warning'
+            >
                 Please review the information before continuing.
             </Message>
-            <Message type='error' title='Error'>
+            <Message
+                type='error'
+                title='Error'
+            >
                 Something went wrong. Please try again or contact support.
             </Message>
         </div>
@@ -106,7 +118,10 @@ export const WithoutTitle: Story = {
 export const WithCustomContent: Story = {
     name: 'With Custom Content (List)',
     render: () => (
-        <Message type='error' title='Form validation failed'>
+        <Message
+            type='error'
+            title='Form validation failed'
+        >
             <ul style={{ margin: '4px 0 0', paddingLeft: 20 }}>
                 <li>Email address is required</li>
                 <li>Password must be at least 8 characters</li>

@@ -62,9 +62,7 @@ export const AllIcons: Story = {
         const [search, setSearch] = useState('')
         const [copied, setCopied] = useState<string | null>(null)
 
-        const filtered = Object.keys(iconNames).filter((name) =>
-            name.toLowerCase().includes(search.toLowerCase())
-        )
+        const filtered = Object.keys(iconNames).filter((name) => name.toLowerCase().includes(search.toLowerCase()))
 
         const copyName = async (name: string) => {
             await navigator.clipboard.writeText(name)
@@ -111,7 +109,10 @@ export const AllIcons: Story = {
                             onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = '#f3f4f6')}
                             onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = 'transparent')}
                         >
-                            <Icon name={name as IconTypes} style={{ width: 24, height: 24 }} />
+                            <Icon
+                                name={name as IconTypes}
+                                style={{ width: 24, height: 24 }}
+                            />
                             <span style={{ fontSize: 11, textAlign: 'center', color: '#555', wordBreak: 'break-word' }}>
                                 {name}
                             </span>
@@ -125,8 +126,7 @@ export const AllIcons: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    'Browse every icon in the library. Search by name to filter results. Click any icon to copy its name to the clipboard.'
+                story: 'Browse every icon in the library. Search by name to filter results. Click any icon to copy its name to the clipboard.'
             }
         }
     }
@@ -137,8 +137,14 @@ export const Sizes: Story = {
     render: () => (
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
             {([16, 24, 32, 48] as const).map((size) => (
-                <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                    <Icon name='StarFilled' style={{ width: size, height: size }} />
+                <div
+                    key={size}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
+                >
+                    <Icon
+                        name='StarFilled'
+                        style={{ width: size, height: size }}
+                    />
                     <span style={{ fontSize: 12, color: '#555' }}>{size}px</span>
                 </div>
             ))}
@@ -157,11 +163,31 @@ export const CustomColor: Story = {
     name: 'Custom Color',
     render: () => (
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-            <Icon name='HeartFilled' style={{ width: 28, height: 28 }} fill='#ef4444' />
-            <Icon name='StarFilled' style={{ width: 28, height: 28 }} fill='#f59e0b' />
-            <Icon name='CheckCircle' style={{ width: 28, height: 28 }} fill='#22c55e' />
-            <Icon name='Cloud' style={{ width: 28, height: 28 }} fill='#3b82f6' />
-            <Icon name='Bell' style={{ width: 28, height: 28 }} fill='#8b5cf6' />
+            <Icon
+                name='HeartFilled'
+                style={{ width: 28, height: 28 }}
+                fill='#ef4444'
+            />
+            <Icon
+                name='StarFilled'
+                style={{ width: 28, height: 28 }}
+                fill='#f59e0b'
+            />
+            <Icon
+                name='CheckCircle'
+                style={{ width: 28, height: 28 }}
+                fill='#22c55e'
+            />
+            <Icon
+                name='Cloud'
+                style={{ width: 28, height: 28 }}
+                fill='#3b82f6'
+            />
+            <Icon
+                name='Bell'
+                style={{ width: 28, height: 28 }}
+                fill='#8b5cf6'
+            />
         </div>
     ),
     parameters: {

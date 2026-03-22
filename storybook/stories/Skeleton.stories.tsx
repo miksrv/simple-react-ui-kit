@@ -66,7 +66,16 @@ export const TextPlaceholder: Story = {
 export const CardPlaceholder: Story = {
     name: 'Card Placeholder',
     render: () => (
-        <div style={{ display: 'flex', gap: 16, maxWidth: 500, padding: 16, border: '1px solid #e5e7eb', borderRadius: 8 }}>
+        <div
+            style={{
+                display: 'flex',
+                gap: 16,
+                maxWidth: 500,
+                padding: 16,
+                border: '1px solid #e5e7eb',
+                borderRadius: 8
+            }}
+        >
             {/* Avatar / image block */}
             <Skeleton style={{ width: 64, height: 64, borderRadius: '50%', flexShrink: 0 }} />
 
@@ -92,7 +101,10 @@ export const TablePlaceholder: Story = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 600 }}>
             {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} style={{ display: 'flex', gap: 12 }}>
+                <div
+                    key={i}
+                    style={{ display: 'flex', gap: 12 }}
+                >
                     <Skeleton style={{ width: 40, height: 16, borderRadius: 4 }} />
                     <Skeleton style={{ flex: 2, height: 16, borderRadius: 4 }} />
                     <Skeleton style={{ flex: 1, height: 16, borderRadius: 4 }} />

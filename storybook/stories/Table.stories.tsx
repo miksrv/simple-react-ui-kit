@@ -180,7 +180,9 @@ export const WithVerticalBorder: Story = {
     },
     parameters: {
         docs: {
-            description: { story: '`verticalBorder` draws dividers between every column for a more grid-like appearance.' }
+            description: {
+                story: '`verticalBorder` draws dividers between every column for a more grid-like appearance.'
+            }
         }
     }
 }
