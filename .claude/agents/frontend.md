@@ -20,10 +20,10 @@ Frontend developer specializing in creating and maintaining React UI components.
 
 1. Create a folder in `src/components/component-name/`
 2. Create files:
-   - `ComponentName.tsx` - main component
-   - `types.ts` - TypeScript interfaces
-   - `index.ts` - export
-   - `styles.module.sass` - styles
+    - `ComponentName.tsx` - main component
+    - `types.ts` - TypeScript interfaces
+    - `index.ts` - export
+    - `styles.module.sass` - styles
 3. Add export to `src/index.ts`
 4. Follow existing patterns
 
@@ -45,19 +45,10 @@ export interface ComponentNameProps {
     disabled?: boolean
 }
 
-export const ComponentName: React.FC<ComponentNameProps> = ({
-    className,
-    children,
-    disabled,
-    ...props
-}) => {
+export const ComponentName: React.FC<ComponentNameProps> = ({ className, children, disabled, ...props }) => {
     return (
         <div
-            className={cn(
-                styles.componentName,
-                disabled && styles.disabled,
-                className
-            )}
+            className={cn(styles.componentName, disabled && styles.disabled, className)}
             {...props}
         >
             {children}

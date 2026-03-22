@@ -59,9 +59,7 @@ const meta: Meta<ComponentNameProps> = {
 
 export default meta
 
-const Template: StoryFn<ComponentNameProps> = (args) => (
-    <ComponentName {...args} />
-)
+const Template: StoryFn<ComponentNameProps> = (args) => <ComponentName {...args} />
 
 // Default story
 export const Default = Template.bind({})
@@ -79,9 +77,9 @@ Disabled.args = {
 // Size variants
 export const Sizes: StoryFn<ComponentNameProps> = () => (
     <div style={{ display: 'flex', gap: '16px' }}>
-        <ComponentName size="small">Small</ComponentName>
-        <ComponentName size="medium">Medium</ComponentName>
-        <ComponentName size="large">Large</ComponentName>
+        <ComponentName size='small'>Small</ComponentName>
+        <ComponentName size='medium'>Medium</ComponentName>
+        <ComponentName size='large'>Large</ComponentName>
     </div>
 )
 ```
@@ -105,7 +103,7 @@ export const Sizes: StoryFn<ComponentNameProps> = () => (
 
 ### JSDoc Comments
 
-```tsx
+````tsx
 /**
  * Button component for user interactions.
  *
@@ -138,7 +136,7 @@ export interface ButtonProps {
     /** Click event handler */
     onClick?: () => void
 }
-```
+````
 
 ## 📖 Documentation Structure
 
@@ -159,11 +157,11 @@ Brief description of what the component does.
 
 #### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| children | ReactNode | - | Content |
-| disabled | boolean | false | Disable state |
-| size | 'small' \| 'medium' \| 'large' | 'medium' | Size variant |
+| Prop     | Type                           | Default  | Description   |
+| -------- | ------------------------------ | -------- | ------------- |
+| children | ReactNode                      | -        | Content       |
+| disabled | boolean                        | false    | Disable state |
+| size     | 'small' \| 'medium' \| 'large' | 'medium' | Size variant  |
 
 #### Example
 
@@ -249,26 +247,41 @@ cd storybook && yarn build-storybook
 // Show all modes
 export const Modes: StoryFn<ButtonProps> = () => (
     <div style={{ display: 'flex', gap: '16px' }}>
-        <Button mode="primary">Primary</Button>
-        <Button mode="secondary">Secondary</Button>
-        <Button mode="outline">Outline</Button>
-        <Button mode="link">Link</Button>
+        <Button mode='primary'>Primary</Button>
+        <Button mode='secondary'>Secondary</Button>
+        <Button mode='outline'>Outline</Button>
+        <Button mode='link'>Link</Button>
     </div>
 )
 
 // Show with icons
 export const WithIcons: StoryFn<ButtonProps> = () => (
     <div style={{ display: 'flex', gap: '16px' }}>
-        <Button icon="Check">With Icon</Button>
-        <Button icon="Close" mode="negative">Delete</Button>
+        <Button icon='Check'>With Icon</Button>
+        <Button
+            icon='Close'
+            mode='negative'
+        >
+            Delete
+        </Button>
     </div>
 )
 
 // Real-world usage example
 export const RealWorldExample: StoryFn<ButtonProps> = () => (
     <form style={{ display: 'flex', gap: '8px' }}>
-        <Button mode="primary" type="submit">Save</Button>
-        <Button mode="outline" type="button">Cancel</Button>
+        <Button
+            mode='primary'
+            type='submit'
+        >
+            Save
+        </Button>
+        <Button
+            mode='outline'
+            type='button'
+        >
+            Cancel
+        </Button>
     </form>
 )
 ```
@@ -289,7 +302,7 @@ export const FormValidation: StoryFn<InputProps> = () => {
 
     return (
         <Input
-            label="Username"
+            label='Username'
             value={value}
             error={error}
             onChange={(e) => {

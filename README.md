@@ -211,6 +211,7 @@ Check out the full documentation and examples in Storybook: [Button Component St
 - **`icon`**: Displays an icon inside the button.
 - **`children`**: React children to be displayed inside the button.
 - **`label`**: Text content for the button.
+- **`disabled`**: Disables the button. When used together with `link`, the anchor renders with `aria-disabled="true"`, `tabIndex={-1}`, and no `href`, making it non-navigable and accessible.
 
 #### Example Usage:
 
@@ -523,14 +524,15 @@ Check out the full documentation and examples in Storybook: [Dialog Component St
 - **`open`**: Controls whether the dialog is open or closed.
 - **`title`**: Title text displayed in the dialog header.
 - **`contentHeight`**: Height of the dialog content (e.g., `300px`).
-- **`maxWidth`**: Maximum width of the dialog (e.g., `500px`).
+- **`maxWidth`**: Maximum width of the dialog (e.g., `500px`). Defaults to `500px`.
+- **`showOverlay`**: Determines if the backdrop overlay is displayed. Defaults to `true`.
 - **`backLinkCaption`**: Caption for the back button.
 - **`showBackLink`**: Determines if the back button is displayed.
 - **`showCloseButton`**: Determines if the close button is displayed.
 - **`parentRef`**: Reference to the parent element for positioning the dialog.
 - **`children`**: Content to be displayed inside the dialog.
 - **`onBackClick`**: Callback function triggered when the back button is clicked.
-- **`onCloseDialog`**: Callback function triggered when the dialog is closed.
+- **`onCloseDialog`**: Callback function triggered when the dialog is closed (including Escape key).
 
 #### Example Usage:
 
@@ -657,6 +659,7 @@ Check out the full documentation and examples in Storybook: [Input Component Sto
 #### Props:
 
 - **`label`**: Optional label text displayed above the input field.
+- **`mode`**: Visual style of the input field (`primary`, `ghost`). Defaults to `primary`.
 - **`size`**: Size of the input field, can be `small`, `medium` or `large`.
 - **`error`**: Error message displayed below the input field, used for validation feedback.
 - **`className`**: Additional class names for custom styling.
@@ -780,11 +783,13 @@ Explore the full documentation and examples in Storybook: [Popout Component Stor
 #### Props:
 
 - **`className`**: Additional class names for custom styling.
+- **`disabled`**: Disables the popout trigger, preventing the popout from opening.
 - **`position`**: Position of the popout relative to the trigger element. Possible values: `'left'` or `'right'`.
 - **`trigger`**: The content inside the button that triggers the popout (could be text, an icon, or a React node).
 - **`children`**: The content to display inside the popout when it's open.
 - **`closeOnChildrenClick`**: A boolean flag that, when set to `true`, closes the popout when any child inside the popout is clicked.
 - **`onOpenChange`**: Callback function triggered when isOpen state changes.
+- **`portal`**: When set to `true`, renders the popout content with fixed positioning (useful inside fixed or overflow-hidden containers).
 
 #### Example Usage:
 
@@ -852,9 +857,14 @@ Check out the full documentation and examples in Storybook: [Select Component St
 - **`searchable`**: Allows searching/filtering options.
 - **`clearable`**: Shows a button to clear the selection.
 - **`loading`**: Displays a loading spinner in the dropdown.
+- **`closeOnSelect`**: Whether the dropdown closes after selecting an option (default: `true`).
+- **`size`**: Size of the select field (`small`, `medium`, `large`).
 - **`label`**: Optional label for the select field.
 - **`placeholder`**: Placeholder text when nothing is selected.
+- **`notFoundCaption`**: Text shown when no options match the search.
 - **`error`**: Error message for validation feedback.
+- **`required`**: Marks the field as required.
+- **`disabled`**: Disables the select. The component uses `aria-disabled` for accessibility.
 - **`onSelect`**: Callback when the selection changes.
 - **`onSearch`**: Callback when the search input changes.
 - **`onOpen`**: Callback when the dropdown is opened.

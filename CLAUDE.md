@@ -53,9 +53,11 @@ simple-react-ui-kit/
 ## 🤖 Available Agents
 
 ### Frontend Agent
+
 **File**: `.claude/agents/frontend.md`
 
 Specializes in:
+
 - Developing new UI components
 - Refactoring existing components
 - Adding new props and functionality
@@ -63,18 +65,22 @@ Specializes in:
 - TypeScript typing
 
 ### QA Agent
+
 **File**: `.claude/agents/qa.md`
 
 Specializes in:
+
 - Writing UI Unit tests (Jest + Testing Library)
 - Test coverage analysis
 - Testing edge cases
 - Accessibility testing
 
 ### Documentation Agent
+
 **File**: `.claude/agents/docs.md`
 
 Specializes in:
+
 - Writing Storybook stories
 - Updating README
 - Documenting component APIs
@@ -134,13 +140,12 @@ export interface ComponentNameProps {
     children?: React.ReactNode
 }
 
-export const ComponentName: React.FC<ComponentNameProps> = ({
-    className,
-    children,
-    ...props
-}) => {
+export const ComponentName: React.FC<ComponentNameProps> = ({ className, children, ...props }) => {
     return (
-        <div className={cn(styles.componentName, className)} {...props}>
+        <div
+            className={cn(styles.componentName, className)}
+            {...props}
+        >
             {children}
         </div>
     )
@@ -167,9 +172,7 @@ describe('ComponentName Component', () => {
     })
 
     it('applies custom className', () => {
-        const { container } = render(
-            <ComponentName className="custom-class">Content</ComponentName>
-        )
+        const { container } = render(<ComponentName className='custom-class'>Content</ComponentName>)
         expect(container.firstChild).toHaveClass('custom-class')
     })
 })
@@ -228,8 +231,7 @@ The `cn` utility is used for combining classes:
 
 ```tsx
 import { cn } from '../../utils'
-
-<div className={cn(styles.base, isActive && styles.active, className)} />
+;<div className={cn(styles.base, isActive && styles.active, className)} />
 ```
 
 ## 📋 Tasks for Claude
@@ -237,13 +239,14 @@ import { cn } from '../../utils'
 ### First Task: Project Analysis
 
 Claude should:
+
 1. Analyze all components in `src/components/`
 2. Study existing tests and their coverage
 3. Check Storybook stories
 4. Create a `LIBRARY_SUMMARY.md` file with:
-   - Complete list of components and their APIs
-   - Usage examples
-   - Integration recommendations
+    - Complete list of components and their APIs
+    - Usage examples
+    - Integration recommendations
 
 This file can be used in other projects to integrate the library.
 

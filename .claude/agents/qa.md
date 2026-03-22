@@ -44,9 +44,7 @@ describe('ComponentName Component', () => {
     })
 
     it('applies custom className', () => {
-        const { container } = render(
-            <ComponentName className="custom-class">Content</ComponentName>
-        )
+        const { container } = render(<ComponentName className='custom-class'>Content</ComponentName>)
         expect(container.firstChild).toHaveClass('custom-class')
     })
 
@@ -61,7 +59,10 @@ describe('ComponentName Component', () => {
     it('respects disabled state', () => {
         const onClick = jest.fn()
         render(
-            <ComponentName disabled onClick={onClick}>
+            <ComponentName
+                disabled
+                onClick={onClick}
+            >
                 Disabled
             </ComponentName>
         )
@@ -94,7 +95,7 @@ describe('ComponentName Component', () => {
 ```tsx
 // Testing rendering
 it('renders with label', () => {
-    render(<Input label="Email" />)
+    render(<Input label='Email' />)
     expect(screen.getByText('Email')).toBeInTheDocument()
 })
 
@@ -112,13 +113,13 @@ it('calls onChange on input', () => {
 
 // Testing states
 it('shows error message', () => {
-    render(<Input error="Required field" />)
+    render(<Input error='Required field' />)
     expect(screen.getByText('Required field')).toBeInTheDocument()
 })
 
 // Testing accessibility
 it('has correct aria attributes', () => {
-    render(<Button aria-label="Close">X</Button>)
+    render(<Button aria-label='Close'>X</Button>)
     expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Close')
 })
 
@@ -134,32 +135,32 @@ it('forwards ref correctly', () => {
 
 ### For Each Component
 
-| Aspect | Description |
-|--------|-------------|
+| Aspect    | Description                      |
+| --------- | -------------------------------- |
 | Rendering | Component renders without errors |
-| Children | Child elements are displayed |
-| ClassName | Custom classes are applied |
-| Disabled | Disabled state works |
-| Events | Event handlers are called |
+| Children  | Child elements are displayed     |
+| ClassName | Custom classes are applied       |
+| Disabled  | Disabled state works             |
+| Events    | Event handlers are called        |
 
 ### For Forms (Input, Select, Checkbox)
 
-| Aspect | Description |
-|--------|-------------|
-| Value | Value is displayed/changes |
-| onChange | Callback is called with correct value |
-| Validation | Validation errors are displayed |
-| Required | Required field is marked |
-| Placeholder | Placeholder is displayed |
+| Aspect      | Description                           |
+| ----------- | ------------------------------------- |
+| Value       | Value is displayed/changes            |
+| onChange    | Callback is called with correct value |
+| Validation  | Validation errors are displayed       |
+| Required    | Required field is marked              |
+| Placeholder | Placeholder is displayed              |
 
 ### For Interactive Components (Dialog, Popout)
 
-| Aspect | Description |
-|--------|-------------|
+| Aspect     | Description               |
+| ---------- | ------------------------- |
 | Open/Close | Opening and closing works |
-| Backdrop | Clicking backdrop closes |
-| Escape | Pressing Escape closes |
-| Focus trap | Focus stays inside |
+| Backdrop   | Clicking backdrop closes  |
+| Escape     | Pressing Escape closes    |
+| Focus trap | Focus stays inside        |
 
 ## 🧪 Running Tests
 
