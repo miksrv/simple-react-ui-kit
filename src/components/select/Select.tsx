@@ -1,4 +1,14 @@
-import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import React, {
+    ChangeEvent,
+    KeyboardEvent,
+    useCallback,
+    useEffect,
+    useId,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState
+} from 'react'
 import { createPortal } from 'react-dom'
 
 import { cn } from '../../utils'
@@ -40,7 +50,8 @@ export const Select = <T,>({
     const [isOpen, setIsOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
     const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null)
-    const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({ display: 'none' })
+    const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({ visibility: 'hidden' })
+    const [positionCalculated, setPositionCalculated] = useState(false)
 
     // Portal for dropdown
     useEffect(() => {
@@ -234,7 +245,8 @@ export const Select = <T,>({
 
     const updatePosition = useCallback(() => {
         if (!rootRef.current) {
-            setPortalStyle({ display: 'none' })
+            setPortalStyle({ visibility: 'hidden' })
+            setPositionCalculated(false)
             return
         }
         const rect = rootRef.current.getBoundingClientRect()
@@ -244,16 +256,26 @@ export const Select = <T,>({
             left: rect.left + window.scrollX,
             width: rect.width,
             zIndex: 9999,
-            pointerEvents: 'auto' as const
+            pointerEvents: 'auto' as const,
+            visibility: 'visible' as const
         })
+        setPositionCalculated(true)
     }, [])
 
+    // Calculate position synchronously before paint to prevent flicker
+    useLayoutEffect(() => {
+        if (isOpen) {
+            updatePosition()
+        } else {
+            setPositionCalculated(false)
+        }
+    }, [isOpen, updatePosition])
+
+    // Update position on scroll and resize
     useEffect(() => {
         if (!isOpen) {
             return
         }
-
-        updatePosition()
 
         window.addEventListener('resize', updatePosition)
         window.addEventListener('scroll', updatePosition, { capture: true, passive: true })
@@ -399,7 +421,7 @@ export const Select = <T,>({
             {isOpen &&
                 portalNode &&
                 createPortal(
-                    <div style={portalStyle}>
+                    <div style={{ ...portalStyle, visibility: positionCalculated ? 'visible' : 'hidden' }}>
                         <OptionsList<T>
                             id={optionsListId}
                             options={filteredOptions}
