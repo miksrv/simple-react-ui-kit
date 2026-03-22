@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
+
+import type { Meta, StoryObj } from '@storybook/react'
 
 import {
     Button,
@@ -102,8 +103,12 @@ const CombinedForm: React.FC = () => {
     }
 
     const filledFields = Object.values(formData).filter((v) => {
-        if (Array.isArray(v)) return v.length > 0
-        if (typeof v === 'boolean') return v
+        if (Array.isArray(v)) {
+            return v.length > 0
+        }
+        if (typeof v === 'boolean') {
+            return v
+        }
         return !!v
     }).length
 

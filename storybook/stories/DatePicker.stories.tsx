@@ -1,7 +1,43 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 
+import type { Meta, StoryObj } from '@storybook/react'
+
 import { DatePicker, type DatePickerProps, PresetOption } from '../../src'
+
+// Helper components for stories that use hooks
+const DefaultDatePickerDemo: React.FC<DatePickerProps> = (args) => {
+    const [range, setRange] = useState<{ start?: string; end?: string }>({})
+    return (
+        <div style={{ minHeight: 300 }}>
+            <DatePicker
+                {...args}
+                onPeriodSelect={(start, end) => setRange({ start, end })}
+            />
+            {range.start && (
+                <p style={{ marginTop: 12, fontSize: 13, color: '#555' }}>
+                    Selected: <strong>{range.start}</strong> &ndash; <strong>{range.end}</strong>
+                </p>
+            )}
+        </div>
+    )
+}
+
+const SingleDateModeDemo: React.FC = () => {
+    const [date, setDate] = useState<string>('')
+    return (
+        <div style={{ minHeight: 300 }}>
+            <DatePicker
+                placeholder='Pick a date'
+                onDateSelect={(d) => setDate(d)}
+            />
+            {date && (
+                <p style={{ marginTop: 12, fontSize: 13, color: '#555' }}>
+                    Selected: <strong>{date}</strong>
+                </p>
+            )}
+        </div>
+    )
+}
 
 const meta: Meta<DatePickerProps> = {
     title: 'Date/DatePicker',
@@ -92,22 +128,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-    render: (args) => {
-        const [range, setRange] = useState<{ start?: string; end?: string }>({})
-        return (
-            <div style={{ minHeight: 300 }}>
-                <DatePicker
-                    {...args}
-                    onPeriodSelect={(start, end) => setRange({ start, end })}
-                />
-                {range.start && (
-                    <p style={{ marginTop: 12, fontSize: 13, color: '#555' }}>
-                        Selected: <strong>{range.start}</strong> &ndash; <strong>{range.end}</strong>
-                    </p>
-                )}
-            </div>
-        )
-    },
+    render: (args) => <DefaultDatePickerDemo {...args} />,
     args: {
         locale: 'en',
         placeholder: 'Select date range',
@@ -124,22 +145,7 @@ export const Default: Story = {
 
 export const SingleDateMode: Story = {
     name: 'Single Date Mode',
-    render: () => {
-        const [date, setDate] = useState<string>('')
-        return (
-            <div style={{ minHeight: 300 }}>
-                <DatePicker
-                    placeholder='Pick a date'
-                    onDateSelect={(d) => setDate(d)}
-                />
-                {date && (
-                    <p style={{ marginTop: 12, fontSize: 13, color: '#555' }}>
-                        Selected: <strong>{date}</strong>
-                    </p>
-                )}
-            </div>
-        )
-    },
+    render: () => <SingleDateModeDemo />,
     parameters: {
         docs: {
             description: {

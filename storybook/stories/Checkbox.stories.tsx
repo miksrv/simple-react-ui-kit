@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
+
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Checkbox, type CheckboxProps } from '../../src'
 
@@ -148,29 +149,32 @@ export const WithReactNodeLabel: Story = {
     }
 }
 
+// Helper component for Group story with hooks
+const CheckboxGroupDemo: React.FC = () => {
+    const options = ['TypeScript', 'React', 'Node.js', 'GraphQL', 'Docker']
+    const [selected, setSelected] = useState<string[]>(['React'])
+
+    const toggle = (value: string) =>
+        setSelected((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]))
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {options.map((opt) => (
+                <Checkbox
+                    key={opt}
+                    label={opt}
+                    checked={selected.includes(opt)}
+                    onChange={() => toggle(opt)}
+                />
+            ))}
+            <p style={{ marginTop: 8, fontSize: 13, color: '#555' }}>Selected: {selected.join(', ') || 'none'}</p>
+        </div>
+    )
+}
+
 export const Group: Story = {
     name: 'Checkbox Group',
-    render: () => {
-        const options = ['TypeScript', 'React', 'Node.js', 'GraphQL', 'Docker']
-        const [selected, setSelected] = useState<string[]>(['React'])
-
-        const toggle = (value: string) =>
-            setSelected((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]))
-
-        return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {options.map((opt) => (
-                    <Checkbox
-                        key={opt}
-                        label={opt}
-                        checked={selected.includes(opt)}
-                        onChange={() => toggle(opt)}
-                    />
-                ))}
-                <p style={{ marginTop: 8, fontSize: 13, color: '#555' }}>Selected: {selected.join(', ') || 'none'}</p>
-            </div>
-        )
-    },
+    render: () => <CheckboxGroupDemo />,
     parameters: {
         docs: {
             description: {

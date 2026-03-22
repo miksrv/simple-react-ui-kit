@@ -66,7 +66,7 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             }
 
             const rect = triggerRef.current.getBoundingClientRect()
-            const contentWidth = contentRef.current?.offsetWidth || 0
+            const _contentWidth = contentRef.current?.offsetWidth || 0
 
             if (portal) {
                 // Fixed positioning - stays in place during scroll

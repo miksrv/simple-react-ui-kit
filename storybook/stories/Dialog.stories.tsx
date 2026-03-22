@@ -1,7 +1,140 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 
-import { Button, type DialogProps, Dialog } from '../../src'
+import type { Meta, StoryObj } from '@storybook/react'
+
+import { Button, Dialog, type DialogProps } from '../../src'
+
+// Helper components for stories that use hooks
+const DefaultDialogDemo: React.FC<DialogProps> = (args) => {
+    const [open, setOpen] = useState(false)
+    return (
+        <>
+            <Button onClick={() => setOpen(true)}>Open Dialog</Button>
+            <Dialog
+                {...args}
+                open={open}
+                title='Confirmation'
+                showCloseButton
+                onCloseDialog={() => setOpen(false)}
+            >
+                <p>Are you sure you want to proceed with this action?</p>
+                <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+                    <Button
+                        onClick={() => setOpen(false)}
+                        variant='positive'
+                    >
+                        Confirm
+                    </Button>
+                    <Button
+                        mode='outline'
+                        onClick={() => setOpen(false)}
+                    >
+                        Cancel
+                    </Button>
+                </div>
+            </Dialog>
+        </>
+    )
+}
+
+const WithBackLinkDemo: React.FC = () => {
+    const [open, setOpen] = useState(false)
+    const [step, setStep] = useState(1)
+
+    const handleBack = () => setStep((s) => Math.max(1, s - 1))
+    const handleNext = () => setStep((s) => s + 1)
+
+    return (
+        <>
+            <Button
+                onClick={() => {
+                    setStep(1)
+                    setOpen(true)
+                }}
+            >
+                Open Multi-step Dialog
+            </Button>
+            <Dialog
+                open={open}
+                title={`Step ${step} of 3`}
+                showBackLink={step > 1}
+                backLinkCaption='Back'
+                showCloseButton
+                onBackClick={handleBack}
+                onCloseDialog={() => setOpen(false)}
+            >
+                <p>Content for step {step}. Use Back / Next to navigate between steps.</p>
+                <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+                    {step < 3 ? (
+                        <Button onClick={handleNext}>Next</Button>
+                    ) : (
+                        <Button
+                            onClick={() => setOpen(false)}
+                            variant='positive'
+                        >
+                            Finish
+                        </Button>
+                    )}
+                </div>
+            </Dialog>
+        </>
+    )
+}
+
+const CustomDimensionsDemo: React.FC = () => {
+    const [open, setOpen] = useState(false)
+    return (
+        <>
+            <Button onClick={() => setOpen(true)}>Open Wide Dialog</Button>
+            <Dialog
+                open={open}
+                title='Wide Dialog'
+                maxWidth='800px'
+                contentHeight='300px'
+                showCloseButton
+                onCloseDialog={() => setOpen(false)}
+            >
+                <p>
+                    This dialog uses <code>maxWidth="800px"</code> and a fixed <code>contentHeight="300px"</code>. The
+                    content area becomes scrollable when its content exceeds the specified height.
+                </p>
+                {Array.from({ length: 10 }).map((_, i) => (
+                    <p
+                        key={i}
+                        style={{ margin: '8px 0', color: '#555' }}
+                    >
+                        Content line {i + 1}
+                    </p>
+                ))}
+            </Dialog>
+        </>
+    )
+}
+
+const WithoutCloseButtonDemo: React.FC = () => {
+    const [open, setOpen] = useState(false)
+    return (
+        <>
+            <Button onClick={() => setOpen(true)}>Open Dialog</Button>
+            <Dialog
+                open={open}
+                title='Non-dismissible Dialog'
+                showOverlay={false}
+                onCloseDialog={() => setOpen(false)}
+            >
+                <p>
+                    This dialog has no close button and no overlay — the user must use the button below to dismiss it.
+                </p>
+                <Button
+                    style={{ marginTop: 16 }}
+                    onClick={() => setOpen(false)}
+                >
+                    Dismiss
+                </Button>
+            </Dialog>
+        </>
+    )
+}
 
 const meta: Meta<DialogProps> = {
     title: 'Components/Dialog',
@@ -77,37 +210,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-    render: (args) => {
-        const [open, setOpen] = useState(false)
-        return (
-            <>
-                <Button onClick={() => setOpen(true)}>Open Dialog</Button>
-                <Dialog
-                    {...args}
-                    open={open}
-                    title='Confirmation'
-                    showCloseButton
-                    onCloseDialog={() => setOpen(false)}
-                >
-                    <p>Are you sure you want to proceed with this action?</p>
-                    <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-                        <Button
-                            onClick={() => setOpen(false)}
-                            variant='positive'
-                        >
-                            Confirm
-                        </Button>
-                        <Button
-                            mode='outline'
-                            onClick={() => setOpen(false)}
-                        >
-                            Cancel
-                        </Button>
-                    </div>
-                </Dialog>
-            </>
-        )
-    },
+    render: (args) => <DefaultDialogDemo {...args} />,
     parameters: {
         docs: {
             description: {
@@ -119,49 +222,7 @@ export const Default: Story = {
 
 export const WithBackLink: Story = {
     name: 'With Back Link',
-    render: () => {
-        const [open, setOpen] = useState(false)
-        const [step, setStep] = useState(1)
-
-        const handleBack = () => setStep((s) => Math.max(1, s - 1))
-        const handleNext = () => setStep((s) => s + 1)
-
-        return (
-            <>
-                <Button
-                    onClick={() => {
-                        setStep(1)
-                        setOpen(true)
-                    }}
-                >
-                    Open Multi-step Dialog
-                </Button>
-                <Dialog
-                    open={open}
-                    title={`Step ${step} of 3`}
-                    showBackLink={step > 1}
-                    backLinkCaption='Back'
-                    showCloseButton
-                    onBackClick={handleBack}
-                    onCloseDialog={() => setOpen(false)}
-                >
-                    <p>Content for step {step}. Use Back / Next to navigate between steps.</p>
-                    <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-                        {step < 3 ? (
-                            <Button onClick={handleNext}>Next</Button>
-                        ) : (
-                            <Button
-                                onClick={() => setOpen(false)}
-                                variant='positive'
-                            >
-                                Finish
-                            </Button>
-                        )}
-                    </div>
-                </Dialog>
-            </>
-        )
-    },
+    render: () => <WithBackLinkDemo />,
     parameters: {
         docs: {
             description: {
@@ -173,35 +234,7 @@ export const WithBackLink: Story = {
 
 export const CustomDimensions: Story = {
     name: 'Custom Dimensions',
-    render: () => {
-        const [open, setOpen] = useState(false)
-        return (
-            <>
-                <Button onClick={() => setOpen(true)}>Open Wide Dialog</Button>
-                <Dialog
-                    open={open}
-                    title='Wide Dialog'
-                    maxWidth='800px'
-                    contentHeight='300px'
-                    showCloseButton
-                    onCloseDialog={() => setOpen(false)}
-                >
-                    <p>
-                        This dialog uses <code>maxWidth="800px"</code> and a fixed <code>contentHeight="300px"</code>.
-                        The content area becomes scrollable when its content exceeds the specified height.
-                    </p>
-                    {Array.from({ length: 10 }).map((_, i) => (
-                        <p
-                            key={i}
-                            style={{ margin: '8px 0', color: '#555' }}
-                        >
-                            Content line {i + 1}
-                        </p>
-                    ))}
-                </Dialog>
-            </>
-        )
-    },
+    render: () => <CustomDimensionsDemo />,
     parameters: {
         docs: {
             description: {
@@ -213,31 +246,7 @@ export const CustomDimensions: Story = {
 
 export const WithoutCloseButton: Story = {
     name: 'Without Close Button',
-    render: () => {
-        const [open, setOpen] = useState(false)
-        return (
-            <>
-                <Button onClick={() => setOpen(true)}>Open Dialog</Button>
-                <Dialog
-                    open={open}
-                    title='Non-dismissible Dialog'
-                    showOverlay={false}
-                    onCloseDialog={() => setOpen(false)}
-                >
-                    <p>
-                        This dialog has no close button and no overlay — the user must use the button below to dismiss
-                        it.
-                    </p>
-                    <Button
-                        style={{ marginTop: 16 }}
-                        onClick={() => setOpen(false)}
-                    >
-                        Dismiss
-                    </Button>
-                </Dialog>
-            </>
-        )
-    },
+    render: () => <WithoutCloseButtonDemo />,
     parameters: {
         docs: {
             description: {

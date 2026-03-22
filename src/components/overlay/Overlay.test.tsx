@@ -139,7 +139,7 @@ describe('Overlay Component', () => {
         render(<Overlay {...props} />)
 
         const overlays = parentElement.querySelectorAll('[data-overlay-id="test-overlay"]')
-        expect(overlays.length).toBe(1)
+        expect(overlays).toHaveLength(1)
         parentElement.remove()
     })
 })

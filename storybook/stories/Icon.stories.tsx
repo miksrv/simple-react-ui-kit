@@ -1,9 +1,77 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
+
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Icon, iconNames, type IconTypes } from '../../src'
 
 type IconProps = React.ComponentPropsWithoutRef<typeof Icon>
+
+// Helper component for AllIcons story with hooks
+const AllIconsDemo: React.FC = () => {
+    const [search, setSearch] = useState('')
+    const [copied, setCopied] = useState<string | null>(null)
+
+    const filtered = Object.keys(iconNames).filter((name) => name.toLowerCase().includes(search.toLowerCase()))
+
+    const copyName = async (name: string) => {
+        await navigator.clipboard.writeText(name)
+        setCopied(name)
+        setTimeout(() => setCopied(null), 1500)
+    }
+
+    return (
+        <div>
+            <input
+                type='text'
+                placeholder='Search icons...'
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{
+                    padding: '8px 12px',
+                    fontSize: 14,
+                    border: '1px solid #d1d5db',
+                    borderRadius: 6,
+                    width: '100%',
+                    maxWidth: 300,
+                    marginBottom: 20,
+                    outline: 'none'
+                }}
+            />
+            {filtered.length === 0 && <p style={{ color: '#999' }}>No icons found for "{search}"</p>}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+                {filtered.map((name) => (
+                    <div
+                        key={name}
+                        title={`Click to copy: ${name}`}
+                        onClick={() => copyName(name)}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: 6,
+                            width: 80,
+                            cursor: 'pointer',
+                            padding: '8px 4px',
+                            borderRadius: 6,
+                            transition: 'background 0.15s'
+                        }}
+                        onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = '#f3f4f6')}
+                        onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = 'transparent')}
+                    >
+                        <Icon
+                            name={name as IconTypes}
+                            style={{ width: 24, height: 24 }}
+                        />
+                        <span style={{ fontSize: 11, textAlign: 'center', color: '#555', wordBreak: 'break-word' }}>
+                            {name}
+                        </span>
+                        {copied === name && <span style={{ fontSize: 10, color: '#16a34a' }}>Copied!</span>}
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
 
 const meta: Meta<IconProps> = {
     title: 'Components/Icon',
@@ -58,71 +126,7 @@ export const Default: Story = {
 
 export const AllIcons: Story = {
     name: 'All Icons',
-    render: () => {
-        const [search, setSearch] = useState('')
-        const [copied, setCopied] = useState<string | null>(null)
-
-        const filtered = Object.keys(iconNames).filter((name) => name.toLowerCase().includes(search.toLowerCase()))
-
-        const copyName = async (name: string) => {
-            await navigator.clipboard.writeText(name)
-            setCopied(name)
-            setTimeout(() => setCopied(null), 1500)
-        }
-
-        return (
-            <div>
-                <input
-                    type='text'
-                    placeholder='Search icons...'
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    style={{
-                        padding: '8px 12px',
-                        fontSize: 14,
-                        border: '1px solid #d1d5db',
-                        borderRadius: 6,
-                        width: '100%',
-                        maxWidth: 300,
-                        marginBottom: 20,
-                        outline: 'none'
-                    }}
-                />
-                {filtered.length === 0 && <p style={{ color: '#999' }}>No icons found for "{search}"</p>}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-                    {filtered.map((name) => (
-                        <div
-                            key={name}
-                            title={`Click to copy: ${name}`}
-                            onClick={() => copyName(name)}
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: 6,
-                                width: 80,
-                                cursor: 'pointer',
-                                padding: '8px 4px',
-                                borderRadius: 6,
-                                transition: 'background 0.15s'
-                            }}
-                            onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = '#f3f4f6')}
-                            onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = 'transparent')}
-                        >
-                            <Icon
-                                name={name as IconTypes}
-                                style={{ width: 24, height: 24 }}
-                            />
-                            <span style={{ fontSize: 11, textAlign: 'center', color: '#555', wordBreak: 'break-word' }}>
-                                {name}
-                            </span>
-                            {copied === name && <span style={{ fontSize: 10, color: '#16a34a' }}>Copied!</span>}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        )
-    },
+    render: () => <AllIconsDemo />,
     parameters: {
         docs: {
             description: {

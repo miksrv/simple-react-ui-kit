@@ -480,7 +480,7 @@ describe('Select Component', () => {
         // Close (button label changes to 'close dropdown')
         fireEvent.click(screen.getByRole('button', { name: /close dropdown/i }))
         // onOpen should not be called again when closing
-        expect(onOpen.mock.calls.length).toBe(callsAfterOpen)
+        expect(onOpen.mock.calls).toHaveLength(callsAfterOpen)
     })
 
     it('applies size class correctly', () => {

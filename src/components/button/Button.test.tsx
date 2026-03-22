@@ -180,7 +180,7 @@ describe('Button Component', () => {
         )
         // When loading, spinner replaces icon — svg should still be present (spinner)
         const svgElements = container.querySelectorAll('svg')
-        expect(svgElements.length).toBe(1) // only spinner, not icon + spinner
+        expect(svgElements).toHaveLength(1) // only spinner, not icon + spinner
     })
 
     it('applies noText class when neither label nor children provided', () => {

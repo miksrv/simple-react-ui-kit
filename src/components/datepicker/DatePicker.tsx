@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 
-dayjs.extend(utc)
-
 import { Button } from '../button'
 import { Calendar } from '../calendar'
 import { Popout, PopoutHandleProps } from '../popout'
@@ -12,6 +10,8 @@ import { CalendarPresetType, DatePickerProps, PresetOption } from './types'
 import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
+
+dayjs.extend(utc)
 
 export const timePresets: CalendarPresetType[] = [
     { key: PresetOption.TODAY, endDate: dayjs.utc().toDate() },

@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
+
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Badge, type BadgeProps, iconNames } from '../../src'
 
@@ -89,7 +90,7 @@ export const WithRemove: Story = {
         label: 'Removable',
         icon: 'Tag',
         size: 'medium',
-        onClickRemove: (key) => alert(`Removed: ${key}`)
+        onClickRemove: (key: string | undefined) => alert(`Removed: ${String(key)}`)
     },
     parameters: {
         docs: {

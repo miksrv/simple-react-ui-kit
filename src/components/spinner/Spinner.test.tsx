@@ -46,7 +46,7 @@ describe('Spinner Component', () => {
     it('renders two path elements inside', () => {
         const { container } = render(<Spinner />)
         const paths = container.querySelectorAll('path')
-        expect(paths.length).toBe(2)
+        expect(paths).toHaveLength(2)
     })
 
     it('applies both spinner base class and custom class', () => {

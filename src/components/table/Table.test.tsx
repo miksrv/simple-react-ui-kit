@@ -420,7 +420,7 @@ describe('Table Component', () => {
         fireEvent.click(screen.getByText('Name'))
         // Both Alice entries exist after sort
         const alices = screen.getAllByText('Alice')
-        expect(alices.length).toBe(2)
+        expect(alices).toHaveLength(2)
     })
 
     it('formats cell value with full row data access via formatter', () => {

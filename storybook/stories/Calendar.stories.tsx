@@ -1,7 +1,43 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 
+import type { Meta, StoryObj } from '@storybook/react'
+
 import { Calendar, type CalendarProps } from '../../src'
+
+// Helper components for stories that use hooks
+const DefaultCalendarDemo: React.FC<CalendarProps> = (args) => {
+    const [selected, setSelected] = useState<string>('')
+    return (
+        <div>
+            <Calendar
+                {...args}
+                onDateSelect={(date) => setSelected(date)}
+            />
+            {selected && (
+                <p style={{ marginTop: 8, fontSize: 13, color: '#555' }}>
+                    Selected: <strong>{selected}</strong>
+                </p>
+            )}
+        </div>
+    )
+}
+
+const PeriodSelectionDemo: React.FC = () => {
+    const [period, setPeriod] = useState<[string?, string?]>([])
+    return (
+        <div>
+            <Calendar
+                onPeriodSelect={(start, end) => setPeriod([start, end])}
+                datePeriod={period}
+            />
+            {period[0] && period[1] && (
+                <p style={{ marginTop: 8, fontSize: 13, color: '#555' }}>
+                    Range: <strong>{period[0]}</strong> &ndash; <strong>{period[1]}</strong>
+                </p>
+            )}
+        </div>
+    )
+}
 
 const meta: Meta<CalendarProps> = {
     title: 'Date/Calendar',
@@ -63,22 +99,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-    render: (args) => {
-        const [selected, setSelected] = useState<string>('')
-        return (
-            <div>
-                <Calendar
-                    {...args}
-                    onDateSelect={(date) => setSelected(date)}
-                />
-                {selected && (
-                    <p style={{ marginTop: 8, fontSize: 13, color: '#555' }}>
-                        Selected: <strong>{selected}</strong>
-                    </p>
-                )}
-            </div>
-        )
-    },
+    render: (args) => <DefaultCalendarDemo {...args} />,
     args: { locale: 'en' },
     parameters: {
         docs: {
@@ -91,22 +112,7 @@ export const Default: Story = {
 
 export const PeriodSelection: Story = {
     name: 'Period Selection',
-    render: () => {
-        const [period, setPeriod] = useState<[string?, string?]>([])
-        return (
-            <div>
-                <Calendar
-                    onPeriodSelect={(start, end) => setPeriod([start, end])}
-                    datePeriod={period}
-                />
-                {period[0] && period[1] && (
-                    <p style={{ marginTop: 8, fontSize: 13, color: '#555' }}>
-                        Range: <strong>{period[0]}</strong> &ndash; <strong>{period[1]}</strong>
-                    </p>
-                )}
-            </div>
-        )
-    },
+    render: () => <PeriodSelectionDemo />,
     parameters: {
         docs: {
             description: {

@@ -1,7 +1,27 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React, { useRef } from 'react'
 
+import type { Meta, StoryObj } from '@storybook/react'
+
 import { Button, Popout, type PopoutHandleProps, type PopoutProps } from '../../src'
+
+// Helper component for ImperativeClose story with useRef hook
+const ImperativeCloseDemo: React.FC = () => {
+    const popoutRef = useRef<PopoutHandleProps>(null)
+    return (
+        <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
+            <Popout
+                ref={popoutRef}
+                trigger='Open Popout'
+                position='right'
+            >
+                <div style={{ padding: 12, minWidth: 200 }}>
+                    <p style={{ margin: '0 0 12px' }}>Click the button below to close programmatically.</p>
+                    <Button onClick={() => popoutRef.current?.close()}>Close via ref</Button>
+                </div>
+            </Popout>
+        </div>
+    )
+}
 
 const meta: Meta<PopoutProps> = {
     title: 'Components/Popout',
@@ -160,23 +180,7 @@ export const WithCloseOnChildClick: Story = {
 
 export const ImperativeClose: Story = {
     name: 'Imperative Close (via ref)',
-    render: () => {
-        const popoutRef = useRef<PopoutHandleProps>(null)
-        return (
-            <div style={{ minHeight: 160, display: 'flex', justifyContent: 'flex-end' }}>
-                <Popout
-                    ref={popoutRef}
-                    trigger='Open Popout'
-                    position='right'
-                >
-                    <div style={{ padding: 12, minWidth: 200 }}>
-                        <p style={{ margin: '0 0 12px' }}>Click the button below to close programmatically.</p>
-                        <Button onClick={() => popoutRef.current?.close()}>Close via ref</Button>
-                    </div>
-                </Popout>
-            </div>
-        )
-    },
+    render: () => <ImperativeCloseDemo />,
     parameters: {
         docs: {
             description: {

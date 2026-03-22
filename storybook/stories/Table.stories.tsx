@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
+
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { type ColumnProps, Table, type TableProps } from '../../src'
 
@@ -253,8 +254,12 @@ export const WithBackground: Story = {
                 isSortable: true,
                 background: (value) => {
                     const v = value as number
-                    if (v >= 90) return '#dcfce7'
-                    if (v >= 70) return '#fef9c3'
+                    if (v >= 90) {
+                        return '#dcfce7'
+                    }
+                    if (v >= 70) {
+                        return '#fef9c3'
+                    }
                     return '#fee2e2'
                 }
             }
