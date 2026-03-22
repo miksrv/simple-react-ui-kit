@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.7.10
+
+### Patch Changes
+
+- Fixed Calculate portal position before painting for Popout and Select components
+
 ## 1.7.9
 
 ### Patch Changes

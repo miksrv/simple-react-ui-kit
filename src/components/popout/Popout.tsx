@@ -1,4 +1,12 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useLayoutEffect,
+    useRef,
+    useState
+} from 'react'
 import { createPortal } from 'react-dom'
 
 import { cn } from '../../utils'
@@ -27,6 +35,7 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
         const [isOpen, setIsOpen] = useState<boolean>(false)
         const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null)
         const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({})
+        const [positionCalculated, setPositionCalculated] = useState<boolean>(false)
 
         // Create portal container
         useEffect(() => {
@@ -45,6 +54,7 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
 
         const close = useCallback(() => {
             setIsOpen(false)
+            setPositionCalculated(false)
         }, [])
 
         useImperativeHandle(ref, () => ({ close }), [close])
@@ -83,6 +93,7 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                 }
 
                 setPortalStyle(style)
+                setPositionCalculated(true)
             } else {
                 // Absolute positioning - default behavior
                 const style: React.CSSProperties = {
@@ -99,16 +110,22 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                 }
 
                 setPortalStyle(style)
+                setPositionCalculated(true)
             }
         }, [isOpen, position, portal])
+
+        // Use useLayoutEffect to calculate position before paint
+        useLayoutEffect(() => {
+            if (isOpen) {
+                updatePortalPosition()
+            }
+        }, [isOpen, updatePortalPosition])
 
         // Update position on scroll and resize when dropdown is open
         useEffect(() => {
             if (!isOpen) {
                 return
             }
-
-            updatePortalPosition()
 
             window.addEventListener('scroll', updatePortalPosition, { capture: true, passive: true })
             window.addEventListener('resize', updatePortalPosition)
@@ -167,7 +184,10 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                         <div
                             ref={contentRef}
                             className={styles.popoutContent}
-                            style={portalStyle}
+                            style={{
+                                ...portalStyle,
+                                visibility: positionCalculated ? 'visible' : 'hidden'
+                            }}
                             onClick={(e) => {
                                 if (closeOnChildrenClick) {
                                     close()
