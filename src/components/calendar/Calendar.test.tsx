@@ -289,4 +289,14 @@ describe('Calendar', () => {
         fireEvent.click(screen.getAllByText('15')[0])
         expect(onDateSelect).toHaveBeenCalled()
     })
+
+    // BUG-04: A date exactly equal to minDate must be selectable
+    it('day click with minDate equal to clicked date is allowed', () => {
+        const onDateSelect = jest.fn()
+        const minDate = dayjs().date(10).format('YYYY-MM-DD')
+        setup({ onDateSelect, minDate })
+        // Click day 10 — which equals minDate (same day should be allowed)
+        fireEvent.click(screen.getAllByText('10')[0])
+        expect(onDateSelect).toHaveBeenCalled()
+    })
 })

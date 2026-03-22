@@ -235,7 +235,9 @@ describe('Dialog Component', () => {
         expect(document.body.style.overflow).toBe('hidden')
     })
 
-    it('resets body overflow to auto when dialog is closed', () => {
+    it('resets body overflow when dialog is closed', () => {
+        const originalOverflow = document.body.style.overflow
+
         const { rerender } = render(
             <Dialog
                 {...defaultProps}
@@ -250,7 +252,7 @@ describe('Dialog Component', () => {
                 open={false}
             />
         )
-        expect(document.body.style.overflow).toBe('auto')
+        expect(document.body.style.overflow).toBe(originalOverflow)
     })
 
     it('removes keydown event listener on unmount', () => {
@@ -350,6 +352,22 @@ describe('Dialog Component', () => {
         )
         fireEvent.keyDown(document, { key: 'Enter' })
         expect(onCloseDialogMock).not.toHaveBeenCalled()
+    })
+
+    // BUG-06: body.overflow must be restored when Dialog unmounts while still open
+    it('restores body overflow when dialog unmounts while open', () => {
+        const originalOverflow = document.body.style.overflow
+
+        const { unmount } = render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+        expect(document.body.style.overflow).toBe('hidden')
+
+        unmount()
+        expect(document.body.style.overflow).toBe(originalOverflow)
     })
 
     it('applies noBackLink class when showBackLink is false', () => {

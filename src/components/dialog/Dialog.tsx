@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 import { cn } from '../../utils'
@@ -40,19 +40,6 @@ export const Dialog: React.FC<DialogProps> = ({
         })
     }
 
-    const handleChangeState = useCallback(() => {
-        if (open) {
-            handleResize()
-            document.body.style.overflow = 'hidden'
-        } else {
-            document.body.style.overflow = 'auto'
-        }
-    }, [open])
-
-    useEffect(() => {
-        handleChangeState()
-    }, [open])
-
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape' && open) {
@@ -62,12 +49,24 @@ export const Dialog: React.FC<DialogProps> = ({
 
         document.addEventListener('keydown', handleKeyDown)
 
-        handleChangeState()
-
         return () => {
             document.removeEventListener('keydown', handleKeyDown)
         }
     }, [open, onCloseDialog])
+
+    useEffect(() => {
+        if (!open) {
+            return
+        }
+
+        const originalOverflow = document.body.style.overflow
+        handleResize()
+        document.body.style.overflow = 'hidden'
+
+        return () => {
+            document.body.style.overflow = originalOverflow
+        }
+    }, [open])
 
     return (
         <>

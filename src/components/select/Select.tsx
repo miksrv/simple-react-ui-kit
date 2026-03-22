@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import { cn } from '../../utils'
@@ -34,6 +34,8 @@ export const Select = <T,>({
 }: SelectProps<T>) => {
     const rootRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
+    const selectId = useId()
+    const optionsListId = `${selectId}-options`
     const [search, setSearch] = useState('')
     const [isOpen, setIsOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
@@ -236,13 +238,13 @@ export const Select = <T,>({
         const rect = rootRef.current.getBoundingClientRect()
         return {
             position: 'absolute' as const,
-            top: rect.bottom + window.scrollY - (error ? 50 : 34),
+            top: rect.bottom + window.scrollY,
             left: rect.left + window.scrollX,
             width: rect.width,
             zIndex: 9999,
             pointerEvents: 'auto' as const
         }
-    }, [error])
+    }, [])
 
     const displayValue = multiple ? search : selectedOption?.value || search || ''
     const hasSelection = multiple ? selectedOptions && selectedOptions.length > 0 : !!selectedOption
@@ -328,7 +330,7 @@ export const Select = <T,>({
                                 onFocus={handleFocus}
                                 onBlur={handleBlur}
                                 aria-autocomplete='list'
-                                aria-controls='select-options'
+                                aria-controls={optionsListId}
                             />
                         )}
 
@@ -381,7 +383,7 @@ export const Select = <T,>({
                 createPortal(
                     <div style={getPortalStyle()}>
                         <OptionsList<T>
-                            id='select-options'
+                            id={optionsListId}
                             options={filteredOptions}
                             selectedOptions={selectedOptions}
                             onOptionSelect={handleSelect}

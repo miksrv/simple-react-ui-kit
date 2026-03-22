@@ -84,9 +84,7 @@ describe('OptionsList', () => {
     })
 
     it('renders option with icon', () => {
-        const optionsWithIcon: Array<SelectOptionType<string>> = [
-            { key: 'a', value: 'With Icon', icon: 'Camera' }
-        ]
+        const optionsWithIcon: Array<SelectOptionType<string>> = [{ key: 'a', value: 'With Icon', icon: 'Camera' }]
         const { container } = render(<OptionsList options={optionsWithIcon} />)
         expect(container.querySelector('svg')).toBeInTheDocument()
         expect(screen.getByText('With Icon')).toBeInTheDocument()
@@ -153,11 +151,27 @@ describe('OptionsList', () => {
 
         // Mock getBoundingClientRect: list bottom at 100, item bottom at 150 (below)
         jest.spyOn(list, 'getBoundingClientRect').mockReturnValue({
-            top: 0, bottom: 100, left: 0, right: 200, width: 200, height: 100, x: 0, y: 0, toJSON: jest.fn()
+            top: 0,
+            bottom: 100,
+            left: 0,
+            right: 200,
+            width: 200,
+            height: 100,
+            x: 0,
+            y: 0,
+            toJSON: jest.fn()
         })
         const items = list.querySelectorAll('li')
         jest.spyOn(items[0], 'getBoundingClientRect').mockReturnValue({
-            top: 60, bottom: 150, left: 0, right: 200, width: 200, height: 40, x: 0, y: 60, toJSON: jest.fn()
+            top: 60,
+            bottom: 150,
+            left: 0,
+            right: 200,
+            width: 200,
+            height: 40,
+            x: 0,
+            y: 60,
+            toJSON: jest.fn()
         })
 
         rerender(
@@ -181,11 +195,27 @@ describe('OptionsList', () => {
 
         // Mock getBoundingClientRect: list top at 50, item top at 30 (above)
         jest.spyOn(list, 'getBoundingClientRect').mockReturnValue({
-            top: 50, bottom: 200, left: 0, right: 200, width: 200, height: 150, x: 0, y: 50, toJSON: jest.fn()
+            top: 50,
+            bottom: 200,
+            left: 0,
+            right: 200,
+            width: 200,
+            height: 150,
+            x: 0,
+            y: 50,
+            toJSON: jest.fn()
         })
         const items = list.querySelectorAll('li')
         jest.spyOn(items[0], 'getBoundingClientRect').mockReturnValue({
-            top: 30, bottom: 70, left: 0, right: 200, width: 200, height: 40, x: 0, y: 30, toJSON: jest.fn()
+            top: 30,
+            bottom: 70,
+            left: 0,
+            right: 200,
+            width: 200,
+            height: 40,
+            x: 0,
+            y: 30,
+            toJSON: jest.fn()
         })
 
         rerender(

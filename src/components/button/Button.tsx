@@ -46,9 +46,11 @@ export const Button: React.FC<ButtonProps> = ({
         <a
             style={props?.style}
             className={cn(styles.buttonLink, props?.disabled && styles.disabled)}
-            href={link}
+            href={props?.disabled ? undefined : link}
             title={''}
             rel={noIndex ? 'noindex nofollow' : ''}
+            aria-disabled={props?.disabled ? true : undefined}
+            tabIndex={props?.disabled ? -1 : undefined}
         >
             {button}
         </a>

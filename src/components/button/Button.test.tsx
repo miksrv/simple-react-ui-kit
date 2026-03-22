@@ -202,15 +202,17 @@ describe('Button Component', () => {
     })
 
     it('applies disabled class to link wrapper when disabled', () => {
-        render(
+        const { container } = render(
             <Button
                 {...defaultProps}
                 link='https://example.com'
                 disabled
             />
         )
-        const linkElement = screen.getByRole('link')
+        const linkElement = container.querySelector('a')
         expect(linkElement).toHaveClass('disabled')
+        expect(linkElement).toHaveAttribute('aria-disabled', 'true')
+        expect(linkElement).not.toHaveAttribute('href')
     })
 
     it('button has default type of button', () => {

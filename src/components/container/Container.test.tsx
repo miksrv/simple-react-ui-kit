@@ -74,9 +74,7 @@ describe('Container Component', () => {
     })
 
     it('renders only action in header without title', () => {
-        const { container } = render(
-            <Container action={<button>Do It</button>}>Content</Container>
-        )
+        const { container } = render(<Container action={<button>Do It</button>}>Content</Container>)
         expect(screen.getByText('Do It')).toBeInTheDocument()
         expect(container.querySelector('.header')).toBeInTheDocument()
     })

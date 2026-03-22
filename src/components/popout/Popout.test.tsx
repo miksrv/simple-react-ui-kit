@@ -221,16 +221,12 @@ describe('Popout Component', () => {
     })
 
     it('renders ReactNode trigger', () => {
-        render(
-            <Popout trigger={<button>Open Popout</button>}>Content</Popout>
-        )
+        render(<Popout trigger={<button>Open Popout</button>}>Content</Popout>)
         expect(screen.getByText('Open Popout')).toBeInTheDocument()
     })
 
     it('cleans up portal node on unmount', () => {
-        const { unmount } = render(
-            <Popout trigger='Click'>Content</Popout>
-        )
+        const { unmount } = render(<Popout trigger='Click'>Content</Popout>)
         const portalsBefore = document.body.querySelectorAll('.portal')
         unmount()
         const portalsAfter = document.body.querySelectorAll('.portal')

@@ -694,4 +694,29 @@ describe('Select Component', () => {
         fireEvent.click(disabledBtn)
         expect(onSelect).not.toHaveBeenCalled()
     })
+
+    // BUG-09: Two Select instances on the same page must have different option list IDs
+    it('two Select instances have different IDs on their option lists', () => {
+        render(
+            <div>
+                <Select
+                    options={options}
+                    searchable
+                    aria-label='first'
+                />
+                <Select
+                    options={options}
+                    searchable
+                    aria-label='second'
+                />
+            </div>
+        )
+        const inputs = screen.getAllByRole('textbox')
+        expect(inputs).toHaveLength(2)
+        const firstId = inputs[0].getAttribute('aria-controls')
+        const secondId = inputs[1].getAttribute('aria-controls')
+        expect(firstId).toBeTruthy()
+        expect(secondId).toBeTruthy()
+        expect(firstId).not.toBe(secondId)
+    })
 })

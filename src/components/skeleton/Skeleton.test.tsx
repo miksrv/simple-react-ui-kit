@@ -30,9 +30,7 @@ describe('Skeleton Component', () => {
     })
 
     it('applies inline styles when provided', () => {
-        const { container } = render(
-            <Skeleton style={{ width: '200px', height: '20px' }} />
-        )
+        const { container } = render(<Skeleton style={{ width: '200px', height: '20px' }} />)
         const skeletonElement = container.querySelector('div') as HTMLElement
         expect(skeletonElement.style.width).toBe('200px')
         expect(skeletonElement.style.height).toBe('20px')
