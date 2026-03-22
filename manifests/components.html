@@ -1,0 +1,4725 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Components Manifest</title>
+  <style>
+      :root {
+          --bg: #0b0c10;
+          --panel: #121318;
+          --muted: #9aa0a6;
+          --fg: #e8eaed;
+          --ok: #22c55e;
+          --info: #1e88e5;
+          --err: #c62828;
+          --ok-bg: #0c1a13;
+          --info-bg: #0c1624;
+          --err-bg: #1a0e0e;
+          --chip: #1f2330;
+          --border: #2b2f3a;
+          --link: #8ab4f8;
+          --active-ring: 1px; /* 1px active ring for pills and toggles */
+      }
+
+      * {
+          box-sizing: border-box;
+      }
+
+      html,
+      body {
+          margin: 0;
+          background: var(--bg);
+          color: var(--fg);
+          font: 14px/1.5 system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Ubuntu,
+          Cantarell,
+          'Helvetica Neue',
+          Arial,
+          'Noto Sans';
+      }
+
+      .wrap {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 16px 20px;
+      }
+
+      header {
+          position: sticky;
+          top: 0;
+          backdrop-filter: blur(6px);
+          background: color-mix(in srgb, var(--bg) 84%, transparent);
+          border-bottom: 1px solid var(--border);
+          z-index: 10;
+      }
+
+      h1 {
+          font-size: 20px;
+          margin: 0 0 6px;
+      }
+
+      .summary {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          align-items: center;
+      }
+
+      /* Top filter pills */
+      .filter-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          background: var(--panel);
+          text-decoration: none;
+          cursor: pointer;
+          user-select: none;
+          color: var(--fg);
+      }
+
+      .filter-pill.ok {
+          color: #b9f6ca;
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+          background: color-mix(in srgb, var(--ok) 18%, #000);
+      }
+
+      .filter-pill.info {
+          color: #b3d9ff;
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+          background: var(--info-bg);
+      }
+
+      .filter-pill.err {
+          color: #ff9aa0;
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+          background: var(--err-bg);
+      }
+
+      .filter-pill.all {
+          color: #d7dbe0;
+          border-color: var(--border);
+          background: var(--panel);
+      }
+
+      .filter-pill[aria-disabled='true'] {
+          cursor: default;
+          text-decoration: none;
+      }
+
+      .filter-pill:focus,
+      .filter-pill:active {
+          outline: none;
+          box-shadow: none;
+      }
+
+      /* Selected top pill ring via :target */
+      #filter-all:target ~ header .filter-pill[data-k='all'],
+      #filter-errors:target ~ header .filter-pill[data-k='errors'],
+      #filter-infos:target ~ header .filter-pill[data-k='infos'],
+      #filter-story-errors:target ~ header .filter-pill[data-k='story-errors'],
+      #filter-doc-errors:target ~ header .filter-pill[data-k='docs'],
+      #filter-docs:target ~ header .filter-pill[data-k='docs'] {
+          box-shadow: 0 0 0 var(--active-ring) currentColor;
+          border-color: currentColor;
+      }
+
+      /* Hidden targets for filtering */
+      #filter-all,
+      #filter-errors,
+      #filter-infos,
+      #filter-story-errors,
+      #filter-doc-errors,
+      #filter-docs {
+          display: none;
+      }
+
+      main {
+          padding: 36px 0 40px;
+      }
+
+      .grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 18px;
+      }
+
+      /* one card per row */
+
+      .card {
+          border: 1px solid var(--border);
+          background: var(--panel);
+          border-radius: 14px;
+          padding: 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+      }
+
+      .head {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+      }
+
+      .title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+      }
+
+      .title h2 {
+          font-size: 16px;
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+
+      .meta {
+          font-size: 12px;
+          color: var(--muted);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+
+      .kv {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+      }
+
+      .chip {
+          font-size: 12px;
+          padding: 4px 8px;
+          border-radius: 999px;
+          background: var(--chip);
+          border: 1px solid var(--border);
+      }
+
+      .hint {
+          color: var(--muted);
+          font-size: 12px;
+      }
+
+      .badges {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+      }
+
+      /* Per-card badges: labels become toggles when clickable */
+      .badge {
+          font-size: 12px;
+          padding: 3px 8px;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--chip);
+          color: #d7dbe0;
+      }
+
+      .badge.ok {
+          color: #b9f6ca;
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+      }
+
+      .badge.info {
+          color: #b3d9ff;
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+      }
+
+      .badge.err {
+          color: #ff9aa0;
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+      }
+
+      .as-toggle {
+          cursor: pointer;
+      }
+
+      /* 1px ring on active toggle */
+      .tg-err:checked + label.as-toggle,
+      .tg-info:checked + label.as-toggle,
+      .tg-stories:checked + label.as-toggle,
+      .tg-docs:checked + label.as-toggle,
+      .tg-content:checked + label.as-toggle,
+      .tg-props:checked + label.as-toggle {
+          box-shadow: 0 0 0 var(--active-ring) currentColor;
+          border-color: currentColor;
+      }
+
+      /* Panels: hidden by default, shown when respective toggle checked */
+      .panels {
+          display: grid;
+          gap: 10px;
+      }
+
+      .panel {
+          display: none;
+      }
+
+      .tg-err:checked ~ .panels .panel-err {
+          display: grid;
+      }
+
+      .tg-info:checked ~ .panels .panel-info {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-stories:checked ~ .panels .panel-stories {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-docs:checked ~ .panels .panel-docs {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-content:checked ~ .panels .panel-content {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-props:checked ~ .panels .panel-props {
+          display: grid;
+      }
+
+      /* Colored notes for prop type error + info */
+      .note {
+          padding: 12px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+      }
+
+      .note.err {
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+          background: var(--err-bg);
+          color: #ffd1d4;
+      }
+
+      .note.info {
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+          background: var(--info-bg);
+          color: #d6e8ff;
+      }
+
+      .note.ok {
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+          background: var(--ok-bg);
+          color: var(--fg);
+      }
+
+      .note-title {
+          font-weight: 600;
+          margin-bottom: 6px;
+      }
+
+      .note-body {
+          white-space: normal;
+      }
+
+      /* Story error cards */
+      .ex {
+          padding: 10px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          background: #0f131b;
+      }
+
+      .ex.err {
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+      }
+
+      .row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+      }
+
+      .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          display: inline-block;
+      }
+
+      .dot-ok {
+          background: var(--ok);
+      }
+
+      .dot-err {
+          background: var(--err);
+      }
+
+      .ex-name {
+          font-weight: 600;
+      }
+
+      /* Error groups (visible in errors filter) */
+      .error-groups {
+          display: none;
+          margin-bottom: 16px;
+      }
+
+      .group {
+          border: 1px solid var(--border);
+          background: var(--panel);
+          border-radius: 14px;
+          overflow: hidden;
+      }
+
+      .group + .group {
+          margin-top: 12px;
+      }
+
+      .group-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 14px;
+          cursor: pointer;
+          border-bottom: 1px solid var(--border);
+      }
+
+      .group-header:hover {
+          background: #141722;
+      }
+
+      .group-title {
+          font-weight: 600;
+          flex: 1;
+      }
+
+      .group-count {
+          font-size: 12px;
+          color: var(--muted);
+      }
+
+      .group-cards {
+          display: none;
+          padding: 12px;
+      }
+
+      .group .card {
+          margin: 12px 0;
+      }
+
+      .group .card:first-child {
+          margin-top: 0;
+      }
+
+      .group .card:last-child {
+          margin-bottom: 0;
+      }
+
+      /* caret rotation */
+      .group-tg:checked + label .caret {
+          transform: rotate(90deg);
+      }
+
+      .caret {
+          transition: transform 0.15s ease;
+      }
+
+      /* toggle body */
+      .group-tg:checked ~ .group-cards {
+          display: block;
+      }
+
+      /* CSS-only filtering of cards via top pills */
+      #filter-errors:target ~ main .card:not(.has-error):not(.has-story-error) {
+          display: none;
+      }
+
+      #filter-infos:target ~ main .card:not(.has-info) {
+          display: none;
+      }
+
+      #filter-story-errors:target ~ main .card:not(.has-story-error) {
+          display: none;
+      }
+
+      #filter-doc-errors:target ~ main .card:not(.has-doc-error) {
+          display: none;
+      }
+
+      #filter-docs:target ~ main .card:has(> .tg-docs),
+      #filter-docs:target ~ main .card.is-doc {
+          display: block;
+      }
+
+      #filter-docs:target ~ main .card:not(:has(> .tg-docs)):not(.is-doc) {
+          display: none;
+      }
+
+      #filter-all:target ~ main .card {
+          display: block;
+      }
+
+      /* In errors view, hide standalone component-error cards in the regular grid (they will appear in groups) */
+      #filter-errors:target ~ main .grid .card.has-error {
+          display: none;
+      }
+
+      /* Show grouped section only in errors view */
+      #filter-errors:target ~ main .error-groups {
+          display: block;
+      }
+
+      /* Section titles */
+      .section-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--muted);
+          margin: 24px 0 12px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid var(--border);
+      }
+      .section-title:first-child {
+          margin-top: 0;
+      }
+
+      /* When a toggle is checked, show the corresponding panel */
+      .card > .tg-err:checked ~ .panels .panel-err {
+          display: grid;
+      }
+      
+      .card > .tg-info:checked ~ .panels .panel-info {
+          display: grid;
+      }
+      
+      .card > .tg-stories:checked ~ .panels .panel-stories {
+          display: grid;
+      }
+
+      .card > .tg-docs:checked ~ .panels .panel-docs {
+          display: grid;
+      }
+
+      .card > .tg-content:checked ~ .panels .panel-content {
+          display: grid;
+      }
+
+      /* Add vertical spacing around panels only when any panel is visible */
+      .card > .tg-err:checked ~ .panels,
+      .card > .tg-info:checked ~ .panels,
+      .card > .tg-stories:checked ~ .panels,
+      .card > .tg-docs:checked ~ .panels,
+      .card > .tg-content:checked ~ .panels,
+      .card > .tg-props:checked ~ .panels {
+          margin: 10px 0;
+      }
+
+      /* Optional: a subtle 1px ring on the active badge, using :has() if available */
+      @supports selector(.card:has(.tg-err:checked)) {
+          .card:has(.tg-err:checked) label[for$='-err'],
+          .card:has(.tg-info:checked) label[for$='-info'],
+          .card:has(.tg-stories:checked) label[for$='-stories'],
+          .card:has(.tg-docs:checked) label[for$='-docs'],
+          .card:has(.tg-content:checked) label[for$='-content'],
+          .card:has(.tg-props:checked) label[for$='-props'] {
+              box-shadow: 0 0 0 1px currentColor;
+              border-color: currentColor;
+          }
+      }
+
+      /* Wrap long lines in code blocks at ~120 characters */
+      pre, code {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+      pre {
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+          word-break: break-word;
+          overflow-x: auto; /* fallback for extremely long tokens */
+          margin: 8px 0 0;
+      }
+      pre > code {
+          display: block;
+          white-space: inherit;
+          overflow-wrap: inherit;
+          word-break: inherit;
+          inline-size: min(100%, 120ch);
+      }
+
+      /* MDX content container for docs */
+      .mdx-content {
+          background: #0f131b;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 12px;
+          max-height: 400px;
+          overflow-y: auto;
+          margin-top: 8px;
+      }
+  </style>
+</head>
+<body>
+<!-- Hidden targets for the top-level filters -->
+<span id="filter-all"></span>
+<span id="filter-errors"></span>
+<span id="filter-infos"></span>
+<span id="filter-story-errors"></span>
+<span id="filter-doc-errors"></span>
+<span id="filter-docs"></span>
+<header>
+  <div class="wrap">
+    <h1>Manifest Debugger</h1>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">1/17 prop type error</a><a class="filter-pill info" data-k="infos" href="#filter-infos">17/17 infos</a><span class="filter-pill ok" aria-disabled="true">92 stories ok</span></div>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="note ok" style="margin-bottom: 16px;">
+              Using <code>react-docgen-typescript</code>. Generation took <strong>2.5s</strong>.
+            </div>
+    <h2 class="section-title">Components</h2>
+    <div class="grid" role="list">
+      
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Badge">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Badge</h2>
+      <div class="badges">
+        <label for="c-0-components-badge-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-0-components-badge-info" class="badge info as-toggle">1 info</label>
+        <label for="c-0-components-badge-stories" class="badge ok as-toggle">6 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Badge.stories.tsx">components-badge · ./stories/Badge.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-0-components-badge-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-0-components-badge-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-0-components-badge-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">5 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Badge</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Icon to display alongside the badge label
+ */
+icon?: ReactElement&lt;unknown, string | JSXElementConstructor&lt;any&gt;&gt; | &quot;AddressSign&quot; | &quot;Award&quot; | &quot;ArrowUp&quot; | &quot;ArrowDown&quot; | &quot;BarChart&quot; | &quot;Camera&quot; | &quot;Bookmark&quot; | &quot;CheckCircle&quot; | &quot;CheckboxChecked&quot; | &quot;CheckboxIndeterminate&quot; | &quot;CheckboxUnchecked&quot; | &quot;Clip&quot; | &quot;Close&quot; | &quot;Cloud&quot; | &quot;Chart&quot; | &quot;Comment&quot; | &quot;Compass&quot; | &quot;Download&quot; | &quot;DoubleUp&quot; | &quot;EditLocation&quot; | &quot;Lightning&quot; | &quot;Exit&quot; | &quot;External&quot; | &quot;Eye&quot; | &quot;Feed&quot; | &quot;FullscreenIn&quot; | &quot;FullscreenOut&quot; | &quot;HeartEmpty&quot; | &quot;HeartFilled&quot; | &quot;Layers&quot; | &quot;Link&quot; | &quot;KeyboardUp&quot; | &quot;KeyboardDown&quot; | &quot;KeyboardLeft&quot; | &quot;KeyboardRight&quot; | &quot;Map&quot; | &quot;Menu&quot; | &quot;Moon&quot; | &quot;Bell&quot; | &quot;Pencil&quot; | &quot;PinDrop&quot; | &quot;PlusCircle&quot; | &quot;Point&quot; | &quot;Position&quot; | &quot;Pressure&quot; | &quot;Photo&quot; | &quot;RadioButtonChecked&quot; | &quot;RadioButtonUnchecked&quot; | &quot;ReportError&quot; | &quot;Rotate&quot; | &quot;Ruler&quot; | &quot;Search&quot; | &quot;Settings&quot; | &quot;StarEmpty&quot; | &quot;StarFilled&quot; | &quot;SolarPower&quot; | &quot;Sun&quot; | &quot;Tag&quot; | &quot;Telegram&quot; | &quot;Thermometer&quot; | &quot;Time&quot; | &quot;Tune&quot; | &quot;User&quot; | &quot;Users&quot; | &quot;VerticalDots&quot; | &quot;Water&quot; | &quot;WaterDrop&quot; | &quot;Wind&quot;
+
+/**
+ * Text label to display inside the badge
+ */
+label?: string | number
+
+/**
+ * Callback function to handle badge removal when the remove button is clicked
+ */
+onClickRemove?: ((key?: string | number) =&gt; void)
+
+/**
+ * Size of the badge
+ */
+size?: ElementSizeType = medium</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Badge } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Badge label=&quot;Badge&quot; size=&quot;medium&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Icon</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithIcon = () =&gt; &lt;Badge label=&quot;Wind Speed&quot; icon=&quot;Wind&quot; size=&quot;medium&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Remove Button</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithRemove = () =&gt; &lt;Badge
+    label=&quot;Removable&quot;
+    icon=&quot;Tag&quot;
+    size=&quot;medium&quot;
+    onClickRemove={(key: string | undefined) =&gt; alert(`Removed: ${String(key)}`)} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sizes</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Sizes = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, alignItems: &#39;center&#39;, gap: &#39;12px&#39;, flexWrap: &#39;wrap&#39; }}&gt;
+        &lt;Badge
+            label=&#39;Small&#39;
+            icon=&#39;Point&#39;
+            size=&#39;small&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Medium&#39;
+            icon=&#39;Point&#39;
+            size=&#39;medium&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Large&#39;
+            icon=&#39;Point&#39;
+            size=&#39;large&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">All Variants</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AllVariants = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexWrap: &#39;wrap&#39;, gap: &#39;10px&#39;, alignItems: &#39;center&#39; }}&gt;
+        &lt;Badge
+            label=&#39;Icon Badge&#39;
+            icon=&#39;StarFilled&#39;
+            size=&#39;medium&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Removable&#39;
+            icon=&#39;Tag&#39;
+            size=&#39;medium&#39;
+            onClickRemove={() =&gt; {}}
+        /&gt;
+        &lt;Badge
+            label=&#39;Emoji&#39;
+            icon={
+                &lt;span
+                    role=&#39;img&#39;
+                    aria-label=&#39;fire&#39;
+                &gt;
+                    🔥
+                &lt;/span&gt;
+            }
+            size=&#39;medium&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Custom Color&#39;
+            size=&#39;medium&#39;
+            style={{ backgroundColor: &#39;#3b82f6&#39;, color: &#39;#fff&#39; }}
+        /&gt;
+        &lt;Badge
+            label=&#39;No Icon&#39;
+            size=&#39;medium&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Small + Icon&#39;
+            icon=&#39;Bell&#39;
+            size=&#39;small&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Large + Remove&#39;
+            icon=&#39;Close&#39;
+            size=&#39;large&#39;
+            onClickRemove={() =&gt; {}}
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Emoji Icon</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithEmojiIcon = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;10px&#39;, flexWrap: &#39;wrap&#39; }}&gt;
+        &lt;Badge
+            label=&#39;Happy&#39;
+            icon={
+                &lt;span
+                    role=&#39;img&#39;
+                    aria-label=&#39;happy&#39;
+                &gt;
+                    😊
+                &lt;/span&gt;
+            }
+            size=&#39;medium&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Cool&#39;
+            icon={
+                &lt;span
+                    role=&#39;img&#39;
+                    aria-label=&#39;cool&#39;
+                &gt;
+                    😎
+                &lt;/span&gt;
+            }
+            size=&#39;medium&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Surprised&#39;
+            icon={
+                &lt;span
+                    role=&#39;img&#39;
+                    aria-label=&#39;surprised&#39;
+                &gt;
+                    😲
+                &lt;/span&gt;
+            }
+            size=&#39;medium&#39;
+        /&gt;
+        &lt;Badge
+            label=&#39;Love&#39;
+            icon={
+                &lt;span
+                    role=&#39;img&#39;
+                    aria-label=&#39;love&#39;
+                &gt;
+                    😍
+                &lt;/span&gt;
+            }
+            size=&#39;medium&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Button">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Button</h2>
+      <div class="badges">
+        <label for="c-1-components-button-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-1-components-button-info" class="badge info as-toggle">1 info</label>
+        <label for="c-1-components-button-stories" class="badge ok as-toggle">9 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Button.stories.tsx">components-button · ./stories/Button.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-1-components-button-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-1-components-button-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-1-components-button-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">11 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Button</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Content inside the button
+ */
+children?: ReactNode
+
+/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Icon to display inside the button
+ */
+icon?: &quot;AddressSign&quot; | &quot;Award&quot; | &quot;ArrowUp&quot; | &quot;ArrowDown&quot; | &quot;BarChart&quot; | &quot;Camera&quot; | &quot;Bookmark&quot; | &quot;CheckCircle&quot; | &quot;CheckboxChecked&quot; | &quot;CheckboxIndeterminate&quot; | &quot;CheckboxUnchecked&quot; | &quot;Clip&quot; | &quot;Close&quot; | &quot;Cloud&quot; | &quot;Chart&quot; | &quot;Comment&quot; | &quot;Compass&quot; | &quot;Download&quot; | &quot;DoubleUp&quot; | &quot;EditLocation&quot; | &quot;Lightning&quot; | &quot;Exit&quot; | &quot;External&quot; | &quot;Eye&quot; | &quot;Feed&quot; | &quot;FullscreenIn&quot; | &quot;FullscreenOut&quot; | &quot;HeartEmpty&quot; | &quot;HeartFilled&quot; | &quot;Layers&quot; | &quot;Link&quot; | &quot;KeyboardUp&quot; | &quot;KeyboardDown&quot; | &quot;KeyboardLeft&quot; | &quot;KeyboardRight&quot; | &quot;Map&quot; | &quot;Menu&quot; | &quot;Moon&quot; | &quot;Bell&quot; | &quot;Pencil&quot; | &quot;PinDrop&quot; | &quot;PlusCircle&quot; | &quot;Point&quot; | &quot;Position&quot; | &quot;Pressure&quot; | &quot;Photo&quot; | &quot;RadioButtonChecked&quot; | &quot;RadioButtonUnchecked&quot; | &quot;ReportError&quot; | &quot;Rotate&quot; | &quot;Ruler&quot; | &quot;Search&quot; | &quot;Settings&quot; | &quot;StarEmpty&quot; | &quot;StarFilled&quot; | &quot;SolarPower&quot; | &quot;Sun&quot; | &quot;Tag&quot; | &quot;Telegram&quot; | &quot;Thermometer&quot; | &quot;Time&quot; | &quot;Tune&quot; | &quot;User&quot; | &quot;Users&quot; | &quot;VerticalDots&quot; | &quot;Water&quot; | &quot;WaterDrop&quot; | &quot;Wind&quot;
+
+/**
+ * Content to display inside the button (as text)
+ */
+label?: string
+
+/**
+ * URL for a link if the button acts as a link
+ */
+link?: string
+
+/**
+ * Show loading spinner instead of button content
+ */
+loading?: boolean
+
+/**
+ * Visual style of the button
+ */
+mode?: ButtonModeType = primary
+
+/**
+ * Set to true to prevent search engines from indexing the button (if used as a link)
+ */
+noIndex?: boolean
+
+/**
+ * Size of the button
+ */
+size?: ElementSizeType = medium
+
+/**
+ * Whether the button takes up the full width of the container
+ */
+stretched?: boolean
+
+/**
+ * Button variant for styling
+ */
+variant?: &quot;positive&quot; | &quot;negative&quot;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Button mode=&quot;primary&quot; size=&quot;medium&quot;&gt;Click me&lt;/Button&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Modes</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Modes = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;12px&#39;, flexWrap: &#39;wrap&#39;, alignItems: &#39;center&#39; }}&gt;
+        &lt;Button mode=&#39;primary&#39;&gt;Primary&lt;/Button&gt;
+        &lt;Button mode=&#39;secondary&#39;&gt;Secondary&lt;/Button&gt;
+        &lt;Button mode=&#39;outline&#39;&gt;Outline&lt;/Button&gt;
+        &lt;Button mode=&#39;link&#39;&gt;Link&lt;/Button&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sizes</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Sizes = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;12px&#39;, alignItems: &#39;center&#39;, flexWrap: &#39;wrap&#39; }}&gt;
+        &lt;Button size=&#39;small&#39;&gt;Small&lt;/Button&gt;
+        &lt;Button size=&#39;medium&#39;&gt;Medium&lt;/Button&gt;
+        &lt;Button size=&#39;large&#39;&gt;Large&lt;/Button&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Icon</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithIcon = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;12px&#39;, flexWrap: &#39;wrap&#39;, alignItems: &#39;center&#39; }}&gt;
+        &lt;Button icon=&#39;Map&#39;&gt;With Map Icon&lt;/Button&gt;
+        &lt;Button icon=&#39;Settings&#39;&gt;Settings&lt;/Button&gt;
+        &lt;Button
+            icon=&#39;Bell&#39;
+            mode=&#39;secondary&#39;
+        &gt;
+            Notifications
+        &lt;/Button&gt;
+        &lt;Button
+            icon=&#39;Download&#39;
+            mode=&#39;outline&#39;
+        &gt;
+            Download
+        &lt;/Button&gt;
+        {/* Icon-only button (no text) */}
+        &lt;Button
+            icon=&#39;Settings&#39;
+            aria-label=&#39;Settings&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Loading State</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const LoadingState = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;12px&#39;, flexWrap: &#39;wrap&#39;, alignItems: &#39;center&#39; }}&gt;
+        &lt;Button loading&gt;Primary Loading&lt;/Button&gt;
+        &lt;Button
+            loading
+            mode=&#39;secondary&#39;
+        &gt;
+            Secondary Loading
+        &lt;/Button&gt;
+        &lt;Button
+            loading
+            mode=&#39;outline&#39;
+        &gt;
+            Outline Loading
+        &lt;/Button&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Positive / Negative Variants</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Variants = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;12px&#39;, flexWrap: &#39;wrap&#39;, alignItems: &#39;center&#39; }}&gt;
+        &lt;Button variant=&#39;positive&#39;&gt;Confirm&lt;/Button&gt;
+        &lt;Button variant=&#39;negative&#39;&gt;Delete&lt;/Button&gt;
+        &lt;Button
+            mode=&#39;outline&#39;
+            variant=&#39;positive&#39;
+        &gt;
+            Outline Positive
+        &lt;/Button&gt;
+        &lt;Button
+            mode=&#39;outline&#39;
+            variant=&#39;negative&#39;
+        &gt;
+            Outline Negative
+        &lt;/Button&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">As Link</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AsLink = () =&gt; &lt;Button
+    link=&quot;https://github.com/miksrv/simple-react-ui-kit&quot;
+    mode=&quot;primary&quot;
+    icon=&quot;External&quot;&gt;Open GitHub&lt;/Button&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Stretched (Full Width)</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Stretched = () =&gt; (
+    &lt;div style={{ maxWidth: &#39;400px&#39;, width: &#39;100%&#39; }}&gt;
+        &lt;Button stretched&gt;Full Width Button&lt;/Button&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;12px&#39;, flexWrap: &#39;wrap&#39;, alignItems: &#39;center&#39; }}&gt;
+        &lt;Button disabled&gt;Disabled Primary&lt;/Button&gt;
+        &lt;Button
+            disabled
+            mode=&#39;secondary&#39;
+        &gt;
+            Disabled Secondary
+        &lt;/Button&gt;
+        &lt;Button
+            disabled
+            mode=&#39;outline&#39;
+        &gt;
+            Disabled Outline
+        &lt;/Button&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Calendar">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Calendar</h2>
+      <div class="badges">
+        <label for="c-2-date-calendar-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-2-date-calendar-info" class="badge info as-toggle">1 info</label>
+        <label for="c-2-date-calendar-stories" class="badge ok as-toggle">5 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Calendar.stories.tsx">date-calendar · ./stories/Calendar.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-2-date-calendar-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-2-date-calendar-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-2-date-calendar-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">8 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Calendar</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class name for the calendar container
+ */
+containerClassName?: string
+
+/**
+ * Selected date period as a tuple of start and end dates (YYYY-MM-DD)
+ */
+datePeriod?: [(string)?, (string)?] | undefined
+
+/**
+ * Hide the days of the week row
+ */
+hideDaysOfWeek?: boolean
+
+/**
+ * Locale for month and day names (&#39;ru&#39; or &#39;en&#39;)
+ */
+locale?: &quot;en&quot; | &quot;ru&quot; = en
+
+/**
+ * Maximum selectable date (YYYY-MM-DD)
+ */
+maxDate?: string
+
+/**
+ * Minimum selectable date (YYYY-MM-DD)
+ */
+minDate?: string
+
+/**
+ * Callback for single date selection
+ */
+onDateSelect?: ((date: string) =&gt; void)
+
+/**
+ * Callback for period selection (start and end dates)
+ */
+onPeriodSelect?: ((startDate?: string, endDate?: string) =&gt; void) | undefined</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Calendar } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;DefaultCalendarDemo locale=&quot;en&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Period Selection</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const PeriodSelection = () =&gt; &lt;PeriodSelectionDemo /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Min / Max Dates</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithMinMaxDates = () =&gt; {
+    const today = new Date()
+    const fmt = (d: Date) =&gt; d.toISOString().slice(0, 10)
+    const minDate = fmt(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 5))
+    const maxDate = fmt(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 10))
+    return (
+        &lt;div&gt;
+            &lt;p style={{ fontSize: 13, marginBottom: 8, color: &#39;#555&#39; }}&gt;
+                Selectable range: &lt;strong&gt;{minDate}&lt;/strong&gt; to &lt;strong&gt;{maxDate}&lt;/strong&gt;
+            &lt;/p&gt;
+            &lt;Calendar
+                minDate={minDate}
+                maxDate={maxDate}
+                onDateSelect={() =&gt; {}}
+            /&gt;
+        &lt;/div&gt;
+    )
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Locales (en vs ru)</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Locales = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;32px&#39;, flexWrap: &#39;wrap&#39; }}&gt;
+        &lt;div&gt;
+            &lt;p style={{ fontWeight: 600, marginBottom: 8 }}&gt;English&lt;/p&gt;
+            &lt;Calendar
+                locale=&#39;en&#39;
+                onDateSelect={() =&gt; {}}
+            /&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+            &lt;p style={{ fontWeight: 600, marginBottom: 8 }}&gt;Russian&lt;/p&gt;
+            &lt;Calendar
+                locale=&#39;ru&#39;
+                onDateSelect={() =&gt; {}}
+            /&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Hidden Days-of-Week Row</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const HiddenDaysOfWeek = () =&gt; &lt;Calendar hideDaysOfWeek locale=&quot;en&quot; onDateSelect={() =&gt; {}} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Checkbox">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Checkbox</h2>
+      <div class="badges">
+        <label for="c-3-controls-checkbox-props" class="badge ok as-toggle">3 prop types</label>
+        <label for="c-3-controls-checkbox-info" class="badge info as-toggle">1 info</label>
+        <label for="c-3-controls-checkbox-stories" class="badge ok as-toggle">6 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Checkbox.stories.tsx">controls-checkbox · ./stories/Checkbox.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-3-controls-checkbox-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-3-controls-checkbox-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-3-controls-checkbox-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">3 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Checkbox</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Set to true for an indeterminate state (partially checked)
+ */
+indeterminate?: boolean
+
+/**
+ * Label for the checkbox (can be a string or a React node)
+ */
+label?: ReactNode</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Checkbox } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Checkbox label=&quot;Accept terms and conditions&quot; checked={false} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Checked</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Checked = () =&gt; &lt;Checkbox label=&quot;Remember me&quot; checked /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Indeterminate</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Indeterminate = () =&gt; &lt;Checkbox label=&quot;Select all&quot; indeterminate /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 8 }}&gt;
+        &lt;Checkbox
+            label=&#39;Disabled unchecked&#39;
+            disabled
+        /&gt;
+        &lt;Checkbox
+            label=&#39;Disabled checked&#39;
+            disabled
+            checked
+            readOnly
+        /&gt;
+        &lt;Checkbox
+            label=&#39;Disabled indeterminate&#39;
+            disabled
+            indeterminate
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With React Node Label</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithReactNodeLabel = () =&gt; &lt;Checkbox
+    label={(&lt;span&gt;I agree to the{&#39; &#39;}
+        &lt;a
+            href=&#39;#&#39;
+            style={{ color: &#39;#3b82f6&#39; }}
+        &gt;
+            Terms of Service
+        &lt;/a&gt;{&#39; &#39;}and{&#39; &#39;}
+        &lt;a
+            href=&#39;#&#39;
+            style={{ color: &#39;#3b82f6&#39; }}
+        &gt;
+            Privacy Policy
+        &lt;/a&gt;
+    &lt;/span&gt;)} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Checkbox Group</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Group = () =&gt; &lt;CheckboxGroupDemo /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Container">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Container</h2>
+      <div class="badges">
+        <label for="c-4-components-container-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-4-components-container-info" class="badge info as-toggle">1 info</label>
+        <label for="c-4-components-container-stories" class="badge ok as-toggle">5 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Container.stories.tsx">components-container · ./stories/Container.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-4-components-container-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-4-components-container-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-4-components-container-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">6 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Container</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Optional action element (button, link, etc.) displayed in the header
+ */
+action?: ReactNode
+
+/**
+ * Main content of the container
+ */
+children?: ReactNode
+
+/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Optional footer content, typically used for additional actions or information
+ */
+footer?: ReactNode
+
+/**
+ * Custom header content, if different from the default title and action
+ */
+header?: ReactNode
+
+/**
+ * Optional title for the container, typically displayed in the header
+ */
+title?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button, Container, Progress } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Container title=&quot;Container Title&quot;&gt;
+    &lt;p&gt;This is the main content area of the container. Add any React content here.&lt;/p&gt;
+&lt;/Container&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Action</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithAction = () =&gt; (
+    &lt;Container
+        title=&#39;Latest Updates&#39;
+        action={
+            &lt;Button
+                size=&#39;small&#39;
+                mode=&#39;outline&#39;
+            &gt;
+                See all
+            &lt;/Button&gt;
+        }
+    &gt;
+        &lt;p&gt;Content with an action button in the header.&lt;/p&gt;
+    &lt;/Container&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Custom Header</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithCustomHeader = () =&gt; (
+    &lt;Container
+        title=&#39;Profile Completion&#39;
+        header={
+            &lt;div style={{ fontSize: 12, color: &#39;#666&#39;, marginBottom: 4 }}&gt;
+                Complete your profile to unlock all features
+                &lt;Progress
+                    value={60}
+                    height={4}
+                    color=&#39;main&#39;
+                /&gt;
+            &lt;/div&gt;
+        }
+    &gt;
+        &lt;p&gt;The custom header is rendered between the title and the action slot.&lt;/p&gt;
+    &lt;/Container&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Footer</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithFooter = () =&gt; (
+    &lt;Container
+        title=&#39;Invoice #1042&#39;
+        footer={
+            &lt;div style={{ display: &#39;flex&#39;, justifyContent: &#39;flex-end&#39;, gap: 8 }}&gt;
+                &lt;Button
+                    mode=&#39;outline&#39;
+                    size=&#39;small&#39;
+                &gt;
+                    Cancel
+                &lt;/Button&gt;
+                &lt;Button size=&#39;small&#39;&gt;Pay now&lt;/Button&gt;
+            &lt;/div&gt;
+        }
+    &gt;
+        &lt;p&gt;Invoice details and line items would go here.&lt;/p&gt;
+    &lt;/Container&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Full Example</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const FullExample = () =&gt; (
+    &lt;Container
+        title=&#39;User Registration&#39;
+        action={
+            &lt;Button
+                size=&#39;small&#39;
+                mode=&#39;link&#39;
+            &gt;
+                Need help?
+            &lt;/Button&gt;
+        }
+        header={
+            &lt;div style={{ fontSize: 12, color: &#39;#666&#39; }}&gt;
+                Fill in all required fields to create your account
+                &lt;Progress
+                    value={40}
+                    height={3}
+                    color=&#39;main&#39;
+                /&gt;
+            &lt;/div&gt;
+        }
+        footer={
+            &lt;div style={{ display: &#39;flex&#39;, justifyContent: &#39;space-between&#39;, alignItems: &#39;center&#39; }}&gt;
+                &lt;span style={{ fontSize: 13, color: &#39;#666&#39; }}&gt;Step 1 of 3&lt;/span&gt;
+                &lt;Button&gt;Continue&lt;/Button&gt;
+            &lt;/div&gt;
+        }
+        style={{ maxWidth: 500 }}
+    &gt;
+        &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 12, padding: &#39;8px 0&#39; }}&gt;
+            &lt;p style={{ margin: 0 }}&gt;Main form content goes here — inputs, selects, checkboxes, etc.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/Container&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DatePicker">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DatePicker</h2>
+      <div class="badges">
+        <label for="c-5-date-datepicker-props" class="badge ok as-toggle">13 prop types</label>
+        <label for="c-5-date-datepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-5-date-datepicker-stories" class="badge ok as-toggle">6 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/DatePicker.stories.tsx">date-datepicker · ./stories/DatePicker.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-5-date-datepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-5-date-datepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-5-date-datepicker-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">13 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::DatePicker</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Button mode for the trigger button
+ */
+buttonMode?: ButtonModeType = primary
+
+/**
+ * Selected date period as a tuple of start and end dates (YYYY-MM-DD)
+ */
+datePeriod?: [(string)?, (string)?] | undefined
+
+/**
+ * Disables the date picker if set to true
+ */
+disabled?: boolean = false
+
+/**
+ * Hide the days of the week row
+ */
+hideDaysOfWeek?: boolean
+
+/**
+ * List of preset options to hide from the presets list
+ */
+hidePresets?: PresetOption[]
+
+/**
+ * Locale for month and day names (&#39;ru&#39; or &#39;en&#39;)
+ */
+locale?: &quot;en&quot; | &quot;ru&quot;
+
+/**
+ * Maximum selectable date (YYYY-MM-DD)
+ */
+maxDate?: string
+
+/**
+ * Minimum selectable date (YYYY-MM-DD)
+ */
+minDate?: string
+
+/**
+ * Callback for single date selection
+ */
+onDateSelect?: ((date: string) =&gt; void)
+
+/**
+ * Callback for period selection (start and end dates)
+ */
+onPeriodSelect?: ((startDate?: string, endDate?: string) =&gt; void) | undefined
+
+/**
+ * Date format for displaying period ranges (default: &#39;DD.MM.YYYY&#39;)
+ */
+periodDatesFormat?: string = DD.MM.YYYY
+
+/**
+ * Caption text shown when no date is selected (default: &#39;Select date&#39;)
+ */
+placeholder?: string = Select date
+
+/**
+ * Date format for displaying a single date (default: &#39;DD MMMM YYYY&#39;)
+ */
+singleDateFormat?: string = DD MMMM YYYY</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { DatePicker } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;DefaultDatePickerDemo locale=&quot;en&quot; placeholder=&quot;Select date range&quot; buttonMode=&quot;primary&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Single Date Mode</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const SingleDateMode = () =&gt; &lt;SingleDateModeDemo /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Hidden Presets</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithHiddenPresets = () =&gt; (
+    &lt;div style={{ minHeight: 300 }}&gt;
+        &lt;DatePicker
+            placeholder=&#39;Select range&#39;
+            hidePresets={[PresetOption.TODAY, PresetOption.DAY, PresetOption.YEAR]}
+            onPeriodSelect={() =&gt; {}}
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;DatePicker disabled placeholder=&quot;Date picker disabled&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Russian Locale</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const RussianLocale = () =&gt; (
+    &lt;div style={{ minHeight: 300 }}&gt;
+        &lt;DatePicker
+            locale=&#39;ru&#39;
+            placeholder=&#39;Выберите период&#39;
+            buttonMode=&#39;secondary&#39;
+            onPeriodSelect={() =&gt; {}}
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Outline Button Mode</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const OutlineButton = () =&gt; (
+    &lt;div style={{ minHeight: 300 }}&gt;
+        &lt;DatePicker
+            buttonMode=&#39;outline&#39;
+            placeholder=&#39;Select date&#39;
+            onPeriodSelect={() =&gt; {}}
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Dialog">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Dialog</h2>
+      <div class="badges">
+        <label for="c-6-components-dialog-props" class="badge ok as-toggle">12 prop types</label>
+        <label for="c-6-components-dialog-info" class="badge info as-toggle">1 info</label>
+        <label for="c-6-components-dialog-stories" class="badge ok as-toggle">4 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Dialog.stories.tsx">components-dialog · ./stories/Dialog.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-6-components-dialog-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-6-components-dialog-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-6-components-dialog-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">12 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Dialog</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Caption for the backlink button
+ */
+backLinkCaption?: string
+
+/**
+ * Content to be displayed inside the dialog
+ */
+children?: ReactNode
+
+/**
+ * Height of the dialog content
+ */
+contentHeight?: string
+
+/**
+ * Maximum width of the dialog
+ */
+maxWidth?: string = 500px
+
+/**
+ * Callback function triggered when the backlink is clicked
+ */
+onBackClick?: (() =&gt; void)
+
+/**
+ * Callback function triggered when the dialog is closed
+ */
+onCloseDialog?: (() =&gt; void)
+
+/**
+ * Controls whether the dialog is open or closed
+ */
+open?: boolean
+
+/**
+ * Reference to the parent element for positioning the dialog
+ */
+parentRef?: RefObject&lt;HTMLElement | null&gt;
+
+/**
+ * Determines if the backlink button is displayed
+ */
+showBackLink?: boolean
+
+/**
+ * Determines if the close button is displayed
+ */
+showCloseButton?: boolean
+
+/**
+ * Determines if the overlay is displayed
+ */
+showOverlay?: boolean = true
+
+/**
+ * Header text for the dialog
+ */
+title?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button, Dialog } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;DefaultDialogDemo /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Back Link</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithBackLink = () =&gt; &lt;WithBackLinkDemo /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Dimensions</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomDimensions = () =&gt; &lt;CustomDimensionsDemo /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Without Close Button</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithoutCloseButton = () =&gt; &lt;WithoutCloseButtonDemo /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Icon">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Icon</h2>
+      <div class="badges">
+        <label for="c-7-components-icon-props" class="badge ok as-toggle">2 prop types</label>
+        <label for="c-7-components-icon-info" class="badge info as-toggle">1 info</label>
+        <label for="c-7-components-icon-stories" class="badge ok as-toggle">4 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Icon.stories.tsx">components-icon · ./stories/Icon.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-7-components-icon-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-7-components-icon-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-7-components-icon-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">2 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Icon</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * The name of the icon to be displayed
+ */
+name: &quot;AddressSign&quot; | &quot;Award&quot; | &quot;ArrowUp&quot; | &quot;ArrowDown&quot; | &quot;BarChart&quot; | &quot;Camera&quot; | &quot;Bookmark&quot; | &quot;CheckCircle&quot; | &quot;CheckboxChecked&quot; | &quot;CheckboxIndeterminate&quot; | &quot;CheckboxUnchecked&quot; | &quot;Clip&quot; | &quot;Close&quot; | &quot;Cloud&quot; | &quot;Chart&quot; | &quot;Comment&quot; | &quot;Compass&quot; | &quot;Download&quot; | &quot;DoubleUp&quot; | &quot;EditLocation&quot; | &quot;Lightning&quot; | &quot;Exit&quot; | &quot;External&quot; | &quot;Eye&quot; | &quot;Feed&quot; | &quot;FullscreenIn&quot; | &quot;FullscreenOut&quot; | &quot;HeartEmpty&quot; | &quot;HeartFilled&quot; | &quot;Layers&quot; | &quot;Link&quot; | &quot;KeyboardUp&quot; | &quot;KeyboardDown&quot; | &quot;KeyboardLeft&quot; | &quot;KeyboardRight&quot; | &quot;Map&quot; | &quot;Menu&quot; | &quot;Moon&quot; | &quot;Bell&quot; | &quot;Pencil&quot; | &quot;PinDrop&quot; | &quot;PlusCircle&quot; | &quot;Point&quot; | &quot;Position&quot; | &quot;Pressure&quot; | &quot;Photo&quot; | &quot;RadioButtonChecked&quot; | &quot;RadioButtonUnchecked&quot; | &quot;ReportError&quot; | &quot;Rotate&quot; | &quot;Ruler&quot; | &quot;Search&quot; | &quot;Settings&quot; | &quot;StarEmpty&quot; | &quot;StarFilled&quot; | &quot;SolarPower&quot; | &quot;Sun&quot; | &quot;Tag&quot; | &quot;Telegram&quot; | &quot;Thermometer&quot; | &quot;Time&quot; | &quot;Tune&quot; | &quot;User&quot; | &quot;Users&quot; | &quot;VerticalDots&quot; | &quot;Water&quot; | &quot;WaterDrop&quot; | &quot;Wind&quot;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Icon } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Icon name=&quot;StarFilled&quot; style={{ width: 32, height: 32 }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">All Icons</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AllIcons = () =&gt; &lt;AllIconsDemo /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sizes</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Sizes = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, alignItems: &#39;center&#39;, gap: 24 }}&gt;
+        {([16, 24, 32, 48] as const).map((size) =&gt; (
+            &lt;div
+                key={size}
+                style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, alignItems: &#39;center&#39;, gap: 6 }}
+            &gt;
+                &lt;Icon
+                    name=&#39;StarFilled&#39;
+                    style={{ width: size, height: size }}
+                /&gt;
+                &lt;span style={{ fontSize: 12, color: &#39;#555&#39; }}&gt;{size}px&lt;/span&gt;
+            &lt;/div&gt;
+        ))}
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Color</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomColor = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: 16, alignItems: &#39;center&#39; }}&gt;
+        &lt;Icon
+            name=&#39;HeartFilled&#39;
+            style={{ width: 28, height: 28 }}
+            fill=&#39;#ef4444&#39;
+        /&gt;
+        &lt;Icon
+            name=&#39;StarFilled&#39;
+            style={{ width: 28, height: 28 }}
+            fill=&#39;#f59e0b&#39;
+        /&gt;
+        &lt;Icon
+            name=&#39;CheckCircle&#39;
+            style={{ width: 28, height: 28 }}
+            fill=&#39;#22c55e&#39;
+        /&gt;
+        &lt;Icon
+            name=&#39;Cloud&#39;
+            style={{ width: 28, height: 28 }}
+            fill=&#39;#3b82f6&#39;
+        /&gt;
+        &lt;Icon
+            name=&#39;Bell&#39;
+            style={{ width: 28, height: 28 }}
+            fill=&#39;#8b5cf6&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Input">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Input</h2>
+      <div class="badges">
+        <label for="c-8-controls-input-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-8-controls-input-info" class="badge info as-toggle">1 info</label>
+        <label for="c-8-controls-input-stories" class="badge ok as-toggle">8 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Input.stories.tsx">controls-input · ./stories/Input.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-8-controls-input-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-8-controls-input-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-8-controls-input-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">5 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Input</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Error message displayed below the input field when an error occurs
+ */
+error?: string
+
+/**
+ * Label text displayed above the input field
+ */
+label?: string
+
+/**
+ * Visual style of the button
+ */
+mode?: &quot;primary&quot; | &quot;ghost&quot; = primary
+
+/**
+ * Size of the input field
+ */
+size?: ElementSizeType = medium</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Input } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Input
+    label=&quot;Full Name&quot;
+    placeholder=&quot;Enter your name&quot;
+    size=&quot;medium&quot;
+    mode=&quot;primary&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Label</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithLabel = () =&gt; &lt;Input label=&quot;Email Address&quot; placeholder=&quot;john@example.com&quot; type=&quot;email&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Error</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithError = () =&gt; &lt;Input
+    label=&quot;Email Address&quot;
+    placeholder=&quot;john@example.com&quot;
+    type=&quot;email&quot;
+    error=&quot;Please enter a valid email address&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Required = () =&gt; &lt;Input label=&quot;Username&quot; placeholder=&quot;Choose a username&quot; required /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;Input label=&quot;Account ID&quot; value=&quot;ACC-001-2024&quot; disabled /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sizes</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Sizes = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 12, maxWidth: 400 }}&gt;
+        &lt;Input
+            label=&#39;Small&#39;
+            placeholder=&#39;Small input&#39;
+            size=&#39;small&#39;
+        /&gt;
+        &lt;Input
+            label=&#39;Medium&#39;
+            placeholder=&#39;Medium input&#39;
+            size=&#39;medium&#39;
+        /&gt;
+        &lt;Input
+            label=&#39;Large&#39;
+            placeholder=&#39;Large input&#39;
+            size=&#39;large&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Ghost Mode</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const GhostMode = () =&gt; &lt;Input label=&quot;Search&quot; placeholder=&quot;Search anything...&quot; mode=&quot;ghost&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Password Input</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const PasswordInput = () =&gt; &lt;Input label=&quot;Password&quot; placeholder=&quot;••••••••&quot; type=&quot;password&quot; required /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Message">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Message</h2>
+      <div class="badges">
+        <label for="c-9-components-message-props" class="badge ok as-toggle">3 prop types</label>
+        <label for="c-9-components-message-info" class="badge info as-toggle">1 info</label>
+        <label for="c-9-components-message-stories" class="badge ok as-toggle">5 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Message.stories.tsx">components-message · ./stories/Message.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-9-components-message-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-9-components-message-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-9-components-message-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">3 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Message</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Content or children elements inside the message
+ */
+children?: ReactNode
+
+/**
+ * Title to be displayed at the top of the message
+ */
+title?: string
+
+/**
+ * Type of the message that defines the visual style (&#39;negative&#39;, &#39;positive&#39;, &#39;warning&#39;, or &#39;info&#39;)
+ */
+type?: &quot;error&quot; | &quot;warning&quot; | &quot;success&quot; | &quot;info&quot;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Message } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Message type=&quot;info&quot; title=&quot;Information&quot;&gt;Use the Controls panel to change the type, title, and content of this message.&lt;/Message&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">All Types</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AllTypes = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 12 }}&gt;
+        &lt;Message
+            type=&#39;info&#39;
+            title=&#39;Info&#39;
+        &gt;
+            This is an informational message to guide the user.
+        &lt;/Message&gt;
+        &lt;Message
+            type=&#39;success&#39;
+            title=&#39;Success!&#39;
+        &gt;
+            Your changes have been saved successfully.
+        &lt;/Message&gt;
+        &lt;Message
+            type=&#39;warning&#39;
+            title=&#39;Warning&#39;
+        &gt;
+            Please review the information before continuing.
+        &lt;/Message&gt;
+        &lt;Message
+            type=&#39;error&#39;
+            title=&#39;Error&#39;
+        &gt;
+            Something went wrong. Please try again or contact support.
+        &lt;/Message&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Title</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithTitle = () =&gt; &lt;Message type=&quot;success&quot; title=&quot;Account Created&quot;&gt;Welcome aboard! Your account is ready to use.&lt;/Message&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Without Title</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithoutTitle = () =&gt; &lt;Message type=&quot;warning&quot;&gt;Your session will expire in 5 minutes. Save your work.&lt;/Message&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Custom Content (List)</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithCustomContent = () =&gt; (
+    &lt;Message
+        type=&#39;error&#39;
+        title=&#39;Form validation failed&#39;
+    &gt;
+        &lt;ul style={{ margin: &#39;4px 0 0&#39;, paddingLeft: 20 }}&gt;
+            &lt;li&gt;Email address is required&lt;/li&gt;
+            &lt;li&gt;Password must be at least 8 characters&lt;/li&gt;
+            &lt;li&gt;Please accept the terms of service&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/Message&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Popout">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Popout</h2>
+      <div class="badges">
+        <label for="c-10-components-popout-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-10-components-popout-info" class="badge info as-toggle">1 info</label>
+        <label for="c-10-components-popout-stories" class="badge ok as-toggle">5 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Popout.stories.tsx">components-popout · ./stories/Popout.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-10-components-popout-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-10-components-popout-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-10-components-popout-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">8 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Popout</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Content inside the popout
+ */
+children?: ReactNode
+
+/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Whether the popout should close when a child element is clicked
+ */
+closeOnChildrenClick?: boolean
+
+/**
+ * Whether the popout is disabled
+ */
+disabled?: boolean
+
+/**
+ * Callback function triggered when isOpen state changes
+ */
+onOpenChange?: ((isOpen: boolean) =&gt; void)
+
+/**
+ * Whether to render popout content in a portal with fixed positioning (useful for fixed containers)
+ */
+portal?: boolean = false
+
+/**
+ * Position of the popout relative to the trigger element (&#39;left&#39; or &#39;right&#39;)
+ */
+position?: &quot;left&quot; | &quot;right&quot; = right
+
+/**
+ * Trigger button or link to be displayed in the popout
+ */
+trigger?: ReactNode</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button, Popout } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;div style={{ minHeight: 160, display: &#39;flex&#39;, justifyContent: &#39;flex-end&#39; }}&gt;
+    &lt;Popout trigger=&quot;Open Menu&quot; position=&quot;right&quot;&gt;
+        &lt;div style={{ padding: 12, minWidth: 200 }}&gt;
+            &lt;p style={{ margin: &#39;0 0 8px&#39;, fontWeight: 600 }}&gt;Popout Menu&lt;/p&gt;
+            &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 4 }}&gt;
+                &lt;Button mode=&#39;link&#39;&gt;Profile&lt;/Button&gt;
+                &lt;Button mode=&#39;link&#39;&gt;Settings&lt;/Button&gt;
+                &lt;Button mode=&#39;link&#39; variant=&#39;negative&#39;&gt;Sign out
+                                            &lt;/Button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/Popout&gt;
+&lt;/div&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Left Position</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const LeftPosition = () =&gt; (
+    &lt;div style={{ minHeight: 160 }}&gt;
+        &lt;Popout
+            trigger=&#39;Open (left)&#39;
+            position=&#39;left&#39;
+        &gt;
+            &lt;div style={{ padding: 12, minWidth: 180 }}&gt;
+                &lt;p style={{ margin: &#39;0 0 8px&#39;, fontWeight: 600 }}&gt;Left-anchored&lt;/p&gt;
+                &lt;p style={{ margin: 0, fontSize: 13, color: &#39;#555&#39; }}&gt;
+                    The panel aligns to the left edge of the trigger.
+                &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/Popout&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Close on Child Click</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithCloseOnChildClick = () =&gt; (
+    &lt;div style={{ minHeight: 160, display: &#39;flex&#39;, justifyContent: &#39;flex-end&#39; }}&gt;
+        &lt;Popout
+            trigger={&lt;Button mode=&#39;outline&#39;&gt;Actions&lt;/Button&gt;}
+            position=&#39;right&#39;
+            closeOnChildrenClick
+        &gt;
+            &lt;div style={{ padding: 8, minWidth: 160 }}&gt;
+                &lt;Button
+                    mode=&#39;link&#39;
+                    onClick={() =&gt; alert(&#39;Edit clicked&#39;)}
+                &gt;
+                    Edit
+                &lt;/Button&gt;
+                &lt;Button
+                    mode=&#39;link&#39;
+                    onClick={() =&gt; alert(&#39;Duplicate clicked&#39;)}
+                &gt;
+                    Duplicate
+                &lt;/Button&gt;
+                &lt;Button
+                    mode=&#39;link&#39;
+                    variant=&#39;negative&#39;
+                    onClick={() =&gt; alert(&#39;Delete clicked&#39;)}
+                &gt;
+                    Delete
+                &lt;/Button&gt;
+            &lt;/div&gt;
+        &lt;/Popout&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Imperative Close (via ref)</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ImperativeClose = () =&gt; &lt;ImperativeCloseDemo /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Button as Trigger</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithButtonTrigger = () =&gt; (
+    &lt;div style={{ minHeight: 160, display: &#39;flex&#39;, justifyContent: &#39;flex-end&#39; }}&gt;
+        &lt;Popout
+            trigger={
+                &lt;Button
+                    icon=&#39;VerticalDots&#39;
+                    aria-label=&#39;More options&#39;
+                /&gt;
+            }
+            position=&#39;right&#39;
+        &gt;
+            &lt;div style={{ padding: 8, minWidth: 160 }}&gt;
+                &lt;Button mode=&#39;link&#39;&gt;View details&lt;/Button&gt;
+                &lt;Button mode=&#39;link&#39;&gt;Edit&lt;/Button&gt;
+                &lt;Button
+                    mode=&#39;link&#39;
+                    variant=&#39;negative&#39;
+                &gt;
+                    Remove
+                &lt;/Button&gt;
+            &lt;/div&gt;
+        &lt;/Popout&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Progress">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Progress</h2>
+      <div class="badges">
+        <label for="c-11-components-progress-props" class="badge ok as-toggle">4 prop types</label>
+        <label for="c-11-components-progress-info" class="badge info as-toggle">1 info</label>
+        <label for="c-11-components-progress-stories" class="badge ok as-toggle">4 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Progress.stories.tsx">components-progress · ./stories/Progress.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-11-components-progress-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-11-components-progress-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-11-components-progress-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">4 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Progress</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Color theme for the progress bar
+ */
+color?: &quot;main&quot; | &quot;red&quot; | &quot;orange&quot; | &quot;green&quot; = main
+
+/**
+ * Height of the progress bar
+ */
+height?: number = 2
+
+/**
+ * Current progress value (percentage)
+ */
+value?: number = 0</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Progress } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Progress value={50} color=&quot;main&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Color Themes</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Colors = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 16, maxWidth: 400 }}&gt;
+        {(
+            [
+                { color: &#39;main&#39;, value: 65, label: &#39;Main&#39; },
+                { color: &#39;green&#39;, value: 80, label: &#39;Green&#39; },
+                { color: &#39;orange&#39;, value: 45, label: &#39;Orange&#39; },
+                { color: &#39;red&#39;, value: 25, label: &#39;Red&#39; }
+            ] as const
+        ).map(({ color, value, label }) =&gt; (
+            &lt;div key={color}&gt;
+                &lt;div style={{ display: &#39;flex&#39;, justifyContent: &#39;space-between&#39;, fontSize: 13, marginBottom: 4 }}&gt;
+                    &lt;span&gt;{label}&lt;/span&gt;
+                    &lt;span&gt;{value}%&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;Progress
+                    value={value}
+                    color={color}
+                /&gt;
+            &lt;/div&gt;
+        ))}
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Height</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomHeight = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 12, maxWidth: 400 }}&gt;
+        &lt;Progress
+            value={60}
+            height={3}
+        /&gt;
+        &lt;Progress
+            value={60}
+            height={6}
+        /&gt;
+        &lt;Progress
+            value={60}
+            height={10}
+        /&gt;
+        &lt;Progress
+            value={60}
+            height={16}
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">All States (0% to 100%)</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AllStates = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 12, maxWidth: 400 }}&gt;
+        {[0, 25, 50, 75, 100].map((value) =&gt; (
+            &lt;div key={value}&gt;
+                &lt;div style={{ display: &#39;flex&#39;, justifyContent: &#39;space-between&#39;, fontSize: 13, marginBottom: 4 }}&gt;
+                    &lt;span style={{ color: value === 0 ? &#39;#999&#39; : value === 100 ? &#39;#16a34a&#39; : undefined }}&gt;
+                        {value === 0 ? &#39;Not started&#39; : value === 100 ? &#39;Complete&#39; : &#39;In progress&#39;}
+                    &lt;/span&gt;
+                    &lt;span&gt;{value}%&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;Progress
+                    value={value}
+                    color={value === 100 ? &#39;green&#39; : value === 0 ? &#39;main&#39; : &#39;main&#39;}
+                /&gt;
+            &lt;/div&gt;
+        ))}
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  has-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="RegistrationForm">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-err"></span> RegistrationForm</h2>
+      <div class="badges">
+        <label for="c-12-examples-registration-form-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-12-examples-registration-form-info" class="badge info as-toggle">1 info</label>
+        <label for="c-12-examples-registration-form-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/CombinedForm.stories.tsx">examples-registration-form · ./stories/CombinedForm.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  <input id="c-12-examples-registration-form-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-12-examples-registration-form-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-12-examples-registration-form-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+
+  <div class="panels">
+    
+        <div class="panel panel-err">
+          
+    <div class="note err">
+      <div class="note-title">Prop type error</div>
+      <div class="note-body"><pre><code>We could not detect the component from your story file. Specify meta.component.
+  15 | } from &#39;../../src&#39;
+  16 |
+&gt; 17 | const meta: Meta = {
+     | ^
+  18 |     title: &#39;Examples/Registration Form&#39;,
+  19 |     tags: [&#39;autodocs&#39;],
+  20 |     parameters: {
+
+./stories/CombinedForm.stories.tsx:
+import React, { useState } from &#39;react&#39;
+
+import type { Meta, StoryObj } from &#39;@storybook/react&#39;
+
+import {
+    Button,
+    Checkbox,
+    Container,
+    Input,
+    Message,
+    Progress,
+    Select,
+    type SelectOptionType,
+    Spinner
+} from &#39;../../src&#39;
+
+const meta: Meta = {
+    title: &#39;Examples/Registration Form&#39;,
+    tags: [&#39;autodocs&#39;],
+    parameters: {
+        layout: &#39;centered&#39;,
+        docs: {
+            description: {
+                component:
+                    &#39;A real-world composite example demonstrating how to combine multiple UI kit components into a fully functional registration form. Includes validation, loading states, progress tracking, and success feedback.&#39;
+            }
+        }
+    }
+}
+
+export default meta
+type Story = StoryObj&lt;typeof meta&gt;
+
+const countries: Array&lt;SelectOptionType&lt;string&gt;&gt; = [
+    { key: &#39;us&#39;, value: &#39;United States&#39;, emoji: &#39;🇺🇸&#39; },
+    { key: &#39;ru&#39;, value: &#39;Russia&#39;, emoji: &#39;🇷🇺&#39; },
+    { key: &#39;de&#39;, value: &#39;Germany&#39;, emoji: &#39;🇩🇪&#39; },
+    { key: &#39;jp&#39;, value: &#39;Japan&#39;, emoji: &#39;🇯🇵&#39; },
+    { key: &#39;fr&#39;, value: &#39;France&#39;, emoji: &#39;🇫🇷&#39; }
+]
+
+const interests: Array&lt;SelectOptionType&lt;string&gt;&gt; = [
+    { key: &#39;tech&#39;, value: &#39;Technology&#39; },
+    { key: &#39;design&#39;, value: &#39;Design&#39; },
+    { key: &#39;music&#39;, value: &#39;Music&#39; },
+    { key: &#39;sports&#39;, value: &#39;Sports&#39; },
+    { key: &#39;travel&#39;, value: &#39;Travel&#39; }
+]
+
+const CombinedForm: React.FC = () =&gt; {
+    const [formData, setFormData] = useState({
+        name: &#39;&#39;,
+        email: &#39;&#39;,
+        country: &#39;&#39;,
+        interests: [] as string[],
+        newsletter: false,
+        password: &#39;&#39;,
+        confirmPassword: &#39;&#39;
+    })
+
+    const [errors, setErrors] = useState&lt;Record&lt;string, string&gt;&gt;({})
+    const [loading, setLoading] = useState(false)
+    const [showSuccess, setShowSuccess] = useState(false)
+
+    const validate = () =&gt; {
+        const newErrors: Record&lt;string, string&gt; = {}
+
+        if (!formData.name.trim()) {
+            newErrors.name = &#39;Name is required&#39;
+        }
+        if (!formData.email.includes(&#39;@&#39;)) {
+            newErrors.email = &#39;Please enter a valid email address&#39;
+        }
+        if (!formData.country) {
+            newErrors.country = &#39;Please select a country&#39;
+        }
+        if (formData.interests.length === 0) {
+            newErrors.interests = &#39;Select at least one interest&#39;
+        }
+        if (formData.password.length &lt; 6) {
+            newErrors.password = &#39;Password must be at least 6 characters&#39;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = &#39;Passwords do not match&#39;
+        }
+
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
+    }
+
+    const handleSubmit = () =&gt; {
+        if (!validate()) {
+            return
+        }
+
+        setLoading(true)
+
+        setTimeout(() =&gt; {
+            setLoading(false)
+            setShowSuccess(true)
+            setTimeout(() =&gt; setShowSuccess(false), 4000)
+        }, 2000)
+    }
+
+    const filledFields = Object.values(formData).filter((v) =&gt; {
+        if (Array.isArray(v)) {
+            return v.length &gt; 0
+        }
+        if (typeof v === &#39;boolean&#39;) {
+            return v
+        }
+        return !!v
+    }).length
+
+    const totalFields = Object.keys(formData).length
+    const formProgress = Math.round((filledFields / totalFields) * 100)
+
+    return (
+        &lt;Container
+            title=&#39;User Registration&#39;
+            style={{ maxWidth: 560 }}
+            header={
+                &lt;div&gt;
+                    &lt;div style={{ fontSize: 12, color: &#39;#6b7280&#39;, marginBottom: 6 }}&gt;
+                        {filledFields} of {totalFields} fields completed
+                    &lt;/div&gt;
+                    &lt;Progress
+                        value={formProgress}
+                        height={4}
+                        color=&#39;main&#39;
+                    /&gt;
+                &lt;/div&gt;
+            }
+            footer={
+                &lt;div style={{ display: &#39;flex&#39;, justifyContent: &#39;space-between&#39;, alignItems: &#39;center&#39; }}&gt;
+                    &lt;span style={{ fontSize: 13, color: &#39;#6b7280&#39; }}&gt;All fields marked * are required&lt;/span&gt;
+                    &lt;Button
+                        mode=&#39;primary&#39;
+                        onClick={handleSubmit}
+                        loading={loading}
+                    &gt;
+                        Create Account
+                    &lt;/Button&gt;
+                &lt;/div&gt;
+            }
+        &gt;
+            &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 12 }}&gt;
+                {showSuccess &amp;&amp; (
+                    &lt;Message
+                        type=&#39;success&#39;
+                        title=&#39;Account Created!&#39;
+                    &gt;
+                        Welcome aboard! You can now sign in with your credentials.
+                    &lt;/Message&gt;
+                )}
+
+                &lt;Input
+                    required
+                    label=&#39;Full Name&#39;
+                    placeholder=&#39;Jane Doe&#39;
+                    value={formData.name}
+                    disabled={loading}
+                    error={errors.name}
+                    onChange={(e) =&gt; setFormData({ ...formData, name: e.target.value })}
+                /&gt;
+
+                &lt;Input
+                    required
+                    label=&#39;Email Address&#39;
+                    type=&#39;email&#39;
+                    placeholder=&#39;jane@example.com&#39;
+                    value={formData.email}
+                    disabled={loading}
+                    error={errors.email}
+                    onChange={(e) =&gt; setFormData({ ...formData, email: e.target.value })}
+                /&gt;
+
+                &lt;Select&lt;string&gt;
+                    searchable
+                    clearable
+                    multiple={false}
+                    label=&#39;Country&#39;
+                    options={countries}
+                    value={formData.country}
+                    placeholder=&#39;Select your country&#39;
+                    disabled={loading}
+                    error={errors.country}
+                    onSelect={(opt) =&gt; setFormData({ ...formData, country: opt?.[0]?.key || &#39;&#39; })}
+                /&gt;
+
+                &lt;Select&lt;string&gt;
+                    multiple
+                    closeOnSelect={false}
+                    label=&#39;Interests&#39;
+                    placeholder=&#39;Choose at least one interest&#39;
+                    options={interests}
+                    value={formData.interests}
+                    disabled={loading}
+                    error={errors.interests}
+                    onSelect={(opts) =&gt; setFormData({ ...formData, interests: opts?.map((o) =&gt; o.key) || [] })}
+                /&gt;
+
+                &lt;Input
+                    required
+                    label=&#39;Password&#39;
+                    type=&#39;password&#39;
+                    placeholder=&#39;Min. 6 characters&#39;
+                    value={formData.password}
+                    disabled={loading}
+                    error={errors.password}
+                    onChange={(e) =&gt; setFormData({ ...formData, password: e.target.value })}
+                /&gt;
+
+                &lt;Input
+                    required
+                    label=&#39;Confirm Password&#39;
+                    type=&#39;password&#39;
+                    placeholder=&#39;Repeat your password&#39;
+                    value={formData.confirmPassword}
+                    disabled={loading}
+                    error={errors.confirmPassword}
+                    onChange={(e) =&gt; setFormData({ ...formData, confirmPassword: e.target.value })}
+                /&gt;
+
+                &lt;Checkbox
+                    label=&#39;Subscribe to product updates and newsletter&#39;
+                    checked={formData.newsletter}
+                    disabled={loading}
+                    onChange={(e) =&gt; setFormData({ ...formData, newsletter: e.target.checked })}
+                /&gt;
+
+                {loading &amp;&amp; (
+                    &lt;div style={{ display: &#39;flex&#39;, alignItems: &#39;center&#39;, gap: 10, fontSize: 14, color: &#39;#6b7280&#39; }}&gt;
+                        &lt;Spinner style={{ width: 16, height: 16 }} /&gt;
+                        &lt;span&gt;Creating your account...&lt;/span&gt;
+                    &lt;/div&gt;
+                )}
+            &lt;/div&gt;
+        &lt;/Container&gt;
+    )
+}
+
+export const RegistrationForm: Story = {
+    name: &#39;Registration Form&#39;,
+    render: () =&gt; (
+        &lt;div style={{ width: 560 }}&gt;
+            &lt;CombinedForm /&gt;
+        &lt;/div&gt;
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: &#39;An interactive registration form demonstrating `Container`, `Input`, `Select`, `Checkbox`, `Button`, `Message`, `Progress`, and `Spinner` working together. Fill in the fields and click &quot;Create Account&quot; to see validation, loading state, and success feedback.&#39;
+            }
+        }
+    }
+}
+</code></pre></div>
+    </div>
+        </div>
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button, Checkbox, Container, Input, Message, Progress, Select, Spinner } from "storybook";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Registration Form</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const RegistrationForm = () =&gt; (
+    &lt;div style={{ width: 560 }}&gt;
+        &lt;CombinedForm /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Select">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Select</h2>
+      <div class="badges">
+        <label for="c-13-controls-select-props" class="badge ok as-toggle">18 prop types</label>
+        <label for="c-13-controls-select-info" class="badge info as-toggle">1 info</label>
+        <label for="c-13-controls-select-stories" class="badge ok as-toggle">7 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Select.stories.tsx">controls-select · ./stories/Select.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-13-controls-select-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-13-controls-select-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-13-controls-select-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">18 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Select</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Show clear button to remove selection
+ */
+clearable?: boolean = false
+
+/**
+ * Whether the dropdown should close after selecting an option
+ */
+closeOnSelect?: boolean = true
+
+/**
+ * Disable the select
+ */
+disabled?: boolean
+
+/**
+ * Error message to display when validation fails
+ */
+error?: string
+
+/**
+ * Label text for the select
+ */
+label?: string
+
+/**
+ * Show loading spinner
+ */
+loading?: boolean = false
+
+/**
+ * Enable multiple selection
+ */
+multiple?: boolean = false
+
+/**
+ * Text to display if no options are found
+ */
+notFoundCaption?: string
+
+/**
+ * Callback triggered when the dropdown is opened
+ */
+onOpen?: (() =&gt; void)
+
+/**
+ * Callback triggered when a search is made
+ */
+onSearch?: ((text?: string) =&gt; void)
+
+/**
+ * Callback triggered when options are selected
+ */
+onSelect?: ((selected: SelectOptionType&lt;T&gt;[]) =&gt; void)
+
+/**
+ * Array of options to display in the select
+ */
+options?: SelectOptionType&lt;T&gt;[] = []
+
+/**
+ * Placeholder text to display when no option is selected
+ */
+placeholder?: string
+
+/**
+ * Mark the select as required
+ */
+required?: boolean
+
+/**
+ * Enable search input
+ */
+searchable?: boolean = false
+
+/**
+ * Size of the Select
+ */
+size?: ElementSizeType = medium
+
+/**
+ * Currently selected value(s)
+ */
+value?: T | T[]</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Select } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+    const [value, setValue] = useState&lt;string | string[] | undefined&gt;(args.value)
+
+    return (
+        &lt;Select
+            options={countries}
+            multiple
+            clearable={false}
+            searchable
+            placeholder=&quot;Select a country&quot;
+            label=&quot;Country&quot;
+            value={value}
+            onSelect={(opts) =&gt; {
+                if (args.multiple) {
+                    setValue(opts?.map((o) =&gt; o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Variants In One Story</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const VariantsInOneStory = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 24, maxWidth: 400 }}&gt;
+        &lt;Template
+            multiple={false}
+            placeholder=&#39;Single Select&#39;
+            label=&#39;Single Select, No Search&#39;
+            options={countries}
+        /&gt;
+        &lt;Template
+            multiple={false}
+            searchable={true}
+            closeOnSelect={false}
+            placeholder=&#39;Search...&#39;
+            label=&#39;Single Select, Search&#39;
+            options={countries}
+        /&gt;
+        &lt;Template
+            multiple={true}
+            closeOnSelect={false}
+            placeholder=&#39;Multiple Select&#39;
+            label=&#39;Multiple Select, No Search&#39;
+            options={countries}
+        /&gt;
+        &lt;Template
+            multiple={true}
+            searchable={true}
+            closeOnSelect={false}
+            placeholder=&#39;Search...&#39;
+            label=&#39;Multiple Select, Search&#39;
+            options={countries}
+        /&gt;
+        &lt;Template
+            placeholder=&#39;Select&#39;
+            label=&#39;Single Select, Icons&#39;
+            options={weatherIcons}
+        /&gt;
+        &lt;Template
+            options={countries}
+            loading
+            placeholder=&#39;Loading&#39;
+            label=&#39;Loading&#39;
+        /&gt;
+        &lt;Template
+            options={countries}
+            error=&#39;Error example&#39;
+            placeholder=&#39;With Error&#39;
+            label=&#39;With Error&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Multi Select</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const MultiSelect = () =&gt; {
+    const [value, setValue] = useState&lt;string | string[] | undefined&gt;(args.value)
+
+    return (
+        &lt;Select
+            multiple
+            closeOnSelect={false}
+            options={techStack}
+            placeholder=&quot;Choose technologies&quot;
+            label=&quot;Tech Stack&quot;
+            value={value}
+            onSelect={(opts) =&gt; {
+                if (args.multiple) {
+                    setValue(opts?.map((o) =&gt; o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Search</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithSearch = () =&gt; {
+    const [value, setValue] = useState&lt;string | string[] | undefined&gt;(args.value)
+
+    return (
+        &lt;Select
+            searchable
+            options={[...countries, ...techStack]}
+            placeholder=&quot;Search options...&quot;
+            label=&quot;Searchable Select&quot;
+            value={value}
+            onSelect={(opts) =&gt; {
+                if (args.multiple) {
+                    setValue(opts?.map((o) =&gt; o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Emojis</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithEmojis = () =&gt; {
+    const [value, setValue] = useState&lt;string | string[] | undefined&gt;(args.value)
+
+    return (
+        &lt;Select
+            options={countries}
+            placeholder=&quot;Choose country&quot;
+            label=&quot;Country with Flag&quot;
+            value={value}
+            onSelect={(opts) =&gt; {
+                if (args.multiple) {
+                    setValue(opts?.map((o) =&gt; o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Required = () =&gt; {
+    const [value, setValue] = useState&lt;string | string[] | undefined&gt;(args.value)
+
+    return (
+        &lt;Select
+            options={countries}
+            required
+            placeholder=&quot;Required field&quot;
+            label=&quot;Required Field&quot;
+            value={value}
+            onSelect={(opts) =&gt; {
+                if (args.multiple) {
+                    setValue(opts?.map((o) =&gt; o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Not Found Caption</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const NotFoundCaption = () =&gt; {
+    const [value, setValue] = useState&lt;string | string[] | undefined&gt;(args.value)
+
+    return (
+        &lt;Select
+            options={[]}
+            notFoundCaption=&quot;No countries available&quot;
+            placeholder=&quot;Search...&quot;
+            label=&quot;Empty List&quot;
+            value={value}
+            onSelect={(opts) =&gt; {
+                if (args.multiple) {
+                    setValue(opts?.map((o) =&gt; o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Skeleton">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Skeleton</h2>
+      <div class="badges">
+        <label for="c-14-components-skeleton-props" class="badge ok as-toggle">1 prop type</label>
+        <label for="c-14-components-skeleton-info" class="badge info as-toggle">1 info</label>
+        <label for="c-14-components-skeleton-stories" class="badge ok as-toggle">5 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Skeleton.stories.tsx">components-skeleton · ./stories/Skeleton.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-14-components-skeleton-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-14-components-skeleton-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-14-components-skeleton-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">1 prop type</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Skeleton</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Skeleton } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Skeleton style={{ width: 200, height: 20, borderRadius: 4 }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Text Placeholder</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TextPlaceholder = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 8, maxWidth: 400 }}&gt;
+        &lt;Skeleton style={{ width: &#39;60%&#39;, height: 20, borderRadius: 4 }} /&gt;
+        &lt;Skeleton style={{ width: &#39;100%&#39;, height: 14, borderRadius: 4 }} /&gt;
+        &lt;Skeleton style={{ width: &#39;100%&#39;, height: 14, borderRadius: 4 }} /&gt;
+        &lt;Skeleton style={{ width: &#39;80%&#39;, height: 14, borderRadius: 4 }} /&gt;
+        &lt;Skeleton style={{ width: &#39;70%&#39;, height: 14, borderRadius: 4 }} /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Card Placeholder</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CardPlaceholder = () =&gt; (
+    &lt;div
+        style={{
+            display: &#39;flex&#39;,
+            gap: 16,
+            maxWidth: 500,
+            padding: 16,
+            border: &#39;1px solid #e5e7eb&#39;,
+            borderRadius: 8
+        }}
+    &gt;
+        {/* Avatar / image block */}
+        &lt;Skeleton style={{ width: 64, height: 64, borderRadius: &#39;50%&#39;, flexShrink: 0 }} /&gt;
+
+        {/* Text lines */}
+        &lt;div style={{ flex: 1, display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 8, justifyContent: &#39;center&#39; }}&gt;
+            &lt;Skeleton style={{ width: &#39;50%&#39;, height: 18, borderRadius: 4 }} /&gt;
+            &lt;Skeleton style={{ width: &#39;100%&#39;, height: 13, borderRadius: 4 }} /&gt;
+            &lt;Skeleton style={{ width: &#39;80%&#39;, height: 13, borderRadius: 4 }} /&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Table Placeholder</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TablePlaceholder = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 10, maxWidth: 600 }}&gt;
+        {Array.from({ length: 5 }).map((_, i) =&gt; (
+            &lt;div
+                key={i}
+                style={{ display: &#39;flex&#39;, gap: 12 }}
+            &gt;
+                &lt;Skeleton style={{ width: 40, height: 16, borderRadius: 4 }} /&gt;
+                &lt;Skeleton style={{ flex: 2, height: 16, borderRadius: 4 }} /&gt;
+                &lt;Skeleton style={{ flex: 1, height: 16, borderRadius: 4 }} /&gt;
+                &lt;Skeleton style={{ flex: 1, height: 16, borderRadius: 4 }} /&gt;
+            &lt;/div&gt;
+        ))}
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom (Button / Badge Shape)</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Custom = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: 12, alignItems: &#39;center&#39;, flexWrap: &#39;wrap&#39; }}&gt;
+        &lt;Skeleton style={{ width: 120, height: 36, borderRadius: 6 }} /&gt;
+        &lt;Skeleton style={{ width: 80, height: 36, borderRadius: 6 }} /&gt;
+        &lt;Skeleton style={{ width: 60, height: 22, borderRadius: 20 }} /&gt;
+        &lt;Skeleton style={{ width: 80, height: 22, borderRadius: 20 }} /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Spinner">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Spinner</h2>
+      <div class="badges">
+        <label for="c-15-components-spinner-props" class="badge ok as-toggle">1 prop type</label>
+        <label for="c-15-components-spinner-info" class="badge info as-toggle">1 info</label>
+        <label for="c-15-components-spinner-stories" class="badge ok as-toggle">4 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Spinner.stories.tsx">components-spinner · ./stories/Spinner.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-15-components-spinner-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-15-components-spinner-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-15-components-spinner-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">1 prop type</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Spinner</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Spinner } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Spinner style={{ width: 32, height: 32 }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sizes</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Sizes = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, alignItems: &#39;center&#39;, gap: 24 }}&gt;
+        {[16, 24, 32, 48, 64].map((size) =&gt; (
+            &lt;div
+                key={size}
+                style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, alignItems: &#39;center&#39;, gap: 8 }}
+            &gt;
+                &lt;Spinner style={{ width: size, height: size }} /&gt;
+                &lt;span style={{ fontSize: 12, color: &#39;#666&#39; }}&gt;{size}px&lt;/span&gt;
+            &lt;/div&gt;
+        ))}
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Color</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomColor = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, gap: 24, alignItems: &#39;center&#39;, flexWrap: &#39;wrap&#39; }}&gt;
+        &lt;Spinner
+            style={{ width: 32, height: 32 }}
+            fill=&#39;#3b82f6&#39;
+        /&gt;
+        &lt;Spinner
+            style={{ width: 32, height: 32 }}
+            fill=&#39;#ef4444&#39;
+        /&gt;
+        &lt;Spinner
+            style={{ width: 32, height: 32 }}
+            fill=&#39;#22c55e&#39;
+        /&gt;
+        &lt;Spinner
+            style={{ width: 32, height: 32 }}
+            fill=&#39;#f59e0b&#39;
+        /&gt;
+        &lt;Spinner
+            style={{ width: 32, height: 32 }}
+            fill=&#39;#8b5cf6&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Inline with Text</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const InlineWithText = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 12 }}&gt;
+        &lt;div style={{ display: &#39;flex&#39;, alignItems: &#39;center&#39;, gap: 8 }}&gt;
+            &lt;Spinner style={{ width: 16, height: 16 }} /&gt;
+            &lt;span style={{ fontSize: 14 }}&gt;Saving changes...&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div
+            style={{
+                display: &#39;flex&#39;,
+                alignItems: &#39;center&#39;,
+                gap: 10,
+                padding: &#39;12px 16px&#39;,
+                background: &#39;#1e293b&#39;,
+                borderRadius: 8,
+                color: &#39;#fff&#39;
+            }}
+        &gt;
+            &lt;Spinner
+                style={{ width: 20, height: 20 }}
+                fill=&#39;#fff&#39;
+            /&gt;
+            &lt;span&gt;Loading data, please wait...&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="Table">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> Table</h2>
+      <div class="badges">
+        <label for="c-16-components-table-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-16-components-table-info" class="badge info as-toggle">1 info</label>
+        <label for="c-16-components-table-stories" class="badge ok as-toggle">8 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/Table.stories.tsx">components-table · ./stories/Table.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-16-components-table-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-16-components-table-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-16-components-table-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
+              <span class="badge ok">11 prop types</span>
+            </div>
+            <pre><code>Component: ../src/index.ts::Table</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional class names for custom styling
+ */
+className?: string
+
+/**
+ * Column configuration for the table
+ */
+columns?: ColumnProps&lt;T&gt;[]
+
+/**
+ * Data to be displayed in the table
+ */
+data?: T[]
+
+/**
+ * Default sorting configuration for the table
+ */
+defaultSort?: SortConfig&lt;T&gt;
+
+/**
+ * Table height (in pixels or null for auto height)
+ */
+height?: number | null
+
+/**
+ * Whether the table is in loading state (displays skeletons)
+ */
+loading?: boolean
+
+/**
+ * Table max height - the maximum height of the table, if there is little data, the table will not stretch.
+ * The values of height and maxHeight are needed for the stickyHeader to work.
+ * In summary: height is used if the container needs to be strictly fixed in height, and maxHeight - if it is not critical
+ * that the height of the container will change dynamically up to the maximum value
+ */
+maxHeight?: number | null
+
+/**
+ * Caption to display when there is no data
+ */
+noDataCaption?: string
+
+/**
+ * Size (height) of the table rows
+ */
+size?: ElementSizeType = medium
+
+/**
+ * Whether the table header is sticky when scrolling
+ */
+stickyHeader?: boolean
+
+/**
+ * Whether to show vertical borders between columns
+ */
+verticalBorder?: boolean</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Table } from "simple-react-ui-kit";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;Table data={sampleData} columns={baseColumns} size=&quot;medium&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Default Sort</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithSorting = () =&gt; &lt;Table
+    data={sampleData}
+    columns={baseColumns}
+    defaultSort={{ key: &#39;score&#39;, direction: &#39;desc&#39; }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Loading State</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const LoadingState = () =&gt; &lt;Table data={sampleData} columns={baseColumns} loading /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Empty State</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const EmptyState = () =&gt; &lt;Table
+    data={[]}
+    columns={baseColumns}
+    noDataCaption=&quot;No users found. Try adjusting your filters.&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sticky Header</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const StickyHeader = () =&gt; &lt;Table data={sampleData} columns={baseColumns} stickyHeader height={200} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Vertical Border</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithVerticalBorder = () =&gt; &lt;Table data={sampleData} columns={baseColumns} verticalBorder /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Cell Formatter</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithFormatter = () =&gt; &lt;Table
+    data={sampleData}
+    columns={[
+        { header: &#39;ID&#39;, accessor: &#39;id&#39;, isSortable: true },
+        { header: &#39;Name&#39;, accessor: &#39;name&#39;, isSortable: true },
+        { header: &#39;Role&#39;, accessor: &#39;role&#39; },
+        {
+            header: &#39;Status&#39;,
+            accessor: &#39;status&#39;,
+            formatter: (value) =&gt; {
+                const colorMap: Record&lt;string, string&gt; = {
+                    active: &#39;#22c55e&#39;,
+                    inactive: &#39;#6b7280&#39;,
+                    pending: &#39;#f59e0b&#39;
+                }
+                return (
+                    &lt;span
+                        style={{
+                            display: &#39;inline-block&#39;,
+                            padding: &#39;2px 8px&#39;,
+                            borderRadius: 12,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            background: colorMap[value as string] + &#39;22&#39;,
+                            color: colorMap[value as string]
+                        }}
+                    &gt;
+                        {String(value)}
+                    &lt;/span&gt;
+                )
+            }
+        },
+        {
+            header: &#39;Score&#39;,
+            accessor: &#39;score&#39;,
+            isSortable: true,
+            formatter: (value) =&gt; &lt;strong&gt;{String(value)}&lt;/strong&gt;
+        }
+    ] as Array&lt;ColumnProps&lt;Row&gt;&gt;} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Cell Background</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithBackground = () =&gt; &lt;Table
+    data={sampleData}
+    columns={[
+        { header: &#39;ID&#39;, accessor: &#39;id&#39; },
+        { header: &#39;Name&#39;, accessor: &#39;name&#39; },
+        { header: &#39;Role&#39;, accessor: &#39;role&#39; },
+        { header: &#39;Status&#39;, accessor: &#39;status&#39; },
+        {
+            header: &#39;Score&#39;,
+            accessor: &#39;score&#39;,
+            isSortable: true,
+            background: (value) =&gt; {
+                const v = value as number
+                if (v &gt;= 90) {
+                    return &#39;#dcfce7&#39;
+                }
+                if (v &gt;= 70) {
+                    return &#39;#fef9c3&#39;
+                }
+                return &#39;#fee2e2&#39;
+            }
+        }
+    ] as Array&lt;ColumnProps&lt;Row&gt;&gt;} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+    </div>
+    <div class="error-groups" role="region" aria-label="Prop type error groups">
+        <section class="group">
+          <input id="no-component-found-toggle" class="group-tg" type="checkbox" hidden />
+          <label for="no-component-found-toggle" class="group-header">
+            <span class="caret">▸</span>
+            <span class="group-title">No component found</span>
+            <span class="group-count">1</span>
+          </label>
+          <div class="group-cards">
+<article
+  class="card 
+  has-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="RegistrationForm">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-err"></span> RegistrationForm</h2>
+      <div class="badges">
+        <label for="c-error-0-examples-registration-form-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-error-0-examples-registration-form-info" class="badge info as-toggle">1 info</label>
+        <label for="c-error-0-examples-registration-form-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/CombinedForm.stories.tsx">examples-registration-form · ./stories/CombinedForm.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  <input id="c-error-0-examples-registration-form-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-error-0-examples-registration-form-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-error-0-examples-registration-form-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+
+  <div class="panels">
+    
+        <div class="panel panel-err">
+          
+    <div class="note err">
+      <div class="note-title">Prop type error</div>
+      <div class="note-body"><pre><code>We could not detect the component from your story file. Specify meta.component.
+  15 | } from &#39;../../src&#39;
+  16 |
+&gt; 17 | const meta: Meta = {
+     | ^
+  18 |     title: &#39;Examples/Registration Form&#39;,
+  19 |     tags: [&#39;autodocs&#39;],
+  20 |     parameters: {
+
+./stories/CombinedForm.stories.tsx:
+import React, { useState } from &#39;react&#39;
+
+import type { Meta, StoryObj } from &#39;@storybook/react&#39;
+
+import {
+    Button,
+    Checkbox,
+    Container,
+    Input,
+    Message,
+    Progress,
+    Select,
+    type SelectOptionType,
+    Spinner
+} from &#39;../../src&#39;
+
+const meta: Meta = {
+    title: &#39;Examples/Registration Form&#39;,
+    tags: [&#39;autodocs&#39;],
+    parameters: {
+        layout: &#39;centered&#39;,
+        docs: {
+            description: {
+                component:
+                    &#39;A real-world composite example demonstrating how to combine multiple UI kit components into a fully functional registration form. Includes validation, loading states, progress tracking, and success feedback.&#39;
+            }
+        }
+    }
+}
+
+export default meta
+type Story = StoryObj&lt;typeof meta&gt;
+
+const countries: Array&lt;SelectOptionType&lt;string&gt;&gt; = [
+    { key: &#39;us&#39;, value: &#39;United States&#39;, emoji: &#39;🇺🇸&#39; },
+    { key: &#39;ru&#39;, value: &#39;Russia&#39;, emoji: &#39;🇷🇺&#39; },
+    { key: &#39;de&#39;, value: &#39;Germany&#39;, emoji: &#39;🇩🇪&#39; },
+    { key: &#39;jp&#39;, value: &#39;Japan&#39;, emoji: &#39;🇯🇵&#39; },
+    { key: &#39;fr&#39;, value: &#39;France&#39;, emoji: &#39;🇫🇷&#39; }
+]
+
+const interests: Array&lt;SelectOptionType&lt;string&gt;&gt; = [
+    { key: &#39;tech&#39;, value: &#39;Technology&#39; },
+    { key: &#39;design&#39;, value: &#39;Design&#39; },
+    { key: &#39;music&#39;, value: &#39;Music&#39; },
+    { key: &#39;sports&#39;, value: &#39;Sports&#39; },
+    { key: &#39;travel&#39;, value: &#39;Travel&#39; }
+]
+
+const CombinedForm: React.FC = () =&gt; {
+    const [formData, setFormData] = useState({
+        name: &#39;&#39;,
+        email: &#39;&#39;,
+        country: &#39;&#39;,
+        interests: [] as string[],
+        newsletter: false,
+        password: &#39;&#39;,
+        confirmPassword: &#39;&#39;
+    })
+
+    const [errors, setErrors] = useState&lt;Record&lt;string, string&gt;&gt;({})
+    const [loading, setLoading] = useState(false)
+    const [showSuccess, setShowSuccess] = useState(false)
+
+    const validate = () =&gt; {
+        const newErrors: Record&lt;string, string&gt; = {}
+
+        if (!formData.name.trim()) {
+            newErrors.name = &#39;Name is required&#39;
+        }
+        if (!formData.email.includes(&#39;@&#39;)) {
+            newErrors.email = &#39;Please enter a valid email address&#39;
+        }
+        if (!formData.country) {
+            newErrors.country = &#39;Please select a country&#39;
+        }
+        if (formData.interests.length === 0) {
+            newErrors.interests = &#39;Select at least one interest&#39;
+        }
+        if (formData.password.length &lt; 6) {
+            newErrors.password = &#39;Password must be at least 6 characters&#39;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = &#39;Passwords do not match&#39;
+        }
+
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
+    }
+
+    const handleSubmit = () =&gt; {
+        if (!validate()) {
+            return
+        }
+
+        setLoading(true)
+
+        setTimeout(() =&gt; {
+            setLoading(false)
+            setShowSuccess(true)
+            setTimeout(() =&gt; setShowSuccess(false), 4000)
+        }, 2000)
+    }
+
+    const filledFields = Object.values(formData).filter((v) =&gt; {
+        if (Array.isArray(v)) {
+            return v.length &gt; 0
+        }
+        if (typeof v === &#39;boolean&#39;) {
+            return v
+        }
+        return !!v
+    }).length
+
+    const totalFields = Object.keys(formData).length
+    const formProgress = Math.round((filledFields / totalFields) * 100)
+
+    return (
+        &lt;Container
+            title=&#39;User Registration&#39;
+            style={{ maxWidth: 560 }}
+            header={
+                &lt;div&gt;
+                    &lt;div style={{ fontSize: 12, color: &#39;#6b7280&#39;, marginBottom: 6 }}&gt;
+                        {filledFields} of {totalFields} fields completed
+                    &lt;/div&gt;
+                    &lt;Progress
+                        value={formProgress}
+                        height={4}
+                        color=&#39;main&#39;
+                    /&gt;
+                &lt;/div&gt;
+            }
+            footer={
+                &lt;div style={{ display: &#39;flex&#39;, justifyContent: &#39;space-between&#39;, alignItems: &#39;center&#39; }}&gt;
+                    &lt;span style={{ fontSize: 13, color: &#39;#6b7280&#39; }}&gt;All fields marked * are required&lt;/span&gt;
+                    &lt;Button
+                        mode=&#39;primary&#39;
+                        onClick={handleSubmit}
+                        loading={loading}
+                    &gt;
+                        Create Account
+                    &lt;/Button&gt;
+                &lt;/div&gt;
+            }
+        &gt;
+            &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 12 }}&gt;
+                {showSuccess &amp;&amp; (
+                    &lt;Message
+                        type=&#39;success&#39;
+                        title=&#39;Account Created!&#39;
+                    &gt;
+                        Welcome aboard! You can now sign in with your credentials.
+                    &lt;/Message&gt;
+                )}
+
+                &lt;Input
+                    required
+                    label=&#39;Full Name&#39;
+                    placeholder=&#39;Jane Doe&#39;
+                    value={formData.name}
+                    disabled={loading}
+                    error={errors.name}
+                    onChange={(e) =&gt; setFormData({ ...formData, name: e.target.value })}
+                /&gt;
+
+                &lt;Input
+                    required
+                    label=&#39;Email Address&#39;
+                    type=&#39;email&#39;
+                    placeholder=&#39;jane@example.com&#39;
+                    value={formData.email}
+                    disabled={loading}
+                    error={errors.email}
+                    onChange={(e) =&gt; setFormData({ ...formData, email: e.target.value })}
+                /&gt;
+
+                &lt;Select&lt;string&gt;
+                    searchable
+                    clearable
+                    multiple={false}
+                    label=&#39;Country&#39;
+                    options={countries}
+                    value={formData.country}
+                    placeholder=&#39;Select your country&#39;
+                    disabled={loading}
+                    error={errors.country}
+                    onSelect={(opt) =&gt; setFormData({ ...formData, country: opt?.[0]?.key || &#39;&#39; })}
+                /&gt;
+
+                &lt;Select&lt;string&gt;
+                    multiple
+                    closeOnSelect={false}
+                    label=&#39;Interests&#39;
+                    placeholder=&#39;Choose at least one interest&#39;
+                    options={interests}
+                    value={formData.interests}
+                    disabled={loading}
+                    error={errors.interests}
+                    onSelect={(opts) =&gt; setFormData({ ...formData, interests: opts?.map((o) =&gt; o.key) || [] })}
+                /&gt;
+
+                &lt;Input
+                    required
+                    label=&#39;Password&#39;
+                    type=&#39;password&#39;
+                    placeholder=&#39;Min. 6 characters&#39;
+                    value={formData.password}
+                    disabled={loading}
+                    error={errors.password}
+                    onChange={(e) =&gt; setFormData({ ...formData, password: e.target.value })}
+                /&gt;
+
+                &lt;Input
+                    required
+                    label=&#39;Confirm Password&#39;
+                    type=&#39;password&#39;
+                    placeholder=&#39;Repeat your password&#39;
+                    value={formData.confirmPassword}
+                    disabled={loading}
+                    error={errors.confirmPassword}
+                    onChange={(e) =&gt; setFormData({ ...formData, confirmPassword: e.target.value })}
+                /&gt;
+
+                &lt;Checkbox
+                    label=&#39;Subscribe to product updates and newsletter&#39;
+                    checked={formData.newsletter}
+                    disabled={loading}
+                    onChange={(e) =&gt; setFormData({ ...formData, newsletter: e.target.checked })}
+                /&gt;
+
+                {loading &amp;&amp; (
+                    &lt;div style={{ display: &#39;flex&#39;, alignItems: &#39;center&#39;, gap: 10, fontSize: 14, color: &#39;#6b7280&#39; }}&gt;
+                        &lt;Spinner style={{ width: 16, height: 16 }} /&gt;
+                        &lt;span&gt;Creating your account...&lt;/span&gt;
+                    &lt;/div&gt;
+                )}
+            &lt;/div&gt;
+        &lt;/Container&gt;
+    )
+}
+
+export const RegistrationForm: Story = {
+    name: &#39;Registration Form&#39;,
+    render: () =&gt; (
+        &lt;div style={{ width: 560 }}&gt;
+            &lt;CombinedForm /&gt;
+        &lt;/div&gt;
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: &#39;An interactive registration form demonstrating `Container`, `Input`, `Select`, `Checkbox`, `Button`, `Message`, `Progress`, and `Spinner` working together. Fill in the fields and click &quot;Create Account&quot; to see validation, loading state, and success feedback.&#39;
+            }
+        }
+    }
+}
+</code></pre></div>
+    </div>
+        </div>
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { Button, Checkbox, Container, Input, Message, Progress, Select, Spinner } from "storybook";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Registration Form</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const RegistrationForm = () =&gt; (
+    &lt;div style={{ width: 560 }}&gt;
+        &lt;CombinedForm /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article></div>
+        </section>
+      </div>
+    
+    
+  </div>
+</main>
+</body>
+</html>  
