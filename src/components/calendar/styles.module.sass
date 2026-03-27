@@ -67,6 +67,22 @@
         &.notAllowed
             cursor: not-allowed
 
+        &.today
+            font-weight: bold
+            color: var(--input-border-focus-color, #1976d2)
+            position: relative
+
+            &:after
+                content: ''
+                position: absolute
+                bottom: 4px
+                left: 50%
+                transform: translateX(-50%)
+                width: 4px
+                height: 4px
+                border-radius: 50%
+                background-color: currentColor
+
         &.selected
             background-color: var(--dropdown-background-color-hover)
             color: var(--text-color-primary)
@@ -76,6 +92,22 @@
             color: white
 
         &.range
+            background-color: var(--dropdown-background-color-hover)
+
+    .todayButton
+        background: transparent
+        border: none
+        padding: 2px 6px
+        margin-left: 4px
+        cursor: pointer
+        font-family: var(--font-family), sans-serif
+        font-size: var(--font-size-small, 12px)
+        color: var(--input-border-focus-color, #1976d2)
+        border-radius: var(--border-radius)
+        vertical-align: middle
+        line-height: 1.4
+
+        &:hover
             background-color: var(--dropdown-background-color-hover)
 
     .selectContainer

@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 1.7.11
+
+### Patch Changes
+
+- Added `highlightToday` prop to Calendar (default: `true`) — highlights the current day in the calendar grid
+- Added `showTodayButton` prop to Calendar (default: `false`) — renders a button in the header to navigate back to the current month
+- Added keyboard navigation to Calendar (ArrowLeft/ArrowRight to switch months), with ARIA `role`, `tabIndex`, and localized `aria-label` attributes on nav buttons and container
+- Fixed Calendar timezone handling — incoming dates (`datePeriod`, `minDate`, `maxDate`) are now parsed as UTC and converted to local time for display; selected dates are returned in UTC
+- Added keyboard navigation and ARIA support to Select — ArrowUp/ArrowDown/Enter/Space/Escape to open, navigate, and select options; highlighted index skips disabled items; `aria-activedescendant` and `aria-controls` wired to the portaled options list
+- Set `TZ=UTC` for Jest test scripts to ensure timezone-consistent test runs across environments
+
 ## 1.7.10
 
 ### Patch Changes

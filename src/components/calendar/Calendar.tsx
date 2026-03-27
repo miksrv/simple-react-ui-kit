@@ -18,11 +18,15 @@ export const Calendar: React.FC<CalendarProps> = ({
     minDate,
     maxDate,
     locale = 'en',
+    highlightToday = true,
+    showTodayButton = false,
     containerClassName,
     onDateSelect,
     onPeriodSelect
 }) => {
-    const [currentMonth, setCurrentMonth] = useState(dayjs().utc())
+    const today = useMemo(() => dayjs(), [])
+
+    const [currentMonth, setCurrentMonth] = useState(dayjs())
     const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
     const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(null)
 
@@ -47,6 +51,26 @@ export const Calendar: React.FC<CalendarProps> = ({
         setSelectedYear(newMonth.year())
     }
 
+    const handleGoToToday = () => {
+        setCurrentMonth(today)
+        setSelectedMonth(today.month())
+        setSelectedYear(today.year())
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        const target = e.target as HTMLElement
+        if (target.tagName === 'SELECT') {
+            return
+        }
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault()
+            handlePrevMonth()
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault()
+            handleNextMonth()
+        }
+    }
+
     const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newMonth = Number.parseInt(event.target.value, 10)
         setSelectedMonth(newMonth)
@@ -61,13 +85,13 @@ export const Calendar: React.FC<CalendarProps> = ({
 
     const handleDateClick = useCallback(
         (day: number) => {
-            const newDate = currentMonth.date(day)
+            const newDate = currentMonth.date(day).startOf('day')
 
-            if (minDate && newDate.isBefore(dayjs(minDate), 'day')) {
+            if (minDate && newDate.isBefore(dayjs.utc(minDate).local(), 'day')) {
                 return
             }
 
-            if (maxDate && newDate.isAfter(dayjs(maxDate), 'day')) {
+            if (maxDate && newDate.isAfter(dayjs.utc(maxDate).local(), 'day')) {
                 return
             }
 
@@ -78,11 +102,17 @@ export const Calendar: React.FC<CalendarProps> = ({
                 } else if (!selectedEndDate) {
                     if (newDate.isAfter(selectedStartDate)) {
                         setSelectedEndDate(newDate)
-                        onPeriodSelect?.(selectedStartDate.format('YYYY-MM-DD'), newDate.format('YYYY-MM-DD'))
+                        onPeriodSelect?.(
+                            selectedStartDate.utc().format('YYYY-MM-DD'),
+                            newDate.utc().format('YYYY-MM-DD')
+                        )
                     } else {
                         setSelectedEndDate(selectedStartDate)
                         setSelectedStartDate(newDate)
-                        onPeriodSelect?.(newDate.format('YYYY-MM-DD'), selectedStartDate.format('YYYY-MM-DD'))
+                        onPeriodSelect?.(
+                            newDate.utc().format('YYYY-MM-DD'),
+                            selectedStartDate.utc().format('YYYY-MM-DD')
+                        )
                     }
                 } else {
                     setSelectedStartDate(newDate)
@@ -91,7 +121,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             } else if (onDateSelect) {
                 setSelectedStartDate(newDate)
                 setSelectedEndDate(null)
-                onDateSelect?.(newDate.format('YYYY-MM-DD'))
+                onDateSelect?.(newDate.utc().format('YYYY-MM-DD'))
             }
         },
         [currentMonth, selectedStartDate, selectedEndDate, onPeriodSelect, onDateSelect, minDate, maxDate]
@@ -129,8 +159,15 @@ export const Calendar: React.FC<CalendarProps> = ({
             if (selectedEndDate && date.isSame(selectedEndDate, 'day')) {
                 dayClass = cn(dayClass, styles.selected, styles.selectedEndDate)
             }
-            if ((minDate && date.isBefore(dayjs(minDate), 'day')) || (maxDate && date.isAfter(dayjs(maxDate), 'day'))) {
+            if (
+                (minDate && date.isBefore(dayjs.utc(minDate).local(), 'day')) ||
+                (maxDate && date.isAfter(dayjs.utc(maxDate).local(), 'day'))
+            ) {
                 dayClass = cn(dayClass, styles.notAllowed)
+            }
+
+            if (highlightToday && date.isSame(today, 'day')) {
+                dayClass = cn(dayClass, styles.today)
             }
 
             result.push(
@@ -153,14 +190,16 @@ export const Calendar: React.FC<CalendarProps> = ({
         selectedEndDate,
         minDate,
         maxDate,
+        highlightToday,
+        today,
         handleDateClick
     ])
 
     useEffect(() => {
         const years: number[] = []
 
-        const minYear = minDate ? dayjs.utc(minDate).year() : 1900
-        const maxYear = maxDate ? dayjs.utc(maxDate).year() : dayjs().year()
+        const minYear = minDate ? dayjs.utc(minDate).local().year() : 1900
+        const maxYear = maxDate ? dayjs.utc(maxDate).local().year() : dayjs().year()
 
         for (let year = minYear; year <= maxYear; year++) {
             years.push(year)
@@ -171,7 +210,7 @@ export const Calendar: React.FC<CalendarProps> = ({
 
     useEffect(() => {
         if (datePeriod?.[0]) {
-            const startDate = dayjs.utc(datePeriod[0])
+            const startDate = dayjs.utc(datePeriod[0]).local()
             setSelectedStartDate(startDate)
             setCurrentMonth(startDate)
             setSelectedMonth(startDate.month())
@@ -181,18 +220,26 @@ export const Calendar: React.FC<CalendarProps> = ({
         }
 
         if (datePeriod?.[1]) {
-            setSelectedEndDate(dayjs.utc(datePeriod[1]))
+            setSelectedEndDate(dayjs.utc(datePeriod[1]).local())
         } else {
             setSelectedEndDate(null)
         }
     }, [datePeriod])
 
     return (
-        <div className={cn(styles.calendar, containerClassName)}>
+        <div
+            className={cn(styles.calendar, containerClassName)}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+            role='group'
+            aria-label={locale === 'ru' ? 'Календарь' : 'Calendar'}
+        >
             <header className={styles.header}>
                 <button
+                    type='button'
                     className={styles.navigateButton}
                     onClick={handlePrevMonth}
+                    aria-label={locale === 'ru' ? 'Предыдущий месяц' : 'Previous month'}
                 >
                     <Icon name={'KeyboardLeft'} />
                 </button>
@@ -227,10 +274,22 @@ export const Calendar: React.FC<CalendarProps> = ({
                             ))}
                         </select>
                     </div>
+                    {showTodayButton && (
+                        <button
+                            type='button'
+                            className={styles.todayButton}
+                            onClick={handleGoToToday}
+                            aria-label={locale === 'ru' ? 'Перейти к сегодняшнему дню' : 'Go to today'}
+                        >
+                            {locale === 'ru' ? 'Сегодня' : 'Today'}
+                        </button>
+                    )}
                 </span>
                 <button
+                    type='button'
                     className={styles.navigateButton}
                     onClick={handleNextMonth}
+                    aria-label={locale === 'ru' ? 'Следующий месяц' : 'Next month'}
                 >
                     <Icon name={'KeyboardRight'} />
                 </button>
