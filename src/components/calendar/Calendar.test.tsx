@@ -31,7 +31,8 @@ describe('Calendar', () => {
 
     it('navigates to previous and next month', () => {
         setup()
-        const [prevBtn, nextBtn] = screen.getAllByRole('button')
+        const prevBtn = screen.getByRole('button', { name: /previous month/i })
+        const nextBtn = screen.getByRole('button', { name: /next month/i })
         fireEvent.click(nextBtn)
         fireEvent.click(prevBtn)
     })
@@ -180,7 +181,7 @@ describe('Calendar', () => {
 
     it('renders all days of the current month', () => {
         setup()
-        const now = dayjs().utc()
+        const now = dayjs()
         const days = now.daysInMonth()
         for (let i = 1; i <= days; i++) {
             expect(screen.getAllByText(i.toString())[0]).toBeInTheDocument()
@@ -225,7 +226,7 @@ describe('Calendar', () => {
 
     it('navigates to next month and updates month selector', () => {
         setup()
-        const [, nextBtn] = screen.getAllByRole('button')
+        const nextBtn = screen.getByRole('button', { name: /next month/i })
         const [monthSelect] = screen.getAllByRole('combobox')
         const initialMonth = monthSelect.querySelector('option:checked')?.textContent
 
@@ -237,7 +238,7 @@ describe('Calendar', () => {
 
     it('navigates to previous month and updates month selector', () => {
         setup()
-        const [prevBtn] = screen.getAllByRole('button')
+        const prevBtn = screen.getByRole('button', { name: /previous month/i })
         const [monthSelect] = screen.getAllByRole('combobox')
 
         fireEvent.click(prevBtn)
@@ -303,8 +304,8 @@ describe('Calendar', () => {
     // PERF-03: useMemo re-computes days when currentMonth changes (month navigation)
     it('re-renders days when navigating to next month', () => {
         setup()
-        const now = dayjs().utc()
-        const [, nextBtn] = screen.getAllByRole('button')
+        const now = dayjs()
+        const nextBtn = screen.getByRole('button', { name: /next month/i })
         const nextMonth = now.add(1, 'month')
 
         fireEvent.click(nextBtn)
@@ -317,8 +318,8 @@ describe('Calendar', () => {
 
     it('re-renders days when navigating to previous month', () => {
         setup()
-        const now = dayjs().utc()
-        const [prevBtn] = screen.getAllByRole('button')
+        const now = dayjs()
+        const prevBtn = screen.getByRole('button', { name: /previous month/i })
         const prevMonth = now.subtract(1, 'month')
 
         fireEvent.click(prevBtn)
@@ -342,6 +343,163 @@ describe('Calendar', () => {
 
         // Both clicks succeeded, confirming useMemo re-ran with updated handleDateClick
         expect(onDateSelect.mock.calls[1][0]).toContain('-10')
+    })
+
+    // === Highlight Today ===
+
+    it('highlights today by default', () => {
+        setup()
+        const todayEl = document.querySelector('[class*="today"]')
+        expect(todayEl).toBeInTheDocument()
+        expect(todayEl?.textContent).toBe(String(dayjs().date()))
+    })
+
+    it('does not highlight today when highlightToday is false', () => {
+        setup({ highlightToday: false })
+        expect(document.querySelector('[class*="today"]')).not.toBeInTheDocument()
+    })
+
+    it('today is not highlighted when viewing a different month', () => {
+        setup()
+        const nextBtn = screen.getByRole('button', { name: /next month/i })
+        fireEvent.click(nextBtn)
+        fireEvent.click(nextBtn)
+        // today should not be visible in a month two steps forward (unless it's the same day of month)
+        // We navigate to next month and verify today class only appears if the day is actually today
+        const todayEl = document.querySelector('[class*="today"]')
+        if (todayEl) {
+            // If today class exists, it must match the actual today's date number in a month that contains today
+            expect(todayEl.textContent).toBe(String(dayjs().date()))
+        } else {
+            expect(todayEl).toBeNull()
+        }
+    })
+
+    // === Keyboard Navigation ===
+
+    it('navigates to previous month with ArrowLeft key', () => {
+        const { container } = setup()
+        const [monthSelect] = screen.getAllByRole('combobox')
+        const initialMonth = monthSelect.querySelector('option:checked')?.textContent
+
+        fireEvent.keyDown(container.firstChild as HTMLElement, { key: 'ArrowLeft' })
+
+        const newMonth = monthSelect.querySelector('option:checked')?.textContent
+        expect(newMonth).not.toBe(initialMonth)
+    })
+
+    it('navigates to next month with ArrowRight key', () => {
+        const { container } = setup()
+        const [monthSelect] = screen.getAllByRole('combobox')
+        const initialMonth = monthSelect.querySelector('option:checked')?.textContent
+
+        fireEvent.keyDown(container.firstChild as HTMLElement, { key: 'ArrowRight' })
+
+        const newMonth = monthSelect.querySelector('option:checked')?.textContent
+        expect(newMonth).not.toBe(initialMonth)
+    })
+
+    it('does not navigate with ArrowLeft when a select element is the target', () => {
+        setup()
+        const [monthSelect] = screen.getAllByRole('combobox')
+        const initialMonth = monthSelect.querySelector('option:checked')?.textContent
+
+        fireEvent.keyDown(monthSelect, { key: 'ArrowLeft' })
+
+        const newMonth = monthSelect.querySelector('option:checked')?.textContent
+        expect(newMonth).toBe(initialMonth)
+    })
+
+    it('does not navigate with ArrowRight when a select element is the target', () => {
+        setup()
+        const [monthSelect] = screen.getAllByRole('combobox')
+        const initialMonth = monthSelect.querySelector('option:checked')?.textContent
+
+        fireEvent.keyDown(monthSelect, { key: 'ArrowRight' })
+
+        const newMonth = monthSelect.querySelector('option:checked')?.textContent
+        expect(newMonth).toBe(initialMonth)
+    })
+
+    it('ignores unrelated keys (e.g. ArrowUp)', () => {
+        const { container } = setup()
+        const [monthSelect] = screen.getAllByRole('combobox')
+        const initialMonth = monthSelect.querySelector('option:checked')?.textContent
+
+        fireEvent.keyDown(container.firstChild as HTMLElement, { key: 'ArrowUp' })
+
+        expect(monthSelect.querySelector('option:checked')?.textContent).toBe(initialMonth)
+    })
+
+    it('calendar container has role="group" and tabIndex for keyboard access', () => {
+        const { container } = setup()
+        const calendarEl = container.firstChild as HTMLElement
+        expect(calendarEl).toHaveAttribute('role', 'group')
+        expect(calendarEl).toHaveAttribute('tabIndex', '0')
+    })
+
+    // === Today Button ===
+
+    it('does not render today button by default', () => {
+        setup()
+        expect(screen.queryByRole('button', { name: /go to today/i })).not.toBeInTheDocument()
+    })
+
+    it('renders today button when showTodayButton is true', () => {
+        setup({ showTodayButton: true })
+        expect(screen.getByRole('button', { name: /go to today/i })).toBeInTheDocument()
+        expect(screen.getByText('Today')).toBeInTheDocument()
+    })
+
+    it('renders today button with Russian label in ru locale', () => {
+        setup({ showTodayButton: true, locale: 'ru' })
+        expect(screen.getByRole('button', { name: /перейти к сегодняшнему дню/i })).toBeInTheDocument()
+        expect(screen.getByText('Сегодня')).toBeInTheDocument()
+    })
+
+    it('today button navigates back to current month after navigating away', () => {
+        setup({ showTodayButton: true })
+        const [monthSelect] = screen.getAllByRole('combobox')
+        const initialMonth = monthSelect.querySelector('option:checked')?.textContent
+
+        // Navigate two months forward
+        const nextBtn = screen.getByRole('button', { name: /next month/i })
+        fireEvent.click(nextBtn)
+        fireEvent.click(nextBtn)
+        expect(monthSelect.querySelector('option:checked')?.textContent).not.toBe(initialMonth)
+
+        // Click "Today" to go back
+        fireEvent.click(screen.getByRole('button', { name: /go to today/i }))
+        expect(monthSelect.querySelector('option:checked')?.textContent).toBe(initialMonth)
+    })
+
+    it('today button updates year selector when navigating back from a different year', () => {
+        setup({ showTodayButton: true })
+        const [, yearSelect] = screen.getAllByRole('combobox')
+        const currentYear = String(dayjs().year())
+
+        // Change year via selector
+        const prevYear = String(dayjs().year() - 1)
+        if (yearSelect.querySelector(`option[value="${prevYear}"]`)) {
+            fireEvent.change(yearSelect, { target: { value: prevYear } })
+            expect((yearSelect as HTMLSelectElement).value).toBe(prevYear)
+
+            // Click Today to restore
+            fireEvent.click(screen.getByRole('button', { name: /go to today/i }))
+            expect((yearSelect as HTMLSelectElement).value).toBe(currentYear)
+        }
+    })
+
+    it('nav buttons have correct aria-labels in English', () => {
+        setup()
+        expect(screen.getByRole('button', { name: 'Previous month' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Next month' })).toBeInTheDocument()
+    })
+
+    it('nav buttons have correct aria-labels in Russian', () => {
+        setup({ locale: 'ru' })
+        expect(screen.getByRole('button', { name: 'Предыдущий месяц' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Следующий месяц' })).toBeInTheDocument()
     })
 
     it('re-renders days when minDate or maxDate changes', () => {

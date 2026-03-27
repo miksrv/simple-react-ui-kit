@@ -12,6 +12,10 @@ export interface CalendarProps {
     maxDate?: string
     /** Locale for month and day names ('ru' or 'en') */
     locale?: 'ru' | 'en'
+    /** Highlight the current day in the calendar (default: true) */
+    highlightToday?: boolean
+    /** Show a button in the header to navigate back to the current month (default: false) */
+    showTodayButton?: boolean
     /** Additional class name for the calendar container */
     containerClassName?: string
     /** Callback for single date selection */

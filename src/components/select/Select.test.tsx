@@ -695,6 +695,260 @@ describe('Select Component', () => {
         expect(onSelect).not.toHaveBeenCalled()
     })
 
+    // === Arrow Key Navigation ===
+
+    it('highlights first non-disabled option on ArrowDown when dropdown opens (searchable)', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+        const items = screen.getAllByRole('option')
+        expect(items[0]).toHaveClass('highlighted')
+    })
+
+    it('navigates down through options skipping disabled (searchable)', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // opens + highlights index 0
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // index 1 is disabled → index 2
+        const items = screen.getAllByRole('option')
+        expect(items[0]).not.toHaveClass('highlighted')
+        expect(items[2]).toHaveClass('highlighted')
+    })
+
+    it('navigates up through options (searchable)', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // opens + index 0
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // index 2 (skip disabled)
+        fireEvent.keyDown(input, { key: 'ArrowUp' }) // back to index 0
+        const items = screen.getAllByRole('option')
+        expect(items[0]).toHaveClass('highlighted')
+        expect(items[2]).not.toHaveClass('highlighted')
+    })
+
+    it('does not go above first option with ArrowUp', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // opens + index 0
+        fireEvent.keyDown(input, { key: 'ArrowUp' }) // stays at 0 (boundary)
+        const items = screen.getAllByRole('option')
+        expect(items[0]).toHaveClass('highlighted')
+    })
+
+    it('ArrowUp does nothing when dropdown is closed (searchable)', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowUp' })
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    it('selects highlighted option on Enter instead of first option', () => {
+        const onSelect = jest.fn()
+        render(
+            <Select
+                options={options}
+                searchable
+                onSelect={onSelect}
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // opens + highlights first
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // moves to index 2 (Option Three)
+        fireEvent.keyDown(input, { key: 'Enter' })
+        expect(onSelect).toHaveBeenCalledWith([expect.objectContaining({ key: '3' })])
+    })
+
+    it('resets highlighted index when dropdown closes and reopens', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // opens + highlights 0
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // moves to 2
+        fireEvent.keyDown(input, { key: 'Escape' }) // close
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // reopens + highlights first
+        const items = screen.getAllByRole('option')
+        expect(items[0]).toHaveClass('highlighted')
+    })
+
+    it('navigates down through options on toggle button (non-searchable)', () => {
+        render(<Select options={options} />)
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowDown' }) // opens + highlights first
+        const items = screen.getAllByRole('option')
+        expect(items[0]).toHaveClass('highlighted')
+    })
+
+    it('navigates down with ArrowDown on toggle button when already open', () => {
+        render(<Select options={options} />)
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowDown' }) // opens + index 0
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowDown' }) // index 2 (skip disabled)
+        const items = screen.getAllByRole('option')
+        expect(items[2]).toHaveClass('highlighted')
+    })
+
+    it('navigates up with ArrowUp on toggle button', () => {
+        render(<Select options={options} />)
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowDown' }) // opens + index 0
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowDown' }) // index 2
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowUp' }) // back to index 0
+        const items = screen.getAllByRole('option')
+        expect(items[0]).toHaveClass('highlighted')
+    })
+
+    it('ArrowUp on toggle button does nothing when dropdown is closed', () => {
+        render(<Select options={options} />)
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowUp' })
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    it('does not open dropdown with ArrowDown on toggle button when disabled', () => {
+        render(
+            <Select
+                options={options}
+                disabled
+            />
+        )
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowDown' })
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    it('selects highlighted option with Enter on toggle button when open', () => {
+        const onSelect = jest.fn()
+        render(
+            <Select
+                options={options}
+                onSelect={onSelect}
+            />
+        )
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowDown' }) // opens + index 0
+        fireEvent.keyDown(toggleBtn, { key: 'Enter' })
+        expect(onSelect).toHaveBeenCalledWith([expect.objectContaining({ key: '1' })])
+    })
+
+    it('toggles dropdown with Space on toggle button when no option highlighted', () => {
+        render(<Select options={options} />)
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleBtn, { key: ' ' })
+        expect(screen.getByRole('listbox')).toBeInTheDocument()
+        fireEvent.keyDown(screen.getByRole('button', { name: /close dropdown/i }), { key: ' ' })
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    // === ID and aria-activedescendant ===
+
+    it('applies id to the listbox ul element', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+        const listbox = screen.getByRole('listbox')
+        expect(listbox).toHaveAttribute('id')
+    })
+
+    it('aria-controls on input matches listbox id', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+        const listbox = screen.getByRole('listbox')
+        expect(input.getAttribute('aria-controls')).toBe(listbox.getAttribute('id'))
+    })
+
+    it('sets aria-activedescendant on input when option is highlighted', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' }) // opens + highlights index 0
+        const items = screen.getAllByRole('option')
+        const activeDesc = input.getAttribute('aria-activedescendant')
+        expect(activeDesc).toBeTruthy()
+        expect(items[0]).toHaveAttribute('id', activeDesc)
+    })
+
+    it('clears aria-activedescendant on input when no option is highlighted', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        // Open without highlighting
+        fireEvent.click(screen.getByRole('combobox'))
+        expect(input.getAttribute('aria-activedescendant')).toBeFalsy()
+    })
+
+    it('sets aria-activedescendant on combobox for non-searchable mode', () => {
+        render(<Select options={options} />)
+        const combobox = screen.getByRole('combobox')
+        const toggleBtn = screen.getByRole('button', { name: /open dropdown/i })
+        fireEvent.keyDown(toggleBtn, { key: 'ArrowDown' }) // opens + highlights first
+        expect(combobox.getAttribute('aria-activedescendant')).toBeTruthy()
+    })
+
+    it('each option li has a unique id derived from listbox id', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+        const listbox = screen.getByRole('listbox')
+        const listboxId = listbox.getAttribute('id')!
+        const items = screen.getAllByRole('option')
+        items.forEach((item, index) => {
+            expect(item).toHaveAttribute('id', `${listboxId}-option-${index}`)
+        })
+    })
+
     // BUG-09: Two Select instances on the same page must have different option list IDs
     it('two Select instances have different IDs on their option lists', () => {
         render(

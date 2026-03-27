@@ -1,6 +1,6 @@
 {
     "name": "simple-react-ui-kit",
-    "version": "1.7.10",
+    "version": "1.7.11",
     "description": "A lightweight and flexible UI framework for building responsive React applications with customizable components.",
     "repository": "https://github.com/miksrv/simple-react-ui-kit.git",
     "keywords": [
@@ -19,9 +19,9 @@
         "changeset": "npx changeset",
         "changeversion": "npx changeset version",
         "release": "changeset publish",
-        "test": "jest",
-        "test:coverage": "jest --coverage",
-        "test:watch": "jest --watch --testNamePattern Select",
+        "test": "TZ=UTC jest",
+        "test:coverage": "TZ=UTC jest --coverage",
+        "test:watch": "TZ=UTC jest --watch --testNamePattern Select",
         "eslint:check": "eslint",
         "eslint:fix": "eslint --fix",
         "prettier:check": "prettier --check .",

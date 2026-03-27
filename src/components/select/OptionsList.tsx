@@ -55,6 +55,7 @@ export const OptionsList = <T,>({
     return (
         <ul
             ref={listRef}
+            id={props.id}
             role='listbox'
             aria-multiselectable={Array.isArray(selectedOptions)}
             className={cn(styles.optionsList, className)}
@@ -64,10 +65,12 @@ export const OptionsList = <T,>({
             {options.map((option, index) => {
                 const selected = isSelected(option)
                 const highlighted = index === highlightedIndex
+                const optionId = props.id ? `${props.id}-option-${index}` : undefined
 
                 return (
                     <li
                         key={String(option.key ?? option.value)}
+                        id={optionId}
                         ref={(el) => {
                             if (el) {
                                 itemRefs.current.set(index, el)
@@ -107,7 +110,6 @@ export const OptionsList = <T,>({
                     </li>
                 )
             })}
-
             {options.length === 0 && (
                 <li
                     className={styles.noResult}

@@ -13,7 +13,13 @@ const meta: Meta<SelectProps<string>> = {
         docs: {
             description: {
                 component:
-                    'Universal select component: `Dropdown` and `MultiSelect` in one. Supports search, portals, icons, emojis, images, validation, and accessibility.'
+                    'Universal select component: `Dropdown` and `MultiSelect` in one. Supports search, portals, icons, emojis, images, validation, and full keyboard accessibility.\n\n' +
+                    '**Keyboard navigation:**\n' +
+                    '- `↓` / `↑` — open dropdown and navigate through options (disabled options are skipped)\n' +
+                    '- `Enter` — select the highlighted option (or first non-disabled option if none highlighted)\n' +
+                    '- `Escape` — close dropdown\n' +
+                    '- `Backspace` / `Delete` — remove last badge (multiple) or clear selection (single)\n' +
+                    '- `Space` — toggle dropdown (non-searchable)'
             }
         }
     },
@@ -213,5 +219,95 @@ export const NotFoundCaption: StoryObj<typeof meta> = {
         notFoundCaption: 'No countries available',
         placeholder: 'Search...',
         label: 'Empty List'
+    }
+}
+
+export const KeyboardNavigation: StoryObj<typeof meta> = {
+    render: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
+            <Template
+                searchable
+                options={techStack}
+                placeholder='Press ↓ to open and navigate'
+                label='Searchable — use ↓ ↑ Enter Escape'
+            />
+            <Template
+                options={techStack}
+                placeholder='Press ↓ to open and navigate'
+                label='Non-searchable — use ↓ ↑ Enter Space Escape'
+            />
+            <Template
+                multiple
+                searchable
+                closeOnSelect={false}
+                options={techStack}
+                placeholder='Navigate and pick multiple'
+                label='Multiple + Searchable — Backspace removes last badge'
+            />
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'Demonstrates full keyboard accessibility. ' +
+                    'Click any select to focus it, then use arrow keys to navigate, Enter to select, and Escape to close. ' +
+                    'Disabled options are automatically skipped during navigation.'
+            }
+        }
+    }
+}
+
+export const Sizes: StoryObj<typeof meta> = {
+    render: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
+            <Template
+                options={countries}
+                size='small'
+                placeholder='Small'
+                label='Small'
+            />
+            <Template
+                options={countries}
+                size='medium'
+                placeholder='Medium (default)'
+                label='Medium'
+            />
+            <Template
+                options={countries}
+                size='large'
+                placeholder='Large'
+                label='Large'
+            />
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'Three available sizes: `small`, `medium` (default), and `large`.'
+            }
+        }
+    }
+}
+
+export const Disabled: StoryObj<typeof meta> = {
+    render: Template,
+    args: {
+        options: countries,
+        disabled: true,
+        value: 'us',
+        placeholder: 'Disabled select',
+        label: 'Disabled'
+    }
+}
+
+export const Clearable: StoryObj<typeof meta> = {
+    render: Template,
+    args: {
+        options: countries,
+        clearable: true,
+        value: 'ru',
+        placeholder: 'Select a country',
+        label: 'Clearable (with pre-selected value)'
     }
 }
