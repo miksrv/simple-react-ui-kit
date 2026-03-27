@@ -576,13 +576,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">1/17 prop type error</a><a class="filter-pill info" data-k="infos" href="#filter-infos">17/17 infos</a><span class="filter-pill ok" aria-disabled="true">92 stories ok</span></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">1/17 prop type error</a><a class="filter-pill info" data-k="infos" href="#filter-infos">17/17 infos</a><span class="filter-pill ok" aria-disabled="true">96 stories ok</span></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note ok" style="margin-bottom: 16px;">
-              Using <code>react-docgen-typescript</code>. Generation took <strong>2.5s</strong>.
+              Using <code>react-docgen-typescript</code>. Generation took <strong>2.6s</strong>.
             </div>
     <h2 class="section-title">Components</h2>
     <div class="grid" role="list">
@@ -1160,7 +1160,7 @@ variant?: &quot;positive&quot; | &quot;negative&quot;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> Calendar</h2>
       <div class="badges">
-        <label for="c-2-date-calendar-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-2-date-calendar-props" class="badge ok as-toggle">10 prop types</label>
         <label for="c-2-date-calendar-info" class="badge info as-toggle">1 info</label>
         <label for="c-2-date-calendar-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -1194,7 +1194,7 @@ variant?: &quot;positive&quot; | &quot;negative&quot;</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
-              <span class="badge ok">8 prop types</span>
+              <span class="badge ok">10 prop types</span>
             </div>
             <pre><code>Component: ../src/index.ts::Calendar</code></pre>
             <pre><code>Props:</code></pre>
@@ -1212,6 +1212,11 @@ datePeriod?: [(string)?, (string)?] | undefined
  * Hide the days of the week row
  */
 hideDaysOfWeek?: boolean
+
+/**
+ * Highlight the current day in the calendar (default: true)
+ */
+highlightToday?: boolean = true
 
 /**
  * Locale for month and day names (&#39;ru&#39; or &#39;en&#39;)
@@ -1236,7 +1241,12 @@ onDateSelect?: ((date: string) =&gt; void)
 /**
  * Callback for period selection (start and end dates)
  */
-onPeriodSelect?: ((startDate?: string, endDate?: string) =&gt; void) | undefined</code></pre>
+onPeriodSelect?: ((startDate?: string, endDate?: string) =&gt; void) | undefined
+
+/**
+ * Show a button in the header to navigate back to the current month (default: false)
+ */
+showTodayButton?: boolean = false</code></pre>
           </div>
         </div>
     
@@ -1741,7 +1751,7 @@ title?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DatePicker</h2>
       <div class="badges">
-        <label for="c-5-date-datepicker-props" class="badge ok as-toggle">13 prop types</label>
+        <label for="c-5-date-datepicker-props" class="badge ok as-toggle">15 prop types</label>
         <label for="c-5-date-datepicker-info" class="badge info as-toggle">1 info</label>
         <label for="c-5-date-datepicker-stories" class="badge ok as-toggle">6 stories</label>
         
@@ -1775,7 +1785,7 @@ title?: string</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen-typescript)</small></span>
-              <span class="badge ok">13 prop types</span>
+              <span class="badge ok">15 prop types</span>
             </div>
             <pre><code>Component: ../src/index.ts::DatePicker</code></pre>
             <pre><code>Props:</code></pre>
@@ -1803,6 +1813,11 @@ hideDaysOfWeek?: boolean
  * List of preset options to hide from the presets list
  */
 hidePresets?: PresetOption[]
+
+/**
+ * Highlight the current day in the calendar (default: true)
+ */
+highlightToday?: boolean
 
 /**
  * Locale for month and day names (&#39;ru&#39; or &#39;en&#39;)
@@ -1838,6 +1853,11 @@ periodDatesFormat?: string = DD.MM.YYYY
  * Caption text shown when no date is selected (default: &#39;Select date&#39;)
  */
 placeholder?: string = Select date
+
+/**
+ * Show a button in the header to navigate back to the current month (default: false)
+ */
+showTodayButton?: boolean
 
 /**
  * Date format for displaying a single date (default: &#39;DD MMMM YYYY&#39;)
@@ -3393,7 +3413,7 @@ export const RegistrationForm: Story = {
       <div class="badges">
         <label for="c-13-controls-select-props" class="badge ok as-toggle">18 prop types</label>
         <label for="c-13-controls-select-info" class="badge info as-toggle">1 info</label>
-        <label for="c-13-controls-select-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-13-controls-select-stories" class="badge ok as-toggle">11 stories</label>
         
       </div>
     </div>
@@ -3744,6 +3764,121 @@ value?: T | T[]</code></pre>
             notFoundCaption=&quot;No countries available&quot;
             placeholder=&quot;Search...&quot;
             label=&quot;Empty List&quot;
+            value={value}
+            onSelect={(opts) =&gt; {
+                if (args.multiple) {
+                    setValue(opts?.map((o) =&gt; o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Keyboard Navigation</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const KeyboardNavigation = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 24, maxWidth: 400 }}&gt;
+        &lt;Template
+            searchable
+            options={techStack}
+            placeholder=&#39;Press ↓ to open and navigate&#39;
+            label=&#39;Searchable — use ↓ ↑ Enter Escape&#39;
+        /&gt;
+        &lt;Template
+            options={techStack}
+            placeholder=&#39;Press ↓ to open and navigate&#39;
+            label=&#39;Non-searchable — use ↓ ↑ Enter Space Escape&#39;
+        /&gt;
+        &lt;Template
+            multiple
+            searchable
+            closeOnSelect={false}
+            options={techStack}
+            placeholder=&#39;Navigate and pick multiple&#39;
+            label=&#39;Multiple + Searchable — Backspace removes last badge&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sizes</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Sizes = () =&gt; (
+    &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, gap: 24, maxWidth: 400 }}&gt;
+        &lt;Template
+            options={countries}
+            size=&#39;small&#39;
+            placeholder=&#39;Small&#39;
+            label=&#39;Small&#39;
+        /&gt;
+        &lt;Template
+            options={countries}
+            size=&#39;medium&#39;
+            placeholder=&#39;Medium (default)&#39;
+            label=&#39;Medium&#39;
+        /&gt;
+        &lt;Template
+            options={countries}
+            size=&#39;large&#39;
+            placeholder=&#39;Large&#39;
+            label=&#39;Large&#39;
+        /&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; {
+    const [value, setValue] = useState&lt;string | string[] | undefined&gt;(args.value)
+
+    return (
+        &lt;Select
+            options={countries}
+            disabled
+            placeholder=&quot;Disabled select&quot;
+            label=&quot;Disabled&quot;
+            value={value}
+            onSelect={(opts) =&gt; {
+                if (args.multiple) {
+                    setValue(opts?.map((o) =&gt; o.key) || [])
+                } else {
+                    setValue(opts?.[0]?.key)
+                }
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Clearable</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Clearable = () =&gt; {
+    const [value, setValue] = useState&lt;string | string[] | undefined&gt;(args.value)
+
+    return (
+        &lt;Select
+            options={countries}
+            clearable
+            placeholder=&quot;Select a country&quot;
+            label=&quot;Clearable (with pre-selected value)&quot;
             value={value}
             onSelect={(opts) =&gt; {
                 if (args.multiple) {
