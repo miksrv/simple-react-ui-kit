@@ -49,6 +49,7 @@ export const Select = <T,>({
     const [search, setSearch] = useState('')
     const [isOpen, setIsOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
+    const [highlightedIndex, setHighlightedIndex] = useState(-1)
     const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null)
     const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({ visibility: 'hidden' })
     const [positionCalculated, setPositionCalculated] = useState(false)
@@ -90,6 +91,13 @@ export const Select = <T,>({
 
     const selectedOption = multiple ? undefined : selectedOptions?.[0]
 
+    // Reset highlighted index when dropdown closes or filteredOptions change
+    useEffect(() => {
+        if (!isOpen) {
+            setHighlightedIndex(-1)
+        }
+    }, [isOpen])
+
     // Filtered options based on search and selected options
     const filteredOptions = useMemo(() => {
         const lower = search.toLowerCase()
@@ -99,6 +107,28 @@ export const Select = <T,>({
             return matchesSearch && (multiple ? notSelected : true)
         })
     }, [options, search, selectedOptions, multiple])
+
+    // Returns next valid (non-disabled) index in given direction, or current if boundary reached
+    const getNextIndex = useCallback(
+        (current: number, direction: 1 | -1): number => {
+            const len = filteredOptions.length
+            if (len === 0) {
+                return -1
+            }
+            let idx = current + direction
+            if (idx < 0 || idx >= len) {
+                return current
+            }
+            while (filteredOptions[idx]?.disabled) {
+                idx += direction
+                if (idx < 0 || idx >= len) {
+                    return current
+                }
+            }
+            return idx
+        },
+        [filteredOptions]
+    )
 
     // Handle dropdown toggle
     const toggleDropdown = useCallback(() => {
@@ -132,6 +162,7 @@ export const Select = <T,>({
             onSelect?.(newSelected)
             setSearch('')
             onSearch?.('')
+            setHighlightedIndex(-1)
             if (closeOnSelect) {
                 setIsOpen(false)
             }
@@ -178,9 +209,33 @@ export const Select = <T,>({
 
     const handleKeyDown = useCallback(
         (e: KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Enter' && filteredOptions[0] && !filteredOptions[0].disabled) {
+            if (e.key === 'Enter') {
                 e.preventDefault()
-                handleSelect(filteredOptions[0])
+                const target =
+                    highlightedIndex >= 0
+                        ? filteredOptions[highlightedIndex]
+                        : filteredOptions.find((opt) => !opt.disabled)
+                if (target) {
+                    handleSelect(target)
+                }
+            }
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault()
+                if (!isOpen) {
+                    setIsOpen(true)
+                    setHighlightedIndex(getNextIndex(-1, 1))
+                    return
+                }
+                setHighlightedIndex((prev) => getNextIndex(prev, 1))
+            }
+
+            if (e.key === 'ArrowUp') {
+                e.preventDefault()
+                if (!isOpen) {
+                    return
+                }
+                setHighlightedIndex((prev) => getNextIndex(prev, -1))
             }
 
             if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -200,27 +255,58 @@ export const Select = <T,>({
                 setIsOpen(false)
                 inputRef.current?.blur()
             }
-
-            if (e.key === 'ArrowDown' && !isOpen) {
-                e.preventDefault()
-                setIsOpen(true)
-            }
         },
-        [filteredOptions, search, selectedOptions, handleSelect, handleRemove, isOpen, multiple]
+        [
+            filteredOptions,
+            highlightedIndex,
+            search,
+            selectedOptions,
+            selectedOption,
+            handleSelect,
+            handleRemove,
+            isOpen,
+            multiple,
+            onSelect,
+            getNextIndex
+        ]
     )
 
     const handleToggleKeyDown = useCallback(
-        (e: KeyboardEvent<HTMLSpanElement>) => {
+        (e: KeyboardEvent<HTMLButtonElement>) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault()
-                toggleDropdown()
+                if (isOpen && highlightedIndex >= 0) {
+                    handleSelect(filteredOptions[highlightedIndex])
+                } else {
+                    toggleDropdown()
+                }
             }
             if (e.key === 'Escape' && isOpen) {
                 e.preventDefault()
                 setIsOpen(false)
             }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault()
+                if (disabled) {
+                    return
+                }
+                if (!isOpen) {
+                    onOpen?.()
+                    setIsOpen(true)
+                    setHighlightedIndex(getNextIndex(-1, 1))
+                    return
+                }
+                setHighlightedIndex((prev) => getNextIndex(prev, 1))
+            }
+            if (e.key === 'ArrowUp') {
+                e.preventDefault()
+                if (!isOpen) {
+                    return
+                }
+                setHighlightedIndex((prev) => getNextIndex(prev, -1))
+            }
         },
-        [toggleDropdown, isOpen]
+        [toggleDropdown, isOpen, highlightedIndex, filteredOptions, handleSelect, disabled, onOpen, getNextIndex]
     )
 
     // Close dropdown on outside click
@@ -317,6 +403,9 @@ export const Select = <T,>({
                 aria-haspopup='listbox'
                 aria-disabled={disabled}
                 aria-multiselectable={multiple}
+                aria-activedescendant={
+                    isOpen && highlightedIndex >= 0 ? `${optionsListId}-option-${highlightedIndex}` : undefined
+                }
             >
                 <div
                     className={cn(
@@ -371,6 +460,11 @@ export const Select = <T,>({
                                 onBlur={handleBlur}
                                 aria-autocomplete='list'
                                 aria-controls={optionsListId}
+                                aria-activedescendant={
+                                    isOpen && highlightedIndex >= 0
+                                        ? `${optionsListId}-option-${highlightedIndex}`
+                                        : undefined
+                                }
                             />
                         )}
 
@@ -400,7 +494,7 @@ export const Select = <T,>({
                             </button>
                         ) : (
                             <button
-                                role='button'
+                                type='button'
                                 tabIndex={0}
                                 className={styles.toggleButton}
                                 onClick={toggleDropdown}
@@ -421,11 +515,17 @@ export const Select = <T,>({
             {isOpen &&
                 portalNode &&
                 createPortal(
-                    <div style={{ ...portalStyle, visibility: positionCalculated ? 'visible' : 'hidden' }}>
+                    <div
+                        style={{
+                            ...portalStyle,
+                            visibility: positionCalculated ? 'visible' : 'hidden'
+                        }}
+                    >
                         <OptionsList<T>
                             id={optionsListId}
                             options={filteredOptions}
                             selectedOptions={selectedOptions}
+                            highlightedIndex={highlightedIndex}
                             onOptionSelect={handleSelect}
                             notFoundCaption={notFoundCaption}
                         />
