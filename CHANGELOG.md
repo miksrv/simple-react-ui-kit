@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.7.12
+
+### Patch Changes
+
+- Remove dayjs.utc usage across date components
+
 ## 1.7.11
 
 ### Patch Changes
