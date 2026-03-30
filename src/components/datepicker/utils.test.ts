@@ -41,7 +41,7 @@ describe('ruPresets', () => {
 })
 
 describe('findPresetByDate', () => {
-    const nowDate = dayjs.utc()
+    const nowDate = dayjs()
 
     it('returns undefined if startDate is missing', () => {
         expect(findPresetByDate(nowDate, undefined, nowDate.format('YYYY-MM-DD'), 'en')).toBeUndefined()

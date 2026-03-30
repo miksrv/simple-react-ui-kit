@@ -36,7 +36,7 @@ export const findPresetByDate = (
     }
 
     const start = dayjs(startDate)
-    const end = dayjs(endDate).utc(true)
+    const end = dayjs(endDate)
     const isEndDateToday = end.isSame(nowDate, 'day')
 
     if (!isEndDateToday) {

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 
 import { Button } from '../button'
 import { Calendar } from '../calendar'
@@ -11,16 +10,14 @@ import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
 
-dayjs.extend(utc)
-
 export const timePresets: CalendarPresetType[] = [
-    { key: PresetOption.TODAY, endDate: dayjs.utc().toDate() },
-    { key: PresetOption.DAY, endDate: dayjs.utc().subtract(1, 'day').toDate() },
-    { key: PresetOption.WEEK, endDate: dayjs.utc().subtract(1, 'week').toDate() },
-    { key: PresetOption.MONTH, endDate: dayjs.utc().subtract(1, 'month').toDate() },
-    { key: PresetOption.QUARTER, endDate: dayjs.utc().subtract(3, 'month').toDate() },
-    { key: PresetOption.HALF_YEAR, endDate: dayjs.utc().subtract(6, 'month').toDate() },
-    { key: PresetOption.YEAR, endDate: dayjs.utc().subtract(1, 'year').toDate() }
+    { key: PresetOption.TODAY, endDate: dayjs().toDate() },
+    { key: PresetOption.DAY, endDate: dayjs().subtract(1, 'day').toDate() },
+    { key: PresetOption.WEEK, endDate: dayjs().subtract(1, 'week').toDate() },
+    { key: PresetOption.MONTH, endDate: dayjs().subtract(1, 'month').toDate() },
+    { key: PresetOption.QUARTER, endDate: dayjs().subtract(3, 'month').toDate() },
+    { key: PresetOption.HALF_YEAR, endDate: dayjs().subtract(6, 'month').toDate() },
+    { key: PresetOption.YEAR, endDate: dayjs().subtract(1, 'year').toDate() }
 ]
 
 export const DatePicker: React.FC<DatePickerProps> = ({
@@ -34,7 +31,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     const popoutRef = useRef<PopoutHandleProps>(null)
     const [periodDates, setPeriodDates] = useState<[string?, string?]>([props.datePeriod?.[0], props.datePeriod?.[1]])
 
-    const nowDate = useMemo(() => dayjs.utc(), [])
+    const nowDate = useMemo(() => dayjs(), [])
 
     const timePresets = useMemo<CalendarPresetType[]>(
         () => [
@@ -75,7 +72,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     const handlePresetSelect = (preset: PresetOption) => {
         const endDate = timePresets?.find(({ key }) => key === preset)?.endDate
         const startDate = dayjs(endDate).format('YYYY-MM-DD')
-        const today = dayjs.utc().format('YYYY-MM-DD')
+        const today = dayjs().format('YYYY-MM-DD')
         setPeriodDates([startDate, today])
         props?.onPeriodSelect?.(startDate, today)
         if (popoutRef.current) {
