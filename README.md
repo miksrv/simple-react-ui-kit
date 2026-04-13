@@ -2,10 +2,10 @@
 
 <!-- PROJECT TITLE -->
 
-Welcome to the **Simple React UI Kit** repository! This project is designed to provide a collection of reusable UI components for React-based applications. Whether you're building a simple app or a complex web project, this UI kit offers a solid foundation to speed up your development.
+**Simple React UI Kit** is a lightweight, fully typed React component library for building modern web interfaces. It provides 16 production-ready UI components with full TypeScript support, a minimal bundle footprint, and deep theming capabilities via CSS variables — everything you need to ship consistent, accessible UIs faster.
 
 <div align="center">
-  <h3>Simple and lightweight UI kit for React developers</h3>
+  <h3>Lightweight, accessible React UI components with full TypeScript support</h3>
 
 <a href="https://miksrv.github.io/simple-react-ui-kit/" target="_blank">StoryBook</a>
 ·
@@ -46,10 +46,10 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 
 ### Table of Contents
 
-- [About of Project](#about-of-project)
+- [About the Project](#about-of-project)
     - [Built With](#built-with)
 - [Installation](#installation)
-- [Usage Components](#usage)
+- [Components](#usage)
     - [Badge](#badge)
     - [Button](#button)
     - [Calendar](#calendar)
@@ -74,20 +74,21 @@ Welcome to the **Simple React UI Kit** repository! This project is designed to p
 
 <!-- ABOUT OF PROJECT -->
 
-## About of Project
+## About the Project
 
-The **Simple React UI Kit** is a collection of essential UI components for building responsive web applications using React. It includes various common components like buttons, inputs, modals, and more. The main focus of this kit is simplicity and ease of use while maintaining flexibility for custom styling.
+**Simple React UI Kit** is an open-source React component library focused on developer experience, accessibility, and design flexibility. Built with TypeScript, Sass Modules, and Rollup, it delivers a minimal bundle footprint without sacrificing functionality.
 
-### Key Features:
+### Key Features
 
-1. **Reusable Components** – Save time with prebuilt, modular UI components.
-2. **Customizable** – Easily style components to match your design system.
-3. **Lightweight** – Minimal dependencies and easy to integrate into any project.
-4. **Typescript Support** – Fully typed components for TypeScript users.
+1. **16 Production-Ready Components** — Badge, Button, Calendar, Checkbox, Container, DatePicker, Dialog, Icon, Input, Message, Popout, Progress, Select, Skeleton, Spinner, and Table — all fully documented in Storybook.
+2. **Full TypeScript Support** — Every component ships with strict type definitions and IntelliSense-friendly prop interfaces.
+3. **Themeable via CSS Variables** — Override design tokens at the `:root` level to integrate any design system or dark-mode theme.
+4. **Accessible by Default** — Components include proper ARIA attributes, keyboard navigation, and focus management out of the box.
+5. **Minimal Bundle Size** — Bundled with Rollup, tree-shakeable, and free from heavy peer dependencies.
 
-### Example Usage
+### Real-World Usage
 
-One of the applications of this UI Kit is in the interface of a weather station. You can check out the demo here: [Weather Station Demo](https://meteo.miksoft.pro/). The source code for this project can be found in the repository: [Weather Station Repository](https://github.com/miksrv/arduino-weather-station).
+One real-world application of this library is the interface for an IoT weather station. You can check out the live demo: [Weather Station Demo](https://meteo.miksoft.pro/). The source code is available in the [Weather Station Repository](https://github.com/miksrv/arduino-weather-station).
 
 <p align="right">
   (<a href="#top">Back to top</a>)
@@ -95,14 +96,14 @@ One of the applications of this UI Kit is in the interface of a weather station.
 
 ### Built With
 
-This project is built with modern JavaScript technologies to ensure flexibility and ease of use.
+The project is built with a modern, battle-tested frontend stack.
 
-- [![JavaScript][js-badge]][js-url] Core languages used in frontend development.
-- [![TypeScript][ts-badge]][ts-url] TypeScript extends JavaScript by adding types to the language.
-- [![Sass][sass-badge]][sass-url] Styling the user interface.
-- [![GitHub Actions][githubactions-badge]][githubactions-url] Continuous integration and deployment pipeline for automating tests and deployment processes.
-- [![SonarCloud][sonarcloud-badge]][sonarcloud-url] Code quality and security analysis.
-- [![Jest][jest-badge]][jest-url] Delightful JavaScript Testing Framework with a focus on simplicity.
+- [![JavaScript][js-badge]][js-url] Core language powering the component logic.
+- [![TypeScript][ts-badge]][ts-url] Strict static typing for safer, more maintainable code.
+- [![Sass][sass-badge]][sass-url] Modular, component-scoped styling with Sass modules.
+- [![GitHub Actions][githubactions-badge]][githubactions-url] CI/CD pipeline for automated testing, linting, and publishing.
+- [![SonarCloud][sonarcloud-badge]][sonarcloud-url] Continuous code quality and security analysis.
+- [![Jest][jest-badge]][jest-url] Unit testing with Jest and React Testing Library.
 
 <p align="right">
   (<a href="#top">Back to top</a>)
@@ -112,13 +113,13 @@ This project is built with modern JavaScript technologies to ensure flexibility 
 
 ## Installation
 
-To install **Simple React UI Kit**, you can use npm:
+Install **Simple React UI Kit** via npm:
 
 ```sh
 npm install simple-react-ui-kit
 ```
 
-Or if you're using Yarn:
+Or with Yarn:
 
 ```sh
 yarn add simple-react-ui-kit
@@ -132,11 +133,11 @@ yarn add simple-react-ui-kit
 
 ## Usage
 
-Below are examples of how to use some of the components in this UI Kit. Whether you're integrating into an existing project or starting fresh, these examples will help you get up and running.
+Each component is individually importable and fully typed. The examples below cover the most common use cases — refer to [Storybook](https://miksrv.github.io/simple-react-ui-kit/) for live interactive demos of every component and its props.
 
 ### Badge
 
-The `Badge` component is a small, stylized label that can display text, an optional icon, and a remove button. It is ideal for tagging or categorizing items and includes a callback for handling removal.
+The `Badge` component is a compact, stylized label for tagging and categorizing content. It supports an optional icon, a remove button with a callback, and three size variants.
 
 <details>
   <summary>Badge Component Example</summary>
@@ -191,7 +192,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### Button
 
-The `Button` component is a versatile and customizable button element with multiple variants, sizes, and loading states. It can also act as a link when provided with a URL.
+The `Button` component is a versatile, accessible button with multiple visual modes, size variants, loading states, icon support, and optional link behavior.
 
 <details>
   <summary>Button Component Example</summary>
@@ -272,7 +273,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### Calendar
 
-The `Calendar` component provides an interactive calendar UI for selecting single dates or date ranges, supporting localization, min/max date limits, and custom styling.
+The `Calendar` component is an interactive date picker supporting single-date and date-range selection, `en`/`ru` localization, min/max date constraints, and keyboard navigation.
 
 <details>
   <summary>Calendar Component Example</summary>
@@ -325,7 +326,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### Checkbox
 
-The `Checkbox` component is a customizable input element used for toggling between checked, unchecked, and indeterminate states. It includes support for labels and provides additional flexibility with its disabled and indeterminate options.
+The `Checkbox` component is a fully controlled input that supports checked, unchecked, and indeterminate states, along with optional labels, disabled mode, and an accessible `onChange` handler.
 
 <details>
   <summary>Checkbox Component Example</summary>
@@ -395,7 +396,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### Container
 
-The `Container` component is a flexible layout wrapper designed to organize and present content with optional headers, footers, and actions. It supports customizable class names and offers flexibility for displaying various sections such as a title, custom header, and footer.
+The `Container` component is a flexible layout wrapper for organizing content with optional title, action element, custom header, and footer sections — ideal for cards, panels, and page sections.
 
 <details>
   <summary>Container Component Example</summary>
@@ -459,7 +460,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### DatePicker
 
-The `DatePicker` component provides a user-friendly interface for selecting a single date or a date range, with quick-access preset options (like Today, Last Week, etc.) and full calendar support. It is ideal for dashboards, reports, and any UI requiring date or period selection.
+The `DatePicker` component provides a user-friendly trigger button with a dropdown calendar for selecting single dates or date ranges. It includes built-in preset options (Today, Last Week, etc.) and is ideal for dashboards and report filters.
 
 <details>
   <summary>DatePicker Component Example</summary>
@@ -512,7 +513,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### Dialog
 
-The `Dialog` component provides a customizable modal dialog for displaying content, actions, and headers. It supports features such as a backdrop overlay, configurable dimensions, a back button, and a close button. The component is designed to be flexible and accessible, with support for custom actions and responsive positioning.
+The `Dialog` component is an accessible modal with a backdrop overlay, configurable dimensions, back/close button controls, Escape key handling, and optional parent-relative positioning.
 
 <details>
   <summary>Dialog Component Example</summary>
@@ -583,7 +584,7 @@ For more detailed examples and live usage, check out the [Storybook Documentatio
 
 ### Icon
 
-The `Icon` component serves as a flexible and reusable way to display various icons within your application. It allows for easy integration of SVG icons, enhancing the visual appeal and usability of your UI.
+The `Icon` component renders scalable SVG icons by name, accepting any additional SVG attributes for full customization. Use it in buttons, navigation items, or anywhere consistent iconography is needed.
 
 <details>
   <summary>Icon Component Example</summary>
@@ -592,11 +593,9 @@ Explore the full documentation and examples in Storybook: [Icon Component Storyb
 
 #### Props:
 
-- **`name`**: A required property that specifies the name of the icon to be displayed. It should correspond to one of the predefined icon types in your application.
-
-- **`className`**: An optional property for adding additional class names to the icon for custom styling.
-
-- **`...props`**: This spread operator allows you to pass any additional SVG properties (such as `onClick`, `style`, etc.) directly to the SVG element.
+- **`name`**: Required. The icon identifier — must match one of the predefined icon names.
+- **`className`**: Optional class name for custom styling.
+- **`...props`**: Any additional `SVGSVGElement` attributes (`onClick`, `style`, `width`, `height`, etc.) passed directly to the SVG.
 
 #### Example Usage:
 
@@ -627,21 +626,7 @@ const App = () => {
 export default App
 ```
 
-In this example:
-
-- The `Icon` component is used to render icons for home, settings, and user, each with custom class names for styling.
-
-#### Features:
-
-- **Customizable**: The `Icon` component can accept additional properties that allow for further customization, such as event handlers and styling.
-
-- **Flexible Integration**: Use the component anywhere in your application where an icon is needed, ensuring consistency across your UI.
-
-- **SVG Support**: The component is built to render SVG icons, providing scalability and clarity in display.
-
-#### Utility:
-
-The `Icon` component is ideal for applications requiring a variety of icons, such as navigation bars, buttons, and informational displays. It enhances the user experience through intuitive iconography while maintaining a clean and manageable codebase.
+In this example, `Search`, `Settings`, and `User` icons are rendered with custom class names for styling.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-icon--docs).
 
@@ -649,7 +634,7 @@ For more detailed examples and interactive demonstrations, visit the [Storybook 
 
 ### Input
 
-The `Input` component provides a versatile, customizable input field with optional label and error message support. It includes visual indicators for required and disabled states, allowing for enhanced form usability.
+The `Input` component is a fully featured form field with label, error message, required indicator, and disabled state support. It extends all standard `HTMLInputElement` attributes for maximum flexibility.
 
 <details>
   <summary>Input Component Example</summary>
@@ -713,7 +698,7 @@ For more detailed examples and live usage, check out the [Storybook Documentatio
 
 ### Message
 
-The `Message` component is a versatile message display box that supports different visual styles (`error`, `warning`, `success`, and `info`). It is used to present messages to users, providing a title and content area, with the ability to customize the type of message displayed.
+The `Message` component renders styled notification banners in four semantic variants — `error`, `warning`, `success`, and `info` — with an optional title and arbitrary React content.
 
 <details>
   <summary>Message Component Example</summary>
@@ -773,7 +758,7 @@ For more details and live examples, check out the [Storybook Documentation](http
 
 ### Popout
 
-The `Popout` component is designed to create a floating container that opens and closes when triggered, often used for menus, tooltips, or additional actions. It provides a button as a trigger and offers flexible positioning for the popout content, either to the left or right of the button. While the popout is open, its position is updated automatically on window scroll and resize, keeping the panel correctly anchored even in scrollable or dynamic layouts.
+The `Popout` component is a floating panel triggered by a button, typically used for dropdown menus or contextual actions. It supports left/right positioning, portal rendering for overflow-hidden containers, auto-repositioning on scroll and resize, and an imperative `close()` handle.
 
 <details>
   <summary>Popout Component Example</summary>
@@ -842,7 +827,7 @@ For more detailed examples and interactive demonstrations, visit the [Storybook 
 
 ### Select
 
-The `Select` component is a flexible dropdown selector supporting single and multiple selection, search, custom option rendering, and async loading states. It is ideal for forms and filters where users need to pick from a list of options. The dropdown is rendered in a portal and its position updates on window scroll and resize while open, keeping it correctly anchored in scrollable or dynamic layouts.
+The `Select` component is a fully featured dropdown with single and multi-select modes, search filtering, clear button, async loading state, portal rendering, and ARIA accessibility. It auto-repositions on scroll and resize to stay correctly anchored in any layout.
 
 <details>
   <summary>Select Component Example</summary>
@@ -911,7 +896,7 @@ In this example:
 
 ### Skeleton
 
-The `Skeleton` component is a simple placeholder used to indicate the loading state of content, typically displayed as a gray box or shape that mimics the layout of the actual content. It helps improve user experience by showing an outline of the content while it's being loaded.
+The `Skeleton` component is an animated loading placeholder that mimics the shape of content while it is being fetched, reducing perceived load time and layout shift.
 
 <details>
   <summary>Skeleton Component Example</summary>
@@ -920,8 +905,8 @@ Explore the full documentation and examples in Storybook: [Skeleton Component St
 
 #### Props:
 
-- **`className`**: Additional class names for custom styling. You can use this prop to apply different styles or layouts to match the skeleton to the shape and size of the content it represents.
-- **`...props`**: This component also accepts all standard `HTMLDivElement` attributes, allowing you to customize it further (e.g., setting width, height, etc.).
+- **`className`**: Additional class names to match the skeleton's shape and size to the content it represents.
+- **`...props`**: All standard `HTMLDivElement` attributes are accepted (`style`, `width`, `height`, etc.).
 
 #### Example Usage:
 
@@ -941,19 +926,7 @@ const App = () => {
 export default App
 ```
 
-In this example:
-
-- The `Skeleton` component is used as a placeholder for a large block of content that is still loading.
-- Inline styles define the skeleton's width and height, making it flexible for different layouts and components.
-
-#### Customization:
-
-You can apply additional CSS classes via the `className` prop to further style the skeleton. The skeleton automatically fills the space of its parent, making it suitable for a variety of content-loading placeholders such as text, images, and buttons.
-
-#### Utility:
-
-- The skeleton is commonly used in list views, card layouts, or media-heavy sections where content loading might take longer.
-- It provides a smooth transition once the content is loaded, enhancing user experience.
+In this example, the skeleton fills a `200px`-tall block as a placeholder while content loads. Use the `className` prop or inline styles to match any shape — text lines, image blocks, or card layouts.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-skeleton--docs).
 
@@ -961,7 +934,7 @@ For more detailed examples and interactive demonstrations, visit the [Storybook 
 
 ### Spinner
 
-The `Spinner` component is a loading indicator represented as a rotating circle or animation. It visually communicates to users that a process is ongoing, enhancing the user experience during loading states or asynchronous operations.
+The `Spinner` component is an SVG-based animated loading indicator that signals ongoing processes such as data fetching or form submission.
 
 <details>
   <summary>Spinner Component Example</summary>
@@ -970,8 +943,8 @@ Explore the full documentation and examples in Storybook: [Spinner Component Sto
 
 #### Props:
 
-- **`className`**: Additional class names for custom styling. Use this prop to apply different styles or sizes to the spinner.
-- **`...props`**: The spinner component accepts all standard `SVGSVGElement` attributes, allowing for further customization, such as setting dimensions or color.
+- **`className`**: Additional class names for custom styling.
+- **`...props`**: All standard `SVGSVGElement` attributes are accepted (`width`, `height`, `style`, etc.).
 
 #### Example Usage:
 
@@ -995,19 +968,7 @@ const App = () => {
 export default App
 ```
 
-In this example:
-
-- The `Spinner` component is used as a loading indicator while content is being fetched.
-- Additional properties like `width` and `height` can be set to control the spinner's size, while the `className` prop allows for custom styling.
-
-#### Customization:
-
-You can customize the appearance of the spinner by adding a `className` for your CSS styles. The spinner's fill colors and sizes can also be adjusted using inline styles or CSS classes.
-
-#### Utility:
-
-- The spinner is an essential component in any application that requires user feedback during loading processes, such as data fetching or processing tasks.
-- It provides a clear visual cue, helping to reduce user frustration and confusion during wait times.
+In this example, `width` and `height` control the spinner size, and `className` applies custom styles.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-spinner--docs).
 
@@ -1015,7 +976,7 @@ For more detailed examples and interactive demonstrations, visit the [Storybook 
 
 ### Table
 
-The `Table` component is a versatile data representation tool designed for displaying tabular data with support for sorting, loading states, and custom formatting. It enhances data visibility and interaction, making it ideal for applications requiring organized data presentation.
+The `Table` component renders structured data with sortable columns, sticky headers, skeleton loading states, custom cell formatters, and optional vertical borders — suitable for dashboards, reports, and data management interfaces.
 
 <details>
   <summary>Table Component Example</summary>
@@ -1068,23 +1029,7 @@ const App = () => {
 export default App
 ```
 
-In this example:
-
-- The `Table` component displays a simple dataset with sortable columns.
-- The `formatter` prop formats the price column to display currency.
-- The `loading` prop is set to `false`, so the actual data is shown instead of skeletons.
-
-#### Features:
-
-- **Sorting**: Clickable column headers enable sorting by ascending or descending order based on the column's data type.
-
-- **Loading State**: The component displays skeleton loaders while data is being fetched, improving user experience during asynchronous operations.
-
-- **Custom Formatting**: Each column can have a custom formatter function, allowing for dynamic presentation of data.
-
-#### Utility:
-
-The `Table` component is perfect for displaying structured data in applications like dashboards, reports, or data management systems. It allows users to sort and view data effectively, enhancing usability and engagement.
+In this example, the table renders two rows with sortable columns and a `formatter` that adds a currency symbol to the price column. Set `loading={true}` to show skeleton placeholders during async data fetching.
 
 For more detailed examples and interactive demonstrations, visit the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-table--docs).
 
@@ -1092,7 +1037,7 @@ For more detailed examples and interactive demonstrations, visit the [Storybook 
 
 ### Progress
 
-The `Progress` component displays a horizontal progress bar to visually indicate completion percentage. It supports custom height, color themes, and additional styling.
+The `Progress` component renders a horizontal progress bar with configurable percentage value, height, and color theme (`main`, `red`, `orange`, `green`).
 
 <details>
   <summary>Progress Component Example</summary>
@@ -1155,11 +1100,9 @@ In this example:
 
 ### Style Customization and Theming
 
-The components in this UI Kit are designed to be highly customizable, allowing you to easily override the default style variables to match your project's design or create custom themes. All the style variables are defined in the `:root` and can be overridden in your CSS by redeclaring them.
+All components are themed via CSS custom properties defined on `:root`. Override any variable in your own stylesheet to align with your design system or implement dark mode — no build step or config required.
 
-#### Available CSS Variables:
-
-Here is a list of all the CSS variables you can override to customize the look and feel of the components:
+#### Available CSS Variables
 
 - **Primary Colors:**
     - `--color-contrast`: Contrast color (typically used for text on colored backgrounds).
@@ -1235,7 +1178,7 @@ Here is a list of all the CSS variables you can override to customize the look a
 
 #### Example: Overriding Variables for Custom Themes
 
-To customize the theme, simply override the default values in your stylesheet:
+Declare your overrides in a global stylesheet — they take effect across all components immediately:
 
 ```css
 :root {
@@ -1340,7 +1283,7 @@ To customize the theme, simply override the default values in your stylesheet:
 
 ## Contributing
 
-Contributions are what make the open-source community such an incredible resource for developers. Any contributions you make are greatly appreciated!
+Contributions of all kinds are welcome — bug reports, feature requests, documentation improvements, and pull requests.
 
 **To contribute:**
 
@@ -1352,9 +1295,9 @@ Contributions are what make the open-source community such an incredible resourc
 
 For more detailed contributing guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-### Releasing a new version
+### Releasing a New Version
 
-If your contribution is ready to be released after the pull request is merged into the `main` branch, follow these steps:
+Once a pull request is merged into `main`, follow these steps to publish a release:
 
 1. After your pull request is merged, run the command `yarn changeset` to begin the release process.
 2. Select the type of changes (major, minor, patch) and enter a detailed description of the changes.
@@ -1382,7 +1325,7 @@ Once this is done, merging this branch into `main` will automatically publish a 
 
 ## License
 
-This project is distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
 <p align="right">
   (<a href="#top">Back to top</a>)
@@ -1392,7 +1335,7 @@ This project is distributed under the MIT License. See [LICENSE](LICENSE) for mo
 
 ## Acknowledgments
 
-Here are a few resources that helped inspire or were invaluable during the development of this project:
+Resources and tools that were helpful during the development of this project:
 
 1. [GitHub Readme Template](https://github.com/miksrv/GitHub-Project-README-Template)
 2. [React Documentation](https://react.dev/)
