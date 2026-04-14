@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 1.8.0
+
+### Minor Changes
+
+- Added new `TextArea` component — multi-line text input wrapping the native `<textarea>` with label, error message, required indicator, disabled state, two visual modes (`primary` / `ghost`), three sizes (`small` / `medium` / `large`), and configurable `resize` behavior; shares the same CSS variables and visual design as `Input`
+- Added `autoResize` prop to `TextArea` — when enabled, the textarea height grows automatically to fit its content and the resize handle is suppressed
+- Added `TextArea` and `TextAreaProps` exports to the public API (`src/index.ts`)
+- Added Storybook stories for `TextArea` (`Controls/TextArea`) with stories: Default, With Label, With Error, Required, Disabled, Sizes, Ghost Mode, Auto Resize
+- Added unit tests for `TextArea` (22 tests covering render, label, error, size classes, mode classes, required/disabled states, onChange, value forwarding, resize style, and autoResize behaviour)
+- Updated README — added `TextArea` to Table of Contents, component list (now 17 components), and full props/usage documentation section
+- Upgraded Storybook
+- Upgraded UI dependencies
+
 ## 1.7.12
 
 ### Patch Changes

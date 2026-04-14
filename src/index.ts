@@ -20,6 +20,7 @@ export { type OptionsListProps, Select, type SelectOptionType, type SelectProps 
 export { Skeleton, type SkeletonProps } from './components/skeleton'
 export { Spinner, type SpinnerProps } from './components/spinner'
 export { type ColumnProps, Table, type TableProps } from './components/table'
+export { TextArea, type TextAreaProps } from './components/textarea'
 
 // Tools
 export { cn } from './utils'

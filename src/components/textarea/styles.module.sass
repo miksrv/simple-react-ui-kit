@@ -1,0 +1,115 @@
+.textAreaContainer
+    display: block
+
+    *
+        font-family: var(--font-family), sans-serif
+
+    .label
+        font-size: var(--font-size)
+        color: var(--input-label-color)
+        display: block
+        overflow: hidden
+        padding-bottom: 6px
+        padding-top: 2px
+        text-overflow: ellipsis
+        white-space: nowrap
+
+    .formField
+        border-radius: var(--border-radius)
+        position: relative
+        -webkit-tap-highlight-color: transparent
+        align-items: center
+        box-sizing: border-box
+        display: flex
+
+        .textarea
+            font-size: var(--font-size)
+            color: var(--text-color-primary)
+            border: var(--input-border)
+            appearance: none
+            background: transparent
+            border-radius: inherit
+            box-shadow: none
+            box-sizing: border-box
+            margin: 0
+            padding: 8px 12px
+            position: relative
+            width: 100%
+            outline: none
+            font-family: inherit
+            resize: vertical
+            transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms
+
+            &:focus, &:active
+                outline: none
+                border-color: var(--input-border-focus-color)
+                box-shadow: rgba(var(--input-border-focus-color)) 0 0 0 0.05rem
+
+        &.primary
+            background-color: var(--input-background-color)
+
+        &.ghost
+            background-color: transparent
+            border: none
+            box-shadow: none
+
+            textarea
+                border: none
+                box-shadow: none
+                background: transparent
+                padding: 0 !important
+
+    &.small
+        *
+            font-size: var(--font-size-small)
+
+        .formField
+            .textarea
+                font-size: var(--font-size-small)
+                min-height: var(--size-small)
+                padding: 6px 8px
+
+    &.medium
+        .formField
+            .textarea
+                min-height: var(--size-medium)
+                padding: 8px 12px
+
+    &.large
+        .formField
+            .textarea
+                min-height: var(--size-large)
+                padding: 10px 16px
+
+    &.disabled
+        .label
+            opacity: 0.7
+
+        .formField
+            .textarea
+                opacity: 0.5
+
+            &:focus, &:active
+                border-color: inherit
+
+    &.required
+        .label:after
+            content: '*'
+            margin-left: 3px
+            color: var(--color-red)
+
+    &.error
+        .formField
+            background-color: var(--color-red-background)
+
+            textarea
+                border-color: var(--color-red) !important
+
+        .error
+            color: var(--color-red)
+            font-size: var(--font-size-small)
+            margin-top: 5px
+
+    [readonly]
+        cursor: default
+        color: rgba(0, 0, 0, 0.41) !important
