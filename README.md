@@ -59,6 +59,7 @@
     - [Dialog](#dialog)
     - [Icon](#icon)
     - [Input](#input)
+    - [TextArea](#textarea)
     - [Message](#message)
     - [Popout](#popout)
     - [Progress](#progress)
@@ -80,7 +81,7 @@
 
 ### Key Features
 
-1. **16 Production-Ready Components** — Badge, Button, Calendar, Checkbox, Container, DatePicker, Dialog, Icon, Input, Message, Popout, Progress, Select, Skeleton, Spinner, and Table — all fully documented in Storybook.
+1. **17 Production-Ready Components** — Badge, Button, Calendar, Checkbox, Container, DatePicker, Dialog, Icon, Input, Message, Popout, Progress, Select, Skeleton, Spinner, Table, and TextArea — all fully documented in Storybook.
 2. **Full TypeScript Support** — Every component ships with strict type definitions and IntelliSense-friendly prop interfaces.
 3. **Themeable via CSS Variables** — Override design tokens at the `:root` level to integrate any design system or dark-mode theme.
 4. **Accessible by Default** — Components include proper ARIA attributes, keyboard navigation, and focus management out of the box.
@@ -693,6 +694,73 @@ In this example:
 - The input value is managed with React state, and validation logic sets an error message conditionally.
 
 For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-input--docs).
+
+</details>
+
+### TextArea
+
+The `TextArea` component is a multi-line text input with label, error message, required indicator, and disabled state support. Wraps the native `<textarea>` element.
+
+<details>
+  <summary>TextArea Component Example</summary>
+
+Check out the full documentation and examples in Storybook: [TextArea Component Storybook](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/controls-textarea--docs).
+
+#### Props:
+
+- **`label`**: Optional label text displayed above the textarea.
+- **`mode`**: Visual style of the textarea (`primary`, `ghost`). Defaults to `primary`.
+- **`size`**: Size of the textarea, can be `small`, `medium` or `large`.
+- **`error`**: Error message displayed below the textarea, used for validation feedback.
+- **`resize`**: Controls resize behavior of the textarea (`none`, `vertical`, `horizontal`, `both`). Defaults to `vertical`.
+- **`autoResize`**: When `true`, the textarea height grows automatically to fit its content. The resize handle is hidden when this is active. Defaults to `false`.
+- **`className`**: Additional class names for custom styling.
+- **`required`**: Marks the textarea as required.
+- **`disabled`**: Disables the textarea, preventing user interaction.
+
+Additionally, the `TextArea` component accepts all standard textarea attributes from `React.TextareaHTMLAttributes<HTMLTextAreaElement>`, making it flexible for various use cases (e.g., `rows`, `placeholder`, `value`, etc.).
+
+#### Example Usage:
+
+```tsx
+import React, { useState } from 'react'
+import { TextArea } from 'simple-react-ui-kit'
+
+const App = () => {
+    const [value, setValue] = useState<string>('')
+    const [error, setError] = useState<string | undefined>()
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const text = e.target.value
+        setValue(text)
+        setError(text.length > 0 && text.length < 10 ? 'Comment must be at least 10 characters long.' : undefined)
+    }
+
+    return (
+        <div>
+            <TextArea
+                label='Comment'
+                placeholder='Write your comment...'
+                value={value}
+                onChange={handleChange}
+                required
+                rows={4}
+                error={error}
+            />
+        </div>
+    )
+}
+
+export default App
+```
+
+In this example:
+
+- The `TextArea` component displays a label and an error message if the text is too short.
+- The required attribute visually indicates that it's a required field.
+- The textarea value is managed with React state, and validation logic sets an error message conditionally.
+
+For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/controls-textarea--docs).
 
 </details>
 
