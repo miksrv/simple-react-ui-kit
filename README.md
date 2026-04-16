@@ -648,6 +648,7 @@ Check out the full documentation and examples in Storybook: [Input Component Sto
 - **`mode`**: Visual style of the input field (`primary`, `ghost`). Defaults to `primary`.
 - **`size`**: Size of the input field, can be `small`, `medium` or `large`.
 - **`error`**: Error message displayed below the input field, used for validation feedback.
+- **`clearable`**: When `true`, shows a clear button (×) on the right side of the input when it has a value. Clicking the button clears the input and triggers `onChange` with an empty value. The button is hidden when the input is empty or disabled.
 - **`className`**: Additional class names for custom styling.
 - **`required`**: Marks the input as required.
 - **`disabled`**: Disables the input, preventing user interaction.
@@ -680,6 +681,15 @@ const App = () => {
                 required
                 error={error}
             />
+
+            {/* Clearable input example */}
+            <Input
+                label='Search'
+                placeholder='Type to search...'
+                value={inputValue}
+                onChange={handleInputChange}
+                clearable
+            />
         </div>
     )
 }
@@ -690,8 +700,9 @@ export default App
 In this example:
 
 - The `Input` component displays a label and an error message if the input text is too short.
-- The input's required attribute visually indicates that it’s a required field.
+- The input's required attribute visually indicates that it's a required field.
 - The input value is managed with React state, and validation logic sets an error message conditionally.
+- The second input demonstrates the `clearable` prop, which shows a clear button when the input has a value.
 
 For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-input--docs).
 
