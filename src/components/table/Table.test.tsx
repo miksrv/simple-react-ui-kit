@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { Table } from './Table'
-import { ColumnProps } from './types'
+import { TableColumnProps } from './types'
 
 import styles from './styles.module.sass'
 
@@ -13,7 +13,7 @@ interface TestData {
     age: number
 }
 
-const columns: Array<ColumnProps<TestData>> = [
+const columns: Array<TableColumnProps<TestData>> = [
     { header: 'ID', accessor: 'id', isSortable: true },
     { header: 'Name', accessor: 'name', isSortable: true },
     { header: 'Age', accessor: 'age', isSortable: true }
@@ -107,7 +107,7 @@ describe('Table Component', () => {
     })
 
     it('applies formatter function to the cell value', () => {
-        const columnsWithFormatter: Array<ColumnProps<TestData>> = [
+        const columnsWithFormatter: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', formatter: (value) => `Name: ${value}`, isSortable: true },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -126,7 +126,7 @@ describe('Table Component', () => {
     })
 
     it('applies background color function to the cell', () => {
-        const columnsWithBackground: Array<ColumnProps<TestData>> = [
+        const columnsWithBackground: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             {
                 header: 'Name',
@@ -152,7 +152,7 @@ describe('Table Component', () => {
     })
 
     it('does not sort when the column is not sortable', () => {
-        const columnsWithNonSortable: Array<ColumnProps<TestData>> = [
+        const columnsWithNonSortable: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', isSortable: false },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -175,7 +175,7 @@ describe('Table Component', () => {
     })
 
     it('displays skeletons when loading is true', () => {
-        const columns: Array<ColumnProps<TestData>> = [
+        const columns: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', isSortable: true },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -195,7 +195,7 @@ describe('Table Component', () => {
     })
 
     it('displays no data message when there is no data', () => {
-        const columns: Array<ColumnProps<TestData>> = [
+        const columns: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', isSortable: true },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -213,7 +213,7 @@ describe('Table Component', () => {
     })
 
     it('renders columns based on the hidden property', () => {
-        const columnsWithHidden: Array<ColumnProps<TestData>> = [
+        const columnsWithHidden: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', isSortable: true },
             { header: 'Name', accessor: 'name', isSortable: true, hidden: true },
             { header: 'Age', accessor: 'age', isSortable: true }
@@ -364,7 +364,7 @@ describe('Table Component', () => {
     })
 
     it('renders column with className applied to td', () => {
-        const columnsWithClass: Array<ColumnProps<TestData>> = [
+        const columnsWithClass: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id', className: 'id-cell' },
             { header: 'Name', accessor: 'name' },
             { header: 'Age', accessor: 'age' }
@@ -424,7 +424,7 @@ describe('Table Component', () => {
     })
 
     it('formats cell value with full row data access via formatter', () => {
-        const columnsWithRowAccess: Array<ColumnProps<TestData>> = [
+        const columnsWithRowAccess: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id' },
             {
                 header: 'Summary',
@@ -444,7 +444,7 @@ describe('Table Component', () => {
 
     it('calls onChangeSort with asc direction on first click', () => {
         const onChangeSort = jest.fn()
-        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+        const columnsWithExternalSort: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id' },
             { header: 'Name', accessor: 'name', onChangeSort },
             { header: 'Age', accessor: 'age' }
@@ -464,7 +464,7 @@ describe('Table Component', () => {
 
     it('calls onChangeSort with desc direction on second click', () => {
         const onChangeSort = jest.fn()
-        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+        const columnsWithExternalSort: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id' },
             { header: 'Name', accessor: 'name', onChangeSort },
             { header: 'Age', accessor: 'age' }
@@ -485,7 +485,7 @@ describe('Table Component', () => {
 
     it('does not sort data locally when column has onChangeSort', () => {
         const onChangeSort = jest.fn()
-        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+        const columnsWithExternalSort: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id' },
             { header: 'Name', accessor: 'name', onChangeSort },
             { header: 'Age', accessor: 'age' }
@@ -509,7 +509,7 @@ describe('Table Component', () => {
 
     it('shows sort icon for external sort column when sort prop matches', () => {
         const onChangeSort = jest.fn()
-        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+        const columnsWithExternalSort: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id' },
             { header: 'Name', accessor: 'name', onChangeSort },
             { header: 'Age', accessor: 'age' }
@@ -529,7 +529,7 @@ describe('Table Component', () => {
 
     it('does not show sort icon for external sort column when sort prop does not match', () => {
         const onChangeSort = jest.fn()
-        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+        const columnsWithExternalSort: Array<TableColumnProps<TestData>> = [
             { header: 'ID', accessor: 'id' },
             { header: 'Name', accessor: 'name', onChangeSort },
             { header: 'Age', accessor: 'age' }

@@ -19,7 +19,7 @@ export { Progress, type ProgressProps } from './components/progress'
 export { type OptionsListProps, Select, type SelectOptionType, type SelectProps } from './components/select'
 export { Skeleton, type SkeletonProps } from './components/skeleton'
 export { Spinner, type SpinnerProps } from './components/spinner'
-export { type ColumnProps, Table, type TableProps } from './components/table'
+export { Table, type TableColumnProps, type TableProps, type TableSortConfig } from './components/table'
 export { TextArea, type TextAreaProps } from './components/textarea'
 
 // Tools

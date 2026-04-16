@@ -4,7 +4,7 @@ import { cn } from '../../utils'
 import { Icon } from '../icon'
 import { Skeleton } from '../skeleton'
 
-import { ColumnProps, SortConfig, TableProps } from './types'
+import { TableColumnProps, TableProps, TableSortConfig } from './types'
 
 import styles from './styles.module.sass'
 
@@ -22,7 +22,7 @@ export const Table = <T,>({
     verticalBorder,
     sort
 }: TableProps<T>) => {
-    const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(defaultSort ?? null)
+    const [sortConfig, setSortConfig] = useState<TableSortConfig<T> | null>(defaultSort ?? null)
 
     const visibleColumns = columns?.filter(({ hidden }) => !hidden)
 
@@ -43,7 +43,7 @@ export const Table = <T,>({
     }, [data, sortConfig])
 
     const handleSort = useCallback(
-        (column: ColumnProps<T>) => {
+        (column: TableColumnProps<T>) => {
             if (column.onChangeSort) {
                 let direction: 'asc' | 'desc' = 'asc'
                 if (sort && sort.key === column.accessor && sort.direction === 'asc') {
@@ -67,7 +67,7 @@ export const Table = <T,>({
         [sort, sortConfig]
     )
 
-    const getSortIcon = (column: ColumnProps<T>) => {
+    const getSortIcon = (column: TableColumnProps<T>) => {
         if (column.onChangeSort) {
             if (sort?.key !== column.accessor) {
                 return ''
