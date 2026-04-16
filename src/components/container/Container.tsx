@@ -11,7 +11,7 @@ export const Container = React.forwardRef<HTMLElement, ContainerProps>(
         <section
             {...props}
             ref={ref}
-            className={cn(className, styles.container)}
+            className={cn(styles.container, className)}
         >
             {(header || title || action) && (
                 <div className={styles.header}>

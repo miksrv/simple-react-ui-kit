@@ -8,7 +8,7 @@
     margin: 2px
     box-sizing: border-box
     align-items: center
-    height: var(--size-medium)
+    height: var(--size-badge-medium, var(--size-medium))
     padding: 0 12px
     white-space: nowrap
 
@@ -42,7 +42,7 @@
             opacity: .7
 
     &.small
-        height: var(--size-small)
+        height: var(--size-badge-small, var(--size-small))
         font-size: var(--font-size-small)
         padding: 0 8px
 
@@ -51,8 +51,8 @@
             width: 14px
 
     &.medium
-        height: var(--size-medium)
+        height: var(--size-badge-medium, var(--size-medium))
 
     &.large
-        height: var(--size-large)
+        height: var(--size-badge-large, var(--size-large))
         padding: 0 16px

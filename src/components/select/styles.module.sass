@@ -135,7 +135,7 @@ $iconSize: 18px
                 border-color: var(--color-red)
 
         &.small
-            min-height: var(--size-small)
+            min-height: var(--size-control-small, var(--size-small))
             font-size: var(--font-size-small)
 
             svg
@@ -143,10 +143,10 @@ $iconSize: 18px
                 width: 14px
 
         &.medium
-            min-height: var(--size-medium)
+            min-height: var(--size-control-medium, var(--size-medium))
 
         &.large
-            min-height: var(--size-large)
+            min-height: var(--size-control-large, var(--size-large))
 
     &.disabled
         *
