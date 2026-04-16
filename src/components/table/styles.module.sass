@@ -32,14 +32,44 @@
                 &:last-of-type
                     border-right: 0
 
+        &.small
+            th, td
+                height: var(--size-small)
+                font-size: var(--font-size-small)
+                padding: 4px 10px
+
+            th
+                height: var(--size-medium)
+
+
+        &.medium
+            th, td
+                height: var(--size-medium)
+                font-size: var(--font-size)
+                padding: 4px 12px
+
+            th
+                height: var(--size-medium)
+
+        &.large
+            th, td
+                height: var(--size-large)
+                font-size: var(--font-size)
+                padding: 6px 16px
+
+            th
+                height: var(--size-large)
+
         td
             padding: 2px 12px
 
             &.noData
                 text-align: center
+                padding: 20px
 
         tr:last-child td
             border-bottom: none
+            box-shadow: none
 
         th
             background: var(--table-header-background)
@@ -57,21 +87,3 @@
                 vertical-align: middle
                 margin-left: 5px
                 margin-top: -3px
-
-        &.small
-            th, td
-                height: var(--size-small)
-                font-size: var(--font-size-small)
-                padding: 4px 8px
-
-        &.medium
-            th, td
-                height: var(--size-medium)
-                font-size: var(--font-size)
-                padding: 4px 12px
-
-        &.large
-            th, td
-                height: var(--size-large)
-                font-size: var(--font-size)
-                padding: 6px 16px

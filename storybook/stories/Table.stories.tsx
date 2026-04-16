@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 
 import { type ColumnProps, Table, type TableProps } from '../../src'
+import { SortConfig } from '../../src/components/table/types'
 
 type Row = {
     id: number
@@ -82,6 +83,11 @@ const meta: Meta<TableProps<Row>> = {
             control: false,
             description: 'Initial sort configuration `{ key: keyof T, direction: "asc" | "desc" }`'
         },
+        sort: {
+            control: false,
+            description:
+                'Controlled sort state for external (server-side) sorting. Pass together with `column.onChangeSort` to display the active sort indicator.'
+        },
         className: {
             control: 'text',
             description: 'Additional CSS class names for custom styling'
@@ -150,6 +156,21 @@ export const EmptyState: Story = {
         docs: {
             description: {
                 story: 'When `data` is an empty array a single full-width row displays the `noDataCaption` message.'
+            }
+        }
+    }
+}
+
+export const EmptyStateDefaultCaption: Story = {
+    name: 'Empty State — Default Caption',
+    args: {
+        data: [],
+        columns: baseColumns
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'When `data` is an empty array and `noDataCaption` is not provided the table falls back to the built-in `"No data"` caption.'
             }
         }
     }
@@ -270,6 +291,42 @@ export const WithBackground: Story = {
             description: {
                 story: 'The column `background` function returns a CSS colour string based on the cell value. Here the `score` column is colour-coded: green ≥ 90, yellow ≥ 70, red otherwise.'
             }
+        }
+    }
+}
+
+const WithExternalSortTemplate: StoryFn<TableProps<Row>> = () => {
+    const [sort, setSort] = useState<SortConfig<Row> | undefined>(undefined)
+
+    const columns: Array<ColumnProps<Row>> = [
+        {
+            header: 'Name',
+            accessor: 'name',
+            onChangeSort: (newSort) => setSort(newSort as SortConfig<Row>)
+        },
+        {
+            header: 'Score',
+            accessor: 'score',
+            onChangeSort: (newSort) => setSort(newSort as SortConfig<Row>)
+        },
+        { header: 'Role', accessor: 'role' }
+    ]
+
+    return (
+        <Table
+            data={sampleData}
+            columns={columns}
+            sort={sort}
+        />
+    )
+}
+
+export const WithExternalSort = WithExternalSortTemplate.bind({})
+WithExternalSort.storyName = 'With External Sort (API-side)'
+WithExternalSort.parameters = {
+    docs: {
+        description: {
+            story: 'When a column has `onChangeSort`, clicks fire the callback instead of sorting locally — ideal for server-side / paginated datasets. Pass the `sort` prop to keep the active sort indicator in sync.'
         }
     }
 }

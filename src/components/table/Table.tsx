@@ -19,7 +19,8 @@ export const Table = <T,>({
     columns,
     loading,
     stickyHeader,
-    verticalBorder
+    verticalBorder,
+    sort
 }: TableProps<T>) => {
     const [sortConfig, setSortConfig] = useState<SortConfig<T> | null>(defaultSort ?? null)
 
@@ -43,6 +44,15 @@ export const Table = <T,>({
 
     const handleSort = useCallback(
         (column: ColumnProps<T>) => {
+            if (column.onChangeSort) {
+                let direction: 'asc' | 'desc' = 'asc'
+                if (sort && sort.key === column.accessor && sort.direction === 'asc') {
+                    direction = 'desc'
+                }
+                column.onChangeSort({ key: column.accessor, direction })
+                return
+            }
+
             if (!column.isSortable) {
                 return
             }
@@ -54,8 +64,42 @@ export const Table = <T,>({
 
             setSortConfig({ key: column.accessor, direction })
         },
-        [sortConfig]
+        [sort, sortConfig]
     )
+
+    const getSortIcon = (column: ColumnProps<T>) => {
+        if (column.onChangeSort) {
+            if (sort?.key !== column.accessor) {
+                return ''
+            }
+            return sort.direction === 'asc' ? (
+                <Icon
+                    name={'ArrowDown'}
+                    style={{ width: 14, height: 14 }}
+                />
+            ) : (
+                <Icon
+                    name={'ArrowUp'}
+                    style={{ width: 14, height: 14 }}
+                />
+            )
+        }
+
+        if (sortConfig?.key !== column.accessor) {
+            return ''
+        }
+        return sortConfig.direction === 'asc' ? (
+            <Icon
+                name={'ArrowDown'}
+                style={{ width: 14, height: 14 }}
+            />
+        ) : (
+            <Icon
+                name={'ArrowUp'}
+                style={{ width: 14, height: 14 }}
+            />
+        )
+    }
 
     return (
         <div
@@ -69,24 +113,10 @@ export const Table = <T,>({
                             <th
                                 key={String(column.accessor)}
                                 onClick={() => handleSort(column)}
-                                className={column.isSortable ? styles.sortable : undefined}
+                                className={column.isSortable || column.onChangeSort ? styles.sortable : undefined}
                             >
                                 {column.header}
-                                {sortConfig?.key === column.accessor ? (
-                                    sortConfig.direction === 'asc' ? (
-                                        <Icon
-                                            name={'ArrowDown'}
-                                            style={{ width: 14, height: 14 }}
-                                        />
-                                    ) : (
-                                        <Icon
-                                            name={'ArrowUp'}
-                                            style={{ width: 14, height: 14 }}
-                                        />
-                                    )
-                                ) : (
-                                    ''
-                                )}
+                                {getSortIcon(column)}
                             </th>
                         ))}
                     </tr>
