@@ -441,4 +441,109 @@ describe('Table Component', () => {
         )
         expect(screen.getByText('John(0/3)')).toBeInTheDocument()
     })
+
+    it('calls onChangeSort with asc direction on first click', () => {
+        const onChangeSort = jest.fn()
+        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+            { header: 'ID', accessor: 'id' },
+            { header: 'Name', accessor: 'name', onChangeSort },
+            { header: 'Age', accessor: 'age' }
+        ]
+
+        render(
+            <Table
+                data={data}
+                columns={columnsWithExternalSort}
+            />
+        )
+
+        fireEvent.click(screen.getByText('Name'))
+
+        expect(onChangeSort).toHaveBeenCalledWith({ key: 'name', direction: 'asc' })
+    })
+
+    it('calls onChangeSort with desc direction on second click', () => {
+        const onChangeSort = jest.fn()
+        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+            { header: 'ID', accessor: 'id' },
+            { header: 'Name', accessor: 'name', onChangeSort },
+            { header: 'Age', accessor: 'age' }
+        ]
+
+        render(
+            <Table
+                data={data}
+                columns={columnsWithExternalSort}
+                sort={{ key: 'name', direction: 'asc' }}
+            />
+        )
+
+        fireEvent.click(screen.getByText('Name'))
+
+        expect(onChangeSort).toHaveBeenCalledWith({ key: 'name', direction: 'desc' })
+    })
+
+    it('does not sort data locally when column has onChangeSort', () => {
+        const onChangeSort = jest.fn()
+        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+            { header: 'ID', accessor: 'id' },
+            { header: 'Name', accessor: 'name', onChangeSort },
+            { header: 'Age', accessor: 'age' }
+        ]
+
+        const { container } = render(
+            <Table
+                data={data}
+                columns={columnsWithExternalSort}
+            />
+        )
+
+        const rowsBefore = container.querySelectorAll('tbody tr')
+        const firstRowBefore = rowsBefore[0].textContent
+
+        fireEvent.click(screen.getByText('Name'))
+
+        const rowsAfter = container.querySelectorAll('tbody tr')
+        expect(rowsAfter[0].textContent).toBe(firstRowBefore)
+    })
+
+    it('shows sort icon for external sort column when sort prop matches', () => {
+        const onChangeSort = jest.fn()
+        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+            { header: 'ID', accessor: 'id' },
+            { header: 'Name', accessor: 'name', onChangeSort },
+            { header: 'Age', accessor: 'age' }
+        ]
+
+        render(
+            <Table
+                data={data}
+                columns={columnsWithExternalSort}
+                sort={{ key: 'name', direction: 'asc' }}
+            />
+        )
+
+        const nameHeader = screen.getByText('Name').closest('th')
+        expect(nameHeader?.querySelector('svg')).toBeInTheDocument()
+    })
+
+    it('does not show sort icon for external sort column when sort prop does not match', () => {
+        const onChangeSort = jest.fn()
+        const columnsWithExternalSort: Array<ColumnProps<TestData>> = [
+            { header: 'ID', accessor: 'id' },
+            { header: 'Name', accessor: 'name', onChangeSort },
+            { header: 'Age', accessor: 'age' }
+        ]
+
+        render(
+            <Table
+                data={data}
+                columns={columnsWithExternalSort}
+                sort={{ key: 'id', direction: 'asc' }}
+            />
+        )
+
+        const nameHeader = screen.getByText('Name').closest('th')
+        expect(nameHeader?.querySelector('svg')).not.toBeInTheDocument()
+    })
 })

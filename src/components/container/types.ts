@@ -3,7 +3,7 @@ import React from 'react'
 /**
  * Container component properties, representing a flexible layout wrapper
  */
-export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContainerProps extends React.HTMLAttributes<HTMLElement> {
     /** Optional title for the container, typically displayed in the header */
     title?: string
     /** Additional class names for custom styling */

@@ -20,6 +20,9 @@ export interface ColumnProps<T> {
     background?: (value: T[keyof T], row: T) => string | undefined
     /** Formatter function to format the cell value */
     formatter?: (value: T[keyof T], row: T[], index: number) => React.ReactNode
+    /** External sort callback. When provided, clicking this column header fires the callback
+     *  instead of sorting data locally. Use together with TableProps.sort to show the active indicator. */
+    onChangeSort?: (sort: SortConfig<T>) => void
 }
 
 /**
@@ -51,6 +54,9 @@ export interface TableProps<T> {
     stickyHeader?: boolean
     /** Whether to show vertical borders between columns */
     verticalBorder?: boolean
+    /** Controlled sort state for external (server-side) sorting.
+     *  Pass this together with column.onChangeSort to display the active sort indicator. */
+    sort?: SortConfig<T>
 }
 
 /**
