@@ -5,7 +5,7 @@ import { ElementSizeType } from '../../types'
 /**
  * Column properties for table component
  */
-export interface ColumnProps<T> {
+export interface TableColumnProps<T> {
     /** Header content for the column */
     header: string | React.ReactNode
     /** Accessor key to map data for the column */
@@ -22,7 +22,7 @@ export interface ColumnProps<T> {
     formatter?: (value: T[keyof T], row: T[], index: number) => React.ReactNode
     /** External sort callback. When provided, clicking this column header fires the callback
      *  instead of sorting data locally. Use together with TableProps.sort to show the active indicator. */
-    onChangeSort?: (sort: SortConfig<T>) => void
+    onChangeSort?: (sort: TableSortConfig<T>) => void
 }
 
 /**
@@ -34,7 +34,7 @@ export interface TableProps<T> {
     /** Size (height) of the table rows */
     size?: ElementSizeType
     /** Default sorting configuration for the table */
-    defaultSort?: SortConfig<T>
+    defaultSort?: TableSortConfig<T>
     /** Additional class names for custom styling */
     className?: string
     /** Caption to display when there is no data */
@@ -47,7 +47,7 @@ export interface TableProps<T> {
      * that the height of the container will change dynamically up to the maximum value */
     maxHeight?: number | null
     /** Column configuration for the table */
-    columns?: Array<ColumnProps<T>>
+    columns?: Array<TableColumnProps<T>>
     /** Whether the table is in loading state (displays skeletons) */
     loading?: boolean
     /** Whether the table header is sticky when scrolling */
@@ -56,13 +56,13 @@ export interface TableProps<T> {
     verticalBorder?: boolean
     /** Controlled sort state for external (server-side) sorting.
      *  Pass this together with column.onChangeSort to display the active sort indicator. */
-    sort?: SortConfig<T>
+    sort?: TableSortConfig<T>
 }
 
 /**
  * Sorting configuration
  */
-export interface SortConfig<T> {
+export interface TableSortConfig<T> {
     /** Key to sort by */
     key: keyof T
     /** Sort direction */

@@ -1,2 +1,2 @@
 export { Table } from './Table'
-export { type ColumnProps, type TableProps } from './types'
+export { type TableColumnProps, type TableProps, type TableSortConfig } from './types'

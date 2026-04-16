@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.8.2
+
+### Patch Changes
+
+- Rename table types to include 'Table' prefix
+
 ## 1.8.1
 
 ### Patch Changes

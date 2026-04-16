@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 
-import { type ColumnProps, Table, type TableProps } from '../../src'
-import { SortConfig } from '../../src/components/table/types'
+import { Table, type TableColumnProps, type TableProps } from '../../src'
+import { TableSortConfig } from '../../src/components/table/types'
 
 type Row = {
     id: number
@@ -22,7 +22,7 @@ const sampleData: Row[] = [
     { id: 6, name: 'Frank Miller', status: 'inactive', role: 'Viewer', score: 33 }
 ]
 
-const baseColumns: Array<ColumnProps<Row>> = [
+const baseColumns: Array<TableColumnProps<Row>> = [
     { header: 'ID', accessor: 'id', isSortable: true },
     { header: 'Name', accessor: 'name', isSortable: true },
     { header: 'Role', accessor: 'role' },
@@ -38,13 +38,13 @@ const meta: Meta<TableProps<Row>> = {
         docs: {
             description: {
                 component:
-                    'A generic typed data table (`Table<T>`) that supports client-side sorting, loading skeletons, sticky header, vertical borders, custom cell formatters, and background colour functions. Define columns with the `ColumnProps<T>` interface and pass `data` as an array of `T`.'
+                    'A generic typed data table (`Table<T>`) that supports client-side sorting, loading skeletons, sticky header, vertical borders, custom cell formatters, and background colour functions. Define columns with the `TableColumnProps<T>` interface and pass `data` as an array of `T`.'
             }
         }
     },
     argTypes: {
         data: { control: false, description: 'Array of row data objects' },
-        columns: { control: false, description: 'Column configuration array (`ColumnProps<T>[]`)' },
+        columns: { control: false, description: 'Column configuration array (`TableColumnProps<T>[]`)' },
         size: {
             control: 'inline-radio',
             options: ['small', 'medium', 'large'],
@@ -249,7 +249,7 @@ export const WithFormatter: Story = {
                 isSortable: true,
                 formatter: (value) => <strong>{String(value)}</strong>
             }
-        ] as Array<ColumnProps<Row>>
+        ] as Array<TableColumnProps<Row>>
     },
     parameters: {
         docs: {
@@ -284,7 +284,7 @@ export const WithBackground: Story = {
                     return '#fee2e2'
                 }
             }
-        ] as Array<ColumnProps<Row>>
+        ] as Array<TableColumnProps<Row>>
     },
     parameters: {
         docs: {
@@ -296,18 +296,18 @@ export const WithBackground: Story = {
 }
 
 const WithExternalSortTemplate: StoryFn<TableProps<Row>> = () => {
-    const [sort, setSort] = useState<SortConfig<Row> | undefined>(undefined)
+    const [sort, setSort] = useState<TableSortConfig<Row> | undefined>(undefined)
 
-    const columns: Array<ColumnProps<Row>> = [
+    const columns: Array<TableColumnProps<Row>> = [
         {
             header: 'Name',
             accessor: 'name',
-            onChangeSort: (newSort) => setSort(newSort as SortConfig<Row>)
+            onChangeSort: (newSort) => setSort(newSort as TableSortConfig<Row>)
         },
         {
             header: 'Score',
             accessor: 'score',
-            onChangeSort: (newSort) => setSort(newSort as SortConfig<Row>)
+            onChangeSort: (newSort) => setSort(newSort as TableSortConfig<Row>)
         },
         { header: 'Role', accessor: 'role' }
     ]
