@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import type { Meta, StoryObj } from '@storybook/react'
 
@@ -54,6 +54,10 @@ const meta: Meta<InputProps> = {
         disabled: {
             control: 'boolean',
             description: 'Disables the input'
+        },
+        clearable: {
+            control: 'boolean',
+            description: 'Shows a clear button when the input has a value'
         },
         type: {
             control: 'select',
@@ -195,5 +199,31 @@ export const PasswordInput: Story = {
     },
     parameters: {
         docs: { description: { story: 'A password-type input with required marking.' } }
+    }
+}
+
+const ClearableTemplate = () => {
+    const [value, setValue] = useState('Type something here')
+
+    return (
+        <Input
+            label='Search'
+            placeholder='Type to search...'
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            clearable
+        />
+    )
+}
+
+export const Clearable: Story = {
+    name: 'Clearable',
+    render: () => <ClearableTemplate />,
+    parameters: {
+        docs: {
+            description: {
+                story: 'When `clearable` is set to `true`, a clear button (×) appears on the right side of the input when it has a value. Clicking the button clears the input and triggers the `onChange` callback with an empty value. The button is hidden when the input is empty or disabled.'
+            }
+        }
     }
 }

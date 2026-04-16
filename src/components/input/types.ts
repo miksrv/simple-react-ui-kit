@@ -16,4 +16,6 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
     size?: ElementSizeType
     /** Error message displayed below the input field when an error occurs */
     error?: string
+    /** Shows a clear button when the input has a value */
+    clearable?: boolean
 }

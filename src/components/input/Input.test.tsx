@@ -194,4 +194,114 @@ describe('Input Component', () => {
         const { container } = render(<Input {...defaultProps} />)
         expect(container.querySelector('div')).not.toHaveClass('error')
     })
+
+    describe('clearable functionality', () => {
+        it('does not show clear button when clearable is false', () => {
+            render(
+                <Input
+                    {...defaultProps}
+                    value='test value'
+                    onChange={jest.fn()}
+                />
+            )
+            expect(screen.queryByRole('button', { name: /clear input/i })).not.toBeInTheDocument()
+        })
+
+        it('does not show clear button when clearable is true but value is empty', () => {
+            render(
+                <Input
+                    {...defaultProps}
+                    clearable
+                    value=''
+                    onChange={jest.fn()}
+                />
+            )
+            expect(screen.queryByRole('button', { name: /clear input/i })).not.toBeInTheDocument()
+        })
+
+        it('shows clear button when clearable is true and value is not empty', () => {
+            render(
+                <Input
+                    {...defaultProps}
+                    clearable
+                    value='test value'
+                    onChange={jest.fn()}
+                />
+            )
+            expect(screen.getByRole('button', { name: /clear input/i })).toBeInTheDocument()
+        })
+
+        it('does not show clear button when input is disabled', () => {
+            render(
+                <Input
+                    {...defaultProps}
+                    clearable
+                    value='test value'
+                    disabled
+                    onChange={jest.fn()}
+                />
+            )
+            expect(screen.queryByRole('button', { name: /clear input/i })).not.toBeInTheDocument()
+        })
+
+        it('calls onChange with empty value when clear button is clicked', () => {
+            const handleChange = jest.fn()
+            render(
+                <Input
+                    {...defaultProps}
+                    clearable
+                    value='test value'
+                    onChange={handleChange}
+                />
+            )
+
+            const clearButton = screen.getByRole('button', { name: /clear input/i })
+            fireEvent.click(clearButton)
+
+            expect(handleChange).toHaveBeenCalledTimes(1)
+            expect(handleChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({ value: '' })
+                })
+            )
+        })
+
+        it('applies withClearButton class to input when clear button is visible', () => {
+            const { container } = render(
+                <Input
+                    {...defaultProps}
+                    clearable
+                    value='test value'
+                    onChange={jest.fn()}
+                />
+            )
+            const inputElement = container.querySelector('input')
+            expect(inputElement).toHaveClass(styles.withClearButton)
+        })
+
+        it('does not apply withClearButton class when clear button is not visible', () => {
+            const { container } = render(
+                <Input
+                    {...defaultProps}
+                    clearable
+                    value=''
+                    onChange={jest.fn()}
+                />
+            )
+            const inputElement = container.querySelector('input')
+            expect(inputElement).not.toHaveClass(styles.withClearButton)
+        })
+
+        it('does not call onChange when clear button is clicked and onChange is not provided', () => {
+            render(
+                <Input
+                    {...defaultProps}
+                    clearable
+                    value='test value'
+                />
+            )
+            const clearButton = screen.getByRole('button', { name: /clear input/i })
+            expect(() => fireEvent.click(clearButton)).not.toThrow()
+        })
+    })
 })
