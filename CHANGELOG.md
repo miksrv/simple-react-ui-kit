@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.8.1
+
+### Patch Changes
+
+- Forward ref in Container and update types
+- Add clearable input functionality
+- Add external column sorting support
+
 ## 1.8.0
 
 ### Minor Changes
