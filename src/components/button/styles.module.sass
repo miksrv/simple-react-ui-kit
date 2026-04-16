@@ -19,7 +19,7 @@
     cursor: pointer
     padding: 6px 10px
     border: 0
-    min-height: var(--size-small)
+    min-height: var(--size-control-small, var(--size-small))
     display: flex
     align-content: center
     justify-content: center
@@ -57,7 +57,7 @@
         background-color: var(--button-default-background-active)
 
     &.small
-        height: var(--size-small)
+        height: var(--size-control-small, var(--size-small))
         font-size: var(--font-size-small)
         padding: 6px 8px
 
@@ -66,11 +66,11 @@
             width: 14px
 
     &.medium
-        height: var(--size-medium)
+        height: var(--size-control-medium, var(--size-medium))
         padding: 6px 10px
 
     &.large
-        height: var(--size-large)
+        height: var(--size-control-large, var(--size-large))
         padding: 6px 16px
 
     &.primary

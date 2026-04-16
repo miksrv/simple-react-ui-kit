@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.8.3
+
+### Patch Changes
+
+- Add per-group size CSS vars and update components
+
 ## 1.8.2
 
 ### Patch Changes

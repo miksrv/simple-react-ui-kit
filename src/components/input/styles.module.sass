@@ -70,6 +70,7 @@
             svg
                 width: 16px
                 height: 16px
+                fill: var(--text-color-secondary)
 
             &:hover
                 color: var(--text-color-primary)
@@ -99,19 +100,19 @@
         .formField
             .input
                 font-size: var(--font-size-small)
-                height: var(--size-small)
+                height: var(--size-control-small, var(--size-small))
                 padding: 0 8px
 
     &.medium
         .formField
             .input
-                height: var(--size-medium)
+                height: var(--size-control-medium, var(--size-medium))
                 padding: 0 12px
 
     &.large
         .formField
             .input
-                height: var(--size-large)
+                height: var(--size-control-large, var(--size-large))
                 padding: 0 16px
 
     &.disabled

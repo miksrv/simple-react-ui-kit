@@ -1183,6 +1183,14 @@ All components are themed via CSS custom properties defined on `:root`. Override
 
 #### Available CSS Variables
 
+- **Element Heights (`size` prop):**
+    - `--size-small`: Height for `small` size variant (default: `28px`). Applied to all sized components as a global fallback.
+    - `--size-medium`: Height for `medium` size variant (default: `34px`). Applied to all sized components as a global fallback.
+    - `--size-large`: Height for `large` size variant (default: `38px`). Applied to all sized components as a global fallback.
+    - `--size-control-small` / `--size-control-medium` / `--size-control-large`: Optional per-group overrides for form controls (`Input`, `Select`, `Button`, `TextArea`). Fall back to `--size-*` if not set.
+    - `--size-badge-small` / `--size-badge-medium` / `--size-badge-large`: Optional per-group overrides for `Badge`. Fall back to `--size-*` if not set.
+    - `--size-table-small` / `--size-table-medium` / `--size-table-large`: Optional per-group overrides for `Table` row heights. Fall back to `--size-*` if not set.
+
 - **Primary Colors:**
     - `--color-contrast`: Contrast color (typically used for text on colored backgrounds).
     - `--color-green`: Default green color.
@@ -1261,10 +1269,24 @@ Declare your overrides in a global stylesheet — they take effect across all co
 
 ```css
 :root {
-    /* Element Heights for `size` props */
+    /* Element Heights for `size` props — global fallback for all sized components */
     --size-small: 24px;
     --size-medium: 28px;
     --size-large: 32px;
+
+    /* Optional per-group size overrides (fall back to --size-* if not defined) */
+    /* Form controls: Input, Select, Button, TextArea */
+    --size-control-small: 24px;
+    --size-control-medium: 30px;
+    --size-control-large: 36px;
+    /* Badge */
+    --size-badge-small: 20px;
+    --size-badge-medium: 24px;
+    --size-badge-large: 28px;
+    /* Table row heights */
+    --size-table-small: 32px;
+    --size-table-medium: 40px;
+    --size-table-large: 48px;
 
     /* Primary Colors */
     --color-contrast: #ffffff;
