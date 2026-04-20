@@ -317,7 +317,17 @@ export const Select = <T,>({
                 setHighlightedIndex((prev) => getNextIndex(prev, -1))
             }
         },
-        [toggleDropdown, isOpen, highlightedIndex, filteredOptions, handleSelect, disabled, isEmpty, onOpen, getNextIndex]
+        [
+            toggleDropdown,
+            isOpen,
+            highlightedIndex,
+            filteredOptions,
+            handleSelect,
+            disabled,
+            isEmpty,
+            onOpen,
+            getNextIndex
+        ]
     )
 
     // Close dropdown on outside click

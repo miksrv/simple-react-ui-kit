@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.8.4
+
+### Patch Changes
+
+- Add autocomplete mode to Select component
+
 ## 1.8.3
 
 ### Patch Changes

@@ -994,9 +994,7 @@ const AutocompleteExample = () => {
     const [loading, setLoading] = useState(false)
     const [selected, setSelected] = useState<number | undefined>()
 
-    const filteredOptions = search
-        ? allOptions.filter((o) => o.value.toLowerCase().includes(search.toLowerCase()))
-        : []
+    const filteredOptions = search ? allOptions.filter((o) => o.value.toLowerCase().includes(search.toLowerCase())) : []
 
     const handleSearch = (text?: string) => {
         if (!!text?.length) {
