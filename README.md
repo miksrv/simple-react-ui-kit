@@ -971,6 +971,67 @@ In this example:
 - The selected value is managed in React state.
 - For more details and live examples, check out the Storybook Documentation.
 
+#### Autocomplete Mode
+
+When `options` is initially empty and `onSearch` is provided, the component operates in **autocomplete mode**: the toggle arrow and dropdown are automatically hidden until the user types something. As soon as the user enters text, `onSearch` fires — the parent fetches matching options asynchronously and passes them back via the `options` prop. Once options arrive, the dropdown opens normally. If the search yields no matches, the `notFoundCaption` is shown (which is the intended UX for an explicit search with no results).
+
+This behaviour requires no extra props — it is automatic whenever `options.length === 0` and the search field is empty.
+
+```tsx
+import React, { useState } from 'react'
+import { Select, SelectOptionType } from 'simple-react-ui-kit'
+
+const allOptions: Array<SelectOptionType<number>> = [
+    { key: 1, value: 'Apple' },
+    { key: 2, value: 'Banana' },
+    { key: 3, value: 'Cherry' },
+    { key: 4, value: 'Date' },
+    { key: 5, value: 'Elderberry' }
+]
+
+const AutocompleteExample = () => {
+    const [search, setSearch] = useState<string>('')
+    const [loading, setLoading] = useState(false)
+    const [selected, setSelected] = useState<number | undefined>()
+
+    const filteredOptions = search ? allOptions.filter((o) => o.value.toLowerCase().includes(search.toLowerCase())) : []
+
+    const handleSearch = (text?: string) => {
+        if (!!text?.length) {
+            setSearch(text)
+        }
+
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 500)
+    }
+
+    const handleSelect = (selection: Array<SelectOptionType<number>> | undefined) => {
+        const key = selection?.[0]?.key
+        setSelected(key)
+        if (!key) {
+            setSearch('')
+        }
+    }
+
+    return (
+        <Select
+            options={filteredOptions}
+            value={selected}
+            loading={loading}
+            searchable
+            notFoundCaption='No results found'
+            placeholder='Start typing to search...'
+            onSearch={handleSearch}
+            onSelect={handleSelect}
+        />
+    )
+}
+
+export default AutocompleteExample
+```
+
 </details>
 
 ### Skeleton

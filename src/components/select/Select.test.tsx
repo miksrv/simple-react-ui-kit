@@ -1009,6 +1009,72 @@ describe('Select Component', () => {
         removeSpy.mockRestore()
     })
 
+    // === Autocomplete mode (options=[] + onSearch) ===
+
+    it('does not render toggle button when options is empty and search is empty', () => {
+        render(
+            <Select
+                options={[]}
+                searchable
+            />
+        )
+        expect(screen.queryByRole('button', { name: /open dropdown/i })).not.toBeInTheDocument()
+    })
+
+    it('does not open dropdown when options is empty and user has not typed', () => {
+        render(
+            <Select
+                options={[]}
+                searchable
+            />
+        )
+        fireEvent.click(screen.getByRole('combobox'))
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    it('does not open dropdown on ArrowDown when options is empty and search is empty', () => {
+        render(
+            <Select
+                options={[]}
+                searchable
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    })
+
+    it('shows toggle button and opens dropdown when options become non-empty', () => {
+        render(
+            <Select
+                options={options}
+                searchable
+            />
+        )
+        expect(screen.getByRole('button', { name: /open dropdown/i })).toBeInTheDocument()
+        fireEvent.click(screen.getByRole('button', { name: /open dropdown/i }))
+        expect(screen.getByRole('listbox')).toBeInTheDocument()
+    })
+
+    it('shows dropdown with notFoundCaption when options is empty but user has typed', async () => {
+        const onSearch = jest.fn()
+        render(
+            <Select
+                options={[]}
+                searchable
+                onSearch={onSearch}
+                notFoundCaption='No results found'
+            />
+        )
+        const input = screen.getByRole('textbox')
+        fireEvent.change(input, { target: { value: 'xyz' } })
+
+        await waitFor(() => {
+            expect(screen.getByText('No results found')).toBeInTheDocument()
+        })
+        expect(onSearch).toHaveBeenCalledWith('xyz')
+    })
+
     // PERF-02: portalStyle is set (not display:none) when dropdown is open
     it('sets portal position style when dropdown opens', () => {
         render(<Select options={options} />)

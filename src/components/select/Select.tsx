@@ -130,16 +130,23 @@ export const Select = <T,>({
         [filteredOptions]
     )
 
+    // True when options list is empty and no search text has been entered.
+    // Used to hide the toggle arrow and block dropdown opening in autocomplete mode.
+    const isEmpty = options.length === 0 && !search
+
     // Handle dropdown toggle
     const toggleDropdown = useCallback(() => {
         if (disabled) {
+            return
+        }
+        if (!isOpen && isEmpty) {
             return
         }
         if (!isOpen) {
             onOpen?.()
         }
         setIsOpen(!isOpen)
-    }, [disabled, isOpen, onOpen])
+    }, [disabled, isOpen, isEmpty, onOpen])
 
     const handleSelect = useCallback(
         (option?: SelectOptionType<T>) => {
@@ -223,6 +230,9 @@ export const Select = <T,>({
             if (e.key === 'ArrowDown') {
                 e.preventDefault()
                 if (!isOpen) {
+                    if (isEmpty) {
+                        return
+                    }
                     setIsOpen(true)
                     setHighlightedIndex(getNextIndex(-1, 1))
                     return
@@ -265,6 +275,7 @@ export const Select = <T,>({
             handleSelect,
             handleRemove,
             isOpen,
+            isEmpty,
             multiple,
             onSelect,
             getNextIndex
@@ -287,7 +298,7 @@ export const Select = <T,>({
             }
             if (e.key === 'ArrowDown') {
                 e.preventDefault()
-                if (disabled) {
+                if (disabled || isEmpty) {
                     return
                 }
                 if (!isOpen) {
@@ -306,7 +317,17 @@ export const Select = <T,>({
                 setHighlightedIndex((prev) => getNextIndex(prev, -1))
             }
         },
-        [toggleDropdown, isOpen, highlightedIndex, filteredOptions, handleSelect, disabled, onOpen, getNextIndex]
+        [
+            toggleDropdown,
+            isOpen,
+            highlightedIndex,
+            filteredOptions,
+            handleSelect,
+            disabled,
+            isEmpty,
+            onOpen,
+            getNextIndex
+        ]
     )
 
     // Close dropdown on outside click
@@ -492,7 +513,7 @@ export const Select = <T,>({
                             >
                                 <Icon name='Close' />
                             </button>
-                        ) : (
+                        ) : isEmpty ? null : (
                             <button
                                 type='button'
                                 tabIndex={0}
