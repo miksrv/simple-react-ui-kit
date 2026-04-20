@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import { Meta, StoryFn, StoryObj } from '@storybook/react'
 
 import { Select, type SelectOptionType, SelectProps } from '../../src'
 
@@ -309,5 +309,70 @@ export const Clearable: StoryObj<typeof meta> = {
         value: 'ru',
         placeholder: 'Select a country',
         label: 'Clearable (with pre-selected value)'
+    }
+}
+
+export const Autocomplete: StoryFn<SelectProps<number>> = (args) => {
+    const [search, setSearch] = useState<string>('')
+    const [loading, setLoading] = useState(false)
+    const [selected, setSelected] = useState<number | undefined>(undefined)
+
+    const allOptions: Array<SelectOptionType<number>> = [
+        { key: 1, value: 'Apple' },
+        { key: 2, value: 'Banana' },
+        { key: 3, value: 'Cherry' },
+        { key: 4, value: 'Date' },
+        { key: 5, value: 'Elderberry' }
+    ]
+
+    const filteredOptions = search ? allOptions.filter((o) => o.value.toLowerCase().includes(search.toLowerCase())) : []
+
+    const handleSearch = (text?: string) => {
+        if (!!text?.length) {
+            setSearch(text)
+        }
+
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 500)
+    }
+
+    const handleSelect = (selection: Array<SelectOptionType<number>> | undefined) => {
+        const key = selection?.[0]?.key
+        setSelected(key)
+        if (!key) {
+            setSearch('')
+        }
+    }
+
+    return (
+        <>
+            <Select
+                {...args}
+                options={filteredOptions}
+                loading={loading}
+                value={selected}
+                onSearch={handleSearch}
+                onSelect={handleSelect}
+            />
+        </>
+    )
+}
+
+Autocomplete.args = {
+    placeholder: 'Start typing to search...',
+    searchable: true,
+    notFoundCaption: 'No results found'
+}
+
+Autocomplete.parameters = {
+    docs: {
+        description: {
+            story:
+                'Demonstrates autocomplete mode: `options` starts empty and is populated asynchronously via `onSearch`. ' +
+                'The toggle arrow and dropdown are hidden until the user types. ' +
+                'Once text is entered, `onSearch` fires, options load after 500ms, and the dropdown opens automatically.'
+        }
     }
 }
