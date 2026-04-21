@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { Dialog } from './Dialog'
 import { DialogProps } from './types'
@@ -18,6 +18,13 @@ describe('Dialog Component', () => {
         onCloseDialog: jest.fn(),
         children: <div>Dialog Content</div>
     }
+
+    beforeEach(() => {
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: jest.fn(),
+            disconnect: jest.fn()
+        }))
+    })
 
     afterEach(() => {
         jest.clearAllMocks()
@@ -382,5 +389,153 @@ describe('Dialog Component', () => {
         // header should have the noBackLink class
         const heading = screen.getByText('No Back Link')
         expect(heading.closest('div')).toHaveClass('noBackLink')
+    })
+
+    it('creates a ResizeObserver and observes the dialog element when open', () => {
+        const observeMock = jest.fn()
+        const disconnectMock = jest.fn()
+
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: observeMock,
+            disconnect: disconnectMock
+        }))
+
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+
+        expect(global.ResizeObserver).toHaveBeenCalledTimes(1)
+        expect(observeMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('disconnects ResizeObserver on cleanup when dialog closes', () => {
+        const disconnectMock = jest.fn()
+
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: jest.fn(),
+            disconnect: disconnectMock
+        }))
+
+        const { rerender } = render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+
+        rerender(
+            <Dialog
+                {...defaultProps}
+                open={false}
+            />
+        )
+
+        expect(disconnectMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('disconnects ResizeObserver on unmount', () => {
+        const disconnectMock = jest.fn()
+
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: jest.fn(),
+            disconnect: disconnectMock
+        }))
+
+        const { unmount } = render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+
+        unmount()
+
+        expect(disconnectMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('calls handleResize when ResizeObserver callback fires', () => {
+        let observerCallback: ResizeObserverCallback = () => {}
+
+        global.ResizeObserver = jest.fn().mockImplementation((callback: ResizeObserverCallback) => {
+            observerCallback = callback
+            return {
+                observe: jest.fn(),
+                disconnect: jest.fn()
+            }
+        })
+
+        render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+
+        const dialogElement = screen.getByRole('dialog')
+        jest.spyOn(dialogElement, 'offsetHeight', 'get').mockReturnValue(300)
+
+        // Simulate ResizeObserver firing after content size changes
+        act(() => {
+            observerCallback([], {} as ResizeObserver)
+        })
+
+        expect(dialogElement).toBeInTheDocument()
+    })
+
+    it('adds and removes window resize listener when dialog opens and closes', () => {
+        const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
+        const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener')
+
+        const { rerender } = render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+
+        expect(addEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+
+        rerender(
+            <Dialog
+                {...defaultProps}
+                open={false}
+            />
+        )
+
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+    })
+
+    it('removes window resize listener on unmount', () => {
+        const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener')
+
+        const { unmount } = render(
+            <Dialog
+                {...defaultProps}
+                open={true}
+            />
+        )
+
+        unmount()
+
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+    })
+
+    it('does not create ResizeObserver when dialog is closed', () => {
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: jest.fn(),
+            disconnect: jest.fn()
+        }))
+
+        render(
+            <Dialog
+                {...defaultProps}
+                open={false}
+            />
+        )
+
+        expect(global.ResizeObserver).not.toHaveBeenCalled()
     })
 })

@@ -19,6 +19,7 @@ export const Dialog: React.FC<DialogProps> = ({
     showBackLink,
     showCloseButton,
     parentRef,
+    contentClassName,
     children,
     onBackClick,
     onCloseDialog,
@@ -69,8 +70,20 @@ export const Dialog: React.FC<DialogProps> = ({
         handleResize()
         document.body.style.overflow = 'hidden'
 
+        const resizeObserver = new ResizeObserver(() => {
+            handleResize()
+        })
+
+        if (dialogRef.current) {
+            resizeObserver.observe(dialogRef.current)
+        }
+
+        window.addEventListener('resize', handleResize)
+
         return () => {
             document.body.style.overflow = originalOverflow
+            resizeObserver.disconnect()
+            window.removeEventListener('resize', handleResize)
         }
     }, [open])
 
@@ -120,7 +133,7 @@ export const Dialog: React.FC<DialogProps> = ({
                             </div>
                         )}
                         <div
-                            className={styles.content}
+                            className={cn(styles.content, contentClassName)}
                             style={{ height: contentHeight || 'auto' }}
                         >
                             {children}

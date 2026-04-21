@@ -111,6 +111,35 @@ const CustomDimensionsDemo: React.FC = () => {
     )
 }
 
+const WithoutTitleDemo: React.FC = () => {
+    const [open, setOpen] = useState(false)
+    return (
+        <>
+            <Button onClick={() => setOpen(true)}>Open Dialog</Button>
+            <Dialog
+                open={open}
+                onCloseDialog={() => setOpen(false)}
+            >
+                <p>This dialog has no header — no title, no close button, no back link.</p>
+                <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+                    <Button
+                        onClick={() => setOpen(false)}
+                        variant='positive'
+                    >
+                        OK
+                    </Button>
+                    <Button
+                        mode='outline'
+                        onClick={() => setOpen(false)}
+                    >
+                        Cancel
+                    </Button>
+                </div>
+            </Dialog>
+        </>
+    )
+}
+
 const WithoutCloseButtonDemo: React.FC = () => {
     const [open, setOpen] = useState(false)
     return (
@@ -251,6 +280,18 @@ export const WithoutCloseButton: Story = {
         docs: {
             description: {
                 story: 'When `showCloseButton` and `showOverlay` are both false the dialog can only be dismissed programmatically — useful for mandatory confirmation flows.'
+            }
+        }
+    }
+}
+
+export const WithoutTitle: Story = {
+    name: 'Without Title',
+    render: () => <WithoutTitleDemo />,
+    parameters: {
+        docs: {
+            description: {
+                story: 'When `title`, `showCloseButton`, and `showBackLink` are all omitted, the header is not rendered at all — the dialog shows only its content area.'
             }
         }
     }

@@ -22,6 +22,8 @@ export interface DialogProps extends React.HTMLAttributes<HTMLDialogElement> {
     showCloseButton?: boolean
     /** Reference to the parent element for positioning the dialog */
     parentRef?: React.RefObject<HTMLElement | null>
+    /** Additional className for the content wrapper */
+    contentClassName?: string
     /** Content to be displayed inside the dialog */
     children?: React.ReactNode
     /** Callback function triggered when the backlink is clicked */
