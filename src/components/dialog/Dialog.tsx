@@ -19,6 +19,7 @@ export const Dialog: React.FC<DialogProps> = ({
     showBackLink,
     showCloseButton,
     parentRef,
+    contentClassName,
     children,
     onBackClick,
     onCloseDialog,
@@ -132,7 +133,7 @@ export const Dialog: React.FC<DialogProps> = ({
                             </div>
                         )}
                         <div
-                            className={styles.content}
+                            className={cn(styles.content, contentClassName)}
                             style={{ height: contentHeight || 'auto' }}
                         >
                             {children}
