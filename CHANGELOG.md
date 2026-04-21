@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.8.5
+
+### Patch Changes
+
+- Use ResizeObserver in Dialog and add tests
+- Add 'Without Title' dialog story
+- Add contentClassName prop to Dialog
+
 ## 1.8.4
 
 ### Patch Changes
