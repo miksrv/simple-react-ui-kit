@@ -69,8 +69,20 @@ export const Dialog: React.FC<DialogProps> = ({
         handleResize()
         document.body.style.overflow = 'hidden'
 
+        const resizeObserver = new ResizeObserver(() => {
+            handleResize()
+        })
+
+        if (dialogRef.current) {
+            resizeObserver.observe(dialogRef.current)
+        }
+
+        window.addEventListener('resize', handleResize)
+
         return () => {
             document.body.style.overflow = originalOverflow
+            resizeObserver.disconnect()
+            window.removeEventListener('resize', handleResize)
         }
     }, [open])
 
