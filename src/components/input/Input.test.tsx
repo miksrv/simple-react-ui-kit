@@ -195,6 +195,40 @@ describe('Input Component', () => {
         expect(container.querySelector('div')).not.toHaveClass('error')
     })
 
+    describe('icon prop', () => {
+        it('renders icon when icon prop is provided', () => {
+            const { container } = render(
+                <Input
+                    {...defaultProps}
+                    icon='Camera'
+                />
+            )
+            expect(container.querySelector('svg')).toBeInTheDocument()
+        })
+
+        it('does not render icon when icon prop is not provided', () => {
+            const { container } = render(<Input {...defaultProps} />)
+            expect(container.querySelector('svg')).not.toBeInTheDocument()
+        })
+
+        it('applies withIcon class to input when icon prop is provided', () => {
+            const { container } = render(
+                <Input
+                    {...defaultProps}
+                    icon='Camera'
+                />
+            )
+            const inputElement = container.querySelector('input')
+            expect(inputElement).toHaveClass(styles.withIcon)
+        })
+
+        it('does not apply withIcon class when icon prop is not provided', () => {
+            const { container } = render(<Input {...defaultProps} />)
+            const inputElement = container.querySelector('input')
+            expect(inputElement).not.toHaveClass(styles.withIcon)
+        })
+    })
+
     describe('clearable functionality', () => {
         it('does not show clear button when clearable is false', () => {
             render(

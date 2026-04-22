@@ -14,6 +14,7 @@ export const Input: React.FC<InputProps> = ({
     mode = 'primary',
     size = 'medium',
     clearable,
+    icon,
     value,
     onChange,
     ...props
@@ -43,9 +44,14 @@ export const Input: React.FC<InputProps> = ({
             {label && <label className={styles.label}>{label}</label>}
 
             <span className={cn(styles.formField, mode && styles[mode])}>
+                {icon && (
+                    <span className={styles.iconLeft}>
+                        <Icon name={icon} />
+                    </span>
+                )}
                 <input
                     {...props}
-                    className={cn(styles.input, showClearButton && styles.withClearButton)}
+                    className={cn(styles.input, showClearButton && styles.withClearButton, icon && styles.withIcon)}
                     value={value}
                     onChange={onChange}
                 />

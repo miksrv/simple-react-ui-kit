@@ -23,6 +23,20 @@
         box-sizing: border-box
         display: flex
 
+        .iconLeft
+            position: absolute
+            left: 10px
+            top: 50%
+            transform: translateY(-50%)
+            display: flex
+            align-items: center
+            pointer-events: none
+
+            svg
+                width: 16px
+                height: 16px
+                fill: var(--text-color-secondary)
+
         .input
             font-size: var(--font-size)
             color: var(--text-color-primary)
@@ -43,6 +57,9 @@
 
             &.withClearButton
                 padding-right: 32px
+
+            &.withIcon
+                padding-left: 34px !important
 
             &:focus, &:active
                 outline: none
