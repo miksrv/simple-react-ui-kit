@@ -36,6 +36,7 @@ export const Select = <T,>({
     notFoundCaption,
     label,
     error,
+    icon,
     value,
     onSelect,
     onSearch,
@@ -437,6 +438,12 @@ export const Select = <T,>({
                     )}
                     onClick={() => !disabled && (searchable ? inputRef.current?.focus() : toggleDropdown())}
                 >
+                    {icon && (
+                        <span className={styles.triggerIcon}>
+                            <Icon name={icon} />
+                        </span>
+                    )}
+
                     {/* Left part: selected value / search */}
                     <div className={styles.valueContainer}>
                         {/* Icon/Image/Emoji of selected option (only for single) */}
