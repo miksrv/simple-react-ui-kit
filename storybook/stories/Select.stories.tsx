@@ -46,6 +46,10 @@ const meta: Meta<SelectProps<string>> = {
         label: { control: 'text', description: 'Label text for the select' },
         error: { control: 'text', description: 'Error message to display when validation fails' },
         value: { control: false, description: 'Currently selected value(s)' },
+        icon: {
+            control: 'select',
+            description: 'Icon displayed on the left side of the select trigger'
+        },
         onSelect: { action: 'onSelect', description: 'Callback triggered when options are selected' },
         onSearch: { action: 'onSearch', description: 'Callback triggered when a search is made' },
         onOpen: { action: 'onOpen', description: 'Callback triggered when the dropdown is opened' }
@@ -309,6 +313,23 @@ export const Clearable: StoryObj<typeof meta> = {
         value: 'ru',
         placeholder: 'Select a country',
         label: 'Clearable (with pre-selected value)'
+    }
+}
+
+export const WithIcon: StoryObj<typeof meta> = {
+    render: Template,
+    args: {
+        options: techStack,
+        icon: 'Search',
+        placeholder: 'Choose technology',
+        label: 'Select with Icon'
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'The `icon` prop renders an icon on the left side of the select trigger. Useful for adding visual context to the field (e.g., a search or category icon).'
+            }
+        }
     }
 }
 

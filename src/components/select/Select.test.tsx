@@ -382,6 +382,25 @@ describe('Select Component', () => {
         await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument())
     })
 
+    // === Component icon prop ===
+
+    it('renders trigger icon when icon prop is provided', () => {
+        const { container } = render(
+            <Select
+                options={options}
+                icon='Camera'
+            />
+        )
+        expect(container.querySelector('svg')).toBeInTheDocument()
+    })
+
+    it('does not render trigger icon when icon prop is not provided', () => {
+        const { container } = render(<Select options={options} />)
+        // No SVG at all when no icon prop and no selection with icon
+        const trigger = container.querySelector('.trigger')
+        expect(trigger?.querySelector('.triggerIcon')).not.toBeInTheDocument()
+    })
+
     // === Icon, Emoji, Image ===
 
     it('renders icon in selected option', () => {

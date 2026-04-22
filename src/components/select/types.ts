@@ -43,6 +43,8 @@ export interface SelectProps<T> extends Omit<React.HTMLAttributes<HTMLDivElement
     onSearch?: (text?: string) => void
     /** Callback triggered when the dropdown is opened */
     onOpen?: () => void
+    /** Icon to display on the left side of the select trigger */
+    icon?: IconTypes
 }
 
 /** OptionsList component properties */

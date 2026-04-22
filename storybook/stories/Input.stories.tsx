@@ -68,6 +68,10 @@ const meta: Meta<InputProps> = {
             control: 'text',
             description: 'Additional CSS class names for custom styling'
         },
+        icon: {
+            control: 'select',
+            description: 'Icon displayed on the left side of the input field'
+        },
         onChange: {
             control: false,
             description: 'Standard React change handler'
@@ -214,6 +218,22 @@ const ClearableTemplate = () => {
             clearable
         />
     )
+}
+
+export const WithIcon: Story = {
+    name: 'With Icon',
+    args: {
+        label: 'Search',
+        placeholder: 'Search anything...',
+        icon: 'Search'
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'The `icon` prop renders an icon on the left side of the input field. The input text is padded automatically to avoid overlapping the icon.'
+            }
+        }
+    }
 }
 
 export const Clearable: Story = {

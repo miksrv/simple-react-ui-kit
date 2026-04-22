@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { ElementSizeType } from '../../types'
+import { IconTypes } from '../icon'
 
 /**
  * InputProps interface, representing the properties for the Input component.
@@ -18,4 +19,6 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
     error?: string
     /** Shows a clear button when the input has a value */
     clearable?: boolean
+    /** Icon to display on the left side of the input */
+    icon?: IconTypes
 }
