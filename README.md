@@ -649,6 +649,7 @@ Check out the full documentation and examples in Storybook: [Input Component Sto
 - **`size`**: Size of the input field, can be `small`, `medium` or `large`.
 - **`error`**: Error message displayed below the input field, used for validation feedback.
 - **`clearable`**: When `true`, shows a clear button (×) on the right side of the input when it has a value. Clicking the button clears the input and triggers `onChange` with an empty value. The button is hidden when the input is empty or disabled.
+- **`icon`**: Icon displayed on the left side of the input field. Accepts any valid icon name from the `IconTypes` union. The input text is automatically padded to avoid overlapping the icon.
 - **`className`**: Additional class names for custom styling.
 - **`required`**: Marks the input as required.
 - **`disabled`**: Disables the input, preventing user interaction.
@@ -929,6 +930,7 @@ Check out the full documentation and examples in Storybook: [Select Component St
 - **`error`**: Error message for validation feedback.
 - **`required`**: Marks the field as required.
 - **`disabled`**: Disables the select. The component uses `aria-disabled` for accessibility.
+- **`icon`**: Icon displayed on the left side of the select trigger. Accepts any valid icon name from the `IconTypes` union. Useful for adding visual context to the field (e.g., a search or category icon).
 - **`onSelect`**: Callback when the selection changes.
 - **`onSearch`**: Callback when the search input changes.
 - **`onOpen`**: Callback when the dropdown is opened.

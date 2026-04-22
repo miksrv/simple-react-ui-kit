@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.8.6
+
+### Patch Changes
+
+- Add optional trigger icon to Select component
+- Add left icon support to Input component
+- Add 'icon' control and WithIcon stories
+
 ## 1.8.5
 
 ### Patch Changes
