@@ -8,6 +8,8 @@ import styles from './styles.module.sass'
 
 export const Spinner: React.FC<SpinnerProps> = ({ className, ...props }) => (
     <svg
+        role='status'
+        aria-label='Loading'
         {...props}
         viewBox={'0 0 100 101'}
         className={cn(className, styles.spinner)}
