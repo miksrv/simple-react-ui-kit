@@ -8,6 +8,7 @@ import styles from './styles.module.sass'
 
 export const Message: React.FC<MessageProps> = ({ title, children, type, ...props }) => (
     <section
+        role={type === 'error' || type === 'warning' ? 'alert' : type ? 'status' : undefined}
         {...props}
         className={cn(styles.message, type && styles[type])}
     >
