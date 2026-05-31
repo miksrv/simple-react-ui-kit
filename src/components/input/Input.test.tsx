@@ -338,4 +338,52 @@ describe('Input Component', () => {
             expect(() => fireEvent.click(clearButton)).not.toThrow()
         })
     })
+
+    describe('accessibility', () => {
+        it('associates the label with the input via htmlFor/id', () => {
+            render(<Input {...defaultProps} />)
+            // getByLabelText only succeeds when label and control are correctly associated
+            expect(screen.getByLabelText('Username')).toBe(screen.getByPlaceholderText('Enter your username'))
+        })
+
+        it('uses the provided id for the label association', () => {
+            render(
+                <Input
+                    {...defaultProps}
+                    id='custom-input-id'
+                />
+            )
+            expect(screen.getByLabelText('Username')).toHaveAttribute('id', 'custom-input-id')
+        })
+
+        it('sets aria-invalid and links the error message via aria-describedby', () => {
+            render(
+                <Input
+                    {...defaultProps}
+                    error='This field is required'
+                />
+            )
+            const input = screen.getByPlaceholderText('Enter your username')
+            expect(input).toHaveAttribute('aria-invalid', 'true')
+
+            const describedBy = input.getAttribute('aria-describedby')
+            expect(describedBy).toBeTruthy()
+            expect(document.getElementById(describedBy as string)).toHaveTextContent('This field is required')
+        })
+
+        it('does not set aria-invalid when there is no error', () => {
+            render(<Input {...defaultProps} />)
+            expect(screen.getByPlaceholderText('Enter your username')).not.toHaveAttribute('aria-invalid')
+        })
+
+        it('exposes the error message as a live alert region', () => {
+            render(
+                <Input
+                    {...defaultProps}
+                    error='Invalid input'
+                />
+            )
+            expect(screen.getByRole('alert')).toHaveTextContent('Invalid input')
+        })
+    })
 })
