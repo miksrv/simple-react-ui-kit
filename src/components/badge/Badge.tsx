@@ -16,7 +16,9 @@ export const Badge: React.FC<BadgeProps> = ({ className, icon, size = 'medium', 
         <span className={styles.content}>{label}</span>
         {onClickRemove && (
             <button
+                type='button'
                 className={styles.close}
+                aria-label={label != null ? `Remove ${label}` : 'Remove'}
                 onClick={() => onClickRemove?.(label)}
             >
                 <Icon name={'Close'} />
