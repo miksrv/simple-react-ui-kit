@@ -26,6 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
         <button
             {...props}
             type={props.type ?? 'button'}
+            aria-busy={loading || undefined}
             className={cn(
                 className,
                 styles.button,
