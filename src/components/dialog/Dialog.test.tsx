@@ -538,4 +538,63 @@ describe('Dialog Component', () => {
 
         expect(global.ResizeObserver).not.toHaveBeenCalled()
     })
+
+    describe('accessibility', () => {
+        it('marks the dialog as modal', () => {
+            render(
+                <Dialog
+                    {...defaultProps}
+                    open={true}
+                />
+            )
+            expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true')
+        })
+
+        it('labels the dialog with its title via aria-labelledby', () => {
+            render(
+                <Dialog
+                    {...defaultProps}
+                    open={true}
+                />
+            )
+            const dialogElement = screen.getByRole('dialog')
+            const labelledBy = dialogElement.getAttribute('aria-labelledby')
+            expect(labelledBy).toBeTruthy()
+            expect(document.getElementById(labelledBy as string)).toHaveTextContent('Test Dialog')
+        })
+
+        it('does not set aria-labelledby when there is no title', () => {
+            render(
+                <Dialog
+                    open={true}
+                    showCloseButton
+                >
+                    <div>Content</div>
+                </Dialog>
+            )
+            expect(screen.getByRole('dialog')).not.toHaveAttribute('aria-labelledby')
+        })
+
+        it('gives the back button an accessible name from the caption', () => {
+            render(
+                <Dialog
+                    {...defaultProps}
+                    open={true}
+                    backLinkCaption='Go back'
+                />
+            )
+            expect(screen.getByRole('button', { name: 'Go back' })).toBeInTheDocument()
+        })
+
+        it('back and close buttons have type="button"', () => {
+            render(
+                <Dialog
+                    {...defaultProps}
+                    open={true}
+                />
+            )
+            expect(screen.getByRole('button', { name: /Back/i })).toHaveAttribute('type', 'button')
+            expect(screen.getByLabelText('Close Dialog')).toHaveAttribute('type', 'button')
+        })
+    })
 })
