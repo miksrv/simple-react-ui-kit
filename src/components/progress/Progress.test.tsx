@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { Progress } from './Progress'
 
@@ -115,5 +115,39 @@ describe('Progress Component', () => {
         )
         const progressBar = container.querySelector('.progress')
         expect(progressBar).toHaveStyle({ height: '0px' })
+    })
+
+    describe('accessibility', () => {
+        it('exposes the progressbar role with min and max bounds', () => {
+            render(<Progress value={50} />)
+            const progressBar = screen.getByRole('progressbar')
+            expect(progressBar).toHaveAttribute('aria-valuemin', '0')
+            expect(progressBar).toHaveAttribute('aria-valuemax', '100')
+        })
+
+        it('reports the current (clamped) value via aria-valuenow', () => {
+            render(<Progress value={75} />)
+            expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '75')
+        })
+
+        it('clamps aria-valuenow above 100 to 100', () => {
+            render(<Progress value={150} />)
+            expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100')
+        })
+
+        it('clamps aria-valuenow below 0 to 0', () => {
+            render(<Progress value={-10} />)
+            expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0')
+        })
+
+        it('allows providing a descriptive aria-label', () => {
+            render(
+                <Progress
+                    value={40}
+                    aria-label='Upload progress'
+                />
+            )
+            expect(screen.getByRole('progressbar', { name: 'Upload progress' })).toBeInTheDocument()
+        })
     })
 })

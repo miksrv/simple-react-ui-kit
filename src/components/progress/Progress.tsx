@@ -13,6 +13,10 @@ export const Progress: React.FC<ProgressProps> = ({ value = 0, height = 2, color
         <div
             className={cn(styles.progress, className)}
             style={{ height: `${height}px` }}
+            role='progressbar'
+            aria-valuenow={safeValue}
+            aria-valuemin={0}
+            aria-valuemax={100}
             {...props}
         >
             <div
