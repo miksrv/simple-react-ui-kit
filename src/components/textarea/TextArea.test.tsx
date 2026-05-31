@@ -238,4 +238,51 @@ describe('TextArea Component', () => {
         fireEvent.change(textareaElement, { target: { value: 'text' } })
         expect(textareaElement.style.height).toBe('')
     })
+
+    describe('accessibility', () => {
+        it('associates the label with the textarea via htmlFor/id', () => {
+            render(<TextArea {...defaultProps} />)
+            expect(screen.getByLabelText('Description')).toBe(screen.getByPlaceholderText('Enter your description'))
+        })
+
+        it('uses the provided id for the label association', () => {
+            render(
+                <TextArea
+                    {...defaultProps}
+                    id='custom-textarea-id'
+                />
+            )
+            expect(screen.getByLabelText('Description')).toHaveAttribute('id', 'custom-textarea-id')
+        })
+
+        it('sets aria-invalid and links the error message via aria-describedby', () => {
+            render(
+                <TextArea
+                    {...defaultProps}
+                    error='This field is required'
+                />
+            )
+            const textarea = screen.getByPlaceholderText('Enter your description')
+            expect(textarea).toHaveAttribute('aria-invalid', 'true')
+
+            const describedBy = textarea.getAttribute('aria-describedby')
+            expect(describedBy).toBeTruthy()
+            expect(document.getElementById(describedBy as string)).toHaveTextContent('This field is required')
+        })
+
+        it('does not set aria-invalid when there is no error', () => {
+            render(<TextArea {...defaultProps} />)
+            expect(screen.getByPlaceholderText('Enter your description')).not.toHaveAttribute('aria-invalid')
+        })
+
+        it('exposes the error message as a live alert region', () => {
+            render(
+                <TextArea
+                    {...defaultProps}
+                    error='Invalid input'
+                />
+            )
+            expect(screen.getByRole('alert')).toHaveTextContent('Invalid input')
+        })
+    })
 })
