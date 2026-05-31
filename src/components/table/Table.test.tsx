@@ -546,4 +546,106 @@ describe('Table Component', () => {
         const nameHeader = screen.getByText('Name').closest('th')
         expect(nameHeader?.querySelector('svg')).not.toBeInTheDocument()
     })
+
+    describe('accessibility', () => {
+        it('sets scope="col" on every header cell', () => {
+            render(
+                <Table
+                    data={data}
+                    columns={columns}
+                />
+            )
+            screen.getAllByRole('columnheader').forEach((th) => {
+                expect(th).toHaveAttribute('scope', 'col')
+            })
+        })
+
+        it('makes sortable headers keyboard focusable and non-sortable headers not', () => {
+            const mixedColumns: Array<TableColumnProps<TestData>> = [
+                { header: 'ID', accessor: 'id', isSortable: true },
+                { header: 'Name', accessor: 'name', isSortable: false }
+            ]
+            render(
+                <Table
+                    data={data}
+                    columns={mixedColumns}
+                />
+            )
+            expect(screen.getByText('ID').closest('th')).toHaveAttribute('tabindex', '0')
+            expect(screen.getByText('Name').closest('th')).not.toHaveAttribute('tabindex')
+        })
+
+        it('reflects the current sort state via aria-sort', () => {
+            render(
+                <Table
+                    data={data}
+                    columns={columns}
+                />
+            )
+            const nameHeader = screen.getByText('Name').closest('th') as HTMLElement
+            // Initially unsorted sortable column reports "none"
+            expect(nameHeader).toHaveAttribute('aria-sort', 'none')
+
+            fireEvent.click(nameHeader)
+            expect(nameHeader).toHaveAttribute('aria-sort', 'ascending')
+
+            fireEvent.click(nameHeader)
+            expect(nameHeader).toHaveAttribute('aria-sort', 'descending')
+        })
+
+        it('does not set aria-sort on non-sortable headers', () => {
+            const nonSortableColumns: Array<TableColumnProps<TestData>> = [
+                { header: 'ID', accessor: 'id' },
+                { header: 'Name', accessor: 'name' }
+            ]
+            render(
+                <Table
+                    data={data}
+                    columns={nonSortableColumns}
+                />
+            )
+            expect(screen.getByText('ID').closest('th')).not.toHaveAttribute('aria-sort')
+        })
+
+        it('sorts when pressing Enter on a sortable header', () => {
+            render(
+                <Table
+                    data={data}
+                    columns={columns}
+                />
+            )
+            const nameHeader = screen.getByText('Name').closest('th') as HTMLElement
+            fireEvent.keyDown(nameHeader, { key: 'Enter' })
+            expect(nameHeader).toHaveAttribute('aria-sort', 'ascending')
+        })
+
+        it('sorts when pressing Space on a sortable header', () => {
+            render(
+                <Table
+                    data={data}
+                    columns={columns}
+                />
+            )
+            const ageHeader = screen.getByText('Age').closest('th') as HTMLElement
+            fireEvent.keyDown(ageHeader, { key: ' ' })
+            expect(ageHeader).toHaveAttribute('aria-sort', 'ascending')
+        })
+
+        it('reflects external sort state via aria-sort', () => {
+            const onChangeSort = jest.fn()
+            const columnsWithExternalSort: Array<TableColumnProps<TestData>> = [
+                { header: 'ID', accessor: 'id' },
+                { header: 'Name', accessor: 'name', onChangeSort },
+                { header: 'Age', accessor: 'age' }
+            ]
+            render(
+                <Table
+                    data={data}
+                    columns={columnsWithExternalSort}
+                    sort={{ key: 'name', direction: 'desc' }}
+                />
+            )
+            expect(screen.getByText('Name').closest('th')).toHaveAttribute('aria-sort', 'descending')
+        })
+    })
 })

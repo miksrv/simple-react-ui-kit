@@ -67,6 +67,22 @@ export const Table = <T,>({
         [sort, sortConfig]
     )
 
+    const getAriaSort = (column: TableColumnProps<T>): 'ascending' | 'descending' | 'none' | undefined => {
+        const isSortable = column.isSortable || !!column.onChangeSort
+        if (!isSortable) {
+            return undefined
+        }
+
+        const activeKey = column.onChangeSort ? sort?.key : sortConfig?.key
+        const activeDirection = column.onChangeSort ? sort?.direction : sortConfig?.direction
+
+        if (activeKey !== column.accessor) {
+            return 'none'
+        }
+
+        return activeDirection === 'asc' ? 'ascending' : 'descending'
+    }
+
     const getSortIcon = (column: TableColumnProps<T>) => {
         if (column.onChangeSort) {
             if (sort?.key !== column.accessor) {
@@ -109,16 +125,33 @@ export const Table = <T,>({
             <table className={cn(styles.table, verticalBorder && styles.verticalBorder, size && styles[size])}>
                 <thead>
                     <tr>
-                        {visibleColumns?.map((column) => (
-                            <th
-                                key={String(column.accessor)}
-                                onClick={() => handleSort(column)}
-                                className={column.isSortable || column.onChangeSort ? styles.sortable : undefined}
-                            >
-                                {column.header}
-                                {getSortIcon(column)}
-                            </th>
-                        ))}
+                        {visibleColumns?.map((column) => {
+                            const sortable = !!(column.isSortable || column.onChangeSort)
+
+                            return (
+                                <th
+                                    key={String(column.accessor)}
+                                    scope='col'
+                                    onClick={() => handleSort(column)}
+                                    onKeyDown={
+                                        sortable
+                                            ? (event) => {
+                                                  if (event.key === 'Enter' || event.key === ' ') {
+                                                      event.preventDefault()
+                                                      handleSort(column)
+                                                  }
+                                              }
+                                            : undefined
+                                    }
+                                    tabIndex={sortable ? 0 : undefined}
+                                    aria-sort={getAriaSort(column)}
+                                    className={sortable ? styles.sortable : undefined}
+                                >
+                                    {column.header}
+                                    {getSortIcon(column)}
+                                </th>
+                            )
+                        })}
                     </tr>
                 </thead>
                 <tbody>
