@@ -111,4 +111,52 @@ describe('Message Component', () => {
         )
         expect(screen.getByTestId('message-test')).toBeInTheDocument()
     })
+
+    describe('accessibility', () => {
+        it('announces error messages assertively via role="alert"', () => {
+            render(
+                <Message
+                    type='error'
+                    title='Error'
+                >
+                    Error content
+                </Message>
+            )
+            expect(screen.getByRole('alert')).toHaveTextContent('Error content')
+        })
+
+        it('announces warning messages assertively via role="alert"', () => {
+            render(<Message type='warning'>Warning content</Message>)
+            expect(screen.getByRole('alert')).toHaveTextContent('Warning content')
+        })
+
+        it('announces success messages politely via role="status"', () => {
+            render(<Message type='success'>Success content</Message>)
+            expect(screen.getByRole('status')).toHaveTextContent('Success content')
+        })
+
+        it('announces info messages politely via role="status"', () => {
+            render(<Message type='info'>Info content</Message>)
+            expect(screen.getByRole('status')).toHaveTextContent('Info content')
+        })
+
+        it('does not assign a live-region role when no type is provided', () => {
+            render(<Message title='Plain'>Plain content</Message>)
+            expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
+        })
+
+        it('allows overriding the role via props', () => {
+            render(
+                <Message
+                    type='error'
+                    role='note'
+                >
+                    Content
+                </Message>
+            )
+            expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+            expect(screen.getByRole('note')).toBeInTheDocument()
+        })
+    })
 })

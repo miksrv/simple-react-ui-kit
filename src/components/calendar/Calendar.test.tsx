@@ -502,6 +502,59 @@ describe('Calendar', () => {
         expect(screen.getByRole('button', { name: 'Следующий месяц' })).toBeInTheDocument()
     })
 
+    // === Accessibility ===
+
+    it('labels the month and year selectors (English)', () => {
+        setup()
+        expect(screen.getByRole('combobox', { name: 'Month' })).toBeInTheDocument()
+        expect(screen.getByRole('combobox', { name: 'Year' })).toBeInTheDocument()
+    })
+
+    it('labels the month and year selectors (Russian)', () => {
+        setup({ locale: 'ru' })
+        expect(screen.getByRole('combobox', { name: 'Месяц' })).toBeInTheDocument()
+        expect(screen.getByRole('combobox', { name: 'Год' })).toBeInTheDocument()
+    })
+
+    it('renders day cells as keyboard-operable buttons with an accessible date label', () => {
+        const onDateSelect = jest.fn()
+        const target = dayjs().date(12).format('YYYY-MM-DD')
+        setup({ onDateSelect })
+        const dayButton = screen.getByRole('button', { name: target })
+        expect(dayButton).toHaveAttribute('tabindex', '0')
+    })
+
+    it('selects a date when pressing Enter on a day cell', () => {
+        const onDateSelect = jest.fn()
+        const target = dayjs().date(12).format('YYYY-MM-DD')
+        setup({ onDateSelect })
+        fireEvent.keyDown(screen.getByRole('button', { name: target }), { key: 'Enter' })
+        expect(onDateSelect).toHaveBeenCalledWith(target)
+    })
+
+    it('selects a date when pressing Space on a day cell', () => {
+        const onDateSelect = jest.fn()
+        const target = dayjs().date(8).format('YYYY-MM-DD')
+        setup({ onDateSelect })
+        fireEvent.keyDown(screen.getByRole('button', { name: target }), { key: ' ' })
+        expect(onDateSelect).toHaveBeenCalledWith(target)
+    })
+
+    it('marks disabled days with aria-disabled and removes them from the tab order', () => {
+        const minDate = dayjs().date(10).format('YYYY-MM-DD')
+        const disabledTarget = dayjs().date(5).format('YYYY-MM-DD')
+        setup({ minDate })
+        const disabledDay = screen.getByRole('button', { name: disabledTarget })
+        expect(disabledDay).toHaveAttribute('aria-disabled', 'true')
+        expect(disabledDay).toHaveAttribute('tabindex', '-1')
+    })
+
+    it('marks the selected day with aria-pressed', () => {
+        const start = dayjs().date(7).format('YYYY-MM-DD')
+        setup({ datePeriod: [start, undefined] })
+        expect(screen.getByRole('button', { name: start })).toHaveAttribute('aria-pressed', 'true')
+    })
+
     it('re-renders days when minDate or maxDate changes', () => {
         const onDateSelect = jest.fn()
         const { rerender } = render(<Calendar onDateSelect={onDateSelect} />)

@@ -69,6 +69,21 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             [disabled]
         )
 
+        const handleTriggerKeyDown = useCallback(
+            (event: React.KeyboardEvent) => {
+                if (disabled) {
+                    return
+                }
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    setIsOpen((prev) => !prev)
+                } else if (event.key === 'Escape') {
+                    setIsOpen(false)
+                }
+            },
+            [disabled]
+        )
+
         // Calculate position for portal mode with fixed positioning
         const updatePortalPosition = useCallback(() => {
             if (!triggerRef.current || !isOpen) {
@@ -167,11 +182,13 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                     <span
                         ref={triggerRef}
                         onClick={toggleDropdown}
+                        onKeyDown={handleTriggerKeyDown}
                         className={cn(styles.trigger, disabled && styles.disabled)}
                         role='button'
-                        tabIndex={0}
+                        tabIndex={disabled ? -1 : 0}
                         aria-expanded={isOpen}
                         aria-haspopup='true'
+                        aria-disabled={disabled || undefined}
                         {...props}
                     >
                         {trigger}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useId, useRef } from 'react'
 
 import { cn } from '../../utils'
 
@@ -19,6 +19,10 @@ export const TextArea: React.FC<TextAreaProps> = ({
     ...props
 }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null)
+    const generatedId = useId()
+    const textareaId = props.id ?? generatedId
+    const errorId = `${textareaId}-error`
+    const hasError = !!error?.length
 
     const adjustHeight = useCallback(() => {
         const el = textareaRef.current
@@ -56,19 +60,37 @@ export const TextArea: React.FC<TextAreaProps> = ({
                 props.disabled && styles.disabled
             )}
         >
-            {label && <label className={styles.label}>{label}</label>}
+            {label && (
+                <label
+                    htmlFor={textareaId}
+                    className={styles.label}
+                >
+                    {label}
+                </label>
+            )}
 
             <span className={cn(styles.formField, mode && styles[mode])}>
                 <textarea
                     {...props}
+                    id={textareaId}
                     ref={textareaRef}
                     className={styles.textarea}
                     style={{ resize: autoResize ? 'none' : (resize ?? 'vertical'), ...style }}
                     onChange={handleChange}
+                    aria-invalid={hasError || undefined}
+                    aria-describedby={hasError ? errorId : props['aria-describedby']}
                 />
             </span>
 
-            {!!error?.length && <div className={styles.error}>{error}</div>}
+            {hasError && (
+                <div
+                    id={errorId}
+                    className={styles.error}
+                    role='alert'
+                >
+                    {error}
+                </div>
+            )}
         </div>
     )
 }

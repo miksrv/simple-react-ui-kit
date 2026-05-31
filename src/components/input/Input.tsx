@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useId } from 'react'
 
 import { cn } from '../../utils'
 import { Icon } from '../icon'
@@ -19,6 +19,11 @@ export const Input: React.FC<InputProps> = ({
     onChange,
     ...props
 }) => {
+    const generatedId = useId()
+    const inputId = props.id ?? generatedId
+    const errorId = `${inputId}-error`
+    const hasError = !!error?.length
+
     const handleClear = () => {
         if (onChange) {
             const syntheticEvent = {
@@ -41,7 +46,14 @@ export const Input: React.FC<InputProps> = ({
                 props.disabled && styles.disabled
             )}
         >
-            {label && <label className={styles.label}>{label}</label>}
+            {label && (
+                <label
+                    htmlFor={inputId}
+                    className={styles.label}
+                >
+                    {label}
+                </label>
+            )}
 
             <span className={cn(styles.formField, mode && styles[mode])}>
                 {icon && (
@@ -51,9 +63,12 @@ export const Input: React.FC<InputProps> = ({
                 )}
                 <input
                     {...props}
+                    id={inputId}
                     className={cn(styles.input, showClearButton && styles.withClearButton, icon && styles.withIcon)}
                     value={value}
                     onChange={onChange}
+                    aria-invalid={hasError || undefined}
+                    aria-describedby={hasError ? errorId : props['aria-describedby']}
                 />
                 {showClearButton && (
                     <button
@@ -67,7 +82,15 @@ export const Input: React.FC<InputProps> = ({
                 )}
             </span>
 
-            {!!error?.length && <div className={styles.error}>{error}</div>}
+            {hasError && (
+                <div
+                    id={errorId}
+                    className={styles.error}
+                    role='alert'
+                >
+                    {error}
+                </div>
+            )}
         </div>
     )
 }

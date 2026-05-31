@@ -132,4 +132,31 @@ describe('Badge Component', () => {
         )
         expect(container.querySelector('[data-testid="badge-test"]')).toBeInTheDocument()
     })
+
+    describe('accessibility', () => {
+        it('remove button has type="button" to avoid implicit form submission', () => {
+            render(
+                <Badge
+                    {...defaultProps}
+                    onClickRemove={jest.fn()}
+                />
+            )
+            expect(screen.getByRole('button')).toHaveAttribute('type', 'button')
+        })
+
+        it('remove button exposes an accessible label including the label text', () => {
+            render(
+                <Badge
+                    label='Tag name'
+                    onClickRemove={jest.fn()}
+                />
+            )
+            expect(screen.getByRole('button', { name: 'Remove Tag name' })).toBeInTheDocument()
+        })
+
+        it('remove button exposes a generic accessible label when no label is provided', () => {
+            render(<Badge onClickRemove={jest.fn()} />)
+            expect(screen.getByRole('button', { name: 'Remove' })).toBeInTheDocument()
+        })
+    })
 })

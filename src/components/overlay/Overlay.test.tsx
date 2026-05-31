@@ -125,6 +125,39 @@ describe('Overlay Component', () => {
         parentElement.remove()
     })
 
+    it('calls onClose when Enter is pressed on the overlay', () => {
+        const onClose = jest.fn()
+        const parentElement = document.createElement('div')
+        const props = { ...defaultProps, onClose, open: true, parentRef: { current: parentElement } }
+        render(<Overlay {...props} />)
+        const overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]') as HTMLElement
+
+        overlayElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+        expect(onClose).toHaveBeenCalled()
+    })
+
+    it('calls onClose when Space is pressed on the overlay', () => {
+        const onClose = jest.fn()
+        const parentElement = document.createElement('div')
+        const props = { ...defaultProps, onClose, open: true, parentRef: { current: parentElement } }
+        render(<Overlay {...props} />)
+        const overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]') as HTMLElement
+
+        overlayElement.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }))
+        expect(onClose).toHaveBeenCalled()
+    })
+
+    it('does not call onClose for other keys', () => {
+        const onClose = jest.fn()
+        const parentElement = document.createElement('div')
+        const props = { ...defaultProps, onClose, open: true, parentRef: { current: parentElement } }
+        render(<Overlay {...props} />)
+        const overlayElement = parentElement.querySelector('[data-overlay-id="test-overlay"]') as HTMLElement
+
+        overlayElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }))
+        expect(onClose).not.toHaveBeenCalled()
+    })
+
     it('reuses existing overlay element if already present', () => {
         const parentElement = document.createElement('div')
         document.body.appendChild(parentElement)

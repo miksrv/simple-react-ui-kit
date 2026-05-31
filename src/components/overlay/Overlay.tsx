@@ -20,6 +20,12 @@ export const Overlay: React.FC<OverlayProps> = ({ open, parentRef, overlayId, on
             overlayElement.setAttribute('aria-label', 'Overlay')
             overlayElement.tabIndex = 0
             overlayElement.onclick = onClose || null
+            overlayElement.onkeydown = (event: KeyboardEvent) => {
+                if ((event.key === 'Enter' || event.key === ' ') && onClose) {
+                    event.preventDefault()
+                    onClose()
+                }
+            }
             overlayElement.className = cn(styles.overlay, !open && styles.noInitialized)
             parentElement.appendChild(overlayElement)
         }

@@ -470,4 +470,78 @@ describe('Popout Component', () => {
 
         addSpy.mockRestore()
     })
+
+    describe('accessibility', () => {
+        it('opens the popout when pressing Enter on the trigger', () => {
+            render(<Popout trigger={'Click me'}>Popout Content</Popout>)
+            const triggerSpan = screen.getByRole('button', { name: /Click me/i })
+
+            act(() => {
+                fireEvent.keyDown(triggerSpan, { key: 'Enter' })
+            })
+
+            expect(screen.getByText(/Popout Content/i)).toBeInTheDocument()
+        })
+
+        it('toggles the popout when pressing Space on the trigger', () => {
+            render(<Popout trigger={'Click me'}>Popout Content</Popout>)
+            const triggerSpan = screen.getByRole('button', { name: /Click me/i })
+
+            act(() => {
+                fireEvent.keyDown(triggerSpan, { key: ' ' })
+            })
+            expect(screen.getByText(/Popout Content/i)).toBeInTheDocument()
+
+            act(() => {
+                fireEvent.keyDown(triggerSpan, { key: ' ' })
+            })
+            expect(screen.queryByText(/Popout Content/i)).not.toBeInTheDocument()
+        })
+
+        it('closes the popout when pressing Escape on the trigger', () => {
+            render(<Popout trigger={'Click me'}>Popout Content</Popout>)
+            const triggerSpan = screen.getByRole('button', { name: /Click me/i })
+
+            act(() => {
+                fireEvent.click(triggerSpan)
+            })
+            expect(screen.getByText(/Popout Content/i)).toBeInTheDocument()
+
+            act(() => {
+                fireEvent.keyDown(triggerSpan, { key: 'Escape' })
+            })
+            expect(screen.queryByText(/Popout Content/i)).not.toBeInTheDocument()
+        })
+
+        it('does not open via keyboard when disabled', () => {
+            render(
+                <Popout
+                    trigger={'Click me'}
+                    disabled
+                >
+                    Popout Content
+                </Popout>
+            )
+            const triggerSpan = screen.getByRole('button', { name: /Click me/i })
+
+            act(() => {
+                fireEvent.keyDown(triggerSpan, { key: 'Enter' })
+            })
+            expect(screen.queryByText(/Popout Content/i)).not.toBeInTheDocument()
+        })
+
+        it('removes the trigger from the tab order and marks it disabled when disabled', () => {
+            render(
+                <Popout
+                    trigger={'Click me'}
+                    disabled
+                >
+                    Content
+                </Popout>
+            )
+            const triggerSpan = screen.getByRole('button', { name: /Click me/i })
+            expect(triggerSpan).toHaveAttribute('tabindex', '-1')
+            expect(triggerSpan).toHaveAttribute('aria-disabled', 'true')
+        })
+    })
 })

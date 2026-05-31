@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { Spinner } from './Spinner'
 
@@ -54,5 +54,17 @@ describe('Spinner Component', () => {
         const spinnerElement = container.querySelector('svg')
         expect(spinnerElement).toHaveClass('spinner')
         expect(spinnerElement).toHaveClass('my-spinner')
+    })
+
+    describe('accessibility', () => {
+        it('exposes a status role with a default loading label', () => {
+            render(<Spinner />)
+            expect(screen.getByRole('status', { name: 'Loading' })).toBeInTheDocument()
+        })
+
+        it('allows overriding the accessible label', () => {
+            render(<Spinner aria-label='Fetching data' />)
+            expect(screen.getByRole('status', { name: 'Fetching data' })).toBeInTheDocument()
+        })
     })
 })

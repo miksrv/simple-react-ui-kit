@@ -73,4 +73,28 @@ describe('Icon Component', () => {
         const path = container.querySelector('path')
         expect(path).toHaveAttribute('transform')
     })
+
+    describe('accessibility', () => {
+        it('is hidden from assistive technology by default (decorative)', () => {
+            const { container } = render(<Icon name={iconNames.Camera} />)
+            const svgElement = container.querySelector('svg')
+            expect(svgElement).toHaveAttribute('aria-hidden', 'true')
+            expect(svgElement).toHaveAttribute('focusable', 'false')
+        })
+
+        it('allows overriding aria-hidden when the icon is meaningful', () => {
+            const { container } = render(
+                <Icon
+                    name={iconNames.Camera}
+                    aria-hidden={false}
+                    aria-label='Take a photo'
+                    role='img'
+                />
+            )
+            const svgElement = container.querySelector('svg')
+            expect(svgElement).toHaveAttribute('aria-hidden', 'false')
+            expect(svgElement).toHaveAttribute('aria-label', 'Take a photo')
+            expect(svgElement).toHaveAttribute('role', 'img')
+        })
+    })
 })

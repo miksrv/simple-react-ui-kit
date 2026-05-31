@@ -28,6 +28,7 @@ export const Dialog: React.FC<DialogProps> = ({
     const dialogRef = useRef<HTMLDialogElement>(null)
     const [dialogStyle, setDialogStyle] = useState<React.CSSProperties>({})
     const [internalId] = useState(() => crypto.randomUUID())
+    const titleId = `dialog-title-${internalId}`
 
     const handleResize = () => {
         const parentElement = parentRef?.current || document.documentElement
@@ -106,11 +107,15 @@ export const Dialog: React.FC<DialogProps> = ({
                         ref={dialogRef}
                         className={styles.dialog}
                         style={dialogStyle}
+                        aria-modal={true}
+                        aria-labelledby={title ? titleId : undefined}
                     >
                         {(title || showBackLink || showCloseButton) && (
                             <div className={cn(styles.header, !showBackLink && styles.noBackLink)}>
                                 {showBackLink && (
                                     <button
+                                        type='button'
+                                        aria-label={backLinkCaption || 'Back'}
                                         className={styles.innerButton}
                                         onClick={onBackClick}
                                     >
@@ -119,10 +124,11 @@ export const Dialog: React.FC<DialogProps> = ({
                                     </button>
                                 )}
 
-                                {title && <h2>{title}</h2>}
+                                {title && <h2 id={titleId}>{title}</h2>}
 
                                 {showCloseButton && (
                                     <button
+                                        type='button'
                                         aria-label={'Close Dialog'}
                                         className={cn(styles.innerButton, styles.closeButton)}
                                         onClick={onCloseDialog}

@@ -127,6 +127,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                 <div
                     key={`prev-${i}`}
                     className={cn(styles.day, styles.prevMonth)}
+                    aria-hidden='true'
                 >
                     {currentMonth.subtract(1, 'month').daysInMonth() - startDay + i + 1}
                 </div>
@@ -144,13 +145,22 @@ export const Calendar: React.FC<CalendarProps> = ({
                 }
             }
 
+            const isSelected =
+                (!!selectedStartDate && date.isSame(selectedStartDate, 'day')) ||
+                (!!selectedEndDate && date.isSame(selectedEndDate, 'day'))
+
             if (selectedStartDate && date.isSame(selectedStartDate, 'day')) {
                 dayClass = cn(dayClass, styles.selected, styles.selectedStartDate)
             }
             if (selectedEndDate && date.isSame(selectedEndDate, 'day')) {
                 dayClass = cn(dayClass, styles.selected, styles.selectedEndDate)
             }
-            if ((minDate && date.isBefore(dayjs(minDate), 'day')) || (maxDate && date.isAfter(dayjs(maxDate), 'day'))) {
+
+            const isDisabled =
+                (!!minDate && date.isBefore(dayjs(minDate), 'day')) ||
+                (!!maxDate && date.isAfter(dayjs(maxDate), 'day'))
+
+            if (isDisabled) {
                 dayClass = cn(dayClass, styles.notAllowed)
             }
 
@@ -163,6 +173,17 @@ export const Calendar: React.FC<CalendarProps> = ({
                     key={`day-${day}`}
                     className={dayClass}
                     onClick={() => handleDateClick(day)}
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault()
+                            handleDateClick(day)
+                        }
+                    }}
+                    role='button'
+                    tabIndex={isDisabled ? -1 : 0}
+                    aria-label={date.format('YYYY-MM-DD')}
+                    aria-disabled={isDisabled || undefined}
+                    aria-pressed={isSelected || undefined}
                 >
                     {day}
                 </div>
@@ -236,6 +257,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                         <select
                             value={selectedMonth}
                             onChange={handleMonthChange}
+                            aria-label={locale === 'ru' ? 'Месяц' : 'Month'}
                         >
                             {(locale === 'ru' ? ruMonths : enMonths).map((month, index) => (
                                 <option
@@ -251,6 +273,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                         <select
                             value={selectedYear}
                             onChange={handleYearChange}
+                            aria-label={locale === 'ru' ? 'Год' : 'Year'}
                         >
                             {yearsOptions.map((year) => (
                                 <option

@@ -231,4 +231,21 @@ describe('Button Component', () => {
         const button = screen.getByRole('button')
         expect(button).toHaveAttribute('type', 'submit')
     })
+
+    describe('accessibility', () => {
+        it('sets aria-busy while loading', () => {
+            render(
+                <Button
+                    {...defaultProps}
+                    loading
+                />
+            )
+            expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true')
+        })
+
+        it('does not set aria-busy when not loading', () => {
+            render(<Button {...defaultProps} />)
+            expect(screen.getByRole('button')).not.toHaveAttribute('aria-busy')
+        })
+    })
 })

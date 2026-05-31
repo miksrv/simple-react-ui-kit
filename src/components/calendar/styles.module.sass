@@ -55,6 +55,10 @@
         &:hover
             background-color: var(--input-background-color)
 
+        &:focus-visible
+            outline: 2px solid var(--input-border-focus-color, #1976d2)
+            outline-offset: -2px
+
         &.prevMonth, &.notAllowed
             color: var(--text-color-secondary)
             cursor: default
@@ -130,9 +134,14 @@
             -moz-appearance: none
             color: var(--text-color-primary)
             outline: none
+            border-radius: var(--border-radius)
 
             &:hover
                 background-color: var(--dropdown-background-color-hover)
+
+            &:focus-visible
+                outline: 2px solid var(--input-border-focus-color, #1976d2)
+                outline-offset: -2px
 
         &:after
             content: ''
