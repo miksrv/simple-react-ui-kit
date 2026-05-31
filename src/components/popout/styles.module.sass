@@ -19,6 +19,11 @@
         padding: 0
         margin: 0
 
+        &:focus-visible
+            outline: 2px solid var(--input-border-focus-color, #1976d2)
+            outline-offset: 2px
+            border-radius: var(--border-radius)
+
         &.disabled
             cursor: default
             pointer-events: none
