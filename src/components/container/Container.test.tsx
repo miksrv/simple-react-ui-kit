@@ -100,4 +100,31 @@ describe('Container Component', () => {
         )
         expect(container.querySelector('[data-testid="my-container"]')).toBeInTheDocument()
     })
+
+    describe('accessibility', () => {
+        it('labels the section with its title via aria-labelledby', () => {
+            const { container } = render(<Container title='Reports'>Content</Container>)
+            const section = container.querySelector('section') as HTMLElement
+            const labelledBy = section.getAttribute('aria-labelledby')
+            expect(labelledBy).toBeTruthy()
+            expect(document.getElementById(labelledBy as string)).toHaveTextContent('Reports')
+        })
+
+        it('exposes the titled section as an accessible region', () => {
+            render(<Container title='Reports'>Content</Container>)
+            expect(screen.getByRole('region', { name: 'Reports' })).toBeInTheDocument()
+        })
+
+        it('does not set aria-labelledby when no title is provided', () => {
+            const { container } = render(<Container>Content</Container>)
+            const section = container.querySelector('section')
+            expect(section).not.toHaveAttribute('aria-labelledby')
+        })
+
+        it('respects a consumer-provided aria-labelledby when no title is set', () => {
+            const { container } = render(<Container aria-labelledby='external-heading'>Content</Container>)
+            const section = container.querySelector('section')
+            expect(section).toHaveAttribute('aria-labelledby', 'external-heading')
+        })
+    })
 })
