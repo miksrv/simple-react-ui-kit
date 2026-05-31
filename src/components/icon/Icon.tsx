@@ -348,6 +348,8 @@ export const Icon: React.FC<IconProps> = ({ name, ...props }) => {
     return (
         <svg
             viewBox='0 0 24 24'
+            aria-hidden='true'
+            focusable='false'
             {...props}
         >
             {render}
