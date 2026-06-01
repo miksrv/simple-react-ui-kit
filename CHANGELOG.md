@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.8.7
+
+### Patch Changes
+
+- Improved Accessibility for Components
+
 ## 1.8.6
 
 ### Patch Changes
