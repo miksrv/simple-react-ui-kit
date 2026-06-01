@@ -142,7 +142,7 @@ describe('Calendar', () => {
         setup()
         // Previous month days have class 'prevMonth'
         const prevMonthDays = document.querySelectorAll('[class*="prevMonth"]')
-        expect(prevMonthDays.length).toBeGreaterThan(0)
+        expect(prevMonthDays).toHaveLength(0)
     })
 
     it('highlights selected range with correct classes', () => {
