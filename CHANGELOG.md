@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.8.8
+
+### Patch Changes
+
+- Bumbed UI Libraries
+
 ## 1.8.7
 
 ### Patch Changes
