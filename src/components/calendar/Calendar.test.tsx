@@ -139,10 +139,23 @@ describe('Calendar', () => {
     })
 
     it('renders days from previous month as disabled', () => {
+        // June 1, 2026 is a Monday, so the month grid starts exactly on day 1
+        // with no leading days from the previous month.
+        jest.useFakeTimers().setSystemTime(new Date('2026-06-01'))
         setup()
         // Previous month days have class 'prevMonth'
         const prevMonthDays = document.querySelectorAll('[class*="prevMonth"]')
         expect(prevMonthDays).toHaveLength(0)
+        jest.useRealTimers()
+    })
+
+    it('renders leading days from the previous month when the month does not start on Monday', () => {
+        // July 1, 2026 is a Wednesday, so the grid should show 2 leading days from June.
+        jest.useFakeTimers().setSystemTime(new Date('2026-07-01'))
+        setup()
+        const prevMonthDays = document.querySelectorAll('[class*="prevMonth"]')
+        expect(prevMonthDays).toHaveLength(2)
+        jest.useRealTimers()
     })
 
     it('highlights selected range with correct classes', () => {
