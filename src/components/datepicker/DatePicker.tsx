@@ -53,8 +53,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             ? preset
             : periodDates?.[0] && periodDates?.[1]
               ? periodDates?.[0] === periodDates?.[1]
-                  ? formatDate(periodDates?.[0], singleDateFormat)
-                  : `${formatDate(periodDates?.[0], periodDatesFormat)} - ${formatDate(periodDates?.[1], periodDatesFormat)}`
+                  ? formatDate(periodDates?.[0], singleDateFormat, props?.locale)
+                  : `${formatDate(periodDates?.[0], periodDatesFormat, props?.locale)} - ${formatDate(periodDates?.[1], periodDatesFormat, props?.locale)}`
               : ''
     }, [periodDates, props?.locale])
 

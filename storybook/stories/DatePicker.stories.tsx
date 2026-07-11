@@ -55,7 +55,8 @@ const meta: Meta<DatePickerProps> = {
         locale: {
             control: 'inline-radio',
             options: ['en', 'ru'],
-            description: 'Language for month/day labels and preset captions',
+            description:
+                'Language for month/day labels, preset captions, and the formatted date text on the trigger button (`periodDatesFormat` / `singleDateFormat`). Applied per-call via `dayjs(date).locale(locale)` — it does not read or mutate the host app global `dayjs.locale()`.',
             table: {
                 defaultValue: { summary: 'en' },
                 type: { summary: '"en" | "ru"' }
@@ -112,6 +113,16 @@ const meta: Meta<DatePickerProps> = {
         hideDaysOfWeek: {
             control: 'boolean',
             description: 'Hides the day-of-week row in the embedded calendar'
+        },
+        highlightToday: {
+            control: 'boolean',
+            description: 'Highlights the current day in the embedded calendar',
+            table: { defaultValue: { summary: 'true' } }
+        },
+        showTodayButton: {
+            control: 'boolean',
+            description: 'Shows a button in the calendar header to navigate back to the current month',
+            table: { defaultValue: { summary: 'false' } }
         },
         onDateSelect: {
             control: false,
@@ -197,6 +208,7 @@ export const RussianLocale: Story = {
                 locale='ru'
                 placeholder='Выберите период'
                 buttonMode='secondary'
+                datePeriod={['2024-06-15', '2024-06-15']}
                 onPeriodSelect={() => {}}
             />
         </div>
@@ -204,7 +216,7 @@ export const RussianLocale: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'With `locale="ru"` month names, day-of-week labels, and preset captions switch to Russian.'
+                story: 'With `locale="ru"` month names, day-of-week labels, preset captions, and the formatted date shown on the trigger button (here, a fixed `datePeriod` that does not match any preset) all switch to Russian — e.g. "15 июня 2024" instead of "15 June 2024".'
             }
         }
     }

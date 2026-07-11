@@ -3,6 +3,8 @@ import dayjs from 'dayjs'
 import { timePresets } from './DatePicker'
 import { PresetOption } from './types'
 
+import 'dayjs/locale/ru'
+
 export const enPresets = {
     [PresetOption.TODAY]: 'Today',
     [PresetOption.DAY]: '24 Hours',
@@ -23,7 +25,10 @@ export const ruPresets = {
     [PresetOption.YEAR]: 'Последний год'
 }
 
-export const formatDate = (date: string, format: string = 'YYYY-MM-DD'): string => dayjs(date).format(format)
+export const formatDate = (date: string, format: string = 'YYYY-MM-DD', locale?: 'en' | 'ru'): string =>
+    dayjs(date)
+        .locale(locale ?? 'en')
+        .format(format)
 
 export const findPresetByDate = (
     nowDate: dayjs.Dayjs,
