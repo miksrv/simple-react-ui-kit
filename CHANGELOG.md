@@ -1,10 +1,16 @@
 # CHANGELOG
 
+## 1.8.9
+
+### Patch Changes
+
+- Localize DatePicker trigger date formatting
+
 ## 1.8.8
 
 ### Patch Changes
 
-- Bumbed UI Libraries
+- Bumped UI Libraries
 
 ## 1.8.7
 

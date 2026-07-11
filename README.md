@@ -85,7 +85,7 @@
 2. **Full TypeScript Support** — Every component ships with strict type definitions and IntelliSense-friendly prop interfaces.
 3. **Themeable via CSS Variables** — Override design tokens at the `:root` level to integrate any design system or dark-mode theme.
 4. **Accessible by Default** — Components include proper ARIA attributes, keyboard navigation, and focus management out of the box.
-5. **Minimal Bundle Size** — Bundled with Rollup, tree-shakeable, and free from heavy peer dependencies.
+5. **Minimal Bundle Size** — Bundled with Rollup and tree-shakeable; `react`, `react-dom`, and `dayjs` are peer dependencies rather than being bundled, so the host application's own instances are reused.
 
 ### Real-World Usage
 
@@ -124,6 +124,12 @@ Or with Yarn:
 
 ```sh
 yarn add simple-react-ui-kit
+```
+
+`react`, `react-dom`, and `dayjs` are peer dependencies and are not bundled — make sure they're installed in your project as well:
+
+```sh
+npm install react react-dom dayjs
 ```
 
 <p align="right">
@@ -476,7 +482,10 @@ Check out the full documentation and examples in Storybook: [DatePicker Componen
 - **`placeholder`**: Caption shown when no date is selected (default: `Select date`).
 - **`disabled`**: Disables the date picker if `true`.
 - **`buttonMode`**: Button mode for the trigger (`primary`, `secondary`, etc.).
+- **`locale`**: Locale used to format the selected date/period text on the trigger button, the preset labels, and the calendar grid (`'ru'` or `'en'`, default: `'en'`). This is applied per-call and does not depend on (or mutate) the host application's global `dayjs` locale.
 - All other `Calendar` props are supported.
+
+> **Note:** `react`, `react-dom`, and `dayjs` are peer dependencies — the host application's own instances are used, so setting `dayjs.locale(...)` in your app does not affect this component's date formatting; pass the `locale` prop instead.
 
 #### Example Usage:
 
