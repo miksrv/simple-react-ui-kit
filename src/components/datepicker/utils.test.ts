@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 
 import { timePresets } from './DatePicker'
 import { PresetOption } from './types'
-import { enPresets, findPresetByDate, ruPresets } from './utils'
+import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'
 
 describe('PresetOption enum', () => {
     it('should contain all expected keys', () => {
@@ -37,6 +37,25 @@ describe('ruPresets', () => {
         expect(ruPresets[PresetOption.QUARTER]).toBe('Последний квартал')
         expect(ruPresets[PresetOption.HALF_YEAR]).toBe('Последние полгода')
         expect(ruPresets[PresetOption.YEAR]).toBe('Последний год')
+    })
+})
+
+describe('formatDate', () => {
+    it('should format a date using the English locale by default', () => {
+        expect(formatDate('2024-06-15', 'D MMMM YYYY')).toBe('15 June 2024')
+    })
+
+    it('should format a date using the English locale when explicitly requested', () => {
+        expect(formatDate('2024-06-15', 'D MMMM YYYY', 'en')).toBe('15 June 2024')
+    })
+
+    it('should format a date using the Russian locale when requested', () => {
+        expect(formatDate('2024-06-15', 'D MMMM YYYY', 'ru')).toBe('15 июня 2024')
+    })
+
+    it('should not leak the requested locale into the global dayjs instance', () => {
+        formatDate('2024-06-15', 'D MMMM YYYY', 'ru')
+        expect(dayjs('2024-06-15').format('D MMMM YYYY')).toBe('15 June 2024')
     })
 })
 
