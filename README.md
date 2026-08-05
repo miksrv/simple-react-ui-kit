@@ -5,6 +5,8 @@
 **Simple React UI Kit** is a lightweight, fully typed React component library for building modern web interfaces. It provides 16 production-ready UI components with full TypeScript support, a minimal bundle footprint, and deep theming capabilities via CSS variables — everything you need to ship consistent, accessible UIs faster.
 
 <div align="center">
+  <img src="docs/cover.jpg" alt="Simple React UI Kit" width="100%" />
+
   <h3>Lightweight, accessible React UI components with full TypeScript support</h3>
 
 <a href="https://miksrv.github.io/simple-react-ui-kit/" target="_blank">StoryBook</a>
