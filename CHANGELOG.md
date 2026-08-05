@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.8.10
+
+### Patch Changes
+
+- Add Calendar and QuestionCircle icons
+- Bump dev tooling dependencies
+- Add cover image to README
+
 ## 1.8.9
 
 ### Patch Changes
