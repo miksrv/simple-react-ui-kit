@@ -43,6 +43,7 @@ export const iconNames = {
     HeartFilled: 'HeartFilled',
     Layers: 'Layers',
     Link: 'Link',
+    Lock: 'Lock',
     KeyboardUp: 'KeyboardUp',
     KeyboardDown: 'KeyboardDown',
     KeyboardLeft: 'KeyboardLeft',
