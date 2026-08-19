@@ -1,14 +1,17 @@
 import React, {
     forwardRef,
     useCallback,
+    useContext,
     useEffect,
     useImperativeHandle,
     useLayoutEffect,
+    useMemo,
     useRef,
     useState
 } from 'react'
 import { createPortal } from 'react-dom'
 
+import { FloatingPortalContext, useFloatingChildPortals } from '../../floatingPortal'
 import { cn } from '../../utils'
 
 import { PopoutHandleProps, PopoutProps } from './types'
@@ -37,6 +40,14 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
         const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({})
         const [positionCalculated, setPositionCalculated] = useState<boolean>(false)
 
+        // See src/floatingPortal.ts - lets a floating element nested inside
+        // this Popout's children (e.g. a Select) register its own portal so
+        // clicks inside it aren't treated as "outside" this Popout, and lets
+        // this Popout itself register with a further ancestor, if any.
+        const parentFloating = useContext(FloatingPortalContext)
+        const { registerChildPortal, isInsideChildPortal } = useFloatingChildPortals()
+        const floatingContextValue = useMemo(() => ({ registerChildPortal }), [registerChildPortal])
+
         // Create portal container
         useEffect(() => {
             const div = document.createElement('div')
@@ -44,13 +55,16 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
             document.body.appendChild(div)
             setPortalNode(div)
 
+            const unregister = parentFloating?.registerChildPortal(div)
+
             return () => {
                 if (document.body.contains(div)) {
                     document.body.removeChild(div)
                 }
                 setPortalNode(null)
+                unregister?.()
             }
-        }, [])
+        }, [parentFloating])
 
         const close = useCallback(() => {
             setIsOpen(false)
@@ -163,14 +177,14 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                 const isOutsideTrigger = triggerRef.current && !triggerRef.current.contains(target)
                 const isOutsideContent = portalNode && !portalNode.contains(target)
 
-                if (isOutsideTrigger && isOutsideContent) {
+                if (isOutsideTrigger && isOutsideContent && !isInsideChildPortal(target)) {
                     close()
                 }
             }
 
             document.addEventListener('mousedown', handleClickOutside)
             return () => document.removeEventListener('mousedown', handleClickOutside)
-        }, [isOpen, portalNode, close])
+        }, [isOpen, portalNode, close, isInsideChildPortal])
 
         useEffect(() => {
             onOpenChange?.(isOpen)
@@ -212,7 +226,9 @@ export const Popout = forwardRef<PopoutHandleProps, PopoutProps>(
                                 e.stopPropagation()
                             }}
                         >
-                            {children}
+                            <FloatingPortalContext.Provider value={floatingContextValue}>
+                                {children}
+                            </FloatingPortalContext.Provider>
                         </div>,
                         portalNode
                     )}

@@ -2,6 +2,7 @@ import React, {
     ChangeEvent,
     KeyboardEvent,
     useCallback,
+    useContext,
     useEffect,
     useId,
     useLayoutEffect,
@@ -11,6 +12,7 @@ import React, {
 } from 'react'
 import { createPortal } from 'react-dom'
 
+import { FloatingPortalContext, useFloatingChildPortals } from '../../floatingPortal'
 import { cn } from '../../utils'
 import { Badge } from '../badge'
 import { Icon } from '../icon'
@@ -55,6 +57,16 @@ export const Select = <T,>({
     const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({ visibility: 'hidden' })
     const [positionCalculated, setPositionCalculated] = useState(false)
 
+    // See src/floatingPortal.ts - lets a floating element nested inside this
+    // Select's own dropdown register its portal so clicks inside it aren't
+    // treated as "outside" this Select, and lets this Select itself register
+    // with an ancestor floating element (e.g. a Popout it's rendered inside
+    // of), so ITS click-outside check doesn't mistake a click on one of this
+    // Select's own options for a click outside of it.
+    const parentFloating = useContext(FloatingPortalContext)
+    const { registerChildPortal, isInsideChildPortal } = useFloatingChildPortals()
+    const floatingContextValue = useMemo(() => ({ registerChildPortal }), [registerChildPortal])
+
     // Portal for dropdown
     useEffect(() => {
         const div = document.createElement('div')
@@ -65,13 +77,16 @@ export const Select = <T,>({
         document.body.appendChild(div)
         setPortalNode(div)
 
+        const unregister = parentFloating?.registerChildPortal(div)
+
         return () => {
             if (document.body.contains(div)) {
                 document.body.removeChild(div)
             }
             setPortalNode(null)
+            unregister?.()
         }
-    }, [])
+    }, [parentFloating])
 
     // Selected options based on value prop
     const selectedOptions = useMemo(() => {
@@ -339,14 +354,20 @@ export const Select = <T,>({
 
         const handleClickOutside = (e: globalThis.MouseEvent) => {
             const target = e.target as Node
-            if (rootRef.current && !rootRef.current.contains(target) && portalNode && !portalNode.contains(target)) {
+            if (
+                rootRef.current &&
+                !rootRef.current.contains(target) &&
+                portalNode &&
+                !portalNode.contains(target) &&
+                !isInsideChildPortal(target)
+            ) {
                 setIsOpen(false)
             }
         }
 
         document.addEventListener('mousedown', handleClickOutside)
         return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [isOpen, portalNode])
+    }, [isOpen, portalNode, isInsideChildPortal])
 
     const handleFocus = () => setIsFocused(true)
     const handleBlur = () => setTimeout(() => setIsFocused(false), 150)
@@ -549,14 +570,16 @@ export const Select = <T,>({
                             visibility: positionCalculated ? 'visible' : 'hidden'
                         }}
                     >
-                        <OptionsList<T>
-                            id={optionsListId}
-                            options={filteredOptions}
-                            selectedOptions={selectedOptions}
-                            highlightedIndex={highlightedIndex}
-                            onOptionSelect={handleSelect}
-                            notFoundCaption={notFoundCaption}
-                        />
+                        <FloatingPortalContext.Provider value={floatingContextValue}>
+                            <OptionsList<T>
+                                id={optionsListId}
+                                options={filteredOptions}
+                                selectedOptions={selectedOptions}
+                                highlightedIndex={highlightedIndex}
+                                onOptionSelect={handleSelect}
+                                notFoundCaption={notFoundCaption}
+                            />
+                        </FloatingPortalContext.Provider>
                     </div>,
                     portalNode
                 )}
