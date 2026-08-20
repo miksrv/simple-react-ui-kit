@@ -195,6 +195,20 @@ describe('Input Component', () => {
         expect(container.querySelector('div')).not.toHaveClass('error')
     })
 
+    it('applies the error class but renders no error text/alert when error is `true`', () => {
+        const { container } = render(
+            <Input
+                {...defaultProps}
+                error={true}
+            />
+        )
+        const inputContainer = container.firstChild
+        expect(inputContainer).toHaveClass('error')
+        expect(container.querySelector('.error[role="alert"]')).not.toBeInTheDocument()
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+        expect(screen.getByPlaceholderText('Enter your username')).not.toHaveAttribute('aria-describedby')
+    })
+
     describe('icon prop', () => {
         it('renders icon when icon prop is provided', () => {
             const { container } = render(
