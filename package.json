@@ -41,7 +41,7 @@
         "README.md"
     ],
     "devDependencies": {
-        "@changesets/cli": "^3.0.1",
+        "@changesets/cli": "patch:@changesets/cli@npm%3A3.0.1#~/.yarn/patches/@changesets-cli-npm-3.0.1-aede4b50a3.patch",
         "@eslint/compat": "^2.1.0",
         "@eslint/js": "^10.0.1",
         "@rollup/plugin-commonjs": "^29.0.3",
