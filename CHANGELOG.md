@@ -4,7 +4,13 @@
 
 ### Patch Changes
 
-- Input, TextArea and Select now accept `error={true}` (in addition to a message string) to highlight the field as invalid without rendering an error message underneath it — useful when several fields share one error message shown once elsewhere (e.g. a field group validated as a whole). A non-empty string keeps the previous behavior (red border + message). Also added `aria-invalid`/`aria-describedby` to Select for parity with Input/TextArea.
+- Update build config and tooling deps
+- Unify button icon color with text color
+- Add unstyled option to Button
+- Support boolean error state in TextArea
+- Support boolean error state in Select
+- Add boolean support to Input `error` prop
+- Fix nested portal click-outside false positive
 
 ## 1.8.11
 
