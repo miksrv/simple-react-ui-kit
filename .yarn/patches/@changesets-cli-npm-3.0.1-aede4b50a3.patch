@@ -1,0 +1,12 @@
+diff --git a/dist/getPublishPlan.mjs b/dist/getPublishPlan.mjs
+index a7a560d793840af0fb93a24ab053bca637f01208..5ec70eaee4c62db233d8168075e9c11145ea61f9 100644
+--- a/dist/getPublishPlan.mjs
++++ b/dist/getPublishPlan.mjs
+@@ -502,7 +502,6 @@ const publish = async ({ pkg, release, tarballPath, interactive, otpCode }) => {
+ 		"--tag",
+ 		release.tag
+ 	];
+-	if (!interactive) args.push("--json");
+ 	if (otpCode) args.push("--otp", otpCode);
+ 	const { exitCode, stdout, stderr } = await exec("yarn", args, {
+ 		nodePath: false,
