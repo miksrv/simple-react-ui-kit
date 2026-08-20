@@ -154,3 +154,21 @@
         opacity: .64
         pointer-events: none !important
         cursor: not-allowed !important
+
+    &.unstyled
+        background: transparent
+        color: inherit
+        padding: 0
+        border-radius: 0
+        min-height: auto
+        height: auto
+
+        svg
+            margin-right: 0
+            fill: currentColor
+
+        &:hover, &:focus
+            background-color: transparent
+
+        &:active
+            background-color: transparent

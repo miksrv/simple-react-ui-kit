@@ -17,6 +17,7 @@ export const Button: React.FC<ButtonProps> = ({
     size = 'medium',
     mode = 'primary',
     variant,
+    unstyled,
     icon,
     children,
     label,
@@ -30,12 +31,13 @@ export const Button: React.FC<ButtonProps> = ({
             className={cn(
                 className,
                 styles.button,
-                mode && styles[mode],
-                variant && styles[variant],
-                size && styles[size],
+                mode && !unstyled && styles[mode],
+                variant && !unstyled && styles[variant],
+                size && !unstyled && styles[size],
                 stretched && styles.stretched,
                 loading && styles.loading,
-                !children && !label?.length && styles.noText
+                !children && !label?.length && styles.noText,
+                unstyled && styles.unstyled
             )}
         >
             {loading ? <Spinner className={styles.loader} /> : icon && <Icon name={icon} />}
