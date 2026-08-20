@@ -49,6 +49,12 @@ export const Select = <T,>({
     const inputRef = useRef<HTMLInputElement>(null)
     const selectId = useId()
     const optionsListId = `${selectId}-options`
+    const errorId = `${selectId}-error`
+    // `error` can be a message string (border + text below) or a bare `true`
+    // (border only, e.g. for a field validated as part of a group where the
+    // message is shown once elsewhere) — only a non-empty string renders the text.
+    const errorMessage = typeof error === 'string' ? error : undefined
+    const hasError = errorMessage ? errorMessage.length > 0 : !!error
     const [search, setSearch] = useState('')
     const [isOpen, setIsOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
@@ -438,13 +444,15 @@ export const Select = <T,>({
                     styles.container,
                     isOpen && styles.open,
                     disabled && styles.disabled,
-                    error && styles.error,
+                    hasError && styles.error,
                     size && styles[size]
                 )}
                 role='combobox'
                 aria-expanded={isOpen}
                 aria-haspopup='listbox'
                 aria-disabled={disabled}
+                aria-invalid={hasError || undefined}
+                aria-describedby={errorMessage ? errorId : undefined}
                 aria-multiselectable={multiple}
                 aria-activedescendant={
                     isOpen && highlightedIndex >= 0 ? `${optionsListId}-option-${highlightedIndex}` : undefined
@@ -557,7 +565,15 @@ export const Select = <T,>({
                     </span>
                 </div>
 
-                {error && <div className={styles.error}>{error}</div>}
+                {errorMessage && (
+                    <div
+                        id={errorId}
+                        className={styles.error}
+                        role='alert'
+                    >
+                        {errorMessage}
+                    </div>
+                )}
             </div>
 
             {/* Portal with options */}

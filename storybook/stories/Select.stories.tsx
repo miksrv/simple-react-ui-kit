@@ -44,7 +44,14 @@ const meta: Meta<SelectProps<string>> = {
         placeholder: { control: 'text', description: 'Placeholder text to display when no option is selected' },
         notFoundCaption: { control: 'text', description: 'Text to display if no options are found' },
         label: { control: 'text', description: 'Label text for the select' },
-        error: { control: 'text', description: 'Error message to display when validation fails' },
+        error: {
+            control: 'text',
+            description:
+                'Error message to display when validation fails. Pass `true` instead of a string to apply the red border only, without rendering a message.',
+            table: {
+                type: { summary: 'string | boolean' }
+            }
+        },
         value: { control: false, description: 'Currently selected value(s)' },
         icon: {
             control: 'select',
@@ -165,6 +172,12 @@ export const VariantsInOneStory: StoryObj<typeof meta> = {
                 placeholder='With Error'
                 label='With Error'
             />
+            <Template
+                options={countries}
+                error={true}
+                placeholder='With Error (highlight only)'
+                label='With Error (Highlight Only)'
+            />
         </div>
     ),
     parameters: {
@@ -203,6 +216,26 @@ export const WithEmojis: StoryObj<typeof meta> = {
         options: countries,
         placeholder: 'Choose country',
         label: 'Country with Flag'
+    }
+}
+
+export const WithErrorHighlightOnly: StoryObj<typeof meta> = {
+    render: Template,
+    args: {
+        options: countries,
+        error: true,
+        placeholder: 'Choose a country',
+        label: 'With Error (Highlight Only)'
+    },
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'Passing `error={true}` instead of a message string applies the red border without rendering ' +
+                    'any text below the field — useful when several fields share one message shown once elsewhere ' +
+                    '(e.g. a field group validated as a whole).'
+            }
+        }
     }
 }
 

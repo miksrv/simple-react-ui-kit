@@ -33,8 +33,10 @@ export interface SelectProps<T> extends Omit<React.HTMLAttributes<HTMLDivElement
     notFoundCaption?: string
     /** Label text for the select */
     label?: string
-    /** Error message to display when validation fails */
-    error?: string
+    /** Error message to display when validation fails.
+     *  Pass `true` instead of a string to highlight the field as invalid
+     *  (red border) without rendering an error message underneath it. */
+    error?: string | boolean
     /** Currently selected value(s) */
     value?: T | T[]
     /** Callback triggered when options are selected */
