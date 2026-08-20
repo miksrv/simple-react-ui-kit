@@ -46,3 +46,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  # Publishing now goes through `yarn npm publish` (Yarn Berry), which never
+                  # reads .npmrc (project- or user-wide) - auth must come from Yarn's own
+                  # config, read here from its env-var form of `npmAuthToken`.
+                  YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
