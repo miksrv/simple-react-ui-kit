@@ -110,6 +110,22 @@ describe('Select Component', () => {
             />
         )
         expect(screen.getByText('Required field')).toBeInTheDocument()
+        expect(screen.getByRole('combobox')).toHaveAttribute('aria-invalid', 'true')
+    })
+
+    it('highlights the field but renders no error text/alert when error is `true`', () => {
+        const { container } = render(
+            <Select
+                options={options}
+                error={true}
+            />
+        )
+        const combobox = screen.getByRole('combobox')
+        expect(combobox).toHaveClass('error')
+        expect(combobox).toHaveAttribute('aria-invalid', 'true')
+        expect(combobox).not.toHaveAttribute('aria-describedby')
+        expect(container.querySelector('.error[role="alert"]')).not.toBeInTheDocument()
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument()
     })
 
     it('shows loading spinner', () => {

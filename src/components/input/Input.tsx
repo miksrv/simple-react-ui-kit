@@ -22,7 +22,11 @@ export const Input: React.FC<InputProps> = ({
     const generatedId = useId()
     const inputId = props.id ?? generatedId
     const errorId = `${inputId}-error`
-    const hasError = !!error?.length
+    // `error` can be a message string (border + text below) or a bare `true`
+    // (border only, e.g. for a field validated as part of a group where the
+    // message is shown once elsewhere) — only a non-empty string renders the text.
+    const errorMessage = typeof error === 'string' ? error : undefined
+    const hasError = errorMessage ? errorMessage.length > 0 : !!error
 
     const handleClear = () => {
         if (onChange) {
@@ -68,7 +72,7 @@ export const Input: React.FC<InputProps> = ({
                     value={value}
                     onChange={onChange}
                     aria-invalid={hasError || undefined}
-                    aria-describedby={hasError ? errorId : props['aria-describedby']}
+                    aria-describedby={errorMessage ? errorId : props['aria-describedby']}
                 />
                 {showClearButton && (
                     <button
@@ -82,13 +86,13 @@ export const Input: React.FC<InputProps> = ({
                 )}
             </span>
 
-            {hasError && (
+            {errorMessage && (
                 <div
                     id={errorId}
                     className={styles.error}
                     role='alert'
                 >
-                    {error}
+                    {errorMessage}
                 </div>
             )}
         </div>

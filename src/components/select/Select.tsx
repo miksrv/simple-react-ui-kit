@@ -2,6 +2,7 @@ import React, {
     ChangeEvent,
     KeyboardEvent,
     useCallback,
+    useContext,
     useEffect,
     useId,
     useLayoutEffect,
@@ -11,6 +12,7 @@ import React, {
 } from 'react'
 import { createPortal } from 'react-dom'
 
+import { FloatingPortalContext, useFloatingChildPortals } from '../../floatingPortal'
 import { cn } from '../../utils'
 import { Badge } from '../badge'
 import { Icon } from '../icon'
@@ -47,6 +49,12 @@ export const Select = <T,>({
     const inputRef = useRef<HTMLInputElement>(null)
     const selectId = useId()
     const optionsListId = `${selectId}-options`
+    const errorId = `${selectId}-error`
+    // `error` can be a message string (border + text below) or a bare `true`
+    // (border only, e.g. for a field validated as part of a group where the
+    // message is shown once elsewhere) — only a non-empty string renders the text.
+    const errorMessage = typeof error === 'string' ? error : undefined
+    const hasError = errorMessage ? errorMessage.length > 0 : !!error
     const [search, setSearch] = useState('')
     const [isOpen, setIsOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
@@ -54,6 +62,16 @@ export const Select = <T,>({
     const [portalNode, setPortalNode] = useState<HTMLDivElement | null>(null)
     const [portalStyle, setPortalStyle] = useState<React.CSSProperties>({ visibility: 'hidden' })
     const [positionCalculated, setPositionCalculated] = useState(false)
+
+    // See src/floatingPortal.ts - lets a floating element nested inside this
+    // Select's own dropdown register its portal so clicks inside it aren't
+    // treated as "outside" this Select, and lets this Select itself register
+    // with an ancestor floating element (e.g. a Popout it's rendered inside
+    // of), so ITS click-outside check doesn't mistake a click on one of this
+    // Select's own options for a click outside of it.
+    const parentFloating = useContext(FloatingPortalContext)
+    const { registerChildPortal, isInsideChildPortal } = useFloatingChildPortals()
+    const floatingContextValue = useMemo(() => ({ registerChildPortal }), [registerChildPortal])
 
     // Portal for dropdown
     useEffect(() => {
@@ -65,13 +83,16 @@ export const Select = <T,>({
         document.body.appendChild(div)
         setPortalNode(div)
 
+        const unregister = parentFloating?.registerChildPortal(div)
+
         return () => {
             if (document.body.contains(div)) {
                 document.body.removeChild(div)
             }
             setPortalNode(null)
+            unregister?.()
         }
-    }, [])
+    }, [parentFloating])
 
     // Selected options based on value prop
     const selectedOptions = useMemo(() => {
@@ -339,14 +360,20 @@ export const Select = <T,>({
 
         const handleClickOutside = (e: globalThis.MouseEvent) => {
             const target = e.target as Node
-            if (rootRef.current && !rootRef.current.contains(target) && portalNode && !portalNode.contains(target)) {
+            if (
+                rootRef.current &&
+                !rootRef.current.contains(target) &&
+                portalNode &&
+                !portalNode.contains(target) &&
+                !isInsideChildPortal(target)
+            ) {
                 setIsOpen(false)
             }
         }
 
         document.addEventListener('mousedown', handleClickOutside)
         return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [isOpen, portalNode])
+    }, [isOpen, portalNode, isInsideChildPortal])
 
     const handleFocus = () => setIsFocused(true)
     const handleBlur = () => setTimeout(() => setIsFocused(false), 150)
@@ -417,13 +444,15 @@ export const Select = <T,>({
                     styles.container,
                     isOpen && styles.open,
                     disabled && styles.disabled,
-                    error && styles.error,
+                    hasError && styles.error,
                     size && styles[size]
                 )}
                 role='combobox'
                 aria-expanded={isOpen}
                 aria-haspopup='listbox'
                 aria-disabled={disabled}
+                aria-invalid={hasError || undefined}
+                aria-describedby={errorMessage ? errorId : undefined}
                 aria-multiselectable={multiple}
                 aria-activedescendant={
                     isOpen && highlightedIndex >= 0 ? `${optionsListId}-option-${highlightedIndex}` : undefined
@@ -536,7 +565,15 @@ export const Select = <T,>({
                     </span>
                 </div>
 
-                {error && <div className={styles.error}>{error}</div>}
+                {errorMessage && (
+                    <div
+                        id={errorId}
+                        className={styles.error}
+                        role='alert'
+                    >
+                        {errorMessage}
+                    </div>
+                )}
             </div>
 
             {/* Portal with options */}
@@ -549,14 +586,16 @@ export const Select = <T,>({
                             visibility: positionCalculated ? 'visible' : 'hidden'
                         }}
                     >
-                        <OptionsList<T>
-                            id={optionsListId}
-                            options={filteredOptions}
-                            selectedOptions={selectedOptions}
-                            highlightedIndex={highlightedIndex}
-                            onOptionSelect={handleSelect}
-                            notFoundCaption={notFoundCaption}
-                        />
+                        <FloatingPortalContext.Provider value={floatingContextValue}>
+                            <OptionsList<T>
+                                id={optionsListId}
+                                options={filteredOptions}
+                                selectedOptions={selectedOptions}
+                                highlightedIndex={highlightedIndex}
+                                onOptionSelect={handleSelect}
+                                notFoundCaption={notFoundCaption}
+                            />
+                        </FloatingPortalContext.Provider>
                     </div>,
                     portalNode
                 )}

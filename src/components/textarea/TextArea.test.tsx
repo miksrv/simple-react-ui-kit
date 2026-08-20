@@ -189,6 +189,20 @@ describe('TextArea Component', () => {
         expect(container.querySelector('div')).not.toHaveClass('error')
     })
 
+    it('applies the error class but renders no error text/alert when error is `true`', () => {
+        const { container } = render(
+            <TextArea
+                {...defaultProps}
+                error={true}
+            />
+        )
+        const textAreaContainer = container.firstChild
+        expect(textAreaContainer).toHaveClass('error')
+        expect(container.querySelector('.error[role="alert"]')).not.toBeInTheDocument()
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+        expect(screen.getByPlaceholderText('Enter your description')).not.toHaveAttribute('aria-describedby')
+    })
+
     it('renders textarea with resize: none style when resize prop is none', () => {
         render(
             <TextArea

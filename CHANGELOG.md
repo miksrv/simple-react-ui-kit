@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 1.8.12
+
+### Patch Changes
+
+- Update build config and tooling deps
+- Unify button icon color with text color
+- Add unstyled option to Button
+- Support boolean error state in TextArea
+- Support boolean error state in Select
+- Add boolean support to Input `error` prop
+- Fix nested portal click-outside false positive
+
 ## 1.8.11
 
 ### Patch Changes

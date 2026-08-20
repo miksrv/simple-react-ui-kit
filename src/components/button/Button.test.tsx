@@ -232,6 +232,38 @@ describe('Button Component', () => {
         expect(button).toHaveAttribute('type', 'submit')
     })
 
+    describe('unstyled', () => {
+        it('applies unstyled class and omits mode/variant/size classes', () => {
+            render(
+                <Button
+                    {...defaultProps}
+                    variant='positive'
+                    unstyled
+                />
+            )
+            const button = screen.getByText(/Click Me/i)
+            expect(button).toHaveClass('unstyled')
+            expect(button).not.toHaveClass('primary')
+            expect(button).not.toHaveClass('positive')
+            expect(button).not.toHaveClass('medium')
+        })
+
+        it('still renders icon and handles clicks when unstyled', () => {
+            const handleClick = jest.fn()
+            const { container } = render(
+                <Button
+                    icon='CheckCircle'
+                    unstyled
+                    onClick={handleClick}
+                    aria-label='Toggle'
+                />
+            )
+            expect(container.querySelector('svg')).toBeInTheDocument()
+            fireEvent.click(screen.getByRole('button'))
+            expect(handleClick).toHaveBeenCalledTimes(1)
+        })
+    })
+
     describe('accessibility', () => {
         it('sets aria-busy while loading', () => {
             render(

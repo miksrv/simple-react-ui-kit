@@ -18,7 +18,7 @@ export default {
         commonjs(),
         terser(), // Минификация
         typescript({
-            tsconfig: './tsconfig.json',
+            tsconfig: './tsconfig.build.json',
             useTsconfigDeclarationDir: true,
             clean: true
         }),

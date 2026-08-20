@@ -15,8 +15,10 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
     mode?: 'primary' | 'ghost'
     /** Size of the input field */
     size?: ElementSizeType
-    /** Error message displayed below the input field when an error occurs */
-    error?: string
+    /** Error message displayed below the input field when an error occurs.
+     *  Pass `true` instead of a string to highlight the field as invalid
+     *  (red border) without rendering an error message underneath it. */
+    error?: string | boolean
     /** Shows a clear button when the input has a value */
     clearable?: boolean
     /** Icon to display on the left side of the input */

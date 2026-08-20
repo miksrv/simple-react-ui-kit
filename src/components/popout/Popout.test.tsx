@@ -3,6 +3,8 @@ import React, { createRef } from 'react'
 import { fireEvent, screen } from '@testing-library/dom'
 import { act, render } from '@testing-library/react'
 
+import { Select } from '../select'
+
 import { Popout } from './Popout'
 import { PopoutHandleProps } from './types'
 
@@ -469,6 +471,87 @@ describe('Popout Component', () => {
         expect(resizeCalls).toHaveLength(0)
 
         addSpy.mockRestore()
+    })
+
+    // Regression: a Select rendered inside a Popout's children renders its own
+    // open dropdown into a second, separate document.body-level portal (not
+    // nested inside the Popout's own portal node). Before floatingPortal.ts,
+    // clicking one of that dropdown's options was indistinguishable, by plain
+    // DOM `.contains()`, from a genuine click outside the Popout - so picking
+    // an option closed the whole Popout instead of just the Select. See the
+    // DateTimePicker "can't change the minute after picking the hour" bug.
+    describe('nested floating elements (e.g. a Select inside a Popout)', () => {
+        const options = [
+            { key: '00', value: '00' },
+            { key: '01', value: '01' },
+            { key: '02', value: '02' }
+        ]
+
+        // Mirrors how a real consumer wires Select's value/onSelect (e.g.
+        // DateTimePicker in astronomy-portal) - an uncontrolled `<Select>`
+        // with no `value` prop never shows a picked option as selected.
+        const ControlledHourSelect: React.FC = () => {
+            const [value, setValue] = React.useState<string>()
+            return (
+                <Select<string>
+                    label={'Hour'}
+                    options={options}
+                    value={value}
+                    onSelect={(selected) => setValue(selected?.[0]?.key)}
+                />
+            )
+        }
+
+        it('does not close when an option is picked in a Select rendered as its child', () => {
+            render(
+                <Popout trigger={'Open'}>
+                    <ControlledHourSelect />
+                </Popout>
+            )
+
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /Open/i }))
+            })
+
+            // Open the nested Select's own dropdown and pick an option. A real
+            // click fires `mousedown` before `click` - the Popout's outside
+            // check listens for `mousedown`, so the regression only reproduces
+            // if this test fires it too (plain fireEvent.click alone would
+            // never have exercised the bug, fixed or not).
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /open dropdown/i }))
+            })
+            act(() => {
+                fireEvent.mouseDown(screen.getByText('01'))
+                fireEvent.click(screen.getByText('01'))
+            })
+
+            // The Popout must still be open - the Select (now showing '01' as
+            // its selected value) must still be on screen.
+            expect(screen.getByRole('combobox')).toBeInTheDocument()
+            expect(screen.getByText('01')).toBeInTheDocument()
+        })
+
+        it('still closes on a genuine outside click while a nested Select is open', () => {
+            const { container } = render(
+                <Popout trigger={'Open'}>
+                    <ControlledHourSelect />
+                </Popout>
+            )
+
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /Open/i }))
+            })
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /open dropdown/i }))
+            })
+
+            act(() => {
+                fireEvent.mouseDown(container)
+            })
+
+            expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
+        })
     })
 
     describe('accessibility', () => {

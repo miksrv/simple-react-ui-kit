@@ -31,7 +31,7 @@
         width: 18px
         height: 18px
         margin-right: 5px
-        fill: var(--button-default-color)
+        fill: currentColor
 
     img
         margin-right: 5px
@@ -77,9 +77,6 @@
         background-color: var(--button-primary-background)
         color: var(--button-primary-color)
 
-        svg
-            fill: var(--button-primary-color)
-
         &:hover, &:focus
             background-color: var(--button-primary-background-hover)
 
@@ -89,9 +86,6 @@
         &.negative
             background-color: var(--color-red)
             color: var(--color-contrast)
-
-            svg
-                fill: var(--color-contrast)
 
             &:hover, &:focus
                 background-color: var(--color-red-hover)
@@ -103,9 +97,6 @@
         &.positive
             background-color: var(--color-green)
             color: var(--color-contrast) !important
-
-            svg
-                fill: var(--color-contrast)
 
             &:hover, &:focus
                 background-color: var(--color-green-hover)
@@ -129,9 +120,6 @@
     &.negative
         color: var(--color-red)
 
-        svg
-            fill: var(--color-red)
-
         &:hover, &:focus
             color: var(--color-red-hover)
 
@@ -140,9 +128,6 @@
 
     &.positive
         color: var(--color-green)
-
-        svg
-            fill: var(--color-green)
 
         &:hover, &:focus
             color: var(--color-green-hover)
@@ -154,3 +139,20 @@
         opacity: .64
         pointer-events: none !important
         cursor: not-allowed !important
+
+    &.unstyled
+        background: transparent
+        color: inherit
+        padding: 0
+        border-radius: 0
+        min-height: auto
+        height: auto
+
+        svg
+            margin-right: 0
+
+        &:hover, &:focus
+            background-color: transparent
+
+        &:active
+            background-color: transparent
