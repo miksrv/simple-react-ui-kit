@@ -218,6 +218,7 @@ Check out the full documentation and examples in Storybook: [Button Component St
 - **`size`**: Controls button size (`small`, `medium`, `large`).
 - **`mode`**: Visual style of the button (`primary`, `secondary`, `outline`, `link`).
 - **`variant`**: Variant for styling (`positive`, `negative`).
+- **`unstyled`**: Strips the default chrome (background, padding, border-radius, min-height) while keeping the button's semantics — type, disabled, aria-busy/loading spinner, icon+label layout. Ignores `mode`/`variant`/`size`. Use for icon-only or fully custom-styled triggers (e.g. a burger menu button, a dialog close icon) instead of a raw `<button>`.
 - **`icon`**: Displays an icon inside the button.
 - **`children`**: React children to be displayed inside the button.
 - **`label`**: Text content for the button.
@@ -658,7 +659,7 @@ Check out the full documentation and examples in Storybook: [Input Component Sto
 - **`label`**: Optional label text displayed above the input field.
 - **`mode`**: Visual style of the input field (`primary`, `ghost`). Defaults to `primary`.
 - **`size`**: Size of the input field, can be `small`, `medium` or `large`.
-- **`error`**: Error message displayed below the input field, used for validation feedback.
+- **`error`**: Error message displayed below the input field, used for validation feedback. Accepts a `string` (message shown below the field) or `true` (applies the red/invalid border only, without rendering a message — useful when several fields share one message shown once elsewhere, e.g. a field group).
 - **`clearable`**: When `true`, shows a clear button (×) on the right side of the input when it has a value. Clicking the button clears the input and triggers `onChange` with an empty value. The button is hidden when the input is empty or disabled.
 - **`icon`**: Icon displayed on the left side of the input field. Accepts any valid icon name from the `IconTypes` union. The input text is automatically padded to avoid overlapping the icon.
 - **`className`**: Additional class names for custom styling.
@@ -715,6 +716,7 @@ In this example:
 - The input's required attribute visually indicates that it's a required field.
 - The input value is managed with React state, and validation logic sets an error message conditionally.
 - The second input demonstrates the `clearable` prop, which shows a clear button when the input has a value.
+- Passing `error={true}` instead of a string highlights the field in red without rendering a message — handy for a field in a group validated as a whole (see the [Storybook "With Error (highlight only)" story](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-input--docs)).
 
 For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/components-input--docs).
 
@@ -734,7 +736,7 @@ Check out the full documentation and examples in Storybook: [TextArea Component 
 - **`label`**: Optional label text displayed above the textarea.
 - **`mode`**: Visual style of the textarea (`primary`, `ghost`). Defaults to `primary`.
 - **`size`**: Size of the textarea, can be `small`, `medium` or `large`.
-- **`error`**: Error message displayed below the textarea, used for validation feedback.
+- **`error`**: Error message displayed below the textarea, used for validation feedback. Accepts a `string` (message shown below the field) or `true` (applies the red/invalid border only, without rendering a message — useful when several fields share one message shown once elsewhere, e.g. a field group).
 - **`resize`**: Controls resize behavior of the textarea (`none`, `vertical`, `horizontal`, `both`). Defaults to `vertical`.
 - **`autoResize`**: When `true`, the textarea height grows automatically to fit its content. The resize handle is hidden when this is active. Defaults to `false`.
 - **`className`**: Additional class names for custom styling.
@@ -782,6 +784,7 @@ In this example:
 - The `TextArea` component displays a label and an error message if the text is too short.
 - The required attribute visually indicates that it's a required field.
 - The textarea value is managed with React state, and validation logic sets an error message conditionally.
+- Passing `error={true}` instead of a string highlights the field in red without rendering a message — handy for a field in a group validated as a whole.
 
 For more detailed examples and live usage, check out the [Storybook Documentation](https://miksrv.github.io/simple-react-ui-kit/?path=/docs/controls-textarea--docs).
 
@@ -938,7 +941,7 @@ Check out the full documentation and examples in Storybook: [Select Component St
 - **`label`**: Optional label for the select field.
 - **`placeholder`**: Placeholder text when nothing is selected.
 - **`notFoundCaption`**: Text shown when no options match the search.
-- **`error`**: Error message for validation feedback.
+- **`error`**: Error message for validation feedback. Accepts a `string` (message shown below the field) or `true` (applies the red/invalid border only, without rendering a message — useful when several fields share one message shown once elsewhere, e.g. a field group).
 - **`required`**: Marks the field as required.
 - **`disabled`**: Disables the select. The component uses `aria-disabled` for accessibility.
 - **`icon`**: Icon displayed on the left side of the select trigger. Accepts any valid icon name from the `IconTypes` union. Useful for adding visual context to the field (e.g., a search or category icon).
@@ -982,6 +985,7 @@ In this example:
 - The `Select` component displays a searchable dropdown of fruits.
 - The user can clear the selection or search for an option.
 - The selected value is managed in React state.
+- Passing `error={true}` instead of a string highlights the field in red without rendering a message — handy for a field in a group validated as a whole.
 - For more details and live examples, check out the Storybook Documentation.
 
 #### Autocomplete Mode
