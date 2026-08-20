@@ -22,7 +22,11 @@ export const TextArea: React.FC<TextAreaProps> = ({
     const generatedId = useId()
     const textareaId = props.id ?? generatedId
     const errorId = `${textareaId}-error`
-    const hasError = !!error?.length
+    // `error` can be a message string (border + text below) or a bare `true`
+    // (border only, e.g. for a field validated as part of a group where the
+    // message is shown once elsewhere) — only a non-empty string renders the text.
+    const errorMessage = typeof error === 'string' ? error : undefined
+    const hasError = errorMessage ? errorMessage.length > 0 : !!error
 
     const adjustHeight = useCallback(() => {
         const el = textareaRef.current
@@ -78,17 +82,17 @@ export const TextArea: React.FC<TextAreaProps> = ({
                     style={{ resize: autoResize ? 'none' : (resize ?? 'vertical'), ...style }}
                     onChange={handleChange}
                     aria-invalid={hasError || undefined}
-                    aria-describedby={hasError ? errorId : props['aria-describedby']}
+                    aria-describedby={errorMessage ? errorId : props['aria-describedby']}
                 />
             </span>
 
-            {hasError && (
+            {errorMessage && (
                 <div
                     id={errorId}
                     className={styles.error}
                     role='alert'
                 >
-                    {error}
+                    {errorMessage}
                 </div>
             )}
         </div>

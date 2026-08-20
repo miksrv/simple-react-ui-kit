@@ -14,8 +14,10 @@ export interface TextAreaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
     mode?: 'primary' | 'ghost'
     /** Size of the textarea field */
     size?: ElementSizeType
-    /** Error message displayed below the textarea when an error occurs */
-    error?: string
+    /** Error message displayed below the textarea when an error occurs.
+     *  Pass `true` instead of a string to highlight the field as invalid
+     *  (red border) without rendering an error message underneath it. */
+    error?: string | boolean
     /** Controls resize behavior of the textarea */
     resize?: 'none' | 'vertical' | 'horizontal' | 'both'
     /** When true, the textarea height grows automatically to fit its content */

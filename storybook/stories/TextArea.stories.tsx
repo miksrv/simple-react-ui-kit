@@ -45,7 +45,11 @@ const meta: Meta<TextAreaProps> = {
         },
         error: {
             control: 'text',
-            description: 'Error message displayed below the textarea. Also applies an error border style.'
+            description:
+                'Error message displayed below the textarea, and applies an error border style. Pass `true` instead of a string to apply the border only, without rendering a message.',
+            table: {
+                type: { summary: 'string | boolean' }
+            }
         },
         resize: {
             control: 'inline-radio',
@@ -130,6 +134,25 @@ export const WithError: Story = {
         docs: {
             description: {
                 story: 'The `error` prop renders a validation message below the field and applies a red border style.'
+            }
+        }
+    }
+}
+
+export const WithErrorHighlightOnly: Story = {
+    name: 'With Error (Highlight Only)',
+    args: {
+        label: 'Comment',
+        placeholder: 'Write your comment...',
+        error: true
+    },
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'Passing `error={true}` instead of a message string applies the red border without rendering ' +
+                    'any text below the field — useful when several fields share one message shown once elsewhere ' +
+                    '(e.g. a field group validated as a whole).'
             }
         }
     }
