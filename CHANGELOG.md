@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.8.13
+
+### Patch Changes
+
+- Bumped UI dependencies
+
 ## 1.8.12
 
 ### Patch Changes
