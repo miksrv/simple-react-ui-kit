@@ -21,6 +21,18 @@ export { Skeleton, type SkeletonProps } from './components/skeleton'
 export { Spinner, type SpinnerProps } from './components/spinner'
 export { Table, type TableColumnProps, type TableProps, type TableSortConfig } from './components/table'
 export { TextArea, type TextAreaProps } from './components/textarea'
+export {
+    Tooltip,
+    TOOLTIP_MAX_LENGTH,
+    type TooltipOptions,
+    type TooltipPlacement,
+    type TooltipProp,
+    type TooltipProps,
+    type TooltipTriggerProps,
+    useTooltip,
+    type UseTooltipConfig,
+    type UseTooltipResult
+} from './components/tooltip'
 
 // Tools
 export { cn } from './utils'
