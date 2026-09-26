@@ -330,3 +330,29 @@ WithExternalSort.parameters = {
         }
     }
 }
+
+export const WithHeaderTooltip: Story = {
+    name: 'With Header Tooltips',
+    args: {
+        data: sampleData,
+        columns: [
+            { header: 'ID', accessor: 'id', isSortable: true, headerTooltip: 'Unique user identifier' },
+            { header: 'Name', accessor: 'name', isSortable: true },
+            { header: 'Role', accessor: 'role', headerTooltip: 'Access level of the user in the workspace' },
+            { header: 'Status', accessor: 'status' },
+            {
+                header: 'Score',
+                accessor: 'score',
+                isSortable: true,
+                headerTooltip: { content: 'Activity score for the last 30 days, from 0 to 100', placement: 'bottom' }
+            }
+        ]
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'Use `headerTooltip` on a column to explain abbreviated or ambiguous headers. On sortable columns the tooltip also appears on keyboard focus.'
+            }
+        }
+    }
+}
