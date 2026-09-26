@@ -728,7 +728,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/cli@npm:^3.0.3":
+"@changesets/cli@npm:3.0.3":
   version: 3.0.3
   resolution: "@changesets/cli@npm:3.0.3"
   dependencies:
@@ -756,6 +756,37 @@ __metadata:
   bin:
     changeset: bin.js
   checksum: 10c0/238b98c590bfe33e794cf5ab47e0fa6eb46fc587da9498af49037877f1043b3e91dac65c990ebd1675115d82f2a3a2b3e7aa1b5d385369b0322a24e858eb1313
+  languageName: node
+  linkType: hard
+
+"@changesets/cli@patch:@changesets/cli@npm%3A3.0.3#~/.yarn/patches/@changesets-cli-npm-3.0.3-37da92ed6c.patch":
+  version: 3.0.3
+  resolution: "@changesets/cli@patch:@changesets/cli@npm%3A3.0.3#~/.yarn/patches/@changesets-cli-npm-3.0.3-37da92ed6c.patch::version=3.0.3&hash=ff8073"
+  dependencies:
+    "@changesets/apply-release-plan": "npm:^8.1.1"
+    "@changesets/assemble-release-plan": "npm:^7.0.0"
+    "@changesets/changelog-git": "npm:^1.0.0"
+    "@changesets/config": "npm:^4.0.1"
+    "@changesets/errors": "npm:^1.0.0"
+    "@changesets/get-dependents-graph": "npm:^3.0.0"
+    "@changesets/git": "npm:^4.0.1"
+    "@changesets/pre": "npm:^3.0.0"
+    "@changesets/read": "npm:^1.0.1"
+    "@changesets/should-skip-package": "npm:^1.0.0"
+    "@changesets/types": "npm:^7.0.0"
+    "@changesets/write": "npm:^1.0.1"
+    "@clack/prompts": "npm:^1.7.0"
+    "@manypkg/get-packages": "npm:^3.1.0"
+    "@pnpm/deps.graph-sequencer": "npm:^1100.0.1"
+    cac: "npm:^7.0.0"
+    import-meta-resolve: "npm:^4.2.0"
+    launch-editor: "npm:^2.14.1"
+    package-manager-detector: "npm:^1.6.0"
+    semver: "npm:^7.8.1"
+    tinyexec: "npm:^1.3.1"
+  bin:
+    changeset: bin.js
+  checksum: 10c0/677cf7357bbb401f8d0b87e3526f9a8971732943d8f5ca206f2af36f69bb76d1f487b6fc913ecbd8ba08e3b39da7c6b89610c258e16fce6d89c2c15a97e473eb
   languageName: node
   linkType: hard
 
@@ -8839,7 +8870,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "simple-react-ui-kit@workspace:."
   dependencies:
-    "@changesets/cli": "npm:^3.0.3"
+    "@changesets/cli": "patch:@changesets/cli@npm%3A3.0.3#~/.yarn/patches/@changesets-cli-npm-3.0.3-37da92ed6c.patch"
     "@eslint/compat": "npm:^2.1.1"
     "@eslint/js": "npm:^10.0.1"
     "@rollup/plugin-commonjs": "npm:^29.0.3"

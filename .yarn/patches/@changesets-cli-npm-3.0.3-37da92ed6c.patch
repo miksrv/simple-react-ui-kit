@@ -1,8 +1,8 @@
 diff --git a/dist/getPublishPlan.mjs b/dist/getPublishPlan.mjs
-index a7a560d793840af0fb93a24ab053bca637f01208..5ec70eaee4c62db233d8168075e9c11145ea61f9 100644
+index dc6ca95c3c26de55b3355d1f339b97ab79ba3d20..ce3de45a86b2d016328f45fcccc9c92601faeab2 100644
 --- a/dist/getPublishPlan.mjs
 +++ b/dist/getPublishPlan.mjs
-@@ -502,7 +502,6 @@ const publish = async ({ pkg, release, tarballPath, interactive, otpCode }) => {
+@@ -511,7 +511,6 @@ const publish = async ({ pkg, release, tarballPath, interactive, otpCode }) => {
  		"--tag",
  		release.tag
  	];
