@@ -6,7 +6,8 @@ import { IconProps } from './types'
 
 export const Icon: React.FC<IconProps> = ({ name, tooltip, ...props }) => {
     const tooltipOptions = normalizeTooltip(tooltip)
-    const ariaLabel = props['aria-label'] ?? tooltipOptions?.content
+    // Named by the tooltip unless it has its own name (then the tooltip describes it instead)
+    const ariaLabel = props['aria-label'] ?? (props['aria-labelledby'] == null ? tooltipOptions?.content : undefined)
     const { triggerProps, tooltip: tooltipElement } = useTooltip<SVGSVGElement>(
         tooltipOptions && { ...tooltipOptions, describeTrigger: ariaLabel !== tooltipOptions.content },
         props

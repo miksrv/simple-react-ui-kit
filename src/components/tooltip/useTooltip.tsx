@@ -256,15 +256,17 @@ export const useTooltip = <E extends Element = Element>(
             }
         }
 
-        // Follows layout shifts that do not fire scroll/resize: re-sorting, animations, content changes
-        const resizeObserver = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updatePosition)
-
-        if (triggerRef.current) {
-            resizeObserver?.observe(triggerRef.current)
+        // Follows layout shifts that fire neither scroll nor resize: inserted siblings, re-sorting,
+        // transform animations, trigger or content size changes. Runs only while the tooltip is open;
+        // each frame reads one rect and re-renders only when the position actually changed.
+        let frame = 0
+        const trackLayout = () => {
+            updatePosition()
+            frame = requestAnimationFrame(trackLayout)
         }
 
-        if (tooltipRef.current) {
-            resizeObserver?.observe(tooltipRef.current)
+        if (typeof requestAnimationFrame !== 'undefined') {
+            frame = requestAnimationFrame(trackLayout)
         }
 
         window.addEventListener('scroll', updatePosition, { capture: true, passive: true })
@@ -272,7 +274,10 @@ export const useTooltip = <E extends Element = Element>(
         document.addEventListener('keydown', handleKeyDown, true)
 
         return () => {
-            resizeObserver?.disconnect()
+            if (typeof cancelAnimationFrame !== 'undefined') {
+                cancelAnimationFrame(frame)
+            }
+
             window.removeEventListener('scroll', updatePosition, true)
             window.removeEventListener('resize', updatePosition)
             document.removeEventListener('keydown', handleKeyDown, true)
@@ -362,7 +367,8 @@ export const useTooltip = <E extends Element = Element>(
                   onPointerUp={stopPropagation}
                   onKeyDown={stopPropagation}
               >
-                  <span className={cn(styles.content, typeof content === 'string' && styles.clamped)}>{content}</span>
+                  {/* A div, so block-level React nodes (paragraphs, lists) are valid content */}
+                  <div className={cn(styles.content, typeof content === 'string' && styles.clamped)}>{content}</div>
                   <span
                       aria-hidden='true'
                       className={styles.arrow}

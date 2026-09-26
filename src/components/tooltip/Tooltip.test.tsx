@@ -756,16 +756,8 @@ describe('Tooltip Component', () => {
         expect(screen.getByRole('tooltip').style.left).toBe('320px')
     })
 
-    it('repositions when the trigger or the bubble is resized, and hides when the trigger gets hidden', () => {
+    it('follows the trigger when it moves without scroll or resize, and hides when it gets hidden', () => {
         const rectSpy = mockTriggerRect()
-        let notify: () => void = () => {}
-        const observe = jest.fn()
-        const disconnect = jest.fn()
-
-        window.ResizeObserver = jest.fn((callback: () => void) => {
-            notify = callback
-            return { observe, disconnect, unobserve: jest.fn() }
-        }) as unknown as typeof ResizeObserver
 
         render(
             <Tooltip content='Hint'>
@@ -774,20 +766,58 @@ describe('Tooltip Component', () => {
         )
 
         keyboardFocus(screen.getByText('Trigger'))
-        expect(observe).toHaveBeenCalledWith(screen.getByText('Trigger'))
-        expect(observe).toHaveBeenCalledWith(screen.getByRole('tooltip'))
+        expect(screen.getByRole('tooltip').style.top).toBe('92px')
 
+        // e.g. a sibling inserted above the trigger or a transform animation: no events are fired
         rectSpy.mockReturnValue({ ...visibleRect, top: 300, bottom: 330, y: 300, toJSON: () => ({}) } as DOMRect)
-        act(() => notify())
+        act(() => {
+            jest.advanceTimersByTime(20)
+        })
         expect(screen.getByRole('tooltip').style.top).toBe('292px')
 
         rectSpy.mockReturnValue({ ...visibleRect, width: 0, height: 0, toJSON: () => ({}) } as DOMRect)
-        act(() => notify())
+        act(() => {
+            jest.advanceTimersByTime(20)
+        })
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
-        expect(disconnect).toHaveBeenCalled()
+    })
 
-        // @ts-expect-error jsdom has no ResizeObserver, restore the original state
-        delete window.ResizeObserver
+    it('stops tracking the layout once closed', () => {
+        const cancel = jest.spyOn(window, 'cancelAnimationFrame')
+
+        render(
+            <Tooltip content='Hint'>
+                <button>Trigger</button>
+            </Tooltip>
+        )
+
+        const trigger = screen.getByText('Trigger')
+        keyboardFocus(trigger)
+        fireEvent.blur(trigger)
+
+        expect(cancel).toHaveBeenCalled()
+    })
+
+    it('renders block-level React content without DOM nesting warnings', () => {
+        const error = jest.spyOn(console, 'error').mockImplementation(() => {})
+
+        render(
+            <Tooltip
+                content={
+                    <ul>
+                        <li>First</li>
+                    </ul>
+                }
+            >
+                <button>Trigger</button>
+            </Tooltip>
+        )
+
+        keyboardFocus(screen.getByText('Trigger'))
+
+        expect(screen.getByRole('tooltip').firstElementChild?.tagName).toBe('DIV')
+        expect(screen.getByText('First')).toBeInTheDocument()
+        expect(error).not.toHaveBeenCalled()
     })
 
     it('does not add aria-describedby when describeTrigger is false', () => {

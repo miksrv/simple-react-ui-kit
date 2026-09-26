@@ -370,6 +370,26 @@ describe('Button tooltip', () => {
         expect(button).not.toHaveAttribute('aria-describedby')
     })
 
+    it('keeps the tooltip as a description when the button is named by aria-labelledby', () => {
+        render(
+            <>
+                <span id='close-label'>Close</span>
+                <Button
+                    icon='Close'
+                    aria-labelledby='close-label'
+                    tooltip='Close dialog'
+                />
+            </>
+        )
+        const button = screen.getByRole('button', { name: 'Close' })
+
+        fireEvent.keyDown(document, { key: 'Tab' })
+        act(() => button.focus())
+
+        expect(button).not.toHaveAttribute('aria-label')
+        expect(button).toHaveAttribute('aria-describedby', screen.getByRole('tooltip').id)
+    })
+
     it('keeps an explicit aria-label', () => {
         render(
             <Button

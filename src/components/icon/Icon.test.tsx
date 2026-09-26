@@ -190,6 +190,26 @@ describe('Icon tooltip', () => {
         container.querySelectorAll('svg').forEach((svg) => expect(svg).not.toHaveAttribute('tabindex'))
     })
 
+    it('keeps the tooltip as a description when the icon is named by aria-labelledby', () => {
+        render(
+            <>
+                <span id='help-label'>Help</span>
+                <Icon
+                    name='QuestionCircle'
+                    aria-labelledby='help-label'
+                    tooltip='What is this?'
+                />
+            </>
+        )
+        const icon = screen.getByRole('img', { name: 'Help' })
+
+        fireEvent.keyDown(document, { key: 'Tab' })
+        act(() => icon.focus())
+
+        expect(icon).not.toHaveAttribute('aria-label')
+        expect(icon).toHaveAttribute('aria-describedby', screen.getByRole('tooltip').id)
+    })
+
     it('lets props override the default accessibility attributes', () => {
         render(
             <Icon

@@ -27,8 +27,10 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
     const tooltipOptions = normalizeTooltip(tooltip)
     const hasText = !!children || !!label?.length
-    // An icon-only button is named by its tooltip, so the tooltip must not also describe it
-    const ariaLabel = props['aria-label'] ?? (!hasText ? tooltipOptions?.content : undefined)
+    // An icon-only button without its own name is named by its tooltip, so the tooltip must not
+    // also describe it. With `aria-labelledby` the button already has a name: keep the description.
+    const hasOwnName = props['aria-label'] != null || props['aria-labelledby'] != null
+    const ariaLabel = hasOwnName || hasText ? props['aria-label'] : tooltipOptions?.content
     const { triggerProps, tooltip: tooltipElement } = useTooltip<HTMLButtonElement>(
         tooltipOptions && { ...tooltipOptions, describeTrigger: ariaLabel !== tooltipOptions.content },
         props
