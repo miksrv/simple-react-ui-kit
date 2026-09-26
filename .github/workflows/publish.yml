@@ -40,12 +40,14 @@ jobs:
 
             - name: Create Release and Publish to npm
               id: changesets
-              uses: changesets/action@v1
+              # v2 is required with Changesets CLI 3: it detects published packages through the
+              # CHANGESETS_OUTPUT file written by `changeset publish`. v1 parsed the CLI's "New tag:"
+              # log lines, which CLI 3 no longer prints, so it silently skipped tags and GitHub releases.
+              uses: changesets/action@v2
               with:
-                  publish: yarn release
+                  publish-script: yarn release
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
                   # Publishing now goes through `yarn npm publish` (Yarn Berry), which never
                   # reads .npmrc (project- or user-wide) - auth must come from Yarn's own
                   # config, read here from its env-var form of `npmAuthToken`.
