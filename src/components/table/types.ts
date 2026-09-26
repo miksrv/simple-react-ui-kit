@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { ElementSizeType } from '../../types'
+import { TooltipProp } from '../tooltip'
 
 /**
  * Column properties for table component
@@ -23,6 +24,9 @@ export interface TableColumnProps<T> {
     /** External sort callback. When provided, clicking this column header fires the callback
      *  instead of sorting data locally. Use together with TableProps.sort to show the active indicator. */
     onChangeSort?: (sort: TableSortConfig<T>) => void
+    /** Tooltip shown when hovering the column header (and on keyboard focus for sortable columns):
+     *  the text, or `{ content, placement, delay, ... }`. Useful for abbreviated headers. */
+    headerTooltip?: TooltipProp
 }
 
 /**

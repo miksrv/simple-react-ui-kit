@@ -2,6 +2,7 @@ import React from 'react'
 
 import { ButtonModeType, ElementSizeType } from '../../types'
 import { IconTypes } from '../icon'
+import { TooltipProp } from '../tooltip'
 
 /**
  * Button component properties
@@ -35,4 +36,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     children?: React.ReactNode
     /** Content to display inside the button (as text) */
     label?: string
+    /** Tooltip shown on hover and keyboard focus: the text, or `{ content, placement, delay, ... }`.
+     *  Nothing is added to the DOM until the tooltip is shown. For an icon-only button without
+     *  `aria-label`, the tooltip text also becomes the button's accessible name. */
+    tooltip?: TooltipProp
 }

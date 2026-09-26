@@ -1,8 +1,12 @@
 import React from 'react'
 
+import { normalizeTooltip, useTooltip } from '../tooltip'
+
 import { IconProps } from './types'
 
-export const Icon: React.FC<IconProps> = ({ name, ...props }) => {
+export const Icon: React.FC<IconProps> = ({ name, tooltip, ...props }) => {
+    const tooltipOptions = normalizeTooltip(tooltip)
+    const { triggerProps, tooltip: tooltipElement } = useTooltip<SVGSVGElement>(tooltipOptions, props)
     let render
 
     switch (name) {
@@ -360,14 +364,23 @@ export const Icon: React.FC<IconProps> = ({ name, ...props }) => {
             break
     }
 
+    // Without a tooltip the icon is decorative. With one it carries meaning, so it is
+    // announced as a labelled image and can be reached with the keyboard.
+    const a11yProps: React.SVGProps<SVGSVGElement> = tooltipOptions
+        ? { role: 'img', 'aria-label': tooltipOptions.content, tabIndex: 0 }
+        : { 'aria-hidden': 'true', focusable: 'false' }
+
     return (
-        <svg
-            viewBox='0 0 24 24'
-            aria-hidden='true'
-            focusable='false'
-            {...props}
-        >
-            {render}
-        </svg>
+        <>
+            <svg
+                viewBox='0 0 24 24'
+                {...a11yProps}
+                {...props}
+                {...triggerProps}
+            >
+                {render}
+            </svg>
+            {tooltipElement}
+        </>
     )
 }

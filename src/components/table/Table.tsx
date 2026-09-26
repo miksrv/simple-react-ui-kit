@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { cn } from '../../utils'
 import { Icon } from '../icon'
 import { Skeleton } from '../skeleton'
+import { normalizeTooltip, Tooltip } from '../tooltip'
 
 import { TableColumnProps, TableProps, TableSortConfig } from './types'
 
@@ -129,27 +130,31 @@ export const Table = <T,>({
                             const sortable = !!(column.isSortable || column.onChangeSort)
 
                             return (
-                                <th
+                                <Tooltip
                                     key={String(column.accessor)}
-                                    scope='col'
-                                    onClick={() => handleSort(column)}
-                                    onKeyDown={
-                                        sortable
-                                            ? (event) => {
-                                                  if (event.key === 'Enter' || event.key === ' ') {
-                                                      event.preventDefault()
-                                                      handleSort(column)
-                                                  }
-                                              }
-                                            : undefined
-                                    }
-                                    tabIndex={sortable ? 0 : undefined}
-                                    aria-sort={getAriaSort(column)}
-                                    className={sortable ? styles.sortable : undefined}
+                                    {...normalizeTooltip(column.headerTooltip)}
                                 >
-                                    {column.header}
-                                    {getSortIcon(column)}
-                                </th>
+                                    <th
+                                        scope='col'
+                                        onClick={() => handleSort(column)}
+                                        onKeyDown={
+                                            sortable
+                                                ? (event) => {
+                                                      if (event.key === 'Enter' || event.key === ' ') {
+                                                          event.preventDefault()
+                                                          handleSort(column)
+                                                      }
+                                                  }
+                                                : undefined
+                                        }
+                                        tabIndex={sortable ? 0 : undefined}
+                                        aria-sort={getAriaSort(column)}
+                                        className={sortable ? styles.sortable : undefined}
+                                    >
+                                        {column.header}
+                                        {getSortIcon(column)}
+                                    </th>
+                                </Tooltip>
                             )
                         })}
                     </tr>

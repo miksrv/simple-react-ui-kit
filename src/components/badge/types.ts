@@ -2,6 +2,7 @@ import React from 'react'
 
 import { ElementSizeType } from '../../types'
 import { IconTypes } from '../icon'
+import { TooltipProp } from '../tooltip'
 
 /**
  * Badge component properties
@@ -17,4 +18,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
     size?: ElementSizeType
     /** Callback function to handle badge removal when the remove button is clicked */
     onClickRemove?: (key?: string | number) => void
+    /** Tooltip shown on hover: the text, or `{ content, placement, delay, ... }`.
+     *  Pass `tabIndex={0}` to also show it on keyboard focus. */
+    tooltip?: TooltipProp
 }
