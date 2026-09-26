@@ -43,6 +43,16 @@ const meta: Meta<BadgeProps> = {
                 'Callback fired when the remove (×) button is clicked. Receives the label value as the argument. Renders a remove button when provided.',
             table: { type: { summary: '(key?: string | number) => void' } }
         },
+        tooltip: {
+            control: 'text',
+            description: 'Tooltip shown on hover. Pass `tabIndex={0}` to also show it on keyboard focus.',
+            table: {
+                type: {
+                    summary:
+                        'string | { content: string; placement?: "top" | "bottom" | "left" | "right"; delay?: number; disabled?: boolean; className?: string }'
+                }
+            }
+        },
         className: {
             control: 'text',
             description: 'Additional CSS class names for custom styling'
@@ -247,6 +257,31 @@ export const WithEmojiIcon: Story = {
         docs: {
             description: {
                 story: 'The `icon` prop accepts any `React.ReactElement`, making it easy to embed emoji spans or custom SVGs alongside the label.'
+            }
+        }
+    }
+}
+
+export const WithTooltip: Story = {
+    name: 'With Tooltip',
+    render: () => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '40px 0' }}>
+            <Badge
+                label='Beta'
+                tooltip='This feature is still in beta and may change'
+            />
+            <Badge
+                label='3'
+                icon='Bell'
+                tabIndex={0}
+                tooltip={{ content: '3 unread notifications', placement: 'bottom' }}
+            />
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'Explain short or abbreviated badges with a tooltip. The second badge is focusable, so the tooltip also appears on keyboard focus.'
             }
         }
     }

@@ -1,8 +1,17 @@
 import React from 'react'
 
+import { normalizeTooltip, useTooltip } from '../tooltip'
+
 import { IconProps } from './types'
 
-export const Icon: React.FC<IconProps> = ({ name, ...props }) => {
+export const Icon: React.FC<IconProps> = ({ name, tooltip, ...props }) => {
+    const tooltipOptions = normalizeTooltip(tooltip)
+    // Named by the tooltip unless it has its own name (then the tooltip describes it instead)
+    const ariaLabel = props['aria-label'] ?? (props['aria-labelledby'] == null ? tooltipOptions?.content : undefined)
+    const { triggerProps, tooltip: tooltipElement } = useTooltip<SVGSVGElement>(
+        tooltipOptions && { ...tooltipOptions, describeTrigger: ariaLabel !== tooltipOptions.content },
+        props
+    )
     let render
 
     switch (name) {
@@ -360,14 +369,28 @@ export const Icon: React.FC<IconProps> = ({ name, ...props }) => {
             break
     }
 
+    // Without a tooltip the icon is decorative. With one it carries meaning, so it is
+    // announced as a labelled image and can be reached with the keyboard.
+    // It is not made focusable when the tooltip is disabled or the icon is explicitly hidden.
+    const a11yProps: React.SVGProps<SVGSVGElement> = tooltipOptions
+        ? {
+              role: 'img',
+              'aria-label': ariaLabel,
+              tabIndex: tooltipOptions.disabled || props['aria-hidden'] ? undefined : 0
+          }
+        : { 'aria-hidden': 'true', focusable: 'false' }
+
     return (
-        <svg
-            viewBox='0 0 24 24'
-            aria-hidden='true'
-            focusable='false'
-            {...props}
-        >
-            {render}
-        </svg>
+        <>
+            <svg
+                viewBox='0 0 24 24'
+                {...a11yProps}
+                {...props}
+                {...triggerProps}
+            >
+                {render}
+            </svg>
+            {tooltipElement}
+        </>
     )
 }

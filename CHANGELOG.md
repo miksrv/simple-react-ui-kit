@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 1.9.0
+
+### Minor Changes
+
+- Add Tooltip component
+- Add tooltip prop to Button, Icon, Badge and Table columns
+
+### Patch Changes
+
+- Bump dependencies
+
 ## 1.8.13
 
 ### Patch Changes

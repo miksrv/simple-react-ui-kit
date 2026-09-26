@@ -103,6 +103,17 @@ const meta: Meta<IconProps> = {
         fill: {
             control: 'color',
             description: 'SVG `fill` attribute — overrides the colour inherited from CSS'
+        },
+        tooltip: {
+            control: 'text',
+            description:
+                'Tooltip shown on hover and keyboard focus. An icon with a tooltip becomes focusable and is announced as an image labelled with the tooltip text.',
+            table: {
+                type: {
+                    summary:
+                        'string | { content: string; placement?: "top" | "bottom" | "left" | "right"; delay?: number; disabled?: boolean; className?: string }'
+                }
+            }
         }
     }
 }
@@ -198,6 +209,27 @@ export const CustomColor: Story = {
         docs: {
             description: {
                 story: 'Pass a `fill` colour directly to the SVG element to override the default inherited colour.'
+            }
+        }
+    }
+}
+
+export const WithTooltip: Story = {
+    name: 'With Tooltip',
+    render: () => (
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '40px 0' }}>
+            <span>Wind chill</span>
+            <Icon
+                name='QuestionCircle'
+                style={{ width: 18, height: 18, fill: 'var(--text-color-secondary)' }}
+                tooltip={'How cold it feels on exposed skin,\nbased on air temperature and wind speed'}
+            />
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'A typical help icon. With a `tooltip` the icon is no longer decorative: it gets `role="img"`, an `aria-label` and `tabIndex={0}` (all can be overridden via props).'
             }
         }
     }

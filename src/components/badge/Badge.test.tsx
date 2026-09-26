@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { Badge } from './Badge'
 import { BadgeProps } from './types'
@@ -158,5 +158,98 @@ describe('Badge Component', () => {
             render(<Badge onClickRemove={jest.fn()} />)
             expect(screen.getByRole('button', { name: 'Remove' })).toBeInTheDocument()
         })
+    })
+})
+
+const mockVisibleRect = () =>
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+        top: 100,
+        left: 100,
+        width: 40,
+        height: 30,
+        right: 140,
+        bottom: 130,
+        x: 100,
+        y: 100,
+        toJSON: () => ({})
+    } as DOMRect)
+
+describe('Badge tooltip', () => {
+    beforeEach(() => {
+        jest.useFakeTimers()
+        mockVisibleRect()
+    })
+
+    afterEach(() => {
+        act(() => {
+            jest.advanceTimersByTime(1000)
+        })
+        jest.useRealTimers()
+        jest.restoreAllMocks()
+    })
+
+    it('does not add anything to the DOM without the tooltip prop', () => {
+        const { container } = render(<Badge label='Beta' />)
+        expect(container.childElementCount).toBe(1)
+    })
+
+    it('shows the tooltip on hover', () => {
+        render(
+            <Badge
+                label='Beta'
+                tooltip='The feature is in beta'
+            />
+        )
+
+        fireEvent.pointerEnter(screen.getByText('Beta').parentElement!)
+        act(() => {
+            jest.advanceTimersByTime(400)
+        })
+
+        expect(screen.getByRole('tooltip')).toHaveTextContent('The feature is in beta')
+    })
+
+    it('keeps the user pointer handlers', () => {
+        const onPointerEnter = jest.fn()
+        render(
+            <Badge
+                label='Beta'
+                tooltip='Hint'
+                onPointerEnter={onPointerEnter}
+            />
+        )
+
+        fireEvent.pointerEnter(screen.getByText('Beta').parentElement!)
+        expect(onPointerEnter).toHaveBeenCalledTimes(1)
+    })
+
+    it('shows the tooltip on focus when made focusable', () => {
+        render(
+            <Badge
+                label='Beta'
+                tooltip='Hint'
+                tabIndex={0}
+            />
+        )
+
+        fireEvent.keyDown(document, { key: 'Tab' })
+
+        act(() => screen.getByText('Beta').parentElement!.focus())
+        expect(screen.getByRole('tooltip')).toBeInTheDocument()
+    })
+
+    it('does not open when the inner remove button gets focus', () => {
+        render(
+            <Badge
+                label='Beta'
+                tooltip='Hint'
+                onClickRemove={jest.fn()}
+            />
+        )
+
+        fireEvent.keyDown(document, { key: 'Tab' })
+        act(() => screen.getByRole('button').focus())
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 })

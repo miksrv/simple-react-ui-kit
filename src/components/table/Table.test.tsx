@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { Table } from './Table'
 import { TableColumnProps } from './types'
@@ -647,5 +647,89 @@ describe('Table Component', () => {
             )
             expect(screen.getByText('Name').closest('th')).toHaveAttribute('aria-sort', 'descending')
         })
+    })
+})
+
+const mockVisibleRect = () =>
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+        top: 100,
+        left: 100,
+        width: 40,
+        height: 30,
+        right: 140,
+        bottom: 130,
+        x: 100,
+        y: 100,
+        toJSON: () => ({})
+    } as DOMRect)
+
+describe('Table header tooltip', () => {
+    const data: TestData[] = [{ id: 1, name: 'Alice', age: 30 }]
+
+    beforeEach(() => {
+        jest.useFakeTimers()
+        mockVisibleRect()
+    })
+
+    afterEach(() => {
+        act(() => {
+            jest.advanceTimersByTime(1000)
+        })
+        jest.useRealTimers()
+        jest.restoreAllMocks()
+    })
+
+    it('does not change header markup without headerTooltip', () => {
+        render(
+            <Table
+                data={data}
+                columns={columns}
+            />
+        )
+
+        expect(screen.getAllByRole('columnheader')).toHaveLength(3)
+        expect(screen.getByText('ID').closest('th')).not.toHaveAttribute('aria-describedby')
+    })
+
+    it('shows the header tooltip on focus of a sortable column and still sorts on click', () => {
+        const withTooltip: Array<TableColumnProps<TestData>> = [
+            { header: 'ID', accessor: 'id', isSortable: true, headerTooltip: 'Unique identifier' },
+            { header: 'Name', accessor: 'name' }
+        ]
+        render(
+            <Table
+                data={data}
+                columns={withTooltip}
+            />
+        )
+        const header = screen.getByText('ID').closest('th')!
+
+        fireEvent.keyDown(document, { key: 'Tab' })
+
+        act(() => header.focus())
+        expect(screen.getByRole('tooltip')).toHaveTextContent('Unique identifier')
+
+        fireEvent.pointerDown(header)
+        fireEvent.click(header)
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+        expect(header).toHaveAttribute('aria-sort', 'ascending')
+    })
+
+    it('shows the header tooltip on hover of a non-sortable column', () => {
+        render(
+            <Table
+                data={data}
+                columns={[
+                    { header: 'Age', accessor: 'age', headerTooltip: { content: 'Age in years', placement: 'bottom' } }
+                ]}
+            />
+        )
+
+        fireEvent.pointerEnter(screen.getByText('Age'))
+        act(() => {
+            jest.advanceTimersByTime(400)
+        })
+
+        expect(screen.getByRole('tooltip')).toHaveTextContent('Age in years')
     })
 })

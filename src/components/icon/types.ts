@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { TooltipProp } from '../tooltip'
+
 /**
  * Icon component properties
  */
@@ -8,6 +10,10 @@ export interface IconProps extends React.SVGProps<SVGSVGElement> {
     name: IconTypes
     /** Additional class names for custom styling */
     className?: string
+    /** Tooltip shown on hover and keyboard focus: the text, or `{ content, placement, delay, ... }`.
+     *  An icon with a tooltip becomes focusable and is exposed to assistive technologies
+     *  as an image labelled with the tooltip text (both can be overridden via props). */
+    tooltip?: TooltipProp
 }
 
 export const iconNames = {

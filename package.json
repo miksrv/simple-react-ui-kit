@@ -1,6 +1,6 @@
 {
     "name": "simple-react-ui-kit",
-    "version": "1.8.13",
+    "version": "1.9.0",
     "description": "A lightweight and flexible UI framework for building responsive React applications with customizable components.",
     "repository": "https://github.com/miksrv/simple-react-ui-kit.git",
     "keywords": [
@@ -69,20 +69,20 @@
         "jest": "^30.5.2",
         "jest-environment-jsdom": "^30.5.2",
         "postcss-sass": "^0.5.0",
-        "prettier": "^3.9.8",
+        "prettier": "^3.9.9",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
-        "rollup": "^4.63.3",
+        "rollup": "^4.63.5",
         "rollup-plugin-postcss": "^4.0.2",
         "rollup-plugin-terser": "^7.0.2",
         "rollup-plugin-typescript2": "^0.37.0",
-        "sass": "^1.104.1",
+        "sass": "^1.105.0",
         "sass-loader": "^17.0.1",
         "style-loader": "^4.0.0",
-        "ts-jest": "^29.4.12",
+        "ts-jest": "^29.4.14",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.70.0"
+        "typescript-eslint": "^8.70.1"
     },
     "dependencies": {
         "lodash-es": "^4.18.1"

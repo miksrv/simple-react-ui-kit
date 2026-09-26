@@ -78,6 +78,17 @@ const meta: Meta<ButtonProps> = {
             control: 'boolean',
             description: 'Adds `rel="noindex nofollow"` to the link wrapper (effective only with `link`)'
         },
+        tooltip: {
+            control: 'text',
+            description:
+                'Tooltip shown on hover and keyboard focus. Nothing is added to the DOM until it is shown. For an icon-only button without `aria-label` the tooltip text also becomes the accessible name.',
+            table: {
+                type: {
+                    summary:
+                        'string | { content: string; placement?: "top" | "bottom" | "left" | "right"; delay?: number; disabled?: boolean; className?: string }'
+                }
+            }
+        },
         onClick: {
             control: false,
             description: 'Standard button click handler'
@@ -278,6 +289,47 @@ export const Disabled: Story = {
     parameters: {
         docs: {
             description: { story: 'Disabled buttons are visually muted and do not respond to clicks.' }
+        }
+    }
+}
+
+export const WithTooltip: Story = {
+    name: 'With Tooltip',
+    render: () => (
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center', padding: '40px 0' }}>
+            <Button
+                icon='Pencil'
+                mode='secondary'
+                tooltip='Edit'
+            />
+            <Button
+                icon='Download'
+                mode='secondary'
+                tooltip='Download'
+            />
+            <Button
+                icon='Settings'
+                mode='outline'
+                tooltip={{ content: 'Settings', placement: 'bottom' }}
+            />
+            <Button
+                icon='Close'
+                variant='negative'
+                tooltip={{ content: 'Delete permanently', placement: 'right' }}
+            />
+            <Button
+                disabled
+                tooltip='You do not have permission to publish'
+            >
+                Publish
+            </Button>
+        </div>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story: 'Use the `tooltip` prop to label icon-only buttons. Pass a string, or an object to set `placement`, `delay`, etc. See the Tooltip component for details.'
+            }
         }
     }
 }
