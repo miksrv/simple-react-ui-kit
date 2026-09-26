@@ -26,14 +26,19 @@ export const Button: React.FC<ButtonProps> = ({
     ...props
 }) => {
     const tooltipOptions = normalizeTooltip(tooltip)
-    const { triggerProps, tooltip: tooltipElement } = useTooltip<HTMLButtonElement>(tooltipOptions, props)
     const hasText = !!children || !!label?.length
+    // An icon-only button is named by its tooltip, so the tooltip must not also describe it
+    const ariaLabel = props['aria-label'] ?? (!hasText ? tooltipOptions?.content : undefined)
+    const { triggerProps, tooltip: tooltipElement } = useTooltip<HTMLButtonElement>(
+        tooltipOptions && { ...tooltipOptions, describeTrigger: ariaLabel !== tooltipOptions.content },
+        props
+    )
 
     const button = (
         <button
             {...props}
             {...triggerProps}
-            aria-label={props['aria-label'] ?? (!hasText ? tooltipOptions?.content : undefined)}
+            aria-label={ariaLabel}
             type={props.type ?? 'button'}
             aria-busy={loading || undefined}
             className={cn(

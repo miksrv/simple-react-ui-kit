@@ -25,7 +25,9 @@ export interface TableColumnProps<T> {
      *  instead of sorting data locally. Use together with TableProps.sort to show the active indicator. */
     onChangeSort?: (sort: TableSortConfig<T>) => void
     /** Tooltip shown when hovering the column header (and on keyboard focus for sortable columns):
-     *  the text, or `{ content, placement, delay, ... }`. Useful for abbreviated headers. */
+     *  the text, or `{ content, placement, delay, ... }`. Useful for abbreviated headers.
+     *  Headers of non-sortable columns are not focusable, so keyboard and screen reader users
+     *  do not get the tooltip there; keep the header itself understandable. */
     headerTooltip?: TooltipProp
 }
 

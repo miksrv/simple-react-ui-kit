@@ -3,9 +3,10 @@ import React from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { FloatingPortalContext } from '../../floatingPortal'
+import { Dialog } from '../dialog'
 
 import { Tooltip } from './Tooltip'
-import { TOOLTIP_SHOW_DELAY } from './useTooltip'
+import { TOOLTIP_SHOW_DELAY, useTooltip } from './useTooltip'
 import { hasTooltipContent, normalizeTooltip, TOOLTIP_MAX_LENGTH, truncateTooltipText } from './utils'
 
 import styles from './styles.module.sass'
@@ -16,6 +17,12 @@ const mockTriggerRect = (rect: Partial<DOMRect> = visibleRect) =>
     jest
         .spyOn(Element.prototype, 'getBoundingClientRect')
         .mockReturnValue({ ...visibleRect, ...rect, toJSON: () => ({}) } as DOMRect)
+
+// Focus opens the tooltip only after keyboard interaction (see useTooltip)
+const keyboardFocus = (element: Element) => {
+    fireEvent.keyDown(document, { key: 'Tab' })
+    fireEvent.focus(element)
+}
 
 const hover = (element: Element) => fireEvent.pointerEnter(element, { pointerType: 'mouse' })
 
@@ -195,6 +202,26 @@ describe('Tooltip Component', () => {
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 
+    it('moves directly between adjacent tooltips without delay and shows only one at a time', () => {
+        render(
+            <>
+                <Tooltip content='First'>
+                    <button>One</button>
+                </Tooltip>
+                <Tooltip content='Second'>
+                    <button>Two</button>
+                </Tooltip>
+            </>
+        )
+
+        openWithHover(screen.getByText('One'))
+        fireEvent.pointerLeave(screen.getByText('One'))
+        hover(screen.getByText('Two'))
+
+        expect(screen.getAllByRole('tooltip')).toHaveLength(1)
+        expect(screen.getByRole('tooltip')).toHaveTextContent('Second')
+    })
+
     it('opens the next tooltip instantly right after another one was closed', () => {
         render(
             <>
@@ -240,7 +267,7 @@ describe('Tooltip Component', () => {
         )
 
         const trigger = screen.getByText('Trigger')
-        fireEvent.focus(trigger)
+        keyboardFocus(trigger)
         expect(screen.getByRole('tooltip')).toBeInTheDocument()
 
         fireEvent.blur(trigger)
@@ -261,6 +288,78 @@ describe('Tooltip Component', () => {
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 
+    it('does not show on programmatic focus after pointer interaction', () => {
+        render(
+            <Tooltip content='Hint'>
+                <button>Trigger</button>
+            </Tooltip>
+        )
+
+        fireEvent.pointerDown(document.body)
+        act(() => screen.getByText('Trigger').focus())
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    })
+
+    it('does not treat shortcuts with modifier keys as keyboard navigation', () => {
+        render(
+            <Tooltip content='Hint'>
+                <button>Trigger</button>
+            </Tooltip>
+        )
+
+        fireEvent.pointerDown(document.body)
+        fireEvent.keyDown(document, { key: 'Tab', metaKey: true })
+        fireEvent.focus(screen.getByText('Trigger'))
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    })
+
+    it('shows on keyboard focus after a click that did not focus the trigger (Safari)', () => {
+        render(
+            <Tooltip content='Hint'>
+                <button>Trigger</button>
+            </Tooltip>
+        )
+
+        const trigger = screen.getByText('Trigger')
+        fireEvent.pointerDown(trigger)
+        keyboardFocus(trigger)
+
+        expect(screen.getByRole('tooltip')).toBeInTheDocument()
+    })
+
+    it('keeps a focus-opened tooltip while the pointer passes over the trigger', () => {
+        render(
+            <Tooltip content='Hint'>
+                <button>Trigger</button>
+            </Tooltip>
+        )
+
+        const trigger = screen.getByText('Trigger')
+        keyboardFocus(trigger)
+        hover(trigger)
+        fireEvent.pointerLeave(trigger)
+        act(() => {
+            jest.advanceTimersByTime(500)
+        })
+
+        expect(screen.getByRole('tooltip')).toBeInTheDocument()
+    })
+
+    it('ignores focus and blur bubbling from focusable children', () => {
+        render(
+            <Tooltip content='Hint'>
+                <div>
+                    <button>Inner</button>
+                </div>
+            </Tooltip>
+        )
+
+        keyboardFocus(screen.getByText('Inner'))
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    })
+
     it('shows on keyboard focus after an earlier click on the same trigger', () => {
         render(
             <Tooltip content='Hint'>
@@ -270,9 +369,9 @@ describe('Tooltip Component', () => {
 
         const trigger = screen.getByText('Trigger')
         fireEvent.pointerDown(trigger)
-        fireEvent.focus(trigger)
+        keyboardFocus(trigger)
         fireEvent.blur(trigger)
-        fireEvent.focus(trigger)
+        keyboardFocus(trigger)
 
         expect(screen.getByRole('tooltip')).toBeInTheDocument()
     })
@@ -289,6 +388,66 @@ describe('Tooltip Component', () => {
         fireEvent.pointerDown(trigger)
 
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    })
+
+    it('dismisses only the tooltip on Escape, not the parent Dialog', () => {
+        const onCloseDialog = jest.fn()
+        const onParentKeyDown = jest.fn()
+        window.ResizeObserver = jest.fn(() => ({
+            observe: jest.fn(),
+            unobserve: jest.fn(),
+            disconnect: jest.fn()
+        })) as unknown as typeof ResizeObserver
+
+        render(
+            <Dialog
+                open
+                onCloseDialog={onCloseDialog}
+            >
+                <div onKeyDown={onParentKeyDown}>
+                    <Tooltip content='Hint'>
+                        <button>Trigger</button>
+                    </Tooltip>
+                </div>
+            </Dialog>
+        )
+
+        const trigger = screen.getByText('Trigger')
+        keyboardFocus(trigger)
+        fireEvent.keyDown(trigger, { key: 'Escape' })
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+        expect(onCloseDialog).not.toHaveBeenCalled()
+        expect(onParentKeyDown).not.toHaveBeenCalled()
+
+        fireEvent.keyDown(trigger, { key: 'Escape' })
+        expect(onCloseDialog).toHaveBeenCalledTimes(1)
+
+        // @ts-expect-error jsdom has no ResizeObserver, restore the original state
+        delete window.ResizeObserver
+    })
+
+    it('does not propagate clicks on the bubble to the trigger ancestors', () => {
+        const onClick = jest.fn()
+        const onMouseDown = jest.fn()
+
+        render(
+            <div
+                onClick={onClick}
+                onMouseDown={onMouseDown}
+            >
+                <Tooltip content='Hint'>
+                    <button>Trigger</button>
+                </Tooltip>
+            </div>
+        )
+
+        keyboardFocus(screen.getByText('Trigger'))
+        fireEvent.mouseDown(screen.getByRole('tooltip'))
+        fireEvent.click(screen.getByRole('tooltip'))
+
+        expect(onClick).not.toHaveBeenCalled()
+        expect(onMouseDown).not.toHaveBeenCalled()
     })
 
     it('hides on Escape', () => {
@@ -351,7 +510,7 @@ describe('Tooltip Component', () => {
         hover(trigger)
         fireEvent.pointerLeave(trigger)
         fireEvent.pointerDown(trigger)
-        fireEvent.focus(trigger)
+        keyboardFocus(trigger)
         fireEvent.blur(trigger)
 
         Object.values(handlers).forEach((handler) => expect(handler).toHaveBeenCalledTimes(1))
@@ -385,7 +544,7 @@ describe('Tooltip Component', () => {
         )
 
         const trigger = screen.getByText('Trigger')
-        fireEvent.focus(trigger)
+        keyboardFocus(trigger)
 
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
         expect(trigger).not.toHaveAttribute('aria-describedby')
@@ -401,7 +560,7 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 
@@ -412,7 +571,7 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
         expect(screen.getByRole('tooltip')).toBeInTheDocument()
 
         rerender(
@@ -451,7 +610,7 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
         unmount()
 
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
@@ -464,7 +623,7 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
 
         const content = screen.getByText('Bold hint')
         expect(content.tagName).toBe('STRONG')
@@ -480,7 +639,7 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
 
         const content = screen.getByRole('tooltip').firstElementChild
         expect(content).toHaveClass(styles.clamped)
@@ -499,7 +658,7 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
         expect(screen.getByRole('tooltip')).toHaveClass('custom-tooltip')
     })
 
@@ -513,13 +672,14 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
 
         const tooltip = screen.getByRole('tooltip')
         expect(tooltip).toHaveClass(styles.bottom, styles.visible)
         expect(tooltip.style.top).toBe('138px')
         expect(tooltip.style.visibility).toBe('')
-        expect((tooltip.lastElementChild as HTMLElement).style.left).not.toBe('')
+        // jsdom has no layout: a 0×0 bubble clamps the arrow to its minimal edge offset
+        expect((tooltip.lastElementChild as HTMLElement).style.left).toBe('10px')
     })
 
     it('flips to the bottom when the trigger is at the top of the viewport', () => {
@@ -531,7 +691,7 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
         expect(screen.getByRole('tooltip')).toHaveClass(styles.bottom)
     })
 
@@ -545,11 +705,12 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
 
         const tooltip = screen.getByRole('tooltip')
         expect(tooltip).toHaveClass(styles.right)
-        expect((tooltip.lastElementChild as HTMLElement).style.top).not.toBe('')
+        expect((tooltip.lastElementChild as HTMLElement).style.top).toBe('10px')
+        expect((tooltip.lastElementChild as HTMLElement).style.left).toBe('')
     })
 
     it('repositions on scroll and hides when the trigger scrolls out of view', () => {
@@ -561,12 +722,14 @@ describe('Tooltip Component', () => {
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
         expect(screen.getByRole('tooltip')).toBeInTheDocument()
+
+        expect(screen.getByRole('tooltip').style.top).toBe('92px')
 
         rectSpy.mockReturnValue({ ...visibleRect, top: 200, bottom: 230, y: 200, toJSON: () => ({}) } as DOMRect)
         fireEvent.scroll(window)
-        expect(screen.getByRole('tooltip').style.top).not.toBe('')
+        expect(screen.getByRole('tooltip').style.top).toBe('192px')
 
         rectSpy.mockReturnValue({ ...visibleRect, top: -100, bottom: -70, y: -100, toJSON: () => ({}) } as DOMRect)
         fireEvent.scroll(window)
@@ -574,18 +737,76 @@ describe('Tooltip Component', () => {
     })
 
     it('repositions on window resize', () => {
+        const rectSpy = mockTriggerRect()
+
         render(
             <Tooltip content='Hint'>
                 <button>Trigger</button>
             </Tooltip>
         )
 
-        fireEvent.focus(screen.getByText('Trigger'))
+        keyboardFocus(screen.getByText('Trigger'))
+        expect(screen.getByRole('tooltip').style.left).toBe('120px')
+
+        rectSpy.mockReturnValue({ ...visibleRect, left: 300, right: 340, x: 300, toJSON: () => ({}) } as DOMRect)
         act(() => {
             window.dispatchEvent(new Event('resize'))
         })
 
+        expect(screen.getByRole('tooltip').style.left).toBe('320px')
+    })
+
+    it('repositions when the trigger or the bubble is resized, and hides when the trigger gets hidden', () => {
+        const rectSpy = mockTriggerRect()
+        let notify: () => void = () => {}
+        const observe = jest.fn()
+        const disconnect = jest.fn()
+
+        window.ResizeObserver = jest.fn((callback: () => void) => {
+            notify = callback
+            return { observe, disconnect, unobserve: jest.fn() }
+        }) as unknown as typeof ResizeObserver
+
+        render(
+            <Tooltip content='Hint'>
+                <button>Trigger</button>
+            </Tooltip>
+        )
+
+        keyboardFocus(screen.getByText('Trigger'))
+        expect(observe).toHaveBeenCalledWith(screen.getByText('Trigger'))
+        expect(observe).toHaveBeenCalledWith(screen.getByRole('tooltip'))
+
+        rectSpy.mockReturnValue({ ...visibleRect, top: 300, bottom: 330, y: 300, toJSON: () => ({}) } as DOMRect)
+        act(() => notify())
+        expect(screen.getByRole('tooltip').style.top).toBe('292px')
+
+        rectSpy.mockReturnValue({ ...visibleRect, width: 0, height: 0, toJSON: () => ({}) } as DOMRect)
+        act(() => notify())
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+        expect(disconnect).toHaveBeenCalled()
+
+        // @ts-expect-error jsdom has no ResizeObserver, restore the original state
+        delete window.ResizeObserver
+    })
+
+    it('does not add aria-describedby when describeTrigger is false', () => {
+        const Trigger = () => {
+            const { triggerProps, tooltip } = useTooltip<HTMLButtonElement>({ content: 'Hint', describeTrigger: false })
+
+            return (
+                <>
+                    <button {...triggerProps}>Trigger</button>
+                    {tooltip}
+                </>
+            )
+        }
+
+        render(<Trigger />)
+        keyboardFocus(screen.getByText('Trigger'))
+
         expect(screen.getByRole('tooltip')).toBeInTheDocument()
+        expect(screen.getByText('Trigger')).not.toHaveAttribute('aria-describedby')
     })
 
     it('registers its portal with a parent floating element while open', () => {
@@ -601,7 +822,7 @@ describe('Tooltip Component', () => {
         )
 
         const trigger = screen.getByText('Trigger')
-        fireEvent.focus(trigger)
+        keyboardFocus(trigger)
         expect(registerChildPortal).toHaveBeenCalledWith(screen.getByRole('tooltip'))
 
         fireEvent.blur(trigger)
@@ -641,6 +862,14 @@ describe('Tooltip utils', () => {
         expect(truncateTooltipText(text)).toBe(text)
     })
 
+    it('truncateTooltipText does not split emoji sequences', () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {})
+        const family = '👨‍👩‍👧'
+        const result = truncateTooltipText(family.repeat(TOOLTIP_MAX_LENGTH + 1))
+
+        expect(result.endsWith(`${family}…`)).toBe(true)
+    })
+
     it('truncateTooltipText does not split emoji and warns only once per text', () => {
         const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
         const text = '😀'.repeat(TOOLTIP_MAX_LENGTH + 1)
@@ -657,6 +886,8 @@ describe('Tooltip utils', () => {
         expect(hasTooltipContent(undefined)).toBe(false)
         expect(hasTooltipContent(false)).toBe(false)
         expect(hasTooltipContent(' ')).toBe(false)
+        expect(hasTooltipContent([null, false, ' '])).toBe(false)
+        expect(hasTooltipContent(['', 'text'])).toBe(true)
         expect(hasTooltipContent(0)).toBe(true)
         expect(hasTooltipContent(<span />)).toBe(true)
     })

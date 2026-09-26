@@ -9,7 +9,8 @@ $arrow-size: 5px
     z-index: 10000
     box-sizing: border-box
     width: max-content
-    max-width: min(240px, calc(100vw - 16px))
+    // For a fixed element 100% is the viewport width without the scrollbar
+    max-width: min(240px, calc(100% - 16px))
     padding: 6px 8px
     border-radius: var(--border-radius)
     background-color: var(--text-color-primary)
@@ -19,7 +20,7 @@ $arrow-size: 5px
     font-size: var(--font-size-small)
     font-weight: 400
     line-height: 1.4
-    text-align: left
+    text-align: start
     text-transform: none
     letter-spacing: normal
     white-space: pre-line
@@ -52,38 +53,41 @@ $arrow-size: 5px
         line-clamp: 6
         overflow: hidden
 
-// CSS triangle instead of a rotated square: the background may be semi-transparent,
-// and an overlapping square would show up as a darker patch.
+// The arrow inherits the bubble background, so a custom `className` with another background
+// recolors it too. Drawn with clip-path next to the bubble (no overlap), so a semi-transparent
+// background does not produce a darker patch.
 .arrow
     position: absolute
-    width: 0
-    height: 0
-    border: $arrow-size solid transparent
+    background-color: inherit
     pointer-events: none
+
+.top .arrow,
+.bottom .arrow
+    width: $arrow-size * 2
+    height: $arrow-size
+    margin-left: -$arrow-size
+
+.left .arrow,
+.right .arrow
+    width: $arrow-size
+    height: $arrow-size * 2
+    margin-top: -$arrow-size
 
 .top .arrow
     top: 100%
-    margin-left: -$arrow-size
-    border-bottom-width: 0
-    border-top-color: var(--text-color-primary)
+    clip-path: polygon(0 0, 100% 0, 50% 100%)
 
 .bottom .arrow
     bottom: 100%
-    margin-left: -$arrow-size
-    border-top-width: 0
-    border-bottom-color: var(--text-color-primary)
+    clip-path: polygon(50% 0, 100% 100%, 0 100%)
 
 .left .arrow
     left: 100%
-    margin-top: -$arrow-size
-    border-right-width: 0
-    border-left-color: var(--text-color-primary)
+    clip-path: polygon(0 0, 100% 50%, 0 100%)
 
 .right .arrow
     right: 100%
-    margin-top: -$arrow-size
-    border-left-width: 0
-    border-right-color: var(--text-color-primary)
+    clip-path: polygon(100% 0, 100% 100%, 0 50%)
 
 @keyframes tooltip-fade
     from

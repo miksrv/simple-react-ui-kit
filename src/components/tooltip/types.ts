@@ -4,7 +4,10 @@ import React from 'react'
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right'
 
 /**
- * Options shared by the `tooltip` prop and the standalone Tooltip component
+ * Options shared by the `tooltip` prop and the standalone Tooltip component.
+ *
+ * The tooltip opens on hover and on keyboard focus. Touch devices have no hover, so it is not shown
+ * there: never put information that is essential for completing a task only into a tooltip.
  */
 export interface TooltipOptions {
     /** Preferred placement. The tooltip flips to the opposite side when there is not enough room */

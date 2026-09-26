@@ -17,12 +17,19 @@ const isDevelopment = (): boolean => {
     }
 }
 
+// Splits into user-perceived characters, so emoji sequences (👨‍👩‍👧, flags) are never cut in half.
+// Falls back to code points where Intl.Segmenter is not available.
+const splitCharacters = (text: string): string[] =>
+    typeof Intl !== 'undefined' && 'Segmenter' in Intl
+        ? Array.from(new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(text), ({ segment }) => segment)
+        : Array.from(text)
+
 /**
- * Truncates the tooltip text to TOOLTIP_MAX_LENGTH characters (counting emoji and other
- * surrogate pairs as one character) and warns about it once per text in development.
+ * Truncates the tooltip text to TOOLTIP_MAX_LENGTH characters (counting emoji as one character)
+ * and warns about it once per text in development.
  */
 export const truncateTooltipText = (text: string): string => {
-    const chars = Array.from(text)
+    const chars = splitCharacters(text)
 
     if (chars.length <= TOOLTIP_MAX_LENGTH) {
         return text
@@ -65,6 +72,10 @@ export const hasTooltipContent = (content: React.ReactNode): boolean => {
 
     if (typeof content === 'string') {
         return content.trim().length > 0
+    }
+
+    if (Array.isArray(content)) {
+        return content.some(hasTooltipContent)
     }
 
     return true

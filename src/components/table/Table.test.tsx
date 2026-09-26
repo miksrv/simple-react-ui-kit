@@ -704,6 +704,8 @@ describe('Table header tooltip', () => {
         )
         const header = screen.getByText('ID').closest('th')!
 
+        fireEvent.keyDown(document, { key: 'Tab' })
+
         act(() => header.focus())
         expect(screen.getByRole('tooltip')).toHaveTextContent('Unique identifier')
 

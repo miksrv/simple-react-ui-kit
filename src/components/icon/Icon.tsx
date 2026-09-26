@@ -6,7 +6,11 @@ import { IconProps } from './types'
 
 export const Icon: React.FC<IconProps> = ({ name, tooltip, ...props }) => {
     const tooltipOptions = normalizeTooltip(tooltip)
-    const { triggerProps, tooltip: tooltipElement } = useTooltip<SVGSVGElement>(tooltipOptions, props)
+    const ariaLabel = props['aria-label'] ?? tooltipOptions?.content
+    const { triggerProps, tooltip: tooltipElement } = useTooltip<SVGSVGElement>(
+        tooltipOptions && { ...tooltipOptions, describeTrigger: ariaLabel !== tooltipOptions.content },
+        props
+    )
     let render
 
     switch (name) {
@@ -366,8 +370,13 @@ export const Icon: React.FC<IconProps> = ({ name, tooltip, ...props }) => {
 
     // Without a tooltip the icon is decorative. With one it carries meaning, so it is
     // announced as a labelled image and can be reached with the keyboard.
+    // It is not made focusable when the tooltip is disabled or the icon is explicitly hidden.
     const a11yProps: React.SVGProps<SVGSVGElement> = tooltipOptions
-        ? { role: 'img', 'aria-label': tooltipOptions.content, tabIndex: 0 }
+        ? {
+              role: 'img',
+              'aria-label': ariaLabel,
+              tabIndex: tooltipOptions.disabled || props['aria-hidden'] ? undefined : 0
+          }
         : { 'aria-hidden': 'true', focusable: 'false' }
 
     return (

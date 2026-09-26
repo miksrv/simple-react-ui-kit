@@ -17,13 +17,50 @@ const TOOLTIP_HIDE_DELAY = 100
 /** When another tooltip was closed within this window, the next one opens without delay */
 const TOOLTIP_SKIP_DELAY_WINDOW = 300
 
-// Shared between all tooltips: moving the pointer along a toolbar shows tooltips instantly
-// after the first one, instead of waiting for the delay on every button.
+// Shared between all tooltips. Only one tooltip is visible at a time: opening one closes the
+// previous one, and while a tooltip is open (or has just closed) the next one opens without
+// delay, so moving the pointer along a toolbar does not wait for the delay on every button.
+let activeHide: (() => void) | null = null
 let lastHiddenAt = 0
+
+// The last input modality. Focus opens the tooltip only after keyboard interaction, the same
+// heuristic browsers use for :focus-visible. This ignores the focus that follows a click
+// (or does not follow it, as in Safari), programmatic focus, autofocus and focus restored
+// when switching back to the browser tab.
+let lastInputModality: 'keyboard' | 'pointer' | null = null
+let isTrackingModality = false
+
+const trackInputModality = () => {
+    if (isTrackingModality || typeof document === 'undefined') {
+        return
+    }
+
+    isTrackingModality = true
+
+    const setPointer = () => {
+        lastInputModality = 'pointer'
+    }
+
+    document.addEventListener(
+        'keydown',
+        (event) => {
+            if (!event.metaKey && !event.ctrlKey && !event.altKey) {
+                lastInputModality = 'keyboard'
+            }
+        },
+        true
+    )
+    document.addEventListener('pointerdown', setPointer, true)
+    document.addEventListener('mousedown', setPointer, true)
+    document.addEventListener('touchstart', setPointer, { capture: true, passive: true })
+}
 
 export interface UseTooltipConfig extends TooltipOptions {
     /** Content of the tooltip. Nothing is rendered or attached when it is empty */
     content?: React.ReactNode
+    /** Link the trigger to the tooltip with `aria-describedby` while it is open (default true).
+     *  Pass false when the tooltip text is already the trigger's accessible name, so it is not announced twice */
+    describeTrigger?: boolean
 }
 
 export interface UseTooltipResult<E extends Element> {
@@ -42,6 +79,10 @@ const samePosition = (a: TooltipPosition | null, b: TooltipPosition | null): boo
         a.placement === b.placement &&
         a.arrowOffset === b.arrowOffset)
 
+// The bubble is rendered through a portal, so React would bubble its events up to the trigger's
+// React ancestors (e.g. a clickable card or table row). Clicking the tooltip must not activate them.
+const stopPropagation = (event: React.SyntheticEvent) => event.stopPropagation()
+
 /**
  * Attaches a tooltip to any element without adding wrappers to the DOM.
  * The tooltip bubble is mounted into `document.body` only while it is visible.
@@ -56,34 +97,22 @@ export const useTooltip = <E extends Element = Element>(
     const id = useId()
     const parentFloating = useContext(FloatingPortalContext)
 
-    const [open, setOpenState] = useState<boolean>(false)
+    const [open, setOpen] = useState<boolean>(false)
     const [position, setPosition] = useState<TooltipPosition | null>(null)
 
     const openRef = useRef<boolean>(false)
+    // The tooltip was opened by keyboard focus: pointer leave must not close it while the trigger is focused
+    const focusedRef = useRef<boolean>(false)
     const triggerRef = useRef<Element | null>(null)
     const tooltipRef = useRef<HTMLDivElement | null>(null)
     const showTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
     const hideTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-    // Set on pointer down so the focus that follows a mouse click does not open the tooltip
-    const suppressFocusRef = useRef<boolean>(false)
 
     const content = config?.content
     const placement = config?.placement ?? 'top'
     const delay = config?.delay ?? TOOLTIP_SHOW_DELAY
+    const describeTrigger = config?.describeTrigger ?? true
     const enabled = !!config && !config.disabled && hasTooltipContent(content)
-
-    const setOpen = useCallback((value: boolean) => {
-        if (openRef.current && !value) {
-            lastHiddenAt = Date.now()
-        }
-
-        openRef.current = value
-        setOpenState(value)
-
-        if (!value) {
-            setPosition(null)
-        }
-    }, [])
 
     const clearTimers = useCallback(() => {
         clearTimeout(showTimerRef.current)
@@ -94,12 +123,36 @@ export const useTooltip = <E extends Element = Element>(
 
     const hide = useCallback(() => {
         clearTimers()
-        setOpen(false)
-    }, [clearTimers, setOpen])
+        focusedRef.current = false
+
+        if (activeHide === hide) {
+            activeHide = null
+        }
+
+        if (openRef.current) {
+            lastHiddenAt = Date.now()
+            openRef.current = false
+            setOpen(false)
+            setPosition(null)
+        }
+    }, [clearTimers])
+
+    const openNow = useCallback(() => {
+        showTimerRef.current = undefined
+
+        if (activeHide && activeHide !== hide) {
+            activeHide()
+        }
+
+        activeHide = hide
+        openRef.current = true
+        setOpen(true)
+    }, [hide])
 
     const show = useCallback(
-        (target: Element, immediate: boolean) => {
+        (target: Element, byFocus: boolean) => {
             triggerRef.current = target
+            focusedRef.current ||= byFocus
             clearTimeout(hideTimerRef.current)
             hideTimerRef.current = undefined
 
@@ -107,29 +160,25 @@ export const useTooltip = <E extends Element = Element>(
                 return
             }
 
-            if (immediate || delay <= 0 || Date.now() - lastHiddenAt < TOOLTIP_SKIP_DELAY_WINDOW) {
-                setOpen(true)
+            const anotherIsOpen = activeHide != null && activeHide !== hide
+
+            if (byFocus || delay <= 0 || anotherIsOpen || Date.now() - lastHiddenAt < TOOLTIP_SKIP_DELAY_WINDOW) {
+                openNow()
             } else {
-                showTimerRef.current = setTimeout(() => {
-                    showTimerRef.current = undefined
-                    setOpen(true)
-                }, delay)
+                showTimerRef.current = setTimeout(openNow, delay)
             }
         },
-        [delay, setOpen]
+        [delay, hide, openNow]
     )
 
     const scheduleHide = useCallback(() => {
         clearTimeout(showTimerRef.current)
         showTimerRef.current = undefined
 
-        if (openRef.current && !hideTimerRef.current) {
-            hideTimerRef.current = setTimeout(() => {
-                hideTimerRef.current = undefined
-                setOpen(false)
-            }, TOOLTIP_HIDE_DELAY)
+        if (openRef.current && !focusedRef.current && !hideTimerRef.current) {
+            hideTimerRef.current = setTimeout(hide, TOOLTIP_HIDE_DELAY)
         }
-    }, [setOpen])
+    }, [hide])
 
     const cancelHide = useCallback(() => {
         clearTimeout(hideTimerRef.current)
@@ -150,7 +199,8 @@ export const useTooltip = <E extends Element = Element>(
         }
         const rect = trigger.getBoundingClientRect()
 
-        if (!trigger.isConnected || isOutOfViewport(rect, viewport)) {
+        // A disconnected, hidden (display: none, zero size) or scrolled away trigger closes its tooltip
+        if (!trigger.isConnected || (!rect.width && !rect.height) || isOutOfViewport(rect, viewport)) {
             hide()
             return
         }
@@ -165,14 +215,25 @@ export const useTooltip = <E extends Element = Element>(
         setPosition((prev) => (samePosition(prev, next) ? prev : next))
     }, [placement, hide])
 
-    // Close (and drop pending timers) when the tooltip gets disabled or loses its content
     useEffect(() => {
-        if (!enabled) {
+        if (enabled) {
+            trackInputModality()
+        } else if (openRef.current || showTimerRef.current) {
+            // Close (and drop pending timers) when the tooltip gets disabled or loses its content
             hide()
         }
     }, [enabled, hide])
 
-    useEffect(() => clearTimers, [clearTimers])
+    useEffect(
+        () => () => {
+            clearTimers()
+
+            if (activeHide === hide) {
+                activeHide = null
+            }
+        },
+        [clearTimers, hide]
+    )
 
     // Measure and place the bubble before paint, so it never flashes in the wrong spot
     useLayoutEffect(() => {
@@ -186,20 +247,35 @@ export const useTooltip = <E extends Element = Element>(
             return
         }
 
+        // Capture phase + stopPropagation: Escape dismisses only the tooltip,
+        // not the Dialog or Popout it is rendered in (WCAG 1.4.13)
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
+                event.stopPropagation()
                 hide()
             }
         }
 
+        // Follows layout shifts that do not fire scroll/resize: re-sorting, animations, content changes
+        const resizeObserver = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updatePosition)
+
+        if (triggerRef.current) {
+            resizeObserver?.observe(triggerRef.current)
+        }
+
+        if (tooltipRef.current) {
+            resizeObserver?.observe(tooltipRef.current)
+        }
+
         window.addEventListener('scroll', updatePosition, { capture: true, passive: true })
         window.addEventListener('resize', updatePosition)
-        document.addEventListener('keydown', handleKeyDown)
+        document.addEventListener('keydown', handleKeyDown, true)
 
         return () => {
+            resizeObserver?.disconnect()
             window.removeEventListener('scroll', updatePosition, true)
             window.removeEventListener('resize', updatePosition)
-            document.removeEventListener('keydown', handleKeyDown)
+            document.removeEventListener('keydown', handleKeyDown, true)
         }
     }, [open, updatePosition, hide])
 
@@ -222,6 +298,7 @@ export const useTooltip = <E extends Element = Element>(
         onPointerEnter: (event) => {
             userProps.onPointerEnter?.(event)
 
+            // Touch has no hover: a tap would open the tooltip and leave it stuck
             if (event.pointerType !== 'touch') {
                 show(event.currentTarget, false)
             }
@@ -232,25 +309,26 @@ export const useTooltip = <E extends Element = Element>(
         },
         onPointerDown: (event) => {
             userProps.onPointerDown?.(event)
-            suppressFocusRef.current = true
             hide()
         },
         onFocus: (event) => {
             userProps.onFocus?.(event)
 
-            if (suppressFocusRef.current) {
-                suppressFocusRef.current = false
-                return
+            // Ignore focus bubbling up from focusable children (e.g. the remove button of a Badge):
+            // aria-describedby is set on the trigger itself, so it would not be announced anyway
+            if (event.target === event.currentTarget && lastInputModality === 'keyboard') {
+                show(event.currentTarget, true)
             }
-
-            show(event.currentTarget, true)
         },
         onBlur: (event) => {
             userProps.onBlur?.(event)
-            suppressFocusRef.current = false
-            hide()
+
+            if (event.target === event.currentTarget) {
+                hide()
+            }
         },
-        'aria-describedby': isOpen ? cn(userProps['aria-describedby'], id) : userProps['aria-describedby']
+        'aria-describedby':
+            isOpen && describeTrigger ? cn(userProps['aria-describedby'], id) : userProps['aria-describedby']
     }
 
     const vertical = position?.placement === 'top' || position?.placement === 'bottom'
@@ -275,6 +353,14 @@ export const useTooltip = <E extends Element = Element>(
                   }
                   onPointerEnter={cancelHide}
                   onPointerLeave={scheduleHide}
+                  onClick={stopPropagation}
+                  onDoubleClick={stopPropagation}
+                  onContextMenu={stopPropagation}
+                  onMouseDown={stopPropagation}
+                  onMouseUp={stopPropagation}
+                  onPointerDown={stopPropagation}
+                  onPointerUp={stopPropagation}
+                  onKeyDown={stopPropagation}
               >
                   <span className={cn(styles.content, typeof content === 'string' && styles.clamped)}>{content}</span>
                   <span

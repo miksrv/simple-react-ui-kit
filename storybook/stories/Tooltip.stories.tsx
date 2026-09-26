@@ -20,7 +20,10 @@ const meta: Meta<TooltipProps> = {
                     '`Button`, `Icon`, `Badge` and Table columns (`headerTooltip`) accept a `tooltip` prop directly: ' +
                     '`<Button icon="Close" tooltip="Close" />`. Use the `Tooltip` component for any other element — it does ' +
                     'not wrap the child, so the child must forward pointer and focus handlers to a DOM node.\n\n' +
-                    `String content is limited to ${TOOLTIP_MAX_LENGTH} characters and 6 lines; longer text is truncated with an ellipsis.`
+                    `String content is limited to ${TOOLTIP_MAX_LENGTH} characters and 6 lines; longer text is truncated with an ellipsis.\n\n` +
+                    'Only one tooltip is visible at a time. Escape dismisses the tooltip without closing a parent Dialog or Popout. ' +
+                    'Focus opens it only after keyboard interaction, not after a click or programmatic focus. Touch devices have no ' +
+                    'hover, so the tooltip is not shown there — never put essential information only into a tooltip.'
             }
         }
     },

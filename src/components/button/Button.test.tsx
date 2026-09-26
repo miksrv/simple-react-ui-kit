@@ -318,8 +318,15 @@ describe('Button tooltip', () => {
     })
 
     it('shows the tooltip on keyboard focus', () => {
-        render(<Button tooltip='Close dialog' />)
+        render(
+            <Button
+                label='Close'
+                tooltip='Close dialog'
+            />
+        )
         const button = screen.getByRole('button')
+
+        fireEvent.keyDown(document, { key: 'Tab' })
 
         act(() => button.focus())
 
@@ -330,6 +337,8 @@ describe('Button tooltip', () => {
 
     it('accepts an options object', () => {
         render(<Button tooltip={{ content: 'Close dialog', placement: 'bottom', className: 'custom' }} />)
+
+        fireEvent.keyDown(document, { key: 'Tab' })
 
         act(() => screen.getByRole('button').focus())
         expect(screen.getByRole('tooltip')).toHaveClass('custom')
@@ -343,6 +352,22 @@ describe('Button tooltip', () => {
             />
         )
         expect(screen.getByRole('button', { name: 'Close dialog' })).toBeInTheDocument()
+    })
+
+    it('does not describe an icon-only button with the same text it is named by', () => {
+        render(
+            <Button
+                icon='Close'
+                tooltip='Close dialog'
+            />
+        )
+        const button = screen.getByRole('button')
+
+        fireEvent.keyDown(document, { key: 'Tab' })
+        act(() => button.focus())
+
+        expect(screen.getByRole('tooltip')).toBeInTheDocument()
+        expect(button).not.toHaveAttribute('aria-describedby')
     })
 
     it('keeps an explicit aria-label', () => {
@@ -379,6 +404,8 @@ describe('Button tooltip', () => {
         )
         const button = screen.getByRole('button')
 
+        fireEvent.keyDown(document, { key: 'Tab' })
+
         act(() => button.focus())
         act(() => button.blur())
 
@@ -395,6 +422,8 @@ describe('Button tooltip', () => {
             />
         )
 
+        fireEvent.keyDown(document, { key: 'Tab' })
+
         act(() => screen.getByRole('button').focus())
 
         expect(container.querySelector('a')).not.toContainElement(screen.getByRole('tooltip'))
@@ -407,6 +436,8 @@ describe('Button tooltip', () => {
                 tooltip=''
             />
         )
+
+        fireEvent.keyDown(document, { key: 'Tab' })
 
         act(() => screen.getByRole('button').focus())
 

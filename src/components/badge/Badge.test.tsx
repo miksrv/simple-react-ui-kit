@@ -232,7 +232,24 @@ describe('Badge tooltip', () => {
             />
         )
 
+        fireEvent.keyDown(document, { key: 'Tab' })
+
         act(() => screen.getByText('Beta').parentElement!.focus())
         expect(screen.getByRole('tooltip')).toBeInTheDocument()
+    })
+
+    it('does not open when the inner remove button gets focus', () => {
+        render(
+            <Badge
+                label='Beta'
+                tooltip='Hint'
+                onClickRemove={jest.fn()}
+            />
+        )
+
+        fireEvent.keyDown(document, { key: 'Tab' })
+        act(() => screen.getByRole('button').focus())
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 })

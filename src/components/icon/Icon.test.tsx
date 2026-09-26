@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { Icon } from './Icon'
 import { iconNames } from './types'
@@ -151,8 +151,43 @@ describe('Icon tooltip', () => {
             />
         )
 
+        fireEvent.keyDown(document, { key: 'Tab' })
+
         act(() => screen.getByRole('img').focus())
         expect(screen.getByRole('tooltip')).toHaveTextContent('What is this?')
+    })
+
+    it('does not describe the icon with the same text it is labelled by', () => {
+        render(
+            <Icon
+                name='QuestionCircle'
+                tooltip='What is this?'
+            />
+        )
+
+        fireEvent.keyDown(document, { key: 'Tab' })
+        act(() => screen.getByRole('img').focus())
+
+        expect(screen.getByRole('tooltip')).toBeInTheDocument()
+        expect(screen.getByRole('img')).not.toHaveAttribute('aria-describedby')
+    })
+
+    it('is not a tab stop when the tooltip is disabled or the icon is hidden', () => {
+        const { container } = render(
+            <>
+                <Icon
+                    name='QuestionCircle'
+                    tooltip={{ content: 'Disabled', disabled: true }}
+                />
+                <Icon
+                    name='QuestionCircle'
+                    tooltip='Hidden'
+                    aria-hidden
+                />
+            </>
+        )
+
+        container.querySelectorAll('svg').forEach((svg) => expect(svg).not.toHaveAttribute('tabindex'))
     })
 
     it('lets props override the default accessibility attributes', () => {

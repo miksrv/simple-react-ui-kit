@@ -38,6 +38,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     label?: string
     /** Tooltip shown on hover and keyboard focus: the text, or `{ content, placement, delay, ... }`.
      *  Nothing is added to the DOM until the tooltip is shown. For an icon-only button without
-     *  `aria-label`, the tooltip text also becomes the button's accessible name. */
+     *  `aria-label`, the tooltip text also becomes the button's accessible name.
+     *  Do not combine with the native `title` attribute, or the browser shows a second tooltip. */
     tooltip?: TooltipProp
 }
