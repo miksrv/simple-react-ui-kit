@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 
 import { Icon } from './Icon'
 import { iconNames } from './types'
@@ -96,5 +96,76 @@ describe('Icon Component', () => {
             expect(svgElement).toHaveAttribute('aria-label', 'Take a photo')
             expect(svgElement).toHaveAttribute('role', 'img')
         })
+    })
+})
+
+const mockVisibleRect = () =>
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+        top: 100,
+        left: 100,
+        width: 40,
+        height: 30,
+        right: 140,
+        bottom: 130,
+        x: 100,
+        y: 100,
+        toJSON: () => ({})
+    } as DOMRect)
+
+describe('Icon tooltip', () => {
+    beforeEach(() => {
+        mockVisibleRect()
+    })
+
+    afterEach(() => {
+        jest.restoreAllMocks()
+    })
+
+    it('stays decorative without a tooltip', () => {
+        const { container } = render(<Icon name='QuestionCircle' />)
+        const svg = container.querySelector('svg')
+
+        expect(container.childElementCount).toBe(1)
+        expect(svg).toHaveAttribute('aria-hidden', 'true')
+        expect(svg).not.toHaveAttribute('tabindex')
+    })
+
+    it('becomes a focusable labelled image with a tooltip', () => {
+        render(
+            <Icon
+                name='QuestionCircle'
+                tooltip='What is this?'
+            />
+        )
+        const icon = screen.getByRole('img', { name: 'What is this?' })
+
+        expect(icon).not.toHaveAttribute('aria-hidden')
+        expect(icon).toHaveAttribute('tabindex', '0')
+    })
+
+    it('shows the tooltip on focus', () => {
+        render(
+            <Icon
+                name='QuestionCircle'
+                tooltip='What is this?'
+            />
+        )
+
+        act(() => screen.getByRole('img').focus())
+        expect(screen.getByRole('tooltip')).toHaveTextContent('What is this?')
+    })
+
+    it('lets props override the default accessibility attributes', () => {
+        render(
+            <Icon
+                name='QuestionCircle'
+                tooltip='What is this?'
+                aria-label='Help'
+                tabIndex={-1}
+            />
+        )
+        const icon = screen.getByRole('img', { name: 'Help' })
+
+        expect(icon).toHaveAttribute('tabindex', '-1')
     })
 })

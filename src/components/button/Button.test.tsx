@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { fireEvent, screen } from '@testing-library/dom'
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 
 import { ButtonModeType } from '../../types'
 
@@ -279,5 +279,138 @@ describe('Button Component', () => {
             render(<Button {...defaultProps} />)
             expect(screen.getByRole('button')).not.toHaveAttribute('aria-busy')
         })
+    })
+})
+
+const mockVisibleRect = () =>
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+        top: 100,
+        left: 100,
+        width: 40,
+        height: 30,
+        right: 140,
+        bottom: 130,
+        x: 100,
+        y: 100,
+        toJSON: () => ({})
+    } as DOMRect)
+
+describe('Button tooltip', () => {
+    beforeEach(() => {
+        mockVisibleRect()
+    })
+
+    afterEach(() => {
+        jest.restoreAllMocks()
+    })
+
+    it('does not add anything to the DOM without the tooltip prop', () => {
+        const { container } = render(<Button icon='Close' />)
+
+        expect(container.childElementCount).toBe(1)
+        expect(screen.getByRole('button')).not.toHaveAttribute('aria-label')
+        expect(screen.getByRole('button')).not.toHaveAttribute('aria-describedby')
+    })
+
+    it('does not render the tooltip until it is shown', () => {
+        render(<Button tooltip='Close dialog' />)
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    })
+
+    it('shows the tooltip on keyboard focus', () => {
+        render(<Button tooltip='Close dialog' />)
+        const button = screen.getByRole('button')
+
+        act(() => button.focus())
+
+        const tooltip = screen.getByRole('tooltip')
+        expect(tooltip).toHaveTextContent('Close dialog')
+        expect(button).toHaveAttribute('aria-describedby', tooltip.id)
+    })
+
+    it('accepts an options object', () => {
+        render(<Button tooltip={{ content: 'Close dialog', placement: 'bottom', className: 'custom' }} />)
+
+        act(() => screen.getByRole('button').focus())
+        expect(screen.getByRole('tooltip')).toHaveClass('custom')
+    })
+
+    it('uses the tooltip text as the accessible name of an icon-only button', () => {
+        render(
+            <Button
+                icon='Close'
+                tooltip='Close dialog'
+            />
+        )
+        expect(screen.getByRole('button', { name: 'Close dialog' })).toBeInTheDocument()
+    })
+
+    it('keeps an explicit aria-label', () => {
+        render(
+            <Button
+                icon='Close'
+                aria-label='Dismiss'
+                tooltip='Close dialog'
+            />
+        )
+        expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Dismiss')
+    })
+
+    it('does not override the accessible name of a button with text', () => {
+        render(
+            <Button
+                label='Save'
+                tooltip='Save changes'
+            />
+        )
+        expect(screen.getByRole('button')).not.toHaveAttribute('aria-label')
+        expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+    })
+
+    it('keeps the user focus and blur handlers', () => {
+        const onFocus = jest.fn()
+        const onBlur = jest.fn()
+        render(
+            <Button
+                tooltip='Hint'
+                onFocus={onFocus}
+                onBlur={onBlur}
+            />
+        )
+        const button = screen.getByRole('button')
+
+        act(() => button.focus())
+        act(() => button.blur())
+
+        expect(onFocus).toHaveBeenCalledTimes(1)
+        expect(onBlur).toHaveBeenCalledTimes(1)
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    })
+
+    it('renders the tooltip outside of the link wrapper', () => {
+        const { container } = render(
+            <Button
+                link='https://example.com'
+                tooltip='Open site'
+            />
+        )
+
+        act(() => screen.getByRole('button').focus())
+
+        expect(container.querySelector('a')).not.toContainElement(screen.getByRole('tooltip'))
+    })
+
+    it('ignores an empty tooltip', () => {
+        render(
+            <Button
+                icon='Close'
+                tooltip=''
+            />
+        )
+
+        act(() => screen.getByRole('button').focus())
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+        expect(screen.getByRole('button')).not.toHaveAttribute('aria-label')
     })
 })
