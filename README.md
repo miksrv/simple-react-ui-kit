@@ -1257,206 +1257,123 @@ In this example:
 
 ### Style Customization and Theming
 
-All components are themed via CSS custom properties defined on `:root`. Override any variable in your own stylesheet to align with your design system or implement dark mode — no build step or config required.
+Every component is styled only through CSS custom properties. The tokens ship as a plain stylesheet — import it once in your app entry, then override any token in your own stylesheet. No build step or config required.
 
-#### Available CSS Variables
+```ts
+// Next.js: pages/_app.tsx · Vite/CRA: src/main.tsx
+import 'simple-react-ui-kit/theme.css'
+import './theme-overrides.css' // your overrides, loaded after the kit
+```
 
-- **Element Heights (`size` prop):**
-    - `--size-small`: Height for `small` size variant (default: `28px`). Applied to all sized components as a global fallback.
-    - `--size-medium`: Height for `medium` size variant (default: `34px`). Applied to all sized components as a global fallback.
-    - `--size-large`: Height for `large` size variant (default: `38px`). Applied to all sized components as a global fallback.
-    - `--size-control-small` / `--size-control-medium` / `--size-control-large`: Optional per-group overrides for form controls (`Input`, `Select`, `Button`, `TextArea`). Fall back to `--size-*` if not set.
-    - `--size-badge-small` / `--size-badge-medium` / `--size-badge-large`: Optional per-group overrides for `Badge`. Fall back to `--size-*` if not set.
-    - `--size-table-small` / `--size-table-medium` / `--size-table-large`: Optional per-group overrides for `Table` row heights. Fall back to `--size-*` if not set.
-
-- **Primary Colors:**
-    - `--color-contrast`: Contrast color (typically used for text on colored backgrounds).
-    - `--color-green`: Default green color.
-    - `--color-green-hover`: Hover state for green color.
-    - `--color-green-active`: Active state for green color.
-    - `--color-green-background`: Background green color (for success input, message etc.).
-    - `--color-orange`: Default orange color.
-    - `--color-orange-hover`: Hover state for orange color.
-    - `--color-orange-active`: Active state for orange color.
-    - `--color-orange-background`: Background orange color (for warning input, message etc.).
-    - `--color-red`: Default red color.
-    - `--color-red-hover`: Hover state for red color.
-    - `--color-red-active`: Active state for red color.
-    - `--color-red-background`: Background red color (for error input, message etc.).
-    - `--color-main`: Main base color, used for buttons, links, checkbox icons.
-    - `--color-main-hover`: Hover state for main color.
-    - `--color-main-active`: Active state for main color.
-    - `--color-main-background`: Background main color (for info input, message etc.).
-
-- **Text and Typography:**
-    - `--font-size`: Default font size.
-    - `--font-size-small`: Font size for smaller text.
-    - `--font-family`: Global font family.
-    - `--text-color-primary`: Main text color.
-    - `--text-color-secondary`: Secondary text color.
-    - `--text-color-secondary-hover`: Secondary text color on hover.
-
-- **Layout and Containers:**
-    - `--body-background`: Background color for the body.
-    - `--border-radius`: Global border radius for components.
-    - `--container-shadow`: Shadow effect for containers.
-    - `--container-background-color`: Default background color for containers.
-    - `--container-error-background-color`: Background color for containers in error state.
-    - `--container-error-color`: Text color for error containers.
-    - `--container-success-background-color`: Background color for containers in success state.
-    - `--container-success-color`: Text color for success containers.
-
-- **Input Fields and Dropdowns:**
-    - `--dropdown-background-color`: Background color for dropdowns.
-    - `--dropdown-background-color-hover`: Hover state for dropdown background.
-    - `--input-background-color`: Background color for input fields.
-    - `--input-label-color`: Color for input labels.
-    - `--input-border-color`: Border color for input fields.
-    - `--input-border`: Full border styling for inputs.
-
-- **Buttons:**
-    - `--button-font-weight`: Font weight for buttons.
-    - `--button-default-color`: Default text color for buttons.
-    - `--button-default-background`: Default background color for buttons.
-    - `--button-default-background-hover`: Hover background color for buttons.
-    - `--button-default-background-active`: Active background color for buttons.
-    - `--button-primary-color`: Text color for primary buttons.
-    - `--button-primary-background`: Background color for primary buttons.
-    - `--button-primary-background-hover`: Hover state for primary buttons.
-    - `--button-primary-background-active`: Active state for primary buttons.
-    - `--button-secondary-color`: Text color for secondary buttons.
-    - `--button-secondary-background`: Background color for secondary buttons.
-    - `--button-secondary-background-hover`: Hover state for secondary buttons.
-    - `--button-secondary-background-active`: Active state for secondary buttons.
-
-- **Popouts:**
-    - `--popout-shadow`: Shadow effect for popouts and modals.
-
-- **Tables:**
-    - `--table-header-background`: Background color for table headers.
-    - `--table-header-background-hover`: Hover state for table headers.
-    - `--table-border-color`: Border color for tables.
-    - `--table-row-box-shadow`: Box shadow for table row separators.
-
-- **Skeleton:**
-    - `--skeleton-background-animation`: Background gradient for content loading animation.
-
-#### Example: Overriding Variables for Custom Themes
-
-Declare your overrides in a global stylesheet — they take effect across all components immediately:
+The stylesheet defines variables only. It does not style `body` or any element, so apply the page background, text colour and font yourself:
 
 ```css
-:root {
-    /* Element Heights for `size` props — global fallback for all sized components */
-    --size-small: 24px;
-    --size-medium: 28px;
-    --size-large: 32px;
-
-    /* Optional per-group size overrides (fall back to --size-* if not defined) */
-    /* Form controls: Input, Select, Button, TextArea */
-    --size-control-small: 24px;
-    --size-control-medium: 30px;
-    --size-control-large: 36px;
-    /* Badge */
-    --size-badge-small: 20px;
-    --size-badge-medium: 24px;
-    --size-badge-large: 28px;
-    /* Table row heights */
-    --size-table-small: 32px;
-    --size-table-medium: 40px;
-    --size-table-large: 48px;
-
-    /* Primary Colors */
-    --color-contrast: #ffffff;
-
-    --color-green: #4bb34b;
-    --color-green-hover: #48ac4a;
-    --color-green-active: #45a64a;
-    --color-green-background: #e5ffe5; /* For dark: #2E3E2B */
-
-    --color-orange: #f8a01c;
-    --color-orange-hover: #ee9a1d;
-    --color-orange-active: #e4941f;
-    --color-orange-background: #fff2db; /* For dark: #5e5443 */
-
-    --color-red: #e64646;
-    --color-red-hover: #dd4446;
-    --color-red-active: #d44245;
-    --color-red-background: #ffdddd; /* For dark: #522e2e */
-
-    --color-main: #2688eb;
-    --color-main-hover: #4c96ea;
-    --color-main-active: #237edd;
-    --color-main-background: #d6eaff; /* For dark: #3c4957 */
-
-    /* Text and Typography */
-    --font-size: 14px;
-    --font-size-small: 13px;
-    --font-family:
-        -apple-system, BlinkMacSystemFont, 'Segoe UI (Custom)', Roboto, 'Helvetica Neue', 'Open Sans (Custom)',
-        system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-    --text-color-primary: rgba(0, 0, 0, 0.9);
-    --text-color-secondary: #818c99;
-    --text-color-secondary-hover: #939ca9;
-
-    /* Layout and Containers */
-    --border-radius: 4px;
-    --body-background: #ebedf0;
-    --modal-background: #ffffff;
-    --overlay-background: rgba(242, 243, 252, 0.7);
-    --container-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
-    --container-background-color: #ffffff;
-    --container-error-background-color: #ffe9e9;
-    --container-error-color: var(--color-red);
-    --container-success-background-color: #e8f9e8;
-    --container-success-color: var(--color-green);
-
-    /* Input Fields and Dropdowns */
-    --dropdown-background-color: #ffffff;
-    --dropdown-background-color-hover: #f2f3f5;
-    --dropdown-badge-background-color: #ffffff;
-    --input-background-color: #f2f3f5;
-    --input-label-color: #6d7885;
-    --input-border: 0.5px solid var(--input-border-color);
-    --input-border-color: #e0e1e7;
-    --input-border-focus-color: var(--color-main);
-
-    /* Buttons */
-    --button-font-weight: 500;
-    --button-default-color: var(--color-main);
-    --button-default-background: transparent;
-    --button-default-background-hover: #f7f8fa;
-    --button-default-background-active: #f1f2f5;
-
-    --button-primary-color: #ffffff;
-    --button-primary-background: var(--color-main);
-    --button-primary-background-hover: var(--color-main-hover);
-    --button-primary-background-active: var(--color-main-active);
-
-    --button-secondary-background: rgba(235, 242, 250, 0.99);
-    --button-secondary-background-hover: rgba(223, 234, 246, 0.99);
-    --button-secondary-background-active: rgba(213, 226, 241, 0.99);
-    --button-secondary-color: var(--color-main);
-    --button-secondary-color-hover: var(--color-main-hover);
-    --button-secondary-color-active: var(--color-main-active);
-
-    /* Popout */
-    --popout-shadow: 0 0 2px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.08);
-
-    /* Table */
-    --table-header-background: #f9f9fb;
-    --table-header-background-hover: rgba(255, 255, 255, 0.1);
-    --table-border-color: var(--input-border-color);
-    --table-row-box-shadow: inset 0 -1px var(--input-border-color);
-
-    /* Skeleton */
-    --skeleton-background-animation: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.04), transparent);
+body {
+    background: var(--body-background);
+    color: var(--text-color-primary);
+    font: var(--font-size) / var(--line-height) var(--font-family);
 }
 ```
 
-<p align="right">
-  (<a href="#top">Back to top</a>)
-</p>
+#### Token layers
+
+Tokens are organised in three layers. Override at the level that matches the scope of the change — a semantic token restyles every component that uses it, a component token touches one component.
+
+| Layer         | Prefixes                                                                                                         | Purpose                                                              |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| 1. Primitives | `--size-*`, `--space-*`, `--radius-*`, `--font-*`, `--line-height`, `--duration-*`, `--ease`, `--z-*`            | Raw scales, theme-independent                                        |
+| 2. Semantic   | `--body-background`, `--surface-*`, `--border*`, `--text-color-*`, `--color-*`, `--shadow-*`, `--focus-*`        | Meaning, not usage. Light values on `:root`, dark under `data-theme` |
+| 3. Component  | `--input-*`, `--button-*`, `--badge-*`, `--container-*`, `--dialog-*`, `--popout-*`, `--table-*`, `--tooltip-*`… | Aliases over layer 2 for one component family                        |
+
+#### 1. Primitives
+
+- **Control heights (`size` prop):**
+    - `--size-small` / `--size-medium` / `--size-large` — global fallback for all sized components (`28px` / `36px` / `44px`).
+    - `--size-control-*` — `Input`, `Select`, `Button`, `TextArea` (default: inherit `--size-*`).
+    - `--size-badge-*` — `Badge` (`20px` / `24px` / `28px`).
+    - `--size-table-*` — `Table` row heights (`32px` / `40px` / `48px`).
+- **Spacing (4px grid):** `--space-1` … `--space-6` = `4px`, `8px`, `12px`, `16px`, `20px`, `24px`.
+- **Radii:** `--radius-xs` `2px`, `--radius-sm` `4px`, `--radius-md` `6px`, `--radius-lg` `8px`, `--radius-xl` `12px`, `--radius-full`. Controls use `md`, menus `lg`, cards and dialogs `xl`. `--border-radius` is kept as the legacy alias for the control radius.
+- **Typography:** `--font-family`, `--font-size-small` `12px`, `--font-size` `14px`, `--font-size-large` `16px`, `--line-height` `1.5`, `--font-weight-normal` / `-medium` / `-semibold`.
+- **Motion:** `--duration-fast` `150ms`, `--duration-base` `200ms`, `--duration-slow` `300ms`, `--ease`. Animations respect `prefers-reduced-motion`.
+- **Layers:** `--z-dropdown` `405`, `--z-overlay` `500`, `--z-dialog` `600`, `--z-tooltip` `10000`.
+
+#### 2. Semantic
+
+- **Surfaces:** `--body-background` (page), `--surface-1` (card), `--surface-2` (nested / hover), `--surface-3` (pressed).
+- **Borders:** `--border` (hairline for cards and separators), `--border-strong` (form controls).
+- **Text:** `--text-color-primary`, `--text-color-secondary`, `--text-color-secondary-hover`, `--text-color-disabled`, `--color-contrast` (text on coloured fills).
+- **Shadows:** `--shadow-sm` / `--shadow-md` / `--shadow-lg`, tinted with `--ink-rgb`.
+- **Brand:** `--color-main`, `--color-main-hover`, `--color-main-active`, `--color-main-background`.
+- **Status:** `--color-green|orange|red`, each with `-hover`, `-active` and a pale `-background` tint.
+- **Focus:** `--focus-ring` (soft 3px ring on text fields, built from `--focus-ring-color`), `--focus-outline` (solid 2px outline on buttons and other controls).
+
+#### 3. Component
+
+- **Container:** `--container-background-color`, `--container-shadow`, `--container-radius`, `--container-padding`, `--container-error-*`, `--container-success-*`.
+- **Dialog / Overlay:** `--modal-background`, `--dialog-radius`, `--dialog-shadow`, `--overlay-background`.
+- **Popout / dropdowns:** `--popout-radius`, `--popout-shadow`, `--dropdown-background-color`, `--dropdown-background-color-hover`, `--dropdown-badge-background-color`.
+- **Form fields (`Input`, `TextArea`, `Select`):** `--input-radius`, `--input-background-color`, `--input-disabled-background-color`, `--input-border`, `--input-border-color`, `--input-border-focus-color`, `--input-placeholder-color`, `--input-label-color`, `--input-label-font-size`, `--input-label-font-weight`, `--input-label-gap`, `--input-hint-font-size`.
+- **Button:** `--button-radius`, `--button-font-weight`, `--button-default-*`, `--button-primary-*`, `--button-secondary-*` (each with `color`, `background`, `background-hover`, `background-active`), `--button-outline-color`, `--button-outline-border-color`, `--button-outline-border-color-hover`, `--button-link-color`, `--button-link-color-hover`.
+- **Badge:** `--badge-radius`, `--badge-background`, `--badge-border-color`.
+- **Message:** `--message-radius`.
+- **Tooltip:** `--tooltip-radius`, `--tooltip-background`, `--tooltip-color`.
+- **Table:** `--table-header-background`, `--table-header-background-hover`, `--table-border-color`, `--table-row-box-shadow`.
+- **Progress:** `--progress-radius`, `--progress-background`.
+- **Skeleton:** `--skeleton-radius`, `--skeleton-background`, `--skeleton-background-animation`.
+
+The full list with default values is in [`src/styles/theme.css`](src/styles/theme.css); the "Foundations / Design Tokens" page in Storybook renders them live.
+
+#### Dark theme
+
+A dark colour set ships in the same file under `[data-theme='dark']`. Set the attribute on `<html>` to switch the whole page, or on any element to make only that subtree dark (a sidebar, a preview panel):
+
+```html
+<html data-theme="dark"></html>
+
+<aside data-theme="dark">…only this subtree is dark…</aside>
+```
+
+Only colours change between themes; sizes, radii and motion are shared. To tune the dark palette, override tokens under the same selector:
+
+```css
+[data-theme='dark'] {
+    --surface-1: #1e1f22;
+    --color-main: #6aa6f0;
+}
+```
+
+If you add your own alias tokens (a token whose value is `var(--another-token)`), declare them on `:root, [data-theme]` rather than on `:root` alone. A `var()` inside a custom property is resolved on the element that declares it, so an alias declared only on `:root` keeps the root value inside a themed subtree.
+
+#### Example: project overrides
+
+Keep your override file to the tokens you actually change. Everything else inherits the kit defaults.
+
+```css
+/* theme-overrides.css — loaded after simple-react-ui-kit/theme.css */
+:root {
+    /* Brand */
+    --color-main: #3770b1;
+    --color-main-hover: #2f64a0;
+    --color-main-active: #295891;
+    --color-main-background: #e3eefb;
+
+    /* Denser controls and a softer radius */
+    --size-control-medium: 34px;
+    --border-radius: var(--radius-sm);
+    --container-radius: var(--radius-lg);
+
+    /* Filled fields instead of outlined */
+    --input-background-color: var(--surface-2);
+}
+
+:root[data-theme='dark'] {
+    --color-main: #4f93e6;
+    --color-main-background: #243a55;
+}
+```
+
+Upgrading from a version before `theme.css`? See [`MIGRATION.md`](MIGRATION.md) for the token rename table and the list of visual changes.
 
 <!-- CONTRIBUTING -->
 
