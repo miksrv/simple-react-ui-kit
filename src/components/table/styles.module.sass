@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as mixins
+
 .tableContainer
     overflow: hidden
     overflow-x: auto
@@ -15,9 +17,10 @@
         width: 100%
         border-collapse: collapse
         font-family: var(--font-family), sans-serif
+        line-height: var(--line-height)
 
         th, td
-            padding: 4px 12px
+            padding: var(--space-1) var(--space-3)
             box-shadow: var(--table-row-box-shadow)
             text-align: left
 
@@ -36,17 +39,16 @@
             th, td
                 height: var(--size-table-small, var(--size-small))
                 font-size: var(--font-size-small)
-                padding: 4px 10px
+                padding: var(--space-1) 10px
 
             th
                 height: var(--size-table-medium, var(--size-medium))
-
 
         &.medium
             th, td
                 height: var(--size-table-medium, var(--size-medium))
                 font-size: var(--font-size)
-                padding: 4px 12px
+                padding: var(--space-1) var(--space-3)
 
             th
                 height: var(--size-table-medium, var(--size-medium))
@@ -55,17 +57,19 @@
             th, td
                 height: var(--size-table-large, var(--size-large))
                 font-size: var(--font-size)
-                padding: 6px 16px
+                padding: 6px var(--space-4)
 
             th
                 height: var(--size-table-large, var(--size-large))
 
         td
-            padding: 2px 12px
+            padding: 2px var(--space-3)
+            color: var(--text-color-primary)
 
             &.noData
                 text-align: center
-                padding: 20px
+                color: var(--text-color-secondary)
+                padding: var(--space-5)
 
         tr:last-child td
             border-bottom: none
@@ -73,21 +77,22 @@
 
         th
             background: var(--table-header-background)
-            color: var(--text-color-primary)
+            color: var(--text-color-secondary)
+            font-weight: var(--font-weight-medium)
 
         th.sortable
             cursor: pointer
             white-space: nowrap
+            transition: background-color var(--duration-fast) var(--ease)
 
             &:hover
                 background-color: var(--table-header-background-hover)
 
             &:focus-visible
-                outline: 2px solid var(--input-border-focus-color, #1976d2)
-                outline-offset: -2px
+                @include mixins.focus-outline(-2px)
 
             svg
-                fill: var(--text-color-primary)
+                fill: currentColor
                 vertical-align: middle
-                margin-left: 5px
+                margin-left: var(--space-1)
                 margin-top: -3px

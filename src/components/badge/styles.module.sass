@@ -1,58 +1,77 @@
 .badge
-    font-family: var(--font-family), sans-serif
-    font-size: var(--font-size)
-    border-radius: var(--border-radius)
-    background: var(--input-background-color)
-    border: 0.5px solid rgba(0, 0, 0, 0.08)
-    display: inline-flex
-    margin: 2px
     box-sizing: border-box
+    display: inline-flex
     align-items: center
+    gap: 6px
     height: var(--size-badge-medium, var(--size-medium))
-    padding: 0 12px
+    padding: 0 var(--space-2)
+    border: 1px solid var(--badge-border-color)
+    border-radius: var(--badge-radius)
+    background: var(--badge-background)
+    color: var(--text-color-primary)
+    font-family: var(--font-family), sans-serif
+    font-size: var(--font-size-small)
+    line-height: 1
     white-space: nowrap
 
     svg
-        width: 16px
-        height: 16px
+        width: 14px
+        height: 14px
+        flex-shrink: 0
         fill: var(--text-color-secondary)
         vertical-align: middle
-        margin-right: 5px
 
     .icon
         display: inline-flex
         align-items: center
         justify-content: center
-        margin-right: 8px
 
     .content
         overflow: hidden
+        text-overflow: ellipsis
 
     .close
+        display: inline-flex
+        align-items: center
+        margin: 0 -2px 0 0
+        padding: 0
         border: none
+        border-radius: var(--radius-xs)
         background: none
         cursor: pointer
-        margin: 0
-        padding: 0
+        color: var(--text-color-secondary)
+        transition: color var(--duration-fast) var(--ease)
 
         svg
-            margin: 0 0 0 5px
+            margin: 0
 
         &:hover
-            opacity: .7
+            color: var(--text-color-primary)
+
+            svg
+                fill: var(--text-color-primary)
+
+        &:focus-visible
+            outline: var(--focus-outline)
+            outline-offset: 0
 
     &.small
         height: var(--size-badge-small, var(--size-small))
-        font-size: var(--font-size-small)
-        padding: 0 8px
+        padding: 0 6px
+        gap: var(--space-1)
 
         svg
-            height: 14px
-            width: 14px
+            height: 12px
+            width: 12px
 
     &.medium
         height: var(--size-badge-medium, var(--size-medium))
 
     &.large
         height: var(--size-badge-large, var(--size-large))
-        padding: 0 16px
+        padding: 0 var(--space-3)
+        font-size: var(--font-size)
+
+        svg
+            height: 16px
+            width: 16px
