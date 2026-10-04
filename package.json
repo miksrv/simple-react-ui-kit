@@ -32,9 +32,23 @@
     },
     "type": "module",
     "access": "public",
-    "main": "dist/index.cjs.js",
+    "main": "dist/index.esm.js",
     "module": "dist/index.esm.js",
     "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.esm.js",
+            "default": "./dist/index.esm.js"
+        },
+        "./theme.css": "./dist/theme.css",
+        "./package.json": "./package.json"
+    },
+    "sideEffects": [
+        "**/*.css",
+        "**/*.sass",
+        "./dist/index.esm.js"
+    ],
     "files": [
         "dist",
         "LICENSE",
