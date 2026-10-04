@@ -1,0 +1,41 @@
+// Shared pieces of form fields (Input, TextArea, Select) so the three
+// components stay pixel-identical. All values come from theme.css tokens.
+
+@mixin field-label
+    display: block
+    padding-bottom: var(--input-label-gap)
+    color: var(--input-label-color)
+    font-family: var(--font-family), sans-serif
+    font-size: var(--input-label-font-size)
+    font-weight: var(--input-label-font-weight)
+    line-height: var(--line-height)
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+@mixin field-required-mark
+    content: '*'
+    margin-left: 3px
+    color: var(--color-red)
+
+@mixin field-error-text
+    display: block
+    margin-top: var(--space-1)
+    color: var(--color-red)
+    font-family: var(--font-family), sans-serif
+    font-size: var(--input-hint-font-size)
+    line-height: var(--line-height)
+
+@mixin field-transition
+    transition: border-color var(--duration-base) var(--ease), background-color var(--duration-base) var(--ease), box-shadow var(--duration-base) var(--ease)
+
+// Soft ring for text fields and the Select trigger
+@mixin focus-ring
+    outline: none
+    border-color: var(--input-border-focus-color)
+    box-shadow: var(--focus-ring)
+
+// Solid outline for buttons, cells and other non-field controls
+@mixin focus-outline($offset: 2px)
+    outline: var(--focus-outline)
+    outline-offset: $offset
