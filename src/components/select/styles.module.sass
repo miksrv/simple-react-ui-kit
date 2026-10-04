@@ -1,39 +1,34 @@
+@use '../../styles/mixins' as mixins
+
 $iconSize: 18px
 
 .select
     display: block
+    font-family: var(--font-family), sans-serif
 
     .label
-        font-family: var(--font-family), sans-serif
-        font-size: var(--font-size)
-        color: var(--input-label-color)
-        display: block
-        overflow: hidden
-        padding-bottom: 4px
-        padding-top: 2px
-        text-overflow: ellipsis
-        white-space: nowrap
+        @include mixins.field-label
 
     .container
         width: 100%
         position: relative
-        border-radius: var(--border-radius)
+        border-radius: var(--input-radius)
 
         .trigger
+            @include mixins.field-transition
             display: flex
             align-items: center
             height: 100%
             min-height: inherit
-            padding: 0 12px 0 0
+            box-sizing: border-box
+            padding: 0 var(--space-2) 0 var(--space-3)
             background: var(--input-background-color)
             border: var(--input-border)
-            border-radius: var(--border-radius)
-            transition: all 0.2s ease
+            border-radius: var(--input-radius)
             cursor: pointer
 
             &.open, &.focused
-                outline: none
-                border-color: var(--input-border-focus-color)
+                @include mixins.focus-ring
 
             &.open
                 border-bottom-left-radius: 0
@@ -45,8 +40,7 @@ $iconSize: 18px
             .triggerIcon
                 display: flex
                 align-items: center
-                margin-left: 10px
-                margin-right: 2px
+                margin-right: var(--space-2)
                 flex-shrink: 0
                 pointer-events: none
 
@@ -59,15 +53,16 @@ $iconSize: 18px
                 flex: 1
                 display: flex
                 align-items: center
-                gap: 0
                 flex-wrap: wrap
+                gap: var(--space-1)
+                min-width: 0
                 min-height: 20px
+                padding: var(--space-1) 0
 
                 .prefix
                     display: flex
                     align-items: center
-                    gap: 2px
-                    margin-left: 8px
+                    gap: var(--space-1)
 
                     svg
                         width: $iconSize
@@ -81,25 +76,25 @@ $iconSize: 18px
 
                 .badge
                     background-color: var(--dropdown-badge-background-color)
-                    height: 28px
 
                 .search
                     font-family: var(--font-family), sans-serif
                     font-size: var(--font-size)
                     background: transparent
-                    height: inherit
                     color: inherit
                     border: none
                     outline: none
                     flex-grow: 1
                     min-width: 100px
                     max-width: 100%
-                    min-height: 30px
-                    padding-left: 8px
-                    padding-bottom: 2px
+                    height: inherit
+                    min-height: var(--size-badge-medium, 24px)
+                    padding: 0
 
                     &::placeholder
+                        color: var(--input-placeholder-color)
                         font-size: var(--font-size)
+                        opacity: 1
 
                 .value
                     flex: 1
@@ -107,15 +102,15 @@ $iconSize: 18px
                     overflow: hidden
                     text-overflow: ellipsis
                     color: var(--text-color-primary)
-                    margin-left: 8px
                     font-family: var(--font-family), sans-serif
                     font-size: var(--font-size)
+                    line-height: var(--line-height)
 
                     .placeholder
-                        color: var(--text-color-secondary)
+                        color: var(--input-placeholder-color)
 
         .buttonContainer
-            margin-left: 5px
+            margin-left: var(--space-1)
             display: flex
             align-items: center
 
@@ -133,23 +128,40 @@ $iconSize: 18px
                 cursor: pointer
                 display: flex
                 align-items: center
+                border-radius: var(--radius-sm)
 
                 svg
                     width: $iconSize
                     height: $iconSize
                     fill: var(--text-color-secondary)
+                    transition: fill var(--duration-fast) var(--ease)
 
                     &:hover
-                        opacity: .7
+                        fill: var(--text-color-primary)
+
+                &:focus-visible
+                    @include mixins.focus-outline(0)
 
         &.error
             .trigger
-                background-color: var(--color-red-background)
                 border-color: var(--color-red)
+
+                &.open, &.focused
+                    border-color: var(--color-red)
+                    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-red) 25%, transparent)
 
         &.small
             min-height: var(--size-control-small, var(--size-small))
             font-size: var(--font-size-small)
+
+            .trigger
+                padding: 0 6px 0 var(--space-2)
+
+            .valueContainer
+                padding: 2px 0
+
+                .value, .search, .search::placeholder
+                    font-size: var(--font-size-small)
 
             svg
                 height: 14px
@@ -161,80 +173,86 @@ $iconSize: 18px
         &.large
             min-height: var(--size-control-large, var(--size-large))
 
+            .trigger
+                padding: 0 var(--space-3) 0 var(--space-4)
+
     &.disabled
         *
             pointer-events: none
 
         .label
-            opacity: 0.7
+            color: var(--text-color-disabled)
+
+        .trigger
+            background-color: var(--input-disabled-background-color)
+            cursor: not-allowed
 
         .valueContainer
-            opacity: 0.5
-            cursor: default
+            color: var(--text-color-disabled)
+
+            .value
+                color: var(--text-color-disabled)
 
     &.required
         .label:after
-            content: '*'
-            margin-left: 3px
-            color: var(--color-red)
+            @include mixins.field-required-mark
 
     .error
-        font-family: var(--font-family), sans-serif
-        font-size: var(--font-size-small)
-        color: var(--color-red)
-        margin-top: 2px
+        @include mixins.field-error-text
 
 .optionsList
     font-family: var(--font-family), sans-serif
     font-size: var(--font-size)
-    background-color: var(--dropdown-background-color, #ffffff)
+    background-color: var(--dropdown-background-color)
     border: var(--input-border)
-    border-bottom-left-radius: var(--border-radius)
-    border-bottom-right-radius: var(--border-radius)
+    border-top: none
+    border-bottom-left-radius: var(--input-radius)
+    border-bottom-right-radius: var(--input-radius)
+    box-shadow: var(--shadow-md)
     overflow: hidden
-    overflow-y: scroll
+    overflow-y: auto
     box-sizing: border-box
     list-style: none
     position: absolute
-    top: 33px
+    top: 0
     padding: 0
     margin: 0
     width: 100%
-    z-index: 405
-    max-height: 200px
+    z-index: var(--z-dropdown)
+    max-height: 240px
 
     .option
-        button
-            padding: 8px 10px
-
         .optionButton
+            box-sizing: border-box
             margin: 0
             height: 100%
             width: 100%
+            min-height: var(--size-control-medium, var(--size-medium))
+            padding: var(--space-2) var(--space-3)
             color: var(--text-color-primary)
             font-size: var(--font-size)
+            line-height: var(--line-height)
             cursor: pointer
             background: transparent
             border: none
             text-align: left
             display: flex
             align-items: center
+            gap: var(--space-2)
+            transition: background-color var(--duration-fast) var(--ease)
 
             svg
                 width: 14px
                 height: 14px
                 fill: var(--text-color-primary)
-                margin-right: 8px
                 flex-shrink: 0
 
             img
                 width: 14px
                 height: 15px
-                margin-right: 4px
 
             .emoji
                 display: inline-block
-                margin-right: 8px
                 font-size: 14px
                 line-height: 14px
 
@@ -247,10 +265,11 @@ $iconSize: 18px
             background-color: var(--dropdown-background-color-hover)
 
         &:last-of-type
-            border-bottom-left-radius: var(--border-radius)
-            border-bottom-right-radius: var(--border-radius)
+            border-bottom-left-radius: var(--input-radius)
+            border-bottom-right-radius: var(--input-radius)
 
     .noResult
         text-align: center
         font-style: italic
-        padding: 8px 10px
+        color: var(--text-color-secondary)
+        padding: var(--space-2) var(--space-3)
