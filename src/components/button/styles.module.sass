@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as mixins
+
 .buttonLink
     display: inline-block
     text-decoration: none !important
@@ -9,32 +11,31 @@
         pointer-events: none !important
 
 .button
+    box-sizing: border-box
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    gap: 6px
+    min-height: var(--size-control-small, var(--size-small))
+    padding: 0 var(--space-3)
+    border: 0
+    border-radius: var(--button-radius)
+    background: var(--button-default-background)
+    color: var(--button-default-color)
     font-family: var(--font-family), sans-serif
     font-size: var(--font-size)
     font-weight: var(--button-font-weight)
-    color: var(--button-default-color)
-    background: var(--button-default-background)
-    border-radius: var(--border-radius)
+    line-height: 1
     text-wrap: nowrap
     cursor: pointer
-    padding: 6px 10px
-    border: 0
-    min-height: var(--size-control-small, var(--size-small))
-    display: flex
-    align-content: center
-    justify-content: center
-    align-items: center
     outline: none
-    transition: background-color .15s ease-out, color .15s ease-out
+    transition: background-color var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease), box-shadow var(--duration-fast) var(--ease)
 
     svg
         width: 18px
         height: 18px
-        margin-right: 5px
+        flex-shrink: 0
         fill: currentColor
-
-    img
-        margin-right: 5px
 
     &.stretched
         width: 100%
@@ -43,23 +44,24 @@
         cursor: wait
         pointer-events: none
 
-        svg
-            margin-right: 6px
-
-    &.noText
-        svg
-            margin-right: 0
-
-    &:hover, &:focus
+    &:hover
         background-color: var(--button-default-background-hover)
 
     &:active
         background-color: var(--button-default-background-active)
 
+    &:focus-visible
+        @include mixins.focus-outline
+
     &.small
         height: var(--size-control-small, var(--size-small))
         font-size: var(--font-size-small)
-        padding: 6px 8px
+        padding: 0 var(--space-2)
+        gap: var(--space-1)
+
+        svg
+            width: 16px
+            height: 16px
 
         .loader
             height: 14px
@@ -67,17 +69,23 @@
 
     &.medium
         height: var(--size-control-medium, var(--size-medium))
-        padding: 6px 10px
+        padding: 0 var(--space-3)
 
     &.large
         height: var(--size-control-large, var(--size-large))
-        padding: 6px 16px
+        padding: 0 var(--space-4)
+        font-size: var(--font-size-large)
+
+    &.noText
+        padding-left: 0
+        padding-right: 0
+        aspect-ratio: 1
 
     &.primary
         background-color: var(--button-primary-background)
         color: var(--button-primary-color)
 
-        &:hover, &:focus
+        &:hover
             background-color: var(--button-primary-background-hover)
 
         &:active
@@ -87,7 +95,7 @@
             background-color: var(--color-red)
             color: var(--color-contrast)
 
-            &:hover, &:focus
+            &:hover
                 background-color: var(--color-red-hover)
                 color: var(--color-contrast)
 
@@ -96,9 +104,9 @@
 
         &.positive
             background-color: var(--color-green)
-            color: var(--color-contrast) !important
+            color: var(--color-contrast)
 
-            &:hover, &:focus
+            &:hover
                 background-color: var(--color-green-hover)
                 color: var(--color-contrast)
 
@@ -109,7 +117,7 @@
         background-color: var(--button-secondary-background)
         color: var(--button-secondary-color)
 
-        &:hover, &:focus
+        &:hover
             background-color: var(--button-secondary-background-hover)
             color: var(--button-secondary-color-hover)
 
@@ -117,10 +125,36 @@
             background-color: var(--button-secondary-background-active)
             color: var(--button-secondary-color-active)
 
+    &.outline
+        background-color: transparent
+        border: 1px solid var(--button-outline-border-color)
+        color: var(--button-outline-color)
+
+        &:hover
+            background-color: var(--button-default-background-hover)
+            border-color: var(--button-outline-border-color-hover)
+
+        &:active
+            background-color: var(--button-default-background-active)
+
+    &.link
+        background-color: transparent
+        color: var(--button-link-color)
+        text-decoration: none
+
+        &:hover
+            background-color: transparent
+            color: var(--button-link-color-hover)
+            text-decoration: underline
+            text-underline-offset: 3px
+
+        &:active
+            background-color: transparent
+
     &.negative
         color: var(--color-red)
 
-        &:hover, &:focus
+        &:hover
             color: var(--color-red-hover)
 
         &:active
@@ -129,14 +163,14 @@
     &.positive
         color: var(--color-green)
 
-        &:hover, &:focus
+        &:hover
             color: var(--color-green-hover)
 
         &:active
             color: var(--color-green-active)
 
     &[disabled]
-        opacity: .64
+        opacity: .5
         pointer-events: none !important
         cursor: not-allowed !important
 
@@ -144,15 +178,11 @@
         background: transparent
         color: inherit
         padding: 0
+        gap: 0
         border-radius: 0
         min-height: auto
         height: auto
+        aspect-ratio: auto
 
-        svg
-            margin-right: 0
-
-        &:hover, &:focus
-            background-color: transparent
-
-        &:active
+        &:hover, &:active
             background-color: transparent
