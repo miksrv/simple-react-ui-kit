@@ -1,6 +1,9 @@
-import '../../src/styles/global.css'
+import { withThemeByDataAttribute } from '@storybook/addon-themes'
 
-/** @type { import('@storybook/react-webpack5').Preview } */
+import '../../src/styles/theme.css'
+import './preview.css'
+
+/** @type { import('@storybook/react-vite').Preview } */
 const preview = {
     parameters: {
         controls: {
@@ -8,22 +11,22 @@ const preview = {
                 color: /(background|color)$/i,
                 date: /Date$/i
             }
-        },
-        backgrounds: {
-            options: {
-                light: { name: 'light', value: '#ffffff' },
-                dark: { name: 'dark', value: '#1b1b1b' }
-            }
         }
     },
 
-    tags: ['autodocs'],
+    decorators: [
+        withThemeByDataAttribute({
+            themes: {
+                light: 'light',
+                dark: 'dark'
+            },
+            defaultTheme: 'light',
+            attributeName: 'data-theme',
+            parentSelector: 'html'
+        })
+    ],
 
-    initialGlobals: {
-        backgrounds: {
-            value: 'light'
-        }
-    }
+    tags: ['autodocs']
 }
 
 export default preview
