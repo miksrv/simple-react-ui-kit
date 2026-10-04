@@ -1,16 +1,18 @@
 .progress
     min-height: 2px
     max-height: 20px
-    background-color: var(--input-border-color)
     min-width: 100px
-    border-radius: var(--border-radius)
+    overflow: hidden
+    background-color: var(--progress-background)
+    border-radius: var(--progress-radius)
 
     .line
         min-height: 2px
         max-height: 20px
-        border-radius: var(--border-radius)
-        background-color: var(--color-green)
         height: inherit
+        border-radius: inherit
+        background-color: var(--color-green)
+        transition: width var(--duration-slow) var(--ease)
 
         &.main
             background-color: var(--color-main)
