@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## 2.0.0
+
+### Major Changes
+
+- Design tokens overhaul: the kit now ships `simple-react-ui-kit/theme.css` with three token layers (primitives, semantic, component) and a built-in dark theme under `[data-theme='dark']`. See `MIGRATION.md` for the upgrade guide
+- Remove `global.css`; `theme.css` defines variables only and leaves `body` to the host application
+- Rename style variables (`--simple-ui-*` → token names), see the rename table in `MIGRATION.md`
+- Add `exports` map and correct `main` in `package.json`; deep imports from `dist/` are no longer supported
+- Default control height is now 36px, control radius 6px, labels 13px/500
+- Badge drops its outer margin and uses 12px text at the medium size
+
+### Minor Changes
+
+- New tokens: spacing scale, radius scale with per-component radii, shadows, motion, z-index layers, focus ring, label and placeholder tokens
+- Unify Input, TextArea and Select: same label, same error text, same field background, same focus ring; error state no longer fills the field
+- Button lays out icon and text with `gap`, gets a `:focus-visible` outline, icon-only buttons are square; add styles for `mode='outline'` and `mode='link'`
+- Dark theme can be scoped to a subtree with `data-theme='dark'` on any element
+- Storybook upgraded to 10.6 with a light/dark toolbar switcher, a Design Tokens page and a Themes page
+
+### Patch Changes
+
+- Fix Select options list offset that was hardcoded to the old 34px trigger height
+- Fix Calendar range start/end dates rendered as white text on a light background
+- Fix invalid CSS in the focus ring of text fields
+
 ## 1.9.0
 
 ### Minor Changes

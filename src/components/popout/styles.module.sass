@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as mixins
+
 .portal
     position: absolute
     top: 0
@@ -20,8 +22,7 @@
         margin: 0
 
         &:focus-visible
-            outline: 2px solid var(--input-border-focus-color, #1976d2)
-            outline-offset: 2px
+            @include mixins.focus-outline
             border-radius: var(--border-radius)
 
         &.disabled
@@ -31,8 +32,8 @@
 .popoutContent
     box-shadow: var(--popout-shadow)
     background-color: var(--container-background-color)
-    border-radius: var(--border-radius)
+    border-radius: var(--popout-radius)
     position: absolute
     z-index: 1
     min-width: 160px
-    margin-top: 5px
+    margin-top: var(--space-1)

@@ -387,7 +387,7 @@ export const Select = <T,>({
         const rect = rootRef.current.getBoundingClientRect()
         setPortalStyle({
             position: 'absolute' as const,
-            top: rect.bottom + window.scrollY - 34, // -1px to overlap border
+            top: rect.bottom + window.scrollY - 1, // -1px so the list overlaps the trigger border
             left: rect.left + window.scrollX,
             width: rect.width,
             zIndex: 9999,

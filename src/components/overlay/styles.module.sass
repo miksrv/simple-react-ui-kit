@@ -6,7 +6,7 @@
     left: 0
     height: 100%
     width: 100%
-    z-index: 500
+    z-index: var(--z-overlay)
     background: var(--overlay-background)
 
     &.noInitialized
@@ -16,9 +16,13 @@
     &.hidden
         opacity: 0
         visibility: hidden
-        animation: animation-fadeOut .3s ease
+        animation: animation-fadeOut var(--duration-slow) var(--ease)
 
     &.displayed
         opacity: 1
         visibility: visible
-        animation: animation-fadeIn .3s ease
+        animation: animation-fadeIn var(--duration-slow) var(--ease)
+
+    @media (prefers-reduced-motion: reduce)
+        &.hidden, &.displayed
+            animation: none

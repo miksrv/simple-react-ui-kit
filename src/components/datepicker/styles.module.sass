@@ -1,21 +1,24 @@
+@use '../../styles/variables' as variables
+
 .datePickerContainer
     display: flex
     justify-content: space-between
 
-    @media only screen and (max-width: 728px)
+    @media only screen and (max-width: variables.$breakpoint-mobile)
         flex-direction: column
 
     .presetList
         display: flex
         flex-direction: column
-        padding: 5px
-        gap: 5px
+        padding: var(--space-1)
+        gap: var(--space-1)
         width: 170px
-        border-right: 1px solid var(--input-border-color)
+        border-right: 1px solid var(--border)
 
-        @media only screen and (max-width: 728px)
+        @media only screen and (max-width: variables.$breakpoint-mobile)
             width: 100%
             border-right: none
+            border-bottom: 1px solid var(--border)
 
         button
             justify-content: flex-start

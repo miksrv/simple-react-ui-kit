@@ -1,16 +1,20 @@
+@use '../../styles/mixins' as mixins
+
 .checkbox
     display: flex
     align-items: center
     cursor: pointer
+    font-family: var(--font-family), sans-serif
 
     &.disabled
         opacity: .5
         cursor: default
 
     .formField
-        margin-right: 5px
+        margin-right: var(--space-2)
         display: flex
         align-items: center
+        border-radius: var(--radius-sm)
 
         input
             display: none
@@ -19,15 +23,27 @@
             fill: var(--input-border-color)
             width: 20px
             height: 20px
+            transition: fill var(--duration-fast) var(--ease)
 
         &.checked
             svg
                 fill: var(--color-main)
 
+    &:hover:not(.disabled)
+        .formField svg
+            fill: var(--text-color-secondary)
+
+        .formField.checked svg
+            fill: var(--color-main-hover)
+
+    &:focus-within
+        .formField
+            @include mixins.focus-outline
+
     label
         color: var(--text-color-primary)
         font-size: var(--font-size)
-        font-family: var(--font-family), sans-serif
+        font-family: inherit
         line-height: 20px
         cursor: pointer
         width: 100%

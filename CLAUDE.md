@@ -38,8 +38,10 @@ simple-react-ui-kit/
 │   │   ├── select/          # Select component (with multiselect support)
 │   │   ├── skeleton/        # Skeleton component
 │   │   ├── spinner/         # Spinner component
-│   │   └── table/           # Table component
-│   ├── styles/              # Global styles
+│   │   ├── table/           # Table component
+│   │   ├── textarea/        # TextArea component
+│   │   └── tooltip/         # Tooltip component
+│   ├── styles/              # theme.css (design tokens), Sass mixins, breakpoints, animations
 │   ├── index.ts             # Main export
 │   ├── types.ts             # Common types
 │   └── utils.ts             # Utilities (cn, etc.)
@@ -207,23 +209,24 @@ Default.args = {
 
 ### CSS Variables
 
-The project uses CSS variables for customization:
+All visual values come from the design tokens in `src/styles/theme.css` (shipped as
+`simple-react-ui-kit/theme.css`). The file has three layers plus a dark theme:
 
-```css
-:root {
-    --simple-ui-form-background
-    --simple-ui-form-background-hover
-    --simple-ui-form-border-color
-    --simple-ui-form-border-color-hover
-    --simple-ui-form-border-color-active
-    --simple-ui-form-text-color
-    --simple-ui-form-placeholder-color
-    --simple-ui-button-primary-background
-    --simple-ui-button-primary-border-color
-    --simple-ui-button-primary-text-color
-    /* ... and others */
-}
-```
+1. **Primitives** — `--size-*`, `--space-*`, `--radius-*`, `--font-*`, `--duration-*`, `--z-*`
+2. **Semantic** — `--surface-*`, `--border*`, `--text-color-*`, `--color-*`, `--shadow-*`, `--focus-*`
+3. **Component** — `--input-*`, `--button-*`, `--badge-*`, `--container-*`, `--dialog-*`, … (aliases over layer 2)
+4. **Dark theme** — colour overrides only, under `:root[data-theme='dark']`
+
+Rules for component styles (`styles.module.sass`):
+
+- Never hardcode colours, radii, durations, z-indexes or spacing — reference a token. Add a new
+  component token to `theme.css` (pointing at a semantic token) when a component needs its own knob.
+- Use the mixins in `src/styles/_mixins.sass` for field labels, error text, focus ring and focus outline
+  so Input, TextArea and Select stay identical.
+- Breakpoints live in `src/styles/_variables.sass` (CSS variables cannot be used in media queries).
+- Use `:focus-visible` for keyboard focus; never share a rule between `:hover` and `:focus`.
+- Components must not set outer margins; parents lay them out with `gap`.
+- Document every new or renamed token in `README.md` ("Style Variables Customization") and in `MIGRATION.md`.
 
 ### cn() Utility
 
