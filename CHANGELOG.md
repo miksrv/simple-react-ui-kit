@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2.1.0
+
+### Minor Changes
+
+- Ship component styles as `simple-react-ui-kit/styles.css` instead of injecting them with JavaScript: server-rendered pages are styled from the first paint and no longer jump on hydration (CLS). Import the stylesheet after `theme.css`; see `MIGRATION.md`
+
+### Patch Changes
+
+- Remove the unused `lodash-es` dependency, apps no longer install it with the kit
+- Import `react/jsx-runtime` from the app's React instead of bundling a copy of it into the kit: the bundle is about 9 KB smaller and always matches the app's React version. `dayjs/locale/ru` is likewise taken from the app's dayjs instead of a bundled copy
+
 ## 2.0.0
 
 ### Major Changes
