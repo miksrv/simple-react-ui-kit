@@ -1,3 +1,39 @@
+# Migration guide: component stylesheet (`styles.css`)
+
+The component styles now ship as `simple-react-ui-kit/styles.css` instead of being injected into
+`<head>` by JavaScript.
+
+**Why:** injected styles appear only when the bundle runs. A server-rendered page (Next.js, Remix)
+is painted with unstyled buttons, containers and menus first and jumps when the app hydrates. Search
+engines count this as layout shift (Core Web Vitals CLS). A real stylesheet is loaded with the page,
+cached by the browser and styles the very first paint.
+
+**What to do:**
+
+1. Import the stylesheet once in the app entry, after the tokens and before your own overrides:
+
+    ```ts
+    // Next.js (pages router): pages/_app.tsx
+    // Vite / CRA: src/main.tsx
+    import 'simple-react-ui-kit/theme.css'
+    import 'simple-react-ui-kit/styles.css'
+    import '@/styles/theme.css' // your overrides
+    ```
+
+    Without this import every component renders unstyled.
+
+2. **Check the cascade.** Injected styles used to be appended at the end of `<head>`, after the app
+   stylesheets, so they won over an app rule of the same specificity: a `className` passed to a kit
+   component with, say, `.myButton { height: 40px }` was silently ignored. Now the app styles load
+   last and such rules apply. Review the places where you pass `className` to kit components and
+   delete rules that were never meant to apply, or raise the specificity of those that were
+   duplicated to win (`!important`, doubled selectors).
+
+3. **Remove workarounds.** If the project copied the kit CSS into the server HTML (e.g. a `<style>`
+   in Next.js `_document`) to avoid the layout shift, delete it.
+
+---
+
 # Migration guide: design tokens (`theme.css`)
 
 This guide is for projects that consume `simple-react-ui-kit` and are upgrading to the release that
@@ -347,6 +383,9 @@ Decisions to make while trimming:
 ---
 
 ## 7. Troubleshooting
+
+- **Components render unstyled (default browser buttons, no card backgrounds).**
+  `simple-react-ui-kit/styles.css` is not imported. Add it after `theme.css`.
 
 - **Controls render with no size or colour.** `theme.css` is not imported, or is imported after a
   stylesheet that resets custom properties. It must load once, before your overrides.

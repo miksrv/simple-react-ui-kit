@@ -6,19 +6,9 @@ import { Calendar } from '../calendar'
 import { Popout, PopoutHandleProps } from '../popout'
 
 import { CalendarPresetType, DatePickerProps, PresetOption } from './types'
-import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'
+import { enPresets, findPresetByDate, formatDate, getTimePresets, ruPresets } from './utils'
 
 import styles from './styles.module.sass'
-
-export const timePresets: CalendarPresetType[] = [
-    { key: PresetOption.TODAY, endDate: dayjs().toDate() },
-    { key: PresetOption.DAY, endDate: dayjs().subtract(1, 'day').toDate() },
-    { key: PresetOption.WEEK, endDate: dayjs().subtract(1, 'week').toDate() },
-    { key: PresetOption.MONTH, endDate: dayjs().subtract(1, 'month').toDate() },
-    { key: PresetOption.QUARTER, endDate: dayjs().subtract(3, 'month').toDate() },
-    { key: PresetOption.HALF_YEAR, endDate: dayjs().subtract(6, 'month').toDate() },
-    { key: PresetOption.YEAR, endDate: dayjs().subtract(1, 'year').toDate() }
-]
 
 export const DatePicker: React.FC<DatePickerProps> = ({
     periodDatesFormat = 'DD.MM.YYYY',
@@ -33,18 +23,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
     const nowDate = useMemo(() => dayjs(), [])
 
-    const timePresets = useMemo<CalendarPresetType[]>(
-        () => [
-            { key: PresetOption.TODAY, endDate: nowDate.toDate() },
-            { key: PresetOption.DAY, endDate: nowDate.subtract(1, 'day').toDate() },
-            { key: PresetOption.WEEK, endDate: nowDate.subtract(1, 'week').toDate() },
-            { key: PresetOption.MONTH, endDate: nowDate.subtract(1, 'month').toDate() },
-            { key: PresetOption.QUARTER, endDate: nowDate.subtract(3, 'month').toDate() },
-            { key: PresetOption.HALF_YEAR, endDate: nowDate.subtract(6, 'month').toDate() },
-            { key: PresetOption.YEAR, endDate: nowDate.subtract(1, 'year').toDate() }
-        ],
-        [nowDate]
-    )
+    const timePresets = useMemo<CalendarPresetType[]>(() => getTimePresets(nowDate), [nowDate])
 
     const currentDatePreset = useMemo((): string => {
         const preset = findPresetByDate(nowDate, periodDates?.[0], periodDates?.[1], props?.locale)

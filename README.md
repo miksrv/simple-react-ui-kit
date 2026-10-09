@@ -134,6 +134,17 @@ yarn add simple-react-ui-kit
 npm install react react-dom dayjs
 ```
 
+Import the two stylesheets once in your app entry: the design tokens first, then the component styles, then your own overrides:
+
+```ts
+// Next.js: pages/_app.tsx · Vite/CRA: src/main.tsx
+import 'simple-react-ui-kit/theme.css'
+import 'simple-react-ui-kit/styles.css'
+import './theme-overrides.css' // your overrides, loaded after the kit
+```
+
+The component styles are a regular stylesheet, not injected by JavaScript, so server-rendered pages (Next.js, Remix) are styled from the first paint.
+
 <p align="right">
   (<a href="#top">Back to top</a>)
 </p>
@@ -1262,10 +1273,11 @@ Every component is styled only through CSS custom properties. The tokens ship as
 ```ts
 // Next.js: pages/_app.tsx · Vite/CRA: src/main.tsx
 import 'simple-react-ui-kit/theme.css'
+import 'simple-react-ui-kit/styles.css'
 import './theme-overrides.css' // your overrides, loaded after the kit
 ```
 
-The stylesheet defines variables only. It does not style `body` or any element, so apply the page background, text colour and font yourself:
+`theme.css` defines variables only. It does not style `body` or any element, so apply the page background, text colour and font yourself:
 
 ```css
 body {

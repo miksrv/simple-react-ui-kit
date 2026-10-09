@@ -1,9 +1,19 @@
 import dayjs from 'dayjs'
 
-import { timePresets } from './DatePicker'
-import { PresetOption } from './types'
+import { CalendarPresetType, PresetOption } from './types'
 
 import 'dayjs/locale/ru'
+
+/** Presets relative to `nowDate`: computed per call so the dates never go stale in a long-running app */
+export const getTimePresets = (nowDate: dayjs.Dayjs): CalendarPresetType[] => [
+    { key: PresetOption.TODAY, endDate: nowDate.toDate() },
+    { key: PresetOption.DAY, endDate: nowDate.subtract(1, 'day').toDate() },
+    { key: PresetOption.WEEK, endDate: nowDate.subtract(1, 'week').toDate() },
+    { key: PresetOption.MONTH, endDate: nowDate.subtract(1, 'month').toDate() },
+    { key: PresetOption.QUARTER, endDate: nowDate.subtract(3, 'month').toDate() },
+    { key: PresetOption.HALF_YEAR, endDate: nowDate.subtract(6, 'month').toDate() },
+    { key: PresetOption.YEAR, endDate: nowDate.subtract(1, 'year').toDate() }
+]
 
 export const enPresets = {
     [PresetOption.TODAY]: 'Today',
@@ -48,7 +58,7 @@ export const findPresetByDate = (
         return undefined
     }
 
-    for (const preset of timePresets) {
+    for (const preset of getTimePresets(nowDate)) {
         const presetStartDate = dayjs(preset.endDate)
         if (start.isSame(presetStartDate, 'day')) {
             return locale === 'ru' ? ruPresets[preset.key] : enPresets[preset.key]
