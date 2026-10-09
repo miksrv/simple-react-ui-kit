@@ -2,7 +2,7 @@ import typescript from 'rollup-plugin-typescript2';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import { readFileSync } from 'node:fs';
 
 // Ships the design tokens as a plain stylesheet next to the bundle
@@ -35,9 +35,13 @@ export default {
             useTsconfigDeclarationDir: true,
             clean: true
         }),
+        // Component styles go to `dist/styles.css` (`import 'simple-react-ui-kit/styles.css'`), not into
+        // the JS bundle: styles injected by JavaScript appear only after hydration, so server-rendered
+        // pages show unstyled components first and jump (layout shift) when the bundle runs.
         postcss({
             extensions: ['.sass', '.scss'],
-            extract: false,
+            extract: 'styles.css',
+            minimize: true,
             modules: true,
             use: [
                 ['sass', { includePaths: ['./src/styles'] }]
@@ -45,5 +49,7 @@ export default {
         }),
         themeCss()
     ],
-    external: ['react', 'react-dom', 'dayjs']
+    // Peer dependencies together with their subpaths: TypeScript compiles JSX to `react/jsx-runtime`,
+    // which a plain 'react' entry does not match, so the runtime got bundled into the kit
+    external: [/^react($|\/)/, /^react-dom($|\/)/, /^dayjs($|\/)/]
 };

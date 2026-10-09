@@ -1,9 +1,11 @@
 import React from 'react'
+import dayjs from 'dayjs'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { DatePicker, timePresets } from './DatePicker'
+import { DatePicker } from './DatePicker'
 import { DatePickerProps, PresetOption } from './types'
+import { getTimePresets } from './utils'
 
 describe('DatePicker', () => {
     const defaultProps: DatePickerProps = {
@@ -35,7 +37,7 @@ describe('DatePicker', () => {
     it('renders all visible presets', () => {
         render(<DatePicker {...defaultProps} />)
         fireEvent.click(screen.getAllByRole('button')[0])
-        timePresets.forEach(() => {
+        getTimePresets(dayjs()).forEach(() => {
             const presetText = /today|day|week|month|quarter|half year|year/i
             expect(screen.getAllByText(presetText).length).toBeGreaterThan(0)
         })

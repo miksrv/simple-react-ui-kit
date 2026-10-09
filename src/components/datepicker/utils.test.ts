@@ -1,8 +1,7 @@
 import dayjs from 'dayjs'
 
-import { timePresets } from './DatePicker'
 import { PresetOption } from './types'
-import { enPresets, findPresetByDate, formatDate, ruPresets } from './utils'
+import { enPresets, findPresetByDate, formatDate, getTimePresets, ruPresets } from './utils'
 
 describe('PresetOption enum', () => {
     it('should contain all expected keys', () => {
@@ -77,7 +76,7 @@ describe('findPresetByDate', () => {
 
     it('returns correct English preset label for each preset', () => {
         const today = nowDate.format('YYYY-MM-DD')
-        for (const preset of timePresets) {
+        for (const preset of getTimePresets(nowDate)) {
             const start = dayjs(preset.endDate).format('YYYY-MM-DD')
             const result = findPresetByDate(nowDate, start, today, 'en')
             expect(result).toBe(enPresets[preset.key])
@@ -86,7 +85,7 @@ describe('findPresetByDate', () => {
 
     it('returns correct Russian preset label for each preset', () => {
         const today = nowDate.format('YYYY-MM-DD')
-        for (const preset of timePresets) {
+        for (const preset of getTimePresets(nowDate)) {
             const start = dayjs(preset.endDate).format('YYYY-MM-DD')
             const result = findPresetByDate(nowDate, start, today, 'ru')
             expect(result).toBe(ruPresets[preset.key])
@@ -101,7 +100,7 @@ describe('findPresetByDate', () => {
 
     it('defaults to English if locale is not provided', () => {
         const today = nowDate.format('YYYY-MM-DD')
-        const preset = timePresets[0]
+        const preset = getTimePresets(nowDate)[0]
         const start = dayjs(preset.endDate).format('YYYY-MM-DD')
         expect(findPresetByDate(nowDate, start, today)).toBe(enPresets[preset.key])
     })
