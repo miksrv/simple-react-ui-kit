@@ -50,6 +50,9 @@ export default {
         themeCss()
     ],
     // Peer dependencies together with their subpaths: TypeScript compiles JSX to `react/jsx-runtime`,
-    // which a plain 'react' entry does not match, so the runtime got bundled into the kit
-    external: [/^react($|\/)/, /^react-dom($|\/)/, /^dayjs($|\/)/]
+    // which a plain 'react' entry does not match, so the runtime got bundled into the kit.
+    // `dayjs` stays a plain string on purpose: `dayjs/locale/ru` has to be bundled, since as an
+    // extensionless import it does not resolve under Node's ESM loader (Next.js loads the kit that way
+    // on the server) and dayjs has no `exports` map to fix it up
+    external: [/^react($|\/)/, /^react-dom($|\/)/, 'dayjs']
 };

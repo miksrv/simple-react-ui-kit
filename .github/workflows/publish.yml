@@ -38,15 +38,16 @@ jobs:
                   echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
                   echo "@miksrv:registry=https://npm.pkg.github.com/" >> ~/.npmrc
 
+            # changesets/action v2 is the version made for Changesets CLI 3: it learns the published
+            # versions from the CHANGESETS_OUTPUT file the CLI writes, so git tags and GitHub releases
+            # are created again (v1 parsed the CLI output for `New tag:` lines, which CLI 3 no longer prints)
             - name: Create Release and Publish to npm
               id: changesets
-              uses: changesets/action@v1
+              uses: changesets/action@v2
               with:
-                  publish: yarn release
+                  publish-script: yarn release
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-                  # Publishing now goes through `yarn npm publish` (Yarn Berry), which never
-                  # reads .npmrc (project- or user-wide) - auth must come from Yarn's own
-                  # config, read here from its env-var form of `npmAuthToken`.
+                  # Publishing goes through `yarn npm publish` (Yarn Berry), which never reads .npmrc
+                  # (project- or user-wide) - auth must come from Yarn's own config, read here from its
+                  # env-var form of `npmAuthToken`
                   YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
