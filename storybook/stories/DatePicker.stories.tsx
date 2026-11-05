@@ -124,6 +124,12 @@ const meta: Meta<DatePickerProps> = {
             description: 'Shows a button in the calendar header to navigate back to the current month',
             table: { defaultValue: { summary: 'false' } }
         },
+        today: {
+            control: 'text',
+            description:
+                'The day that counts as today (`YYYY-MM-DD`). The presets count back from it and a period ending on it shows as its preset. Pass the date of the time zone of your data when it differs from the browser.',
+            table: { defaultValue: { summary: 'the date on the device' } }
+        },
         onDateSelect: {
             control: false,
             description: 'Callback for single-date mode. Receives the selected date in `YYYY-MM-DD`.'

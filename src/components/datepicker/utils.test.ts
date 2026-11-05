@@ -40,6 +40,20 @@ describe('ruPresets', () => {
 })
 
 describe('formatDate', () => {
+    it("formats with the app's own registered 'ru' locale and leaves it in place", () => {
+        const months = 'M1_M2_M3_M4_M5_M6_M7_M8_M9_M10_M11_M12'.split('_')
+        const appRu = { ...dayjs.Ls.ru, months }
+        const kitRu = dayjs.Ls.ru
+        dayjs.Ls.ru = appRu
+
+        try {
+            expect(formatDate('2030-03-01', 'MMMM', 'ru')).toBe('M3')
+            expect(dayjs.Ls.ru).toBe(appRu)
+        } finally {
+            dayjs.Ls.ru = kitRu
+        }
+    })
+
     it('should format a date using the English locale by default', () => {
         expect(formatDate('2024-06-15', 'D MMMM YYYY')).toBe('15 June 2024')
     })
