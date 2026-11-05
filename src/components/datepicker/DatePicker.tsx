@@ -21,7 +21,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     const popoutRef = useRef<PopoutHandleProps>(null)
     const [periodDates, setPeriodDates] = useState<[string?, string?]>([props.datePeriod?.[0], props.datePeriod?.[1]])
 
-    const nowDate = useMemo(() => dayjs(), [])
+    // "Today" of the dates, not of the device: an app whose dates live in another time zone passes `today`,
+    // otherwise its period ending on its today never matched a preset and picking a preset dropped a day.
+    // Taken on every render, so a page left open past midnight moves on to the new day
+    const todayKey = props.today ?? dayjs().format('YYYY-MM-DD')
+    const nowDate = useMemo(() => dayjs(todayKey), [todayKey])
 
     const timePresets = useMemo<CalendarPresetType[]>(() => getTimePresets(nowDate), [nowDate])
 
@@ -35,7 +39,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                   ? formatDate(periodDates?.[0], singleDateFormat, props?.locale)
                   : `${formatDate(periodDates?.[0], periodDatesFormat, props?.locale)} - ${formatDate(periodDates?.[1], periodDatesFormat, props?.locale)}`
               : ''
-    }, [periodDates, props?.locale])
+    }, [nowDate, periodDates, periodDatesFormat, singleDateFormat, props?.locale])
 
     const findCurrentPreset = useCallback(
         (key: PresetOption): CalendarPresetType | undefined => {
@@ -45,13 +49,13 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             }
             return undefined
         },
-        [periodDates]
+        [nowDate, periodDates, timePresets]
     )
 
     const handlePresetSelect = (preset: PresetOption) => {
         const endDate = timePresets?.find(({ key }) => key === preset)?.endDate
         const startDate = dayjs(endDate).format('YYYY-MM-DD')
-        const today = dayjs().format('YYYY-MM-DD')
+        const today = nowDate.format('YYYY-MM-DD')
         setPeriodDates([startDate, today])
         props?.onPeriodSelect?.(startDate, today)
         if (popoutRef.current) {
@@ -114,6 +118,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
                 <Calendar
                     {...props}
+                    today={todayKey}
                     containerClassName={props?.onPeriodSelect && styles.calendarWithPresets}
                     datePeriod={[periodDates?.[0], periodDates?.[1]]}
                     onDateSelect={props?.onDateSelect ? handleDateSelect : undefined}

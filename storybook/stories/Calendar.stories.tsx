@@ -79,6 +79,12 @@ const meta: Meta<CalendarProps> = {
             control: 'text',
             description: 'Latest selectable date in `YYYY-MM-DD` format'
         },
+        today: {
+            control: 'text',
+            description:
+                'The day that counts as today (`YYYY-MM-DD`): the highlighted day and the month the calendar opens on. Pass it when your dates belong to another time zone than the browser.',
+            table: { defaultValue: { summary: 'the date on the device' } }
+        },
         containerClassName: {
             control: 'text',
             description: 'Additional CSS class applied to the calendar container element'

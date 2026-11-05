@@ -308,6 +308,7 @@ Check out the full documentation and examples in Storybook: [Calendar Component 
 - **`minDate`**: Minimum selectable date (`YYYY-MM-DD`).
 - **`maxDate`**: Maximum selectable date (`YYYY-MM-DD`).
 - **`locale`**: Locale for month and day names (`'ru'` or `'en'`).
+- **`today`**: The day that counts as today (`YYYY-MM-DD`, default: the date on the user's device). Pass it when your dates belong to another time zone than the browser's, so the highlighted day follows that zone.
 - **`containerClassName`**: Additional class name for the calendar container.
 - **`onDateSelect`**: Callback for single date selection.
 - **`onPeriodSelect`**: Callback for period selection (start and end dates).
@@ -497,6 +498,7 @@ Check out the full documentation and examples in Storybook: [DatePicker Componen
 - **`disabled`**: Disables the date picker if `true`.
 - **`buttonMode`**: Button mode for the trigger (`primary`, `secondary`, etc.).
 - **`locale`**: Locale used to format the selected date/period text on the trigger button, the preset labels, and the calendar grid (`'ru'` or `'en'`, default: `'en'`). This is applied per-call and does not depend on (or mutate) the host application's global `dayjs` locale.
+- **`today`**: The day that counts as today (`YYYY-MM-DD`, default: the date on the user's device). The presets count back from it and a period ending on it is shown as its preset. Pass the date of your data's time zone when it differs from the browser's: otherwise, for part of the day, a preset period shows as plain dates and picking a preset misses the last day.
 - All other `Calendar` props are supported.
 
 > **Note:** `react`, `react-dom`, and `dayjs` are peer dependencies — the host application's own instances are used, so setting `dayjs.locale(...)` in your app does not affect this component's date formatting; pass the `locale` prop instead.

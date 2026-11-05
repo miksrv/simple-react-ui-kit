@@ -590,4 +590,13 @@ describe('Calendar', () => {
         // onDateSelect should still only have 1 call (day 2 is now disabled)
         expect(onDateSelect).toHaveBeenCalledTimes(1)
     })
+
+    // === `today` ===
+
+    it('highlights the given today and opens on its month, whatever the device date', () => {
+        setup({ today: '2030-03-15' })
+        const todayEl = document.querySelector('[class*="today"]')
+        expect(todayEl?.textContent).toBe('15')
+        expect(screen.getAllByDisplayValue('2030').length).toBeGreaterThan(0)
+    })
 })

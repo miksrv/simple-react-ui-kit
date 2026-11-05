@@ -248,4 +248,64 @@ describe('DatePicker', () => {
 
         expect(onDateSelect).toHaveBeenCalled()
     })
+
+    // === `today`: the dates' own today, not the device's ===
+
+    it('shows the preset for a period that ends on the given today, whatever the device date', () => {
+        render(
+            <DatePicker
+                {...defaultProps}
+                today='2030-03-15'
+                datePeriod={['2030-03-14', '2030-03-15']}
+            />
+        )
+        expect(screen.getAllByRole('button')[0]).toHaveTextContent('24 Hours')
+    })
+
+    it('shows the localized half-year preset for a period that ends on the given today', () => {
+        render(
+            <DatePicker
+                {...defaultProps}
+                locale='ru'
+                today='2030-03-15'
+                datePeriod={['2029-09-15', '2030-03-15']}
+            />
+        )
+        expect(screen.getAllByRole('button')[0]).toHaveTextContent('Последние полгода')
+    })
+
+    it('counts a picked preset back from the given today', () => {
+        const onPeriodSelect = jest.fn()
+        render(
+            <DatePicker
+                {...defaultProps}
+                today='2030-03-15'
+                onPeriodSelect={onPeriodSelect}
+            />
+        )
+        fireEvent.click(screen.getAllByRole('button')[0])
+        fireEvent.click(screen.getByText('Last Week'))
+        expect(onPeriodSelect).toHaveBeenCalledWith('2030-03-08', '2030-03-15')
+    })
+
+    it('shows the dates of a custom period even with today given', () => {
+        render(
+            <DatePicker
+                {...defaultProps}
+                today='2030-03-15'
+                datePeriod={['2030-03-01', '2030-03-10']}
+            />
+        )
+        expect(screen.getAllByRole('button')[0]).toHaveTextContent('01.03.2030 - 10.03.2030')
+    })
+
+    it('falls back to the device date without today', () => {
+        render(
+            <DatePicker
+                {...defaultProps}
+                datePeriod={[dayjs().subtract(1, 'day').format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]}
+            />
+        )
+        expect(screen.getAllByRole('button')[0]).toHaveTextContent('24 Hours')
+    })
 })

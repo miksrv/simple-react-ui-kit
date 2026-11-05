@@ -16,6 +16,10 @@ export interface CalendarProps {
     highlightToday?: boolean
     /** Show a button in the header to navigate back to the current month (default: false) */
     showTodayButton?: boolean
+    /** The day that counts as today (YYYY-MM-DD); default: the date on the user's device. Pass it when the
+     *  dates belong to another time zone than the browser's (a station or an office far away), so that
+     *  "today", the highlighted day and the presets of DatePicker follow that zone */
+    today?: string
     /** Additional class name for the calendar container */
     containerClassName?: string
     /** Callback for single date selection */

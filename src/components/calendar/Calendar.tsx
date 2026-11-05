@@ -17,13 +17,14 @@ export const Calendar: React.FC<CalendarProps> = ({
     locale = 'en',
     highlightToday = true,
     showTodayButton = false,
+    today: todayDate,
     containerClassName,
     onDateSelect,
     onPeriodSelect
 }) => {
-    const today = useMemo(() => dayjs(), [])
+    const today = useMemo(() => (todayDate ? dayjs(todayDate) : dayjs()), [todayDate])
 
-    const [currentMonth, setCurrentMonth] = useState(dayjs())
+    const [currentMonth, setCurrentMonth] = useState(today)
     const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
     const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(null)
 
@@ -208,14 +209,14 @@ export const Calendar: React.FC<CalendarProps> = ({
         const years: number[] = []
 
         const minYear = minDate ? dayjs(minDate).year() : 1900
-        const maxYear = maxDate ? dayjs(maxDate).year() : dayjs().year()
+        const maxYear = maxDate ? dayjs(maxDate).year() : today.year()
 
         for (let year = minYear; year <= maxYear; year++) {
             years.push(year)
         }
 
         setYearsOptions(years)
-    }, [minDate, maxDate])
+    }, [minDate, maxDate, today])
 
     useEffect(() => {
         if (datePeriod?.[0]) {
