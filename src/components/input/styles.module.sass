@@ -20,6 +20,9 @@
 
         .iconLeft
             position: absolute
+            // Above the field: `.input` is positioned too and comes later in the DOM, so
+            // without a z-index its opaque background paints over the icon
+            z-index: 1
             left: 10px
             top: 50%
             transform: translateY(-50%)
