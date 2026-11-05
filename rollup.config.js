@@ -19,11 +19,20 @@ const themeCss = () => ({
 
 export default {
     input: 'src/index.ts',
+    // One file per source module instead of a single bundle: an app's bundler then skips every component the
+    // app does not import (`sideEffects` in package.json marks the JS as free of side effects), instead of
+    // receiving one module it can only keep whole. The entry keeps its `index.esm.js` name
     output: [
         {
-            file: 'dist/index.esm.js',
+            dir: 'dist',
             format: 'esm',
-            sourcemap: false
+            sourcemap: false,
+            preserveModules: true,
+            preserveModulesRoot: 'src',
+            // Bundled third-party files (`dayjs/locale/ru`) go to `vendor/`: npm and yarn leave every
+            // `node_modules` folder out of a published package, so `dist/node_modules/...` would not ship
+            entryFileNames: (chunk) =>
+                chunk.name === 'index' ? 'index.esm.js' : `${chunk.name.replace(/^node_modules\//, 'vendor/')}.js`
         }
     ],
     plugins: [

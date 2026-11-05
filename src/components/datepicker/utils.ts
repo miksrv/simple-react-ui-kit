@@ -1,8 +1,7 @@
 import dayjs from 'dayjs'
+import ru from 'dayjs/locale/ru'
 
 import { CalendarPresetType, PresetOption } from './types'
-
-import 'dayjs/locale/ru'
 
 /** Presets relative to `nowDate`: computed per call so the dates never go stale in a long-running app */
 export const getTimePresets = (nowDate: dayjs.Dayjs): CalendarPresetType[] => [
@@ -37,7 +36,9 @@ export const ruPresets = {
 
 export const formatDate = (date: string, format: string = 'YYYY-MM-DD', locale?: 'en' | 'ru'): string =>
     dayjs(date)
-        .locale(locale ?? 'en')
+        // The locale object itself, not its name: a used import can't be dropped as an unused side effect by
+        // the app's bundler, and the formatting never depends on what the app registered globally
+        .locale(locale === 'ru' ? ru : 'en')
         .format(format)
 
 export const findPresetByDate = (
