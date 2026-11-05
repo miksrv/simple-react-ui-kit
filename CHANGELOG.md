@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2.2.0
+
+### Minor Changes
+
+- `DatePicker` and `Calendar` take a `today` prop (`YYYY-MM-DD`, default: the date on the device): the presets count back from it, a period ending on it shows as its preset, and the calendar highlights it. Pass the date of your data's time zone when it differs from the browser's — before, for part of the day such a period showed as plain dates and picking a preset missed the last day
+- Apps keep only the components they import: the kit ships one module per source file instead of a single bundle (importing `cn` alone: 34.6 KB → 0.2 KB). The package entry and imports stay the same
+
+### Patch Changes
+
+- `Input`: the `icon` is visible again — the field's own background was painted over it
+- `DatePicker` moves on to the new day on a page left open past midnight
+- Update dependencies to their latest minor and patch versions
+
 ## 2.1.1
 
 ### Patch Changes
