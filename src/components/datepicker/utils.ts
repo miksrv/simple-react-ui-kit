@@ -36,9 +36,10 @@ export const ruPresets = {
 
 export const formatDate = (date: string, format: string = 'YYYY-MM-DD', locale?: 'en' | 'ru'): string =>
     dayjs(date)
-        // The locale object itself, not its name: a used import can't be dropped as an unused side effect by
-        // the app's bundler, and the formatting never depends on what the app registered globally
-        .locale(locale === 'ru' ? ru : 'en')
+        // By name when the app has registered 'ru': dayjs registers a locale object passed here under its name,
+        // which would replace the app's own (possibly customised) 'ru'. Otherwise the bundled object — still a
+        // used import, so the app's bundler can't drop it as an unused side effect
+        .locale(locale === 'ru' ? (dayjs.Ls.ru ? 'ru' : ru) : 'en')
         .format(format)
 
 export const findPresetByDate = (

@@ -30,9 +30,10 @@ export default {
             preserveModules: true,
             preserveModulesRoot: 'src',
             // Bundled third-party files (`dayjs/locale/ru`) go to `vendor/`: npm and yarn leave every
-            // `node_modules` folder out of a published package, so `dist/node_modules/...` would not ship
+            // `node_modules` folder out of a published package, so `dist/node_modules/...` would not ship.
+            // Everything up to the last `node_modules/` goes, so an install outside the project root maps the same
             entryFileNames: (chunk) =>
-                chunk.name === 'index' ? 'index.esm.js' : `${chunk.name.replace(/^node_modules\//, 'vendor/')}.js`
+                chunk.name === 'index' ? 'index.esm.js' : `${chunk.name.replace(/^.*node_modules\//, 'vendor/')}.js`
         }
     ],
     plugins: [
